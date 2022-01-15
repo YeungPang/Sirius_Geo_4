@@ -1,0 +1,359 @@
+{
+    "title": "Sirius Prototype",
+    "version": "0.00",
+    "text": {
+        "+1point": "+ 1 point",
+        "accuracy": "ACCURACY WITHIN #A%#%.",
+        "answer": "ANSWER",
+        "Answer": "Answer",
+        "cancel": "CANCEL",
+        "confirm": "CONFIRM",
+        "congrat": "CONGRATUATIONS",
+        "corr": "CORRECT",
+        "editText": "Select element to edit.",
+        "forQuiz": "FOR THIS QUIZ!",
+        "gameDone": "DONE",
+        "highScore": "YOU GOT A NEW HIGH SCORE",
+        "incorr": "Incorrect",
+        "journey": "TO LEARNING JOURNEY",
+        "knowYourWorld": "Get to know your world!",
+        "looseLife": "YOU LOST A LIFE.",
+        "looseProgress": "All progress will be lost",
+        "maybe": "MAY BE YOU NEED A BIT MORE",
+        "next": "NEXT",
+        "notQuite": "NOT QUITE",
+        "practice": "PRACTICE ON THIS ONE.",
+        "quit": "QUIT",
+        "quitText": "Are you sure you want to quit?",
+        "quizComplete": "YOU COMPLETED THE QUIZ!",
+        "repeatGame": "TRY AGAIN",
+        "rni": "The Rate of Natural Increase (RNI) is based on which factors?",
+        "share": "Share your archievement!",
+        "showAnswer": "SHOW ANSWER",
+        "testText": "It's just a test!!!",
+        "topicSelection": "Topic Selection",
+        "totalQ": "Total Questions",
+        "tryAgain": "TRY AGAIN",
+        "typeAnswer": "Type Your Answer",
+        "wellDone": "WELL DONE!",
+        "wontLoose": "Try again. You won't loose a life.",
+        "yourSel": "Your Selection",
+        "yourScore": "Your Score"
+    },
+    "equivalence": {
+        "usa": "united states",
+        "us": "united states",
+        "united states of America": "united states",
+        "uk": "united kingdom",
+        "gb": "united kingdom",
+        "great britian": "united kingdom"
+    },
+    "config": {
+        "categories": {
+            "dataStart": "GR1",
+            "header": "CID;name;ref;GR1;GR2;GR3;GR4;GR5",
+            "elemList": [
+                "WorlC001;World;groups;2;3;1;4",
+                "ContiC001;Continents;groups;0",
+                "CountC001;Countries;groups;1",
+                "WaterC001;Water;groups;5;6;7",
+                "MountC001;Mountains;groups;8;9;10",
+                "IslanC001;Islands;groups;11",
+                "CitieC001;Cities;groups;12;13"
+            ]
+        },
+        "groups": {
+            "dataStart": "T1",
+            "header": "GRID;name;icon;progId;progTotal;ref;T1;T2;T3;T4;T5",
+            "elemList": [
+                "ContGR001;Continents;continents;[1];9;types;0;1;2;3",
+                "CounGR001;Countries;countries;[2];4;types;4;5;6;7",
+                "WorIGR001;World Intro;atmosphere;[14];1;types",
+                "hemiGR001;Hemisphere;climate_zones;[3];1;types",
+                "SolaGR001;Solar System;solar_system;[4];1;types",
+                "OceaGR001;Oceans;oceans;[5];1;types",
+                "RiveGR001;Rivers;rivers;[6];1;types",
+                "LakEGR001;Lakes In Europe;lakes;[7];1;types",
+                "MouRGR001;Mountain Ranges;glacier;[8];1;types",
+                "MounGR001;Mountains;mountains;[9];1;types",
+                "VolcGR001;Volcanoes;volcanoes;[10];1;types",
+                "IslaGR001;Islands;islands;[11];1;types",
+                "CapiGR001;Capitals;capitals;[12];1;types",
+                "CitiGR001;Cities;cities;[13];1;types"
+            ]
+        },
+        "types": {
+            "dataStart": "G1",
+            "header": "TID;name;ref;G1;G2;G3;G4;G5;G6;G7;G8;G9;G10",
+            "elemList": [
+                "ContiT001;Level 1;items;0;1;2",
+                "ContiT002;Level 2;items;20;21;19",
+                "ContiT003;Learn;tutorials;0",
+                "ContiT004;Article;articles;0",
+                "CountT005;Level 1;items;3;4",
+                "CountT006;Level 2;items;23;22;18;5",
+                "CountT007;Learn;tutorials;1",
+                "CountT008;Article;articles;1"
+            ]
+        },
+        "items": {
+            "dataStart": "Q1",
+            "header": "GID;name;icon;PassScore;progId;ref;Q1;Q2;Q3;Q4;Q5;Q6;Q7;Q8;Q9;Q10",
+            "elemList": [
+                "ContG0001;Identify Continent;continents;0.6;[1,0];questions;0;0;0",
+                "ContG0002;Continent Size;continents;0.75;[1,1];questions;1",
+                "ContG0003;Continent Quiz;continents;0.75;[1,2];questions;2",
+                "CounG0001;Identify Country;countries;0.75;[2,0];questions;6",
+                "CounG0002;Identify Flag;flags;0.75;[2,1];questions;7‥13;7‥13;7‥13",
+                "CounG0003;Country Quiz;countries;0.75;[2,2];questions;20;16",
+                "WorIG0001;World Intro;atmosphere;0.75;[14,0];questions",
+                "hemiG0001;Hemisphere;climate_zones;0.75;[3,0];questions",
+                "SolaG0001;Solar System;solar_system;0.75;[4,0];questions",
+                "OceaG0001;Oceans;oceans;0.75;[5,0];questions",
+                "RiveG0001;Rivers;rivers;0.75;[6,0];questions",
+                "LakEG0001;Lakes In Europe;lakes;0.75;[7,0];questions",
+                "MouRG0001;Mountain Ranges;glacier;0.75;[8,0];questions",
+                "MounG0001;Mountains;mountains;0.75;[9,0];questions",
+                "VolcG0001;Volcanoes;volcanoes;0.75;[10,0];questions",
+                "IslaG0001;Islands;islands;0.75;[11,0];questions",
+                "CapiG0001;Capitals;capitals;0.75;[12,0];questions",
+                "CitiG0001;Cities;cities;0.75;[13,0];questions",
+                "CounG0004;Select Country Flag;flags;0.75;[2,3];questions;14;14;14",
+                "ContG0005;Select Answers;continents;0.6;[1,3];questions;15",
+                "ContG0006;Identify Continent;continents;0.6;[1,4];questions;3;3;3",
+                "ContG0007;Continent;continents;0.6;[1,5];questions;19;17;18;4",
+                "CounG0004;Country Pick;countries;0.6;[2,2];questions;21;21;21",
+                "ArtiA0001;Article Test;article;;[0,0];articleWeb;0"
+            ]
+        },
+        "tutorials": {
+            "dataStart": "TU1",
+            "header": "TUID;name;icon;progId;ref;TU1;TU2;TU3;TU4;TU5;TU6;TU7;TU8;TU9;TU10;",
+            "elemList": [
+                "ConTU0001;Tutorial;tutorial;[1,4];questions",
+                "CouTU0002;Tutorial;tutorial;[1,5];questions"
+            ]
+        },
+        "articles": {
+            "dataStart": "A1",
+            "header": "AID;name;icon;ref;A1;A2;A3;A4;A5;A6;A7;A8;A9;A10;",
+            "elemList": [
+                "ContA0001;Article;article;questions",
+                "CounA0002;Article;article;questions"
+            ]
+        },
+        "questions": {
+            "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;CorrText;FailText;AlmostText;mapping;mapping_inx",
+            "elemList": [
+                "ContQ0001;MC;contData;What is this continent?;;(_ans,2);6;This continent is #(_ans,1)#.;(_ans,1);;([0‥6],1);CORRECT!;NOT QUITE.",
+                "ContQ0002;Order;contData;Sort the continents by surface area from largest to smallest;;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];;[Africa, Antarctica, Asia, Australia, Europe, North America, South America];AMAZING!;NOT QUITE.;;Order",
+                "ContQ0003;Text;;What is the largest continent by surface area?;;;;The largest continent is Asia.;[Asia];;;CORRECT!;NOT QUITE.",
+                "ContQ0004;Text;contData;What is this continent?;;(_ans,2);;This continent is #(_ans,1)#.;(_ans,1);;([0‥6],1);CORRECT!;NOT QUITE.",
+                "ContQ0005;Text;;Name the 7 continents.;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];[Africa, Antarctica, Asia, Australia, Europe, North America, South America];;;CORRECT!;NOT QUITE.",
+                "CounQ0006;MC;countryData;What is the largest country by area?;;;6;The largest country is #(188,2)#;(188,2);;([15, 32, 43, 48, 109, 110, 122, 211, 241],2)",
+                "CounQ0007;MC;countryData;What is this country?;;;6;;(_ans,3);;([15, 32, 43, 48, 109, 110, 122, 211, 241],3)",
+                "CounQ0008;MC;countryData;Which country flag is this?;;(0,2);6;#(0,1)#;(0,1);;([0‥6],1);CORRECT!;NOT QUITE.",
+                "CounQ0009;MC;countryData;Which country flag is this?;;(1,2);6;#(1,1)#;(1,1);;([0‥6],1);CORRECT!;NOT QUITE.",
+                "CounQ0010;MC;countryData;Which country flag is this?;;(2,2);6;#(2,1)#;(2,1);;([0‥6],1);CORRECT!;NOT QUITE.",
+                "CounQ0011;MC;countryData;Which country flag is this?;;(3,2);6;#(3,1)#;(3,1);;([0‥6],1);CORRECT!;NOT QUITE.",
+                "CounQ0012;MC;countryData;Which country flag is this?;;(4,2);6;#(4,1)#;(4,1);;([0‥6],1);CORRECT!;NOT QUITE.",
+                "CounQ0013;MC;countryData;Which country flag is this?;;(5,2);6;#(5,1)#;(5,1);;([0‥6],1);CORRECT!;NOT QUITE.",
+                "CounQ0014;MC;countryData;Which country flag is this?;;(6,2);6;#(6,1)#;(6,1);;([0‥6],1);CORRECT!;NOT QUITE.",
+                "CounQ0015;MC;countryData;Which is the flag of #(_ans,1)#?;;;4;;(_ans,2);;([0‥6],2);CORRECT!;NOT QUITE.",
+                "ContQ0006;MC;;The Rate of Natural Increase (RNI) is based on which factors?;(Select all that apply);;;;[Births,Deaths,Total Population];;[Births,Emmigration,Immigration,Deaths,Illegal Immigration,Total Population];CORRECT!;NOT QUITE.",
+                "CounQ0016;Text;countryData;Name one non-African English speaking countries?;;;1;;([5,6],1);;([5,6],1);CORRECT!;NOT QUITE.",
+                "ContQ0006;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;;CORRECT!;NOT QUITE.;;Sentence",
+                "ContQ0007;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;[immigration,births,emmigration,deaths,illegal immigrants,total population];CORRECT!;NOT QUITE.;;Sentence",
+                "ContQ0008;Slider;contData;What is the size of #(_ans,1)# by surface area?;;;;;(_ans,1);;([0‥6],1);AMAZING!;NOT QUITE.;ALMOST;ContinentSize",
+                "CounQ0017;Slider;countryData;What rank is #(_ans,1)# in surface area size order?;;;;;(_ans,3);;([0‥6],1);AMAZING!;NOT QUITE.;ALMOST;CountryRank",
+                "CounQ0018;SvgMap;countryData;Select #(_ans,1)#.;;;;;(_ans,1);;([0‥6],1);CORRECT!;NOT QUITE.;;CountrySelection"
+            ]
+        },
+        "articleWeb": {
+            "header": "AID;Q_Pattern_Name;url;scriptEnable",
+            "elemList": [
+                "ArtiW0001;WebView;https://www.youtube.com/;true"
+            ]
+        },
+        "mapping": {
+            "Order": {
+                "header": "Info1;Info2",
+                "elemList": "Largest;Smallest"
+            },
+            "Sentence": {
+                "header": "Descr;Sentence",
+                "elemList": "The Rate of Natural Increase (RNI) is calculated:;Using#0#minus#1#divided by#2#"
+            },
+            "ContinentSize": {
+                "header": "scale1;scale2;scale3;text1;text2;text3;suffix1;suffix2;suffix3;start1;start2;start3;end1;end2;end3;ratio12;ratio13;almostPer;corrPer",
+                "elemList": "(_ans,3);(_ans,4);(_ans,5);Absolute size;% of Earth Surface Area;% of Earth Land Surface Area; Million km²;%;%;0.0;0.0;0.0;50.0;100.0;100.0;0.19604;0.66858;10.0;5.0"
+            },
+            "CountryRank": {
+                "header": "scale1;scale2;scale1Top;scale1Bottom;scale2Top;scale2Bottom;div;largest;smallest;ansType;almostPer",
+                "elemList": "Percentile;Rank;100;0;1;194;4;Largest;Lowest;Rank;10.0"
+            },
+            "CountrySelection": {
+                "header": "ansColor;selColor;backgroundColor;shapeColor;borderColor;borderStroke;offsetWidth;offsetHeight;painterHeight;painterWidth;fileName",
+                "elemList": "correct;btnBlue;white;grey;grey700;1.0;20.0;20.0;1000.0;1100.0;assets/svg_images/world_map.json"
+            }
+        },
+        "contData": {
+            "header": "CDID;Name;Image;surfaceSize;surfacePercent;landPercent",
+            "elemList": [
+                "Cont00001;Africa;assets/images/Africa.png;30.37;5.95;20.31",
+                "Cont00002;Antarctica;assets/images/Antarctica.png;14.2;2.78;9.49",
+                "Cont00003;Asia;assets/images/Asia.png;44.58;8.74;29.80",
+                "Cont00004;Australia;assets/images/Australia.png;7.69;1.51;5.14",
+                "Cont00005;Europe;assets/images/Europe.png;10.18;2.00;6.81",
+                "Cont00006;North America;assets/images/NorthAmerica.png;24.71;4.84;16.52",
+                "Cont00007;South America;assets/images/SouthAmerica.png;17.84;3.50;11.93"
+            ]
+        },
+        "countryData": {
+            "header": "CDID;Name;Flag;rank",
+            "elemList": [
+                "Conu00001;Canada;assets/flags/Canada.svg;2",
+                "Conu00002;France;assets/flags/France.svg;47",
+                "Conu00003;Germany;assets/flags/Germany.svg;62",
+                "Conu00004;Italy;assets/flags/Italy.svg;70",
+                "Conu00005;Switzerland;assets/flags/Switzerland.svg;131",
+                "Conu00006;United Kingdom;assets/flags/United_Kingdom.svg;77",
+                "Conu00007;United States;assets/flags/United_States.svg;3"
+            ]
+        }
+    },
+    "patterns": {
+        "facts": {
+            "patHeader": [
+                "hratio",
+                "wratio",
+                "color",
+                "radius",
+                "alignment",
+                "size"
+            ],
+            "rowColHeader": [
+                "crossAxisAlignment",
+                "mainAxisAlignment",
+                "mainAxisSize",
+                "verticalDirection"
+            ]
+        },
+        "clauses": {
+            "mainView": "ƒ(setConfig, (config, patterns)) ⋀ ↲(mainScaffold)",
+            "mainScaffold": [
+                "(_text ≔ ℛ(model, title)) ⋀ (_title ≔ Φ(Text)) ⋀ (_body ≔ mainBody) ⋀ ",
+                "↲(scaffoldPat)"
+            ],
+            "scaffoldPat": [
+                "_title, _child, _body | (_appBar ≔ Φ(AppBar)) ⋀ ",
+                "ƒ(mapPat, (patHeader, (0.05049, Ø, #FFFFFF, Ø, Ø, Ø))) ⋀ ",
+                "(_bottomNavigationBar ≔ Φ(Container)) ⋀ ↲(Φ(Scaffold))"
+            ],
+            "appBar": [],
+            "mainBody": [
+                "ƒ(mapPat, (rowColHeader, (center, spaceBetween, max, Ø))) ⋀ (_itemRefMap ≔ categories) ⋀ ",
+                "(_itemRef ≔ (_itemRefMap @ elemList)) ⋀ (_naviHR ≔ 0.6) ⋀ ",
+                "(_nextMap ≔ ℳ(('_tapAction', 'groupScaffold'))) ⋀ (_children ≔ ℒ(topicContainer, baseNavi)) ⋀ ",
+                "(_child ≔ Φ(ListView)) ⋀ ƒ(mapPat, (patHeader, (Ø, Ø, #FFFFFF, Ø, topCenter, Ø))) ⋀ ↲(Φ(Container))"
+            ],
+            "topicContainer": [
+                "(_decoration ≔ ℛ(appRes, blueGradBD)) ⋀ ƒ(mapPat, (patHeader, (0.2463, 1.0, Ø, Ø, Ø, Ø))) ⋀ ",
+                "(_topicSelection ≔ ⊤(topicSelection)) ⋀ (_knowYourWorld ≔ ⊤(knowYourWorld)) ⋀ (_topic ≔ Φ(Topic)) ⋀ ",
+                "(_alignment ≔ ƒ(decode, (alignment, topCenter))) ⋀ (_children ≔ ℒ(_topic, topicDialog)) ⋀ (_child ≔ Φ(Stack)) ⋀ ",
+                "(_decoration ≔ Ø) ⋀ ƒ(mapPat, (patHeader, (0.3202, 1.0, Ø, Ø, Ø, Ø))) ⋀ ↲(Φ(Container))"
+            ],
+            "topicDialog": [
+                "(_child ≔ journeyButton) ⋀ (_alignment ≔ ƒ(decode, (alignment, center))) ⋀ (_child ≔ Φ(Container)) ⋀ ",
+                "(_borderRadius ≔ ƒ(decode, (borderRadius, ℳ(('radius', 24), ('type', circular))))) ⋀ ",
+                "(_child ≔ Φ(ClipRRect)) ⋀ (_decoration ≔ ℛ(appRes, diaDecoration)) ⋀ ",
+                "ƒ(mapPat, (patHeader, (0.0985, 0.9947, Ø, Ø, Ø, Ø))) ⋀ (_child ≔ Φ(Container)) ⋀ ",
+                "(_alignment ≔ ƒ(decode, (align, bottomCenter))) ⋀ ↲(Φ(Align))"
+            ],
+            "journeyButton": [
+                "(_text ≔ ⊤(journey)) ⋀ (_textStyle ≔ ℛ(textStyle, ControlButtonTextStyle)) ⋀ ",
+                "(_e1 ≔ Φ(Text)) ⋀ (_icon ≔ rightArrowFull) ⋀ (_iconColor ≔ ℛ(color, white)) ⋀ ",
+                "(_size ≔ 35) ⋀ (_e2 ≔ Φ(Icon)) ⋀ (_children ≔ ℒ(_e1, _e2)) ⋀ ",
+                "ƒ(mapPat, (rowColHeader, (center, spaceAround, Ø, Ø))) ⋀ ",
+                "(_child ≔ Φ(Row)) ⋀ ƒ(mapPat, (patHeader, (0.0468, 0.64, Ø, Ø, Ø, Ø))) ⋀ ",
+                "(_beginColor ≔ ℛ(color, correct)) ⋀ (_endColor ≔ ℛ(color, correctGradEnd)) ⋀ ↲(Φ(ColorButton))"
+            ],
+            "baseNavi": [
+                "_itemRef, _itemRefMap, _naviHR, _nextMap | (_padding ≔ ℛ(appRes, catBoxPadding)) ⋀ ",
+                "(_physics ≔ ℛ(appRes, clampingScrollPhysics)) ⋀ (_childPattern ≔ 'elemRow') ⋀ ",
+                "(_childMap ≔ ℳ(('_itemRefMap', _itemRefMap), ('_nextMap', _nextMap))) ⋀ (_child ≔ Φ(TapListItem)) ⋀ ",
+                "ƒ(mapPat, (patHeader, (_naviHR, 1.0, Ø, Ø, topCenter, Ø))) ⋀ ↲(Φ(Container))"
+            ],
+            "elemRow": [
+                "_item, _index, _itemRefMap, _nextMap | (_header ≔ (_itemRefMap @ header)) ⋀ ",
+                "ƒ(mapPat, (_header, _item)) ⋀ (_text ≔ _name) ⋀ (_textStyle ≔ ℛ(textStyle, SliderTextStyle)) ⋀ ",
+                "(_child ≔ Φ(Text)) ⋀ ƒ(mapPat, (patHeader, (0.0468, 0.96, Ø, Ø, Ø, Ø))) ⋀ ",
+                "(_bm ≔ Φ(SizedBox)) ⋀ (_itemRef ≔ ƒ(dataList, (_itemRefMap, _item))) ⋀ ",
+                "(_children ≔ ℒ(_bm, elemItemList)) ⋀ (_child ≔ Φ(Column)) ⋀ ",
+                "(_elevation ≔ 5.0) ⋀ (_child ≔ Φ(Card)) ⋀ ƒ(mapPat, (patHeader, (0.2217, 1.0, Ø, Ø, Ø, Ø))) ⋀ ↲(Φ(Container))"
+            ],
+            "elemItemList": [
+                "_itemRef, _index, _ref, _nextMap | (_childPattern ≔ 'catCol') ⋀ (_direction ≔ ƒ(decode, (axis, horizontal))) ⋀ ",
+                "(_physics ≔ ℛ(appRes, clampingScrollPhysics)) ⋀ (_childMap ≔ (ℳ(('_itemRefMap', _ref)) ⊌ _nextMap)) ⋀ ",
+                "(_child ≔ Φ(TapListItem)) ⋀ ",
+                "ƒ(mapPat, (patHeader, (0.1539, Ø, Ø, Ø, centerLeft, Ø))) ⋀ ↲(Φ(Container))"
+            ],
+            "catCol": [
+                "_item, _index, _itemRefMap, _onTap | (_header ≔ (_itemRefMap @ header)) ⋀ ƒ(mapPat, (_header, _item)) ⋀ ",
+                "(_children ≔ catView) ⋀ ƒ(mapPat, (rowColHeader, (center, center, Ø, Ø))) ⋀ (_child ≔ Φ(Column)) ⋀ ",
+                "ƒ(mapPat, (patHeader, (0.1539, 0.2667, Ø, Ø, Ø, Ø))) ⋀ (_itemRef ≔ ƒ(dataList, (_itemRefMap, _item))) ⋀ ",
+                "(_onTap ≔ ƒ(createEvent, (route, ℳ(('_itemRef', _itemRef), ('_itemRefMap', _ref), ('_title', _name), ('_progId', _progId), ('_PassScore', _PassScore))))) ⋀",
+                " ↲(Φ(Container))"
+            ],
+            "catView": [
+                "_item, _index, _name, _icon, _progTotal, _progId | (_height ≔ 5.0) ⋀ (_sb ≔ Φ(SizedBox)) ",
+                "(_iconColor ≔ ℛ(color, #1785C1)) ⋀ (_iconSize ≔ 45.0) ⋀ (_child ≔ Φ(Icon)) ⋀ ",
+                "(_decoration  ≔ ℛ(appRes, shadowDecoration)) ⋀ ƒ(mapPat, (patHeader, (0.1232, 0.2133, Ø, Ø, Ø, Ø))) ⋀ (_ic ≔ Φ(NotiElem)) ⋀ ",
+                "(_text ≔ _name) ⋀ (_textStyle ≔ ℛ(textStyle, SliderBoldTextStyle)) ⋀ (_tw ≔ Φ(Text)) ⋀ ",
+                "↲(ℒ(_ic, _sb, _tw))"
+            ],
+            "groupScaffold": [
+                "_itemRef, _itemRefMap | (_text ≔ ℛ(model, title)) ⋀ (_title ≔ Φ(Text)) ⋀ ",
+                "(_naviHR ≔ 0.8) ⋀ (_nextMap ≔ ℳ(('_tapAction', 'mvcScaffold'))) ⋀ (_body ≔ baseNavi) ⋀ ↲(scaffoldPat)"
+            ],
+            "mvcScaffold": [
+                "_itemRef, _itemRefMap, _title, _progId, _PassScore | (_body ≔ mvcLayout) ⋀ (_text ≔ _title) ⋀ (_title ≔ Φ(Text)) ⋀ ",
+                "(_child ≔ ƒ(mvc, ℒ(progRow))) ⋀ (_child ≔ scaffoldPat) ⋀ (_dialog ≔ ƒ(mvc, ℒ(quitDialog))) ⋀ ↲(Φ(NaviScope))"
+            ],
+            "mvcLayout": [
+                "_itemRef, _itemRefMap, _progId, _PassScore | ",
+                "(_child ≔ ƒ(mvc, (newMvc, ℳ(('_itemRef', _itemRef), ('_itemRefMap', _itemRefMap), ('_progId', _progId), ('_PassScore', _PassScore))))) ⋀ ",
+                "ƒ(mapPat, (patHeader, (0.97333, Ø, Ø, Ø, topCenter, Ø))) ⋀ ↲(Φ(Container))"
+            ],
+            "fsmPat": [
+                "_state, _event | ((_event = 'confirm') ⋀ ((_state = 'selected') ⋁ (_state = 'completed')) ⋀ ↲('CheckAns')) ⋁ ",
+                "((_event = 'next') ⋀ (_state = 'confirmed') ⋀ ↲('NextGame')) ⋁ ",
+                "((_event = 'tryAgain') ⋀ (_state = 'confirmed') ⋀ ↲('TryAgain')) ⋁ ",
+                "((_event = 'showAnswer') ⋀ (_state = 'confirmed') ⋀ ↲('ShowAnswer')) ⋁ ",
+                "((_event = 'gameDone') ⋀ ↲('GameDone')) ⋁ ((_event = 'repeatGame') ⋀ ↲('RepeatGame')) ⋁ ↲(Ø)"
+            ],
+            "MCfsm": "_state, _event | ((_event = 'select') ⋀ ((_state = 'start') ⋁ (_state = 'selected')) ⋀ ↲('Selection')) ⋁ ↲(fsmPat)",
+            "Textfsm": [
+                "_state, _event | ((_event = 'edited') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Editing')) ⋁ ",
+                "((_event = 'empty') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Empty')) ⋁ ",
+                "((_event = 'select') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Selection')) ⋁ ↲(fsmPat)"
+            ],
+            "Orderfsm": [
+                "_state, _event | ((_event = 'select') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Selection')) ⋁ ",
+                "((_event = 'dropSel') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('DropSel')) ⋁ ↲(fsmPat)"
+            ],
+            "Sentencefsm": [
+                "_state, _event | ((_event = 'edited') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Editing')) ⋁ ",
+                "((_event = 'empty') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Empty')) ⋁ ",
+                "↲(Orderfsm) ⋁ ↲(fsmPat)"
+            ],
+            "Sliderfsm": "_state, _event | ((_event = 'confirm') ⋀ ↲('CheckAns')) ⋁ ↲(fsmPat)",
+            "SvgMapfsm": "_state, _event | ↲(Sliderfsm)",
+            "testBox": "(_text ≔ testText) ⋀ (_child ≔ Φ(Text)) ⋀ ƒ(mapPat, (patHeader, (Ø, Ø, #FFFFFF, Ø, topCenter, Ø))) ⋀ ↲(Φ(Container))"
+        }
+    },
+    "userProfile": {
+        "lives": 5,
+        "progress": []
+    }
+}
