@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sirius_geo_4/builder/special_pattern.dart';
 import 'package:sirius_geo_4/resources/basic_resources.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
@@ -29,6 +30,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
   double _ratio13;
   String _ys;
   Map<String, dynamic> _mv;
+
   //bool reset = false;
 
   @override
@@ -227,7 +229,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
                       activeTrackBar: BoxDecoration(gradient: blueGradient)),
                   onDragging: (handlerIndex, lowerValue, upperValue) {
                     if (_mv["_state"] != "edited") {
-                      ValueNotifier<double> _confirmNoti = _mv["_confirmNoti"];
+                      RxDouble _confirmNoti = resxController.getRx("confirm");
                       _confirmNoti.value = 1.0;
                       _mv["_state"] = "edited";
                     }

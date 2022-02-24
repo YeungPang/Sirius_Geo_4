@@ -30,7 +30,8 @@ class SliderMvc extends Mvc {
   @override
   init() {
     configAgent ??= map["_configAgent"];
-    options = configAgent.getElement(map["_AnswerOptions"], map, rowList);
+    options =
+        configAgent.getElement(map["_AnswerOptions"], map, rowList: rowList);
     if ((options == null) || (options.isEmpty)) {
       return;
     }
@@ -46,8 +47,8 @@ class SliderMvc extends Mvc {
       excl.add(ans);
     }
     map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
-    String question = configAgent.checkText("_Question", map);
-    map["_question"] = question;
+    // String question = configAgent.checkText("_Question", map);
+    // map["_question"] = question;
     setup();
   }
 
@@ -102,7 +103,6 @@ class SliderMvc extends Mvc {
     }
     pf = model.appActions.getPattern("MvcColumn");
     view = pf(map);
-    mvmap["_confirmNoti"] = map["_confirmNoti"];
   }
 
   @override
@@ -129,13 +129,13 @@ class SliderMvc extends Mvc {
           int ans1;
           int ans2;
           if (ansType == map["_scale1"]) {
-            ans1 = configAgent.getElement(map["_Answer"], map, null);
+            ans1 = configAgent.getElement(map["_Answer"], map);
             ans2 = ((ans1 - top1) * (bottom2 - top2) / (bottom1 - top1) + top2)
                 .toInt();
             des = ans1 - mvmap["_in1"];
             per = (des * 100 ~/ (bottom1 - top1)).abs();
           } else {
-            ans2 = configAgent.getElement(map["_Answer"], map, null);
+            ans2 = configAgent.getElement(map["_Answer"], map);
             ans1 = ((ans2 - top2) * (bottom1 - top1) / (bottom2 - top2) + top1)
                 .toInt();
             des = ans2 - mvmap["_in2"];
@@ -162,10 +162,10 @@ class SliderMvc extends Mvc {
             }
           }
         } else {
-          double ans1 = configAgent.getElement(map["_scale1"], map, null);
+          double ans1 = configAgent.getElement(map["_scale1"], map);
           mvmap["_ans1"] = ans1;
-          mvmap["_ans2"] = configAgent.getElement(map["_scale2"], map, null);
-          mvmap["_ans3"] = configAgent.getElement(map["_scale3"], map, null);
+          mvmap["_ans2"] = configAgent.getElement(map["_scale2"], map);
+          mvmap["_ans3"] = configAgent.getElement(map["_scale3"], map);
           double per = ((ans1 - mvmap["_in1"]) / ans1 * 100.00).abs();
           double corrPer = map["_corrPer"];
           map["_subTitle"] =
@@ -187,8 +187,11 @@ class SliderMvc extends Mvc {
         return r;
       case "ShowAnswer":
         sliderNoti.value = 1;
-        buildSliderResult(map);
+        if (isVert) {
+          buildSliderResult(map);
+        }
         map["_addRes"] = mvmap["_res"];
+
         break;
       default:
         break;
@@ -212,7 +215,6 @@ class SliderMvc extends Mvc {
     ProcessPattern v = view;
     sliderNoti.value = 0;
     setup();
-    mvmap["_confirmNoti"] = map["_confirmNoti"];
     ValueNotifier<List<dynamic>> stackNoti = map["_stackNoti"];
     List<dynamic> stackList = stackNoti.value;
     for (int i = 0; i < stackList.length; i++) {
@@ -221,5 +223,10 @@ class SliderMvc extends Mvc {
         break;
       }
     }
+  }
+
+  @override
+  int getHintIndex() {
+    return ans;
   }
 }

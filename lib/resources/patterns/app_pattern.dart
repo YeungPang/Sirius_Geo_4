@@ -1,12 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sirius_geo_4/resources/basic_resources.dart';
 import 'package:sirius_geo_4/agent/config_agent.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/model/locator.dart';
 import 'package:sirius_geo_4/resources/s_g_icons.dart';
 import 'package:sirius_geo_4/builder/svg_paint_pattern.dart';
+import 'package:sirius_geo_4/builder/get_pattern.dart';
+import 'package:sirius_geo_4/resources/fonts.dart';
 
 class NotiElemPattern extends ProcessPattern {
   bool isGroup = false;
@@ -25,21 +28,19 @@ class NotiElemPattern extends ProcessPattern {
       pno = prog;
       total = map["_progTotal"];
       if (prog < total) {
-        return ValueListenableBuilder<List<String>>(
-          valueListenable: model.groupNoti,
-          builder: (BuildContext context, List<String> value, Widget child) =>
-              _buildWidget(value),
-        );
+        return Obx(() {
+          dynamic value = resxController.getRxValue("groupNoti");
+          return _buildWidget(value);
+        });
       }
       return _buildWidget(null);
     } else {
       bool done = prog as bool;
       if ((!done) && (progId != null)) {
-        return ValueListenableBuilder<String>(
-          valueListenable: model.progNoti,
-          builder: (BuildContext context, String value, Widget child) =>
-              _buildWidget(value),
-        );
+        return Obx(() {
+          dynamic value = resxController.getRxValue("progNoti");
+          return _buildWidget(value);
+        });
       }
       pno = 1;
       return _buildWidget(null);
@@ -48,7 +49,6 @@ class NotiElemPattern extends ProcessPattern {
 
   Widget _buildWidget(dynamic value) {
     Widget ic = getPatternWidget(map["_child"]);
-    //isGroup = false;
     if (isGroup) {
       if (value != null) {
         if ((value is List<String>) && (!value.contains(progId))) {
@@ -99,11 +99,6 @@ class NotiElemPattern extends ProcessPattern {
                       border: Border.all(color: colorMap["correct"], width: 1)),
                   child: pi,
                 ));
-      // ic = Container(
-      //   alignment: const Alignment(0.0, -0.25),
-      //   width: w,
-      //   child: ic,
-      // );
       ic = Align(
         alignment: const Alignment(0.0, -0.25),
         child: ic,
@@ -112,7 +107,6 @@ class NotiElemPattern extends ProcessPattern {
         alignment: Alignment.center,
         children: [ic, pc],
       );
-      //ic = Container(alignment: Alignment.topLeft, width: w, child: ic);
     } else {
       if ((value != progId) && (w != null)) {
         return w;
@@ -177,4 +171,56 @@ getSvgMap(Map<String, dynamic> map) {
   ValueNotifier<ProcessPattern> noti = map["_childNoti"];
   Function pf = model.appActions.getPattern("SvgPaint");
   noti.value = pf(map);
+}
+
+ProcessPattern getMenuBubble(Map<String, dynamic> map) {
+  Map<String, dynamic> imap = {
+    "_height": 0.06 * model.screenHeight,
+    "_name": "assets/images/menu_bubble.png",
+    "_boxFit": BoxFit.cover,
+  };
+  Function pf = getPrimePattern["ImageAsset"];
+  ProcessPattern arrow = pf(imap);
+  imap = {"_width": 20.0};
+  pf = getPrimePattern["SizedBox"];
+  imap = {
+    "_textStyle": choiceButnTxtStyle,
+    "_iconSize": 20.0,
+    "_iconColor": colorMap["btnBlue"],
+    "_highlightColor": colorMap["btnBlue"],
+    "_hoverColor": colorMap["btnBlue"],
+    "_gap": pf(imap),
+    "_horiz": true,
+    "_key": map["_key"],
+  };
+  List<dynamic> menuBox = [];
+  pf = getPrimePattern["IconText"];
+  List<dynamic> menuList = map["_menuList"];
+  ProcessEvent pe = ProcessEvent("menu");
+  double boxHeight = 0.0;
+  for (String mStr in menuList) {
+    List<String> ls = mStr.split(";");
+    imap["_icon"] = ls[0];
+    imap["_text"] = ls[1];
+    imap["_onTap"] = pe;
+    List<dynamic> ld = [ls[1], true];
+    imap["_tapAction"] = ld;
+    menuBox.add(pf(imap));
+    boxHeight += 30.0;
+  }
+
+  double boxWidth = 0.50 * model.screenWidth;
+  imap = {
+    "_align": const Alignment(0.80, -0.85),
+    "_bubbleArrow": arrow,
+    "_bubbleBox": menuBox,
+    "_bubbleHeight": 0.23399 * model.screenHeight,
+    "_arrowAlign": const Alignment(0.9, -0.95),
+    "_boxAlign": Alignment.centerRight,
+    "_boxWidth": boxWidth,
+    "_mainAxisAlignment": MainAxisAlignment.spaceEvenly,
+    "_boxHeight": boxHeight,
+  };
+  pf = getPrimePattern["Bubble"];
+  return pf(imap);
 }

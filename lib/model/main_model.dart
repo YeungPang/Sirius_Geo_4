@@ -14,9 +14,7 @@ class MainModel {
   Map<String, dynamic> stateData = {};
   Map<String, dynamic> get map => stateData["map"];
 
-  ValueNotifier<String> progNoti = ValueNotifier<String>("Ø");
-  ValueNotifier<List<String>> groupNoti = ValueNotifier<List<String>>([]);
-  ValueNotifier<List<Widget>> mvcStackNoti;
+  List<List<dynamic>> stack = [];
 
   int _count = 0;
 
@@ -32,11 +30,6 @@ class MainModel {
 
   init() {
     stateData.addAll({"cache": {}, "logical": {}, "user": {}});
-    // Map<String, dynamic> map = stateData["map"];
-    // List<dynamic> ld = map["userProfile"]["progress"];
-    // List<int> li = (ld == null) ? null : ld.map<int>((e) => e as int).toList();
-    // progNoti = ValueNotifier<List<int>>(li);
-    // stateData["progNoti"] = progNoti;
     appActions = AgentActions();
   }
 }

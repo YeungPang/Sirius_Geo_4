@@ -1,0 +1,174 @@
+import 'package:flutter/material.dart';
+import 'package:sirius_geo_4/builder/pattern.dart';
+import 'package:sirius_geo_4/model/locator.dart';
+import 'package:sirius_geo_4/builder/get_pattern.dart';
+import 'package:sirius_geo_4/resources/basic_resources.dart';
+import 'package:sirius_geo_4/resources/fonts.dart';
+import 'package:sirius_geo_4/resources/s_g_icons.dart';
+
+ProcessPattern getHintBubble(Map<String, dynamic> map) {
+  Map<String, dynamic> imap = {
+    "_height": map["_bubbleSize"],
+    "_name": map["_assetName"],
+    "_boxFit": BoxFit.cover
+  };
+  Function pf = getPrimePattern["ImageAsset"];
+  map["_bubbleArrow"] = pf(imap);
+  List<dynamic> hintBox = [
+    getHintBanner(map),
+    getHints(map["_hint"]),
+    getPrevNext(map),
+  ];
+  map["_bubbleBox"] = hintBox;
+  pf = getPrimePattern["Bubble"];
+  return pf(map);
+}
+
+Widget getHints(String hints) {
+  return Expanded(
+      child: Container(
+    alignment: const Alignment(-0.8, 0.0),
+    child: Text(
+      hints,
+      style: corrTxtStyle,
+    ),
+  ));
+}
+
+Widget getHintBanner(Map<String, dynamic> map) {
+  double boxWidth = map["_boxWidth"];
+  return Container(
+      height: map["_bannerHeight"],
+      width: boxWidth,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [colorMap["correct"], colorMap["correctGradEnd"]]),
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(10),
+          topLeft: Radius.circular(10),
+        ),
+      ),
+      child: Row(
+        children: [
+          const SizedBox(
+            width: 7,
+          ),
+          Expanded(
+            child: Text(
+              map["_hintText"],
+              style: selButnTxtStyle,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              model.appActions.doFunction("mvc", [map["_onCancel"]], map);
+            },
+            child: Row(
+              children: const [
+                Text('   '),
+                Icon(
+                  SGIcons.cancel,
+                  size: 16,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+        ],
+      ));
+}
+
+Widget getPrevNext(Map<String, dynamic> map) {
+  bool hasPrev = map["_hasPrev"];
+  bool last = map["_last"];
+  return Align(
+    alignment: Alignment.bottomCenter,
+    child: Container(
+      height: map["_bannerHeight"],
+      width: map["_boxWidth"],
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Align(
+            alignment: const Alignment(-0.6, 0.0),
+            child: !hasPrev
+                ? const Text('  ')
+                : GestureDetector(
+                    onTap: () {
+                      model.appActions.doFunction("mvc", [map["_onPrev"]], map);
+                    },
+                    child: Row(
+                      children: [
+                        space5,
+                        const Icon(
+                          Icons.arrow_back_ios,
+                          size: 16,
+                          color: Color(0xFFBDBDBD),
+                        ),
+                        Text(
+                          map["_prevHint"],
+                          style: faintTxtStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+          ),
+          Align(
+              alignment: const Alignment(0.6, 0.0),
+              child: last
+                  ? GestureDetector(
+                      onTap: () {
+                        model.appActions
+                            .doFunction("mvc", [map["_onTryTeachMode"]], map);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white38,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          border: Border.all(
+                            color: colorMap["btnBlue"],
+                            width: 2,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Text(
+                            map["_tryTeachMode"],
+                            style: choiceButnTxtStyle,
+                          ),
+                        ),
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        model.appActions
+                            .doFunction("mvc", [map["_onNext"]], map);
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            map["_nextHint"],
+                            style: faintTxtStyle,
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: Color(0xFFBDBDBD),
+                          ),
+                          space5
+                        ],
+                      ),
+                    )),
+        ],
+      ),
+    ),
+  );
+}

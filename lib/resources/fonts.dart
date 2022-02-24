@@ -100,6 +100,14 @@ const sliderSmallTextStyle = TextStyle(
   color: Color(0xFF00344F),
 );
 
+const iconSmallTextStyle = TextStyle(
+  fontFamily: fontNameAN,
+  fontWeight: FontWeight.w500,
+  letterSpacing: 0.25,
+  fontSize: 8,
+  color: Color(0xFF00344F),
+);
+
 const sliderBoldTextStyle = TextStyle(
   fontFamily: fontNameAN,
   fontWeight: FontWeight.w700,
@@ -126,6 +134,13 @@ const dragButnTxtStyle = TextStyle(
   fontWeight: FontWeight.w500,
   fontSize: mediumTextSize,
   color: Color(0xFF00344F),
+);
+
+const faintTxtStyle = TextStyle(
+  fontFamily: fontNameAN,
+  fontWeight: FontWeight.w500,
+  fontSize: mediumTextSize,
+  color: textColorFaint,
 );
 
 const selButnTxtStyle = TextStyle(

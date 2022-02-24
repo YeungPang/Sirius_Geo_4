@@ -91,6 +91,7 @@ class ScaffolPattern extends ProcessPattern {
             ? getPatternWidgetList(ml)
             : null;
     return Scaffold(
+      key: map["_key"],
       appBar: a,
       body: w,
       backgroundColor: map['_backgroundColor'],
@@ -336,23 +337,6 @@ class IndexedStackPattern extends ProcessPattern {
   }
 }
 
-class ValueStackPattern extends ProcessPattern {
-  ValueStackPattern(Map<String, dynamic> map) : super(map);
-  @override
-  Widget getWidget({String name}) {
-    return ValueListenableBuilder<List<dynamic>>(
-      valueListenable: map["_notifier"],
-      builder: (BuildContext context, List<dynamic> children, Widget child) =>
-          Stack(
-              children: getPatternWidgetList(children),
-              alignment: map["_alignment"] ?? AlignmentDirectional.topStart,
-              clipBehavior: map["_clipBehavior"] ?? Clip.hardEdge,
-              fit: map["_stackFit"] ?? StackFit.loose,
-              textDirection: map["_textDirection"]),
-    );
-  }
-}
-
 class CenterPattern extends ProcessPattern {
   CenterPattern(Map<String, dynamic> map) : super(map);
   @override
@@ -453,5 +437,16 @@ class OpacityPattern extends ProcessPattern {
   Widget getWidget({String name}) {
     Widget w = getPatternWidget(map["_child"]);
     return Opacity(opacity: map["_opacity"], child: w);
+  }
+}
+
+class RichTextPattern extends ProcessPattern {
+  RichTextPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    return RichText(
+      text: map["_textSpan"],
+      textAlign: map["_textAlign"] ?? TextAlign.start,
+    );
   }
 }

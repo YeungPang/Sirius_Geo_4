@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sirius_geo_4/resources/s_g_icons.dart';
-import 'package:json_theme/json_theme.dart';
 
 const Map<String, Color> colorMap = {
   "almost": Color(0xFFFF9E50),
@@ -46,6 +45,7 @@ Map<String, dynamic> resources = {
   "diaDecoration": diaDecoration,
   "shadowDecoration": shadowDecoration,
   "bgDecoration": bgDecoration,
+  "rCDecoration": RCDecoration,
 };
 
 const textFieldBorder = OutlineInputBorder(
@@ -108,6 +108,11 @@ const LinearGradient orangeGradient = LinearGradient(
 const BoxShadow bs =
     BoxShadow(color: Color(0xFFE0E0E0), blurRadius: 5.0, spreadRadius: 2.0);
 
+final BoxDecoration RCDecoration = BoxDecoration(
+  color: Colors.white,
+  borderRadius: BorderRadius.circular(10),
+);
+
 final BoxDecoration shadowRCDecoration = BoxDecoration(
   color: Colors.white,
   boxShadow: const [bs],
@@ -135,6 +140,9 @@ final BoxDecoration rCDecoration = BoxDecoration(
 );
 
 const BoxDecoration blueGradBD = BoxDecoration(gradient: blueGradient);
+
+const BoxDecoration greenGradBD = BoxDecoration(gradient: greenGradient);
+const BoxDecoration redGradBD = BoxDecoration(gradient: redGradient);
 
 const BoxDecoration bgDecoration = BoxDecoration(
     color: Colors.white,
@@ -165,11 +173,7 @@ final BoxDecoration imageDecoration = BoxDecoration(
   borderRadius: BorderRadius.circular(10),
 );
 
-final BoxDecoration btnDecoration = BoxDecoration(
-  color: Colors.white,
-  border: Border.all(color: const Color(0xFF1785C1), width: 2),
-  borderRadius: BorderRadius.circular(10),
-);
+final BoxDecoration btnDecoration = elemDecoration;
 
 const catBoxPadding = EdgeInsets.symmetric(vertical: 10.0);
 const catIconPadding = EdgeInsets.symmetric(horizontal: 10.0);

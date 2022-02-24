@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sirius_geo_4/agent/config_agent.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/model/locator.dart';
@@ -17,7 +18,7 @@ class McMvc extends Mvc {
   Function iepf;
   Function tipf;
   Function mvcpf;
-  ValueNotifier<List<dynamic>> gvNoti;
+  Rx<List<dynamic>> gvNoti;
   ProcessPattern view;
   double eheight;
   double ewidth;
@@ -44,13 +45,14 @@ class McMvc extends Mvc {
       bgHeight = 0.8 * bgHeight;
     }
     configAgent ??= map["_configAgent"];
-    options = configAgent.getElement(map["_AnswerOptions"], map, rowList);
+    options =
+        configAgent.getElement(map["_AnswerOptions"], map, rowList: rowList);
     if ((options == null) || (options.isEmpty)) {
       return;
     }
     excl = [];
     setup();
-    gvNoti = createNotifier(children);
+    gvNoti = resxController.addToResxMap("gv", children);
 
     double mainAS = 0.01847 * model.screenHeight;
     childAspectRatio = ewidth / eheight;
@@ -63,8 +65,8 @@ class McMvc extends Mvc {
     };
     Function pf = getPrimePattern["GridView"];
     ProcessPattern gv = pf(imap);
-    lmap = {"_notifier": gvNoti, "_child": gv};
-    pf = getPrimePattern["ValueTypeListener"];
+    lmap = {"_valueName": "gv", "_child": gv};
+    pf = getPrimePattern["Obx"];
     imap = {
       "_width": 0.8267 * model.screenWidth,
       "_height":
@@ -89,7 +91,7 @@ class McMvc extends Mvc {
     if (answer.contains("_ans")) {
       ans = getRandom(options.length, excl);
     } else if (answer.contains('[')) {
-      ansList = configAgent.getElement(map["_Answer"], map, null);
+      ansList = configAgent.getElement(map["_Answer"], map);
       range = [];
       for (int k = 0; k < options.length; k++) {
         range.add(k);
@@ -105,8 +107,9 @@ class McMvc extends Mvc {
       range = getRandomList(options.length, map["_range"], incl, []);
       excl.add(ans);
     }
-    String question = configAgent.checkText("_Question", map);
-    map["_question"] = question;
+    map["_ansInx"] = ans;
+    // String question = configAgent.checkText("_Question", map);
+    // map["_question"] = question;
     String o = options[0];
     isImg = o.contains(".png") || o.contains(".svg");
     eheight = isImg ? 0.12 * model.screenHeight : 0.07143 * model.screenHeight;
@@ -320,5 +323,10 @@ class McMvc extends Mvc {
     List<dynamic> c = [];
     c.addAll(children);
     buildBadgedElement(type, c, gvNoti, isImg, childMap);
+  }
+
+  @override
+  int getHintIndex() {
+    return ans;
   }
 }

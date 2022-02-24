@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/model/locator.dart';
 import 'package:sirius_geo_4/model/main_model.dart';
+import 'package:sirius_geo_4/agent/resx_controller.dart';
 
 class HomePage extends StatelessWidget {
+  final ResxController resxController = ResxController();
   HomePage({Key key}) : super(key: key);
 
   @override

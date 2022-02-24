@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sirius_geo_4/agent/config_agent.dart';
 import 'package:sirius_geo_4/agent/logic_processor.dart';
 import 'package:sirius_geo_4/agent/mvc_agent.dart';
@@ -10,6 +11,7 @@ import 'package:sirius_geo_4/resources/basic_resources.dart';
 import 'package:sirius_geo_4/resources/fonts.dart';
 import 'package:sirius_geo_4/resources/s_g_icons.dart';
 import 'package:sirius_geo_4/model/locator.dart';
+import 'package:sirius_geo_4/builder/item_search.dart';
 
 class AgentActions extends AppActions {
   final ControlAgent controlAgent = ControlAgent();
@@ -39,6 +41,9 @@ class AgentActions extends AppActions {
       case "fsm":
         ProcessEvent pe = ProcessEvent("fsm", map: input);
         return mvcAgent.process(pe);
+      case "process":
+        ProcessEvent pe = ProcessEvent(input, map: vars);
+        return mvcAgent.process(pe);
       case "decode":
         return controlAgent.decode(input, vars);
       case "dataList":
@@ -47,11 +52,16 @@ class AgentActions extends AppActions {
         }
         return null;
       case "route":
-        Navigator.pushNamed(model.context, input, arguments: {"map": vars});
+        Get.toNamed("/page?screen=" + input, arguments: vars);
+        //Navigator.pushNamed(model.context, input, arguments: {"map": vars});
         return true;
       case "popRoute":
-        bool mode = (vars != null) ? vars["mode"] ?? true : true;
-        Navigator.of(model.context).pop(mode);
+        bool mode = (vars != null) ? vars["mode"] ?? false : false;
+        //Navigator.of(model.context).pop(mode);
+        Get.back();
+        if (mode) {
+          Get.back();
+        }
         return true;
       case "createNotifier":
         return createNotifier(input);
@@ -69,6 +79,25 @@ class AgentActions extends AppActions {
           return ProcessEvent(input);
         }
         return null;
+      case "menu":
+        String sel;
+        //ValueNotifier<bool> noti;
+        if (input is List<dynamic>) {
+          sel = input[0];
+          Get.back();
+          // noti = input[1];
+          // noti.value = false;
+        } else {
+          sel = input;
+        }
+        switch (sel) {
+          case "Search":
+            onSearch(Get.context, {});
+            return true;
+          default:
+            return true;
+        }
+        return false;
       case "setConfig":
         if (input is List<dynamic>) {
           String cName = input[0];
@@ -87,6 +116,9 @@ class AgentActions extends AppActions {
           return true;
         }
         return false;
+      case "initApp":
+        initApp();
+        return true;
       case "getHeight":
         if (input is double) {
           return input * model.screenHeight;
@@ -102,6 +134,49 @@ class AgentActions extends AppActions {
         var data = vars[name] ?? input[1];
         vars[name] = data;
         return true;
+      case "showDialog":
+        Get.dialog(
+          getPatternWidget(input),
+          useSafeArea: true,
+        );
+        return true;
+      case "key":
+        return GlobalKey();
+      case "changeNoti":
+        if ((input is! List<dynamic>) || (input.length != 2)) {
+          return false;
+        }
+        ValueNotifier noti = input[0];
+        List<dynamic> ld = input[1];
+        if (ld.length != 2) {
+          return false;
+        }
+        noti.value = (noti.value == ld[0]) ? ld[1] : ld[0];
+        return true;
+      case "pushStack":
+        model.stack.add(input);
+        return true;
+      case "popStack":
+        List<dynamic> sl = model.stack.last;
+        model.stack.removeLast();
+        return sl;
+      case "updateListNoti":
+        if (input is List<dynamic>) {
+          ValueNotifier<List<dynamic>> noti = input[0];
+          List<dynamic> value = [];
+          List<dynamic> inList = [];
+          inList.add(noti.value);
+          for (int i = 1; i < input.length; i++) {
+            inList.add(input[i]);
+          }
+          Map<String, dynamic> lmap = {"_outputList": value};
+          bool ok = handleList(inList, lmap);
+          if (ok) {
+            noti.value = value;
+            return true;
+          }
+        }
+        return false;
       default:
         return false;
     }
@@ -129,7 +204,7 @@ class AgentActions extends AppActions {
   }
 
   @override
-  dynamic getResource(String res, String spec) {
+  dynamic getResource(String res, String spec, {dynamic value}) {
     String _res = (res.contains("Color")) ? "color" : res;
     switch (_res) {
       case "model":
@@ -146,6 +221,11 @@ class AgentActions extends AppActions {
         return resources[spec];
       case "icon":
         return myIcons[spec];
+      case "resxValue":
+        return resxController.getRxValue(spec);
+      case "setResxValue":
+        resxController.setRxValue(spec, value);
+        return true;
       default:
         return null;
     }
@@ -198,11 +278,11 @@ class ControlAgent extends Agent {
     if (l.length != 2) {
       return false;
     }
-    List<dynamic> pl = l[1];
+    List<dynamic> pl = (l[1] is String) ? l[1].split(';') : l[1];
     if (pl == null) {
       return false;
     }
-    List<dynamic> patHeader = l[0];
+    List<dynamic> patHeader = (l[0] is String) ? l[0].split(';') : l[0];
     int len = (patHeader.length > pl.length) ? pl.length : patHeader.length;
     for (int i = 0; i < len; i++) {
       var ipat = pl[i];

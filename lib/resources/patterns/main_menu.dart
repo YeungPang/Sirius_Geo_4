@@ -40,7 +40,7 @@ Widget topicWidget(Map<String, dynamic> map) {
                       margin: const EdgeInsets.only(top: 10),
                       child: Text(
                         map["_knowYourWorld"],
-                        style: smallTextStyle.copyWith(color: Colors.white),
+                        style: smallSemiTextStyle.copyWith(color: Colors.white),
                       ),
                     ),
                   ],

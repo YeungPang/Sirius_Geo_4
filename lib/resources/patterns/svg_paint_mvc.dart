@@ -33,7 +33,8 @@ class SvgPaintMvc extends Mvc {
   @override
   init() {
     configAgent ??= map["_configAgent"];
-    options = configAgent.getElement(map["_AnswerOptions"], map, rowList);
+    options =
+        configAgent.getElement(map["_AnswerOptions"], map, rowList: rowList);
     if ((options == null) || (options.isEmpty)) {
       return;
     }
@@ -46,9 +47,9 @@ class SvgPaintMvc extends Mvc {
       excl.add(ans);
     }
     map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
-    String question = configAgent.checkText("_Question", map);
-    map["_question"] = question;
-    ansLabel = configAgent.getElement(map["_Answer"], map, null);
+    // String question = configAgent.checkText("_Question", map);
+    // map["_question"] = question;
+    ansLabel = configAgent.getElement(map["_Answer"], map);
     if (refresh) {
       imap = {
         "_height": 40.0,
@@ -95,7 +96,6 @@ class SvgPaintMvc extends Mvc {
       map["_colElem"] = pf(imap);
       mvcpf = model.appActions.getPattern("MvcColumn");
       view = mvcpf(map);
-      mvmap["_confirmNoti"] = map["_confirmNoti"];
       map["_func"] = "getSvgMap";
       loadData(map);
     } else {
@@ -104,7 +104,6 @@ class SvgPaintMvc extends Mvc {
       mvmap["_selIndex"] = null;
       mvmap["_selLabel"] = null;
       view = mvcpf(map);
-      mvmap["_confirmNoti"] = map["_confirmNoti"];
       svgPaintNoti.value = Offset.zero;
     }
   }
@@ -156,5 +155,10 @@ class SvgPaintMvc extends Mvc {
     mvmap["_selIndex"] = null;
     mvmap["_selLabel"] = null;
     svgPaintNoti.value = Offset.zero;
+  }
+
+  @override
+  int getHintIndex() {
+    return ans;
   }
 }

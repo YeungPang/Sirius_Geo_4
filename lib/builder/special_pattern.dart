@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+import 'package:get/get.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/builder/std_pattern.dart';
 import 'package:sirius_geo_4/model/locator.dart';
@@ -85,7 +86,7 @@ class Bubble extends StatelessWidget {
                     alignment: map["_boxAlign"],
                     child: Container(
                         height: map["_boxHeight"],
-                        decoration: shadowRCDecoration),
+                        decoration: map["_boxDecoration"] ?? RCDecoration),
                   ),
                   Align(alignment: map["_arrowAlign"], child: w),
                   Align(
@@ -95,7 +96,8 @@ class Bubble extends StatelessWidget {
                           child: SizedBox(
                             height: map["_boxHeight"],
                             child: Column(
-                              //mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: map["_mainAxisAlignment"] ??
+                                  MainAxisAlignment.start,
                               children: lw,
                             ),
                           )))
@@ -355,15 +357,16 @@ class TapItem extends StatelessWidget {
     Widget w = getPatternWidget(map["_child"]);
     return GestureDetector(onTap: () => _onTap(context, map), child: w);
   }
+}
 
-  _onTap(BuildContext context, Map<String, dynamic> itemMap) {
-    ProcessEvent actionMap = map["_onTap"];
-    if (actionMap != null) {
-      model.context = context;
-      model.appActions
-          .doFunction(actionMap.name, map["_tapAction"], actionMap.map);
-      //controller.model.context = null;
-    }
+_onTap(BuildContext context, Map<String, dynamic> map) {
+  ProcessEvent actionMap = map["_onTap"];
+  if (actionMap != null) {
+    GlobalKey key = map["_key"];
+    model.context = (key == null) ? context : key.currentContext;
+    model.appActions
+        .doFunction(actionMap.name, map["_tapAction"], actionMap.map);
+    //controller.model.context = null;
   }
 }
 
@@ -499,20 +502,6 @@ class FlexiblePattern extends ProcessPattern {
   }
 }
 
-class ValueOpacityPattern extends ProcessPattern {
-  ValueOpacityPattern(Map<String, dynamic> map) : super(map);
-  @override
-  Widget getWidget({String name}) {
-    return ValueListenableBuilder<double>(
-      valueListenable: map["_notifier"],
-      builder: (BuildContext context, double value, Widget child) => Opacity(
-        child: getPatternWidget(map["_child"]),
-        opacity: value,
-      ),
-    );
-  }
-}
-
 class ScrollLayoutPattern extends ProcessPattern {
   ScrollLayoutPattern(Map<String, dynamic> map) : super(map);
   @override
@@ -588,24 +577,6 @@ class InteractiveViewerPattern extends ProcessPattern {
   }
 }
 
-class WillPopScopeActionsPattern extends ProcessPattern {
-  WillPopScopeActionsPattern(Map<String, dynamic> map) : super(map);
-  @override
-  Widget getWidget({String name}) {
-    Widget w = getPatternWidget(map["_child"]);
-    return WillPopScope(
-      onWillPop: () async {
-        ProcessEvent actions = map["_backActions"];
-        if (actions != null) {
-          model.appActions.getAgent("action").process(actions);
-        }
-        return true;
-      },
-      child: w,
-    );
-  }
-}
-
 class ColorButton extends StatelessWidget {
   final Map<String, dynamic> map;
 
@@ -614,12 +585,17 @@ class ColorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     double borderRadius = map["_btnBRadius"] ?? 10.0;
     Widget w = getPatternWidget(map["_child"]);
-    Gradient g = (map["_beginColor"] == null)
-        ? null
-        : LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [map["_beginColor"], map["_endColor"]]);
+    var grad = map["_gradient"];
+    if (grad is String) {
+      grad = resources[grad];
+    }
+    Gradient g = grad ??
+        ((map["_beginColor"] == null)
+            ? null
+            : LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [map["_beginColor"], map["_endColor"]]));
     Color c = map["_color"] as Color;
     BoxBorder b = (map["_borderColor"] == null)
         ? null
@@ -689,5 +665,111 @@ class ValueTypeListenerPattern<T> extends ProcessPattern {
   @override
   Widget getWidget({String name}) {
     return ValueTypeListener<T>(map);
+  }
+}
+
+class IconButtonWidget extends StatelessWidget {
+  final Map<String, dynamic> map;
+
+  const IconButtonWidget(this.map, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var icv = map["_icon"];
+    Icon ic;
+    if (icv is String) {
+      Function iepf = model.appActions.getPattern("Icon");
+      ProcessPattern pp = iepf(map);
+      ic = pp.getWidget();
+    } else {
+      ic = getPatternWidget(icv);
+    }
+    return IconButton(
+      icon: ic,
+      onPressed: () => _onTap(context, map),
+    );
+  }
+}
+
+class IconButtonPattern extends ProcessPattern {
+  IconButtonPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    return IconButtonWidget(map);
+  }
+}
+
+class IconTextWidget extends StatelessWidget {
+  final Map<String, dynamic> map;
+
+  const IconTextWidget(this.map, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var icv = map["_icon"];
+    Icon ic;
+    if (icv is String) {
+      Function iepf = model.appActions.getPattern("Icon");
+      ProcessPattern pp = iepf(map);
+      ic = pp.getWidget();
+    } else {
+      ic = getPatternWidget(icv);
+    }
+
+    bool isHoriz = map["_horiz"] ?? false;
+    Widget gap = (map["_gap"] == null) ? null : getPatternWidget(map["_gap"]);
+    List<Widget> children = (gap == null)
+        ? [ic, Text(map["_text"], style: map["_textStyle"])]
+        : [gap, ic, gap, Text(map["_text"], style: map["_textStyle"])];
+    MainAxisAlignment ma = map["_mainAxisAlignment"] ?? MainAxisAlignment.start;
+    return InkWell(
+      child: isHoriz
+          ? Row(
+              children: children,
+              mainAxisAlignment: ma,
+            )
+          : Column(
+              children: children,
+              mainAxisAlignment: ma,
+            ),
+      onTap: () => _onTap(context, map),
+      highlightColor: map["_highlightColor"],
+      hoverColor: map["_hoverColor"],
+    );
+  }
+}
+
+class IconTextPattern extends ProcessPattern {
+  IconTextPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    return IconTextWidget(map);
+  }
+}
+
+class VisiblePattern extends ProcessPattern {
+  VisiblePattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    return Visibility(
+      child: getPatternWidget(map["_child"]),
+      visible: map["_visible"],
+    );
+  }
+}
+
+class ObxPattern extends ProcessPattern {
+  ObxPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    ProcessPattern child = map["_child"];
+    return Obx(() {
+      String rxName = map["_valueName"];
+      dynamic value = resxController.getRxValue(rxName);
+      String key = map["_valueKey"] ??
+          ((value is List<dynamic>) ? "_children" : "_child");
+      child.map[key] = value;
+      return getPatternWidget(child);
+    });
   }
 }

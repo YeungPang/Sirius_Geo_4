@@ -1,12 +1,14 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:path_drawing/path_drawing.dart';
+import 'package:sirius_geo_4/agent/resx_controller.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/resources/basic_resources.dart';
 
 class SvgPaint extends StatelessWidget {
   final Map<String, dynamic> map;
+  final ResxController resxController = Get.find<ResxController>();
 
   SvgPaint(this.map);
 
@@ -34,7 +36,7 @@ class SvgPaint extends StatelessWidget {
   rebuild(Map<String, dynamic> _mv, ValueNotifier<Offset> notifier, e) {
     notifier.value = e.localPosition;
     if (_mv["_state"] != "selected") {
-      ValueNotifier<double> confirmNoti = _mv["_confirmNoti"];
+      RxDouble confirmNoti = resxController.getRx("confirm");
       confirmNoti.value = 1.0;
       _mv["_state"] = "selected";
       Offset o = e.localPosition;

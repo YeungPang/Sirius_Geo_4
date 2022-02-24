@@ -4,7 +4,6 @@ import 'package:sirius_geo_4/builder/get_pattern.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/model/locator.dart';
 import 'package:sirius_geo_4/resources/app_model.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewMvc extends Mvc {
@@ -83,4 +82,9 @@ class WebViewMvc extends Mvc {
 
   @override
   retry() {}
+
+  @override
+  int getHintIndex() {
+    return 0;
+  }
 }

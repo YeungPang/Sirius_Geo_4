@@ -20,6 +20,7 @@ abstract class Mvc {
   ProcessPattern getPattern();
   dynamic getAnswer();
   double getBgHeight();
+  int getHintIndex();
 }
 
 class ProcessEvent {
@@ -34,7 +35,7 @@ abstract class AppActions {
   dynamic doFunction(String name, dynamic input, Map<String, dynamic> vars);
   Function getPattern(String name);
   Agent getAgent(String name);
-  dynamic getResource(String res, String spec);
+  dynamic getResource(String res, String spec, {dynamic value});
 }
 
 Widget getPatternWidget(dynamic e) {

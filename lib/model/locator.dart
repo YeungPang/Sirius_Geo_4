@@ -1,16 +1,6 @@
-import 'package:get_it/get_it.dart';
+import 'package:get/get.dart';
+import 'package:sirius_geo_4/agent/resx_controller.dart';
 import 'package:sirius_geo_4/model/main_model.dart';
 
-class AppInfo {
-  String get welcomeMessage => 'Welcome to Sirius Geo App';
-}
-
-GetIt locator = GetIt.asNewInstance();
-
-void setupLocator() {
-  locator.registerFactory(() => AppInfo());
-
-  locator.registerLazySingleton<MainModel>(() => MainModel());
-}
-
-final MainModel model = locator<MainModel>();
+final MainModel model = Get.find<MainModel>();
+final ResxController resxController = Get.find<ResxController>();

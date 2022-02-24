@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sirius_geo_4/builder/special_pattern.dart';
 import 'package:sirius_geo_4/builder/std_pattern.dart';
 import 'package:sirius_geo_4/resources/basic_resources.dart';
@@ -158,7 +159,7 @@ class VertSlider extends StatelessWidget {
         ),
         onDragging: (handlerIndex, lowerValue, upperValue) {
           if (_mv["_state"] != "edited") {
-            ValueNotifier<double> notifier = _mv["_confirmNoti"];
+            RxDouble notifier = resxController.getRx("confirm");
             notifier.value = 1.0;
             _mv["_state"] = "edited";
           }

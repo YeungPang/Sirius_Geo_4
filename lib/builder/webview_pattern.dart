@@ -1,15 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class WebViewExpl extends StatefulWidget {
   final Map<String, dynamic> map;
@@ -29,7 +23,8 @@ class _WebViewExplState extends State<WebViewExpl> {
         () => VerticalDragGestureRecognizer());
     //var gestureSet = Set.from([verticalGestures]);
     Map<String, dynamic> _mv = widget.map["_mv"];
-    return WebView(
+    return SafeArea(
+        child: WebView(
       initialUrl: widget.map["_url"],
       //gestureRecognizers: gestureSet,
       javascriptMode: widget.map["_scriptMode"] ?? JavascriptMode.disabled,
@@ -39,7 +34,7 @@ class _WebViewExplState extends State<WebViewExpl> {
           _mv["_wvController"] = webViewController;
         }
       },
-    );
+    ));
   }
 }
 

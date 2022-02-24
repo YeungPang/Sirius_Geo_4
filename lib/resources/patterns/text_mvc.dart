@@ -6,6 +6,7 @@ import 'package:sirius_geo_4/builder/get_pattern.dart';
 import 'package:sirius_geo_4/resources/app_model.dart';
 import 'package:sirius_geo_4/resources/basic_resources.dart';
 import 'package:sirius_geo_4/resources/fonts.dart';
+import 'package:get/get.dart';
 
 class TextMvc extends Mvc {
   TextMvc(Map<String, dynamic> map) : super(map);
@@ -14,11 +15,12 @@ class TextMvc extends Mvc {
   double bgHeight = 0.4926 * model.screenHeight;
   ProcessPattern view;
   ConfigAgent configAgent;
-  ValueNotifier<ProcessPattern> textNoti;
+  Rx<ProcessPattern> textNoti;
   TextEditingController tc = TextEditingController();
   List<dynamic> answers;
   List<dynamic> options;
   List<dynamic> ansList;
+  List<dynamic> acceptedList;
   List<dynamic> elemList;
   List<dynamic> checkList;
   Map<String, dynamic> imap;
@@ -26,7 +28,7 @@ class TextMvc extends Mvc {
   List<dynamic> children;
   Function mvcpf;
   Function tipf = getPrimePattern["Text"];
-  ValueNotifier<List<dynamic>> gvNoti;
+  Rx<List<dynamic>> gvNoti;
   double childAspectRatio;
   bool multi = false;
   double eheight;
@@ -38,8 +40,9 @@ class TextMvc extends Mvc {
   ProcessPattern editText;
   bool retrying = false;
   bool refresh = false;
-  Map<String, dynamic> equi = model.map["equivalence"];
+  //Map<String, dynamic> equi = model.map["equivalence"];
   List<int> rowList = [];
+  int ans = 0;
 
   @override
   double getBgHeight() {
@@ -53,18 +56,46 @@ class TextMvc extends Mvc {
     answers = [];
     configAgent ??= map["_configAgent"];
     String answer = map["_Answer"];
+    if ((!retrying) && (map["_Accepted_Answers"] != null)) {
+      acceptedList = [];
+      List<dynamic> rList =
+          configAgent.getElement(map["_Accepted_Answers"], map);
+      RegExp re = RegExp(r"[\[\],]");
+      for (String s in rList) {
+        List<String> sl = s.trim().split(re);
+        acceptedList.add(sl);
+      }
+    }
     if (answer.contains("_ans")) {
       if (!retrying) {
-        options = configAgent.getElement(map["_AnswerOptions"], map, rowList);
-        int ans = getRandom(options.length, excl);
+        options = configAgent.getElement(map["_AnswerOptions"], map,
+            rowList: rowList);
+        ans = getRandom(options.length, excl);
         excl.add(ans);
         map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
         ansList = [options[ans]];
+        if (acceptedList != null) {
+          List<dynamic> al = acceptedList[ans];
+          for (String a in al) {
+            if (a.isNotEmpty) {
+              ansList.add(a.trim());
+            }
+          }
+        }
         checkList = null;
       }
     } else {
       refresh = false;
-      ansList = configAgent.getElement(map["_Answer"], map, null);
+      ansList = configAgent.getElement(map["_Answer"], map);
+      if (acceptedList != null) {
+        for (List<dynamic> al in acceptedList) {
+          for (String a in al) {
+            if (a.isNotEmpty) {
+              ansList.add(a.trim());
+            }
+          }
+        }
+      }
     }
     retrying = false;
     len = map["_range"] ?? ansList.length;
@@ -112,9 +143,9 @@ class TextMvc extends Mvc {
       pp = cpf(imap);
 
       if (multi) {
-        textNoti = ValueNotifier<ProcessPattern>(inTextPP);
-        imap = {"_notifier": textNoti, "_child": pp};
-        pf = getPrimePattern["ValueTypeListener"];
+        textNoti = resxController.addToResxMap("textNoti", inTextPP);
+        imap = {"_valueName": "textNoti", "_child": pp};
+        pf = getPrimePattern["Obx"];
         pp = pf(imap);
         eheight = 0.07143 * model.screenHeight;
         ewidth = 0.345 * model.screenWidth;
@@ -138,7 +169,7 @@ class TextMvc extends Mvc {
         }
         children = [];
         children.addAll(elemList);
-        gvNoti = createNotifier(children);
+        gvNoti = resxController.addToResxMap("gv", children);
         double mainAS = 0.01847 * model.screenHeight;
         childAspectRatio = ewidth / eheight;
         imap = {
@@ -150,8 +181,8 @@ class TextMvc extends Mvc {
         };
         pf = getPrimePattern["GridView"];
         ProcessPattern gv = pf(imap);
-        lmap = {"_notifier": gvNoti, "_child": gv};
-        pf = getPrimePattern["ValueTypeListener"];
+        lmap = {"_valueName": "gv", "_child": gv};
+        pf = getPrimePattern["Obx"];
         int l = (len + 1) ~/ 2;
         imap = {
           "_width": w,
@@ -316,7 +347,7 @@ class TextMvc extends Mvc {
         }
         if (len == 1) {
           String ansText = tc.text.toLowerCase();
-          ansText = equi[ansText] ?? ansText;
+          //ansText = equi[ansText] ?? ansText;
           if (checkList.contains(ansText)) {
             return "correct";
           } else {
@@ -329,7 +360,7 @@ class TextMvc extends Mvc {
         if (answers.length == len) {
           for (int i = 0; i < len; i++) {
             String ansText = answers[i].toString().toLowerCase();
-            ansText = equi[ansText] ?? ansText;
+            //ansText = equi[ansText] ?? ansText;
             int inx = checkList.indexOf(ansText);
             if (inx < 0) {
               r = "incorrect";
@@ -404,5 +435,10 @@ class TextMvc extends Mvc {
     } else {
       buildBadgedElement(type, c, null, false, childMap);
     }
+  }
+
+  @override
+  int getHintIndex() {
+    return ans;
   }
 }

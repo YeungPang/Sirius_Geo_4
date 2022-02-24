@@ -1,33 +1,47 @@
 {
     "title": "Sirius Prototype",
     "version": "0.00",
+    "liveGenTime": 30,
     "text": {
         "+1point": "+ 1 point",
         "accuracy": "ACCURACY WITHIN #A%#%.",
+        "almost": "ALMOST",
         "answer": "ANSWER",
         "Answer": "Answer",
         "cancel": "CANCEL",
         "confirm": "CONFIRM",
         "congrat": "CONGRATUATIONS",
+        "continue": "CONTINUE",
         "corr": "CORRECT",
+        "corrText": "CORRECT!",
         "editText": "Select element to edit.",
         "forQuiz": "FOR THIS QUIZ!",
         "gameDone": "DONE",
         "highScore": "YOU GOT A NEW HIGH SCORE",
+        "hintText": "Hint #n# of #t#",
         "incorr": "Incorrect",
         "journey": "TO LEARNING JOURNEY",
         "knowYourWorld": "Get to know your world!",
+        "livesSub": "SUBSCRIBE FOR UNLIMITED LIVES",
+        "liveOut": "OUT OF LIVES",
         "looseLife": "YOU LOST A LIFE.",
-        "looseProgress": "All progress will be lost",
+        "looseProgress": "All progress will be lost.",
+        "lowLives": "LOW ON LIVES",
         "maybe": "MAY BE YOU NEED A BIT MORE",
         "next": "NEXT",
-        "notQuite": "NOT QUITE",
+        "nextHint": "Next Hint",
+        "nextLife": "Next life in ",
+        "notFinish": "You may not be able to finish this game if you get more than #n# questions wrong.",
+        "notQuite": "NOT QUITE.",
+        "playAgain": "You can explore articles and content but not play any games until you have lives again",
+        "prevHint": "Previous Hint",
         "practice": "PRACTICE ON THIS ONE.",
         "quit": "QUIT",
         "quitText": "Are you sure you want to quit?",
         "quizComplete": "YOU COMPLETED THE QUIZ!",
         "repeatGame": "TRY AGAIN",
         "rni": "The Rate of Natural Increase (RNI) is based on which factors?",
+        "search": "Search",
         "share": "Share your archievement!",
         "showAnswer": "SHOW ANSWER",
         "testText": "It's just a test!!!",
@@ -35,18 +49,26 @@
         "totalQ": "Total Questions",
         "tryAgain": "TRY AGAIN",
         "typeAnswer": "Type Your Answer",
+        "tryTeachMode": "TRY TEACHING MODE",
+        "watchAd": "WATCH AD",
         "wellDone": "WELL DONE!",
         "wontLoose": "Try again. You won't loose a life.",
         "yourSel": "Your Selection",
         "yourScore": "Your Score"
     },
-    "equivalence": {
-        "usa": "united states",
-        "us": "united states",
-        "united states of America": "united states",
-        "uk": "united kingdom",
-        "gb": "united kingdom",
-        "great britian": "united kingdom"
+    "lookup": {
+        "United States": [
+            "usa",
+            "us",
+            ""
+        ],
+        "United Kingdom": [
+            "uk",
+            "gb",
+            ""
+        ],
+        "semicolon": ";",
+        "hash": "#"
     },
     "config": {
         "categories": {
@@ -64,6 +86,7 @@
         },
         "groups": {
             "dataStart": "T1",
+            "pattern": "groupScaffold",
             "header": "GRID;name;icon;progId;progTotal;ref;T1;T2;T3;T4;T5",
             "elemList": [
                 "ContGR001;Continents;continents;[1];9;types;0;1;2;3",
@@ -98,13 +121,14 @@
         },
         "items": {
             "dataStart": "Q1",
+            "pattern": "mvcScaffold",
             "header": "GID;name;icon;PassScore;progId;ref;Q1;Q2;Q3;Q4;Q5;Q6;Q7;Q8;Q9;Q10",
             "elemList": [
                 "ContG0001;Identify Continent;continents;0.6;[1,0];questions;0;0;0",
                 "ContG0002;Continent Size;continents;0.75;[1,1];questions;1",
                 "ContG0003;Continent Quiz;continents;0.75;[1,2];questions;2",
                 "CounG0001;Identify Country;countries;0.75;[2,0];questions;6",
-                "CounG0002;Identify Flag;flags;0.75;[2,1];questions;7‥13;7‥13;7‥13",
+                "CounG0002;Identify Flag;flags;0.75;[2,1];questions;[7‥13];[7‥13];7‥13",
                 "CounG0003;Country Quiz;countries;0.75;[2,2];questions;20;16",
                 "WorIG0001;World Intro;atmosphere;0.75;[14,0];questions",
                 "hemiG0001;Hemisphere;climate_zones;0.75;[3,0];questions",
@@ -121,7 +145,7 @@
                 "CounG0004;Select Country Flag;flags;0.75;[2,3];questions;14;14;14",
                 "ContG0005;Select Answers;continents;0.6;[1,3];questions;15",
                 "ContG0006;Identify Continent;continents;0.6;[1,4];questions;3;3;3",
-                "ContG0007;Continent;continents;0.6;[1,5];questions;19;17;18;4",
+                "ContG0007;Continent;continents;0.6;[1,5];questions;4;17;18;19",
                 "CounG0004;Country Pick;countries;0.6;[2,2];questions;21;21;21",
                 "ArtiA0001;Article Test;article;;[0,0];articleWeb;0"
             ]
@@ -143,30 +167,30 @@
             ]
         },
         "questions": {
-            "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;CorrText;FailText;AlmostText;mapping;mapping_inx",
+            "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx",
             "elemList": [
-                "ContQ0001;MC;contData;What is this continent?;;(_ans,2);6;This continent is #(_ans,1)#.;(_ans,1);;([0‥6],1);CORRECT!;NOT QUITE.",
-                "ContQ0002;Order;contData;Sort the continents by surface area from largest to smallest;;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];;[Africa, Antarctica, Asia, Australia, Europe, North America, South America];AMAZING!;NOT QUITE.;;Order",
-                "ContQ0003;Text;;What is the largest continent by surface area?;;;;The largest continent is Asia.;[Asia];;;CORRECT!;NOT QUITE.",
-                "ContQ0004;Text;contData;What is this continent?;;(_ans,2);;This continent is #(_ans,1)#.;(_ans,1);;([0‥6],1);CORRECT!;NOT QUITE.",
-                "ContQ0005;Text;;Name the 7 continents.;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];[Africa, Antarctica, Asia, Australia, Europe, North America, South America];;;CORRECT!;NOT QUITE.",
+                "ContQ0001;MC;contData;What is this continent?;;(_ans,2);6;This continent is #(_ans,1)#.;(_ans,1);;([0‥6],1);[0‥6]",
+                "ContQ0002;Order;contData;Sort the continents by surface area from largest to smallest;;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];;[Africa, Antarctica, Asia, Australia, Europe, North America, South America];;Order:0",
+                "ContQ0003;Text;;What is the largest continent by surface area?;;;;The largest continent is Asia.;[Asia]",
+                "ContQ0004;Text;contData;What is this continent?;;(_ans,2);;This continent is #(_ans,1)#.;(_ans,1);;([0‥6],1)",
+                "ContQ0005;Text;;Name the 7 continents.;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];[Africa, Antarctica, Asia, Australia, Europe, North America, South America]",
                 "CounQ0006;MC;countryData;What is the largest country by area?;;;6;The largest country is #(188,2)#;(188,2);;([15, 32, 43, 48, 109, 110, 122, 211, 241],2)",
                 "CounQ0007;MC;countryData;What is this country?;;;6;;(_ans,3);;([15, 32, 43, 48, 109, 110, 122, 211, 241],3)",
-                "CounQ0008;MC;countryData;Which country flag is this?;;(0,2);6;#(0,1)#;(0,1);;([0‥6],1);CORRECT!;NOT QUITE.",
-                "CounQ0009;MC;countryData;Which country flag is this?;;(1,2);6;#(1,1)#;(1,1);;([0‥6],1);CORRECT!;NOT QUITE.",
-                "CounQ0010;MC;countryData;Which country flag is this?;;(2,2);6;#(2,1)#;(2,1);;([0‥6],1);CORRECT!;NOT QUITE.",
-                "CounQ0011;MC;countryData;Which country flag is this?;;(3,2);6;#(3,1)#;(3,1);;([0‥6],1);CORRECT!;NOT QUITE.",
-                "CounQ0012;MC;countryData;Which country flag is this?;;(4,2);6;#(4,1)#;(4,1);;([0‥6],1);CORRECT!;NOT QUITE.",
-                "CounQ0013;MC;countryData;Which country flag is this?;;(5,2);6;#(5,1)#;(5,1);;([0‥6],1);CORRECT!;NOT QUITE.",
-                "CounQ0014;MC;countryData;Which country flag is this?;;(6,2);6;#(6,1)#;(6,1);;([0‥6],1);CORRECT!;NOT QUITE.",
-                "CounQ0015;MC;countryData;Which is the flag of #(_ans,1)#?;;;4;;(_ans,2);;([0‥6],2);CORRECT!;NOT QUITE.",
-                "ContQ0006;MC;;The Rate of Natural Increase (RNI) is based on which factors?;(Select all that apply);;;;[Births,Deaths,Total Population];;[Births,Emmigration,Immigration,Deaths,Illegal Immigration,Total Population];CORRECT!;NOT QUITE.",
-                "CounQ0016;Text;countryData;Name one non-African English speaking countries?;;;1;;([5,6],1);;([5,6],1);CORRECT!;NOT QUITE.",
-                "ContQ0006;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;;CORRECT!;NOT QUITE.;;Sentence",
-                "ContQ0007;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;[immigration,births,emmigration,deaths,illegal immigrants,total population];CORRECT!;NOT QUITE.;;Sentence",
-                "ContQ0008;Slider;contData;What is the size of #(_ans,1)# by surface area?;;;;;(_ans,1);;([0‥6],1);AMAZING!;NOT QUITE.;ALMOST;ContinentSize",
-                "CounQ0017;Slider;countryData;What rank is #(_ans,1)# in surface area size order?;;;;;(_ans,3);;([0‥6],1);AMAZING!;NOT QUITE.;ALMOST;CountryRank",
-                "CounQ0018;SvgMap;countryData;Select #(_ans,1)#.;;;;;(_ans,1);;([0‥6],1);CORRECT!;NOT QUITE.;;CountrySelection"
+                "CounQ0008;MC;countryData;Which country flag is this?;;(0,2);6;#(0,1)#;(0,1);;([0‥6],1)",
+                "CounQ0009;MC;countryData;Which country flag is this?;;(1,2);6;#(1,1)#;(1,1);;([0‥6],1)",
+                "CounQ0010;MC;countryData;Which country flag is this?;;(2,2);6;#(2,1)#;(2,1);;([0‥6],1)",
+                "CounQ0011;MC;countryData;Which country flag is this?;;(3,2);6;#(3,1)#;(3,1);;([0‥6],1)",
+                "CounQ0012;MC;countryData;Which country flag is this?;;(4,2);6;#(4,1)#;(4,1);;([0‥6],1)",
+                "CounQ0013;MC;countryData;Which country flag is this?;;(5,2);6;#(5,1)#;(5,1);;([0‥6],1)",
+                "CounQ0014;MC;countryData;Which country flag is this?;;(6,2);6;#(6,1)#;(6,1);;([0‥6],1)",
+                "CounQ0015;MC;countryData;Which is the flag of #(_ans,1)#?;;;4;;(_ans,2);;([0‥6],2)",
+                "ContQ0006;MC;;The Rate of Natural Increase (RNI) is based on which factors?;(Select all that apply);;;;[Births,Deaths,Total Population];;[Births,Emmigration,Immigration,Deaths,Illegal Immigration,Total Population]",
+                "CounQ0016;Text;countryData;Name one non-African English speaking countries?;;;1;;([0,5,6],1);([5,6],4);([0,5,6],1)",
+                "ContQ0006;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;;;Sentence:0",
+                "ContQ0007;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;[immigration,births,emmigration,deaths,illegal immigrants,total population];;Sentence:0",
+                "ContQ0008;Slider;contData;What is the size of #(_ans,1)# by surface area?;;;;;(_ans,1);;([0‥6],1);;ContinentSize:0",
+                "CounQ0017;Slider;countryData;What rank is #(_ans,1)# in surface area size order?;;;;;(_ans,3);;([0‥6],1);;CountryRank:0",
+                "CounQ0018;SvgMap;countryData;Select #(_ans,1)#.;;;;;(_ans,1);;([0‥6],1);;CountrySelection:0"
             ]
         },
         "articleWeb": {
@@ -175,27 +199,35 @@
                 "ArtiW0001;WebView;https://www.youtube.com/;true"
             ]
         },
-        "mapping": {
-            "Order": {
-                "header": "Info1;Info2",
-                "elemList": "Largest;Smallest"
-            },
-            "Sentence": {
-                "header": "Descr;Sentence",
-                "elemList": "The Rate of Natural Increase (RNI) is calculated:;Using#0#minus#1#divided by#2#"
-            },
-            "ContinentSize": {
-                "header": "scale1;scale2;scale3;text1;text2;text3;suffix1;suffix2;suffix3;start1;start2;start3;end1;end2;end3;ratio12;ratio13;almostPer;corrPer",
-                "elemList": "(_ans,3);(_ans,4);(_ans,5);Absolute size;% of Earth Surface Area;% of Earth Land Surface Area; Million km²;%;%;0.0;0.0;0.0;50.0;100.0;100.0;0.19604;0.66858;10.0;5.0"
-            },
-            "CountryRank": {
-                "header": "scale1;scale2;scale1Top;scale1Bottom;scale2Top;scale2Bottom;div;largest;smallest;ansType;almostPer",
-                "elemList": "Percentile;Rank;100;0;1;194;4;Largest;Lowest;Rank;10.0"
-            },
-            "CountrySelection": {
-                "header": "ansColor;selColor;backgroundColor;shapeColor;borderColor;borderStroke;offsetWidth;offsetHeight;painterHeight;painterWidth;fileName",
-                "elemList": "correct;btnBlue;white;grey;grey700;1.0;20.0;20.0;1000.0;1100.0;assets/svg_images/world_map.json"
-            }
+        "Order": {
+            "header": "Info1;Info2",
+            "elemList": [
+                "Largest;Smallest"
+            ]
+        },
+        "Sentence": {
+            "header": "Descr;Sentence",
+            "elemList": [
+                "The Rate of Natural Increase (RNI) is calculated:;Using#0#minus#1#divided by#2#"
+            ]
+        },
+        "ContinentSize": {
+            "header": "scale1;scale2;scale3;text1;text2;text3;suffix1;suffix2;suffix3;start1;start2;start3;end1;end2;end3;ratio12;ratio13;almostPer;corrPer",
+            "elemList": [
+                "(_ans,3);(_ans,4);(_ans,5);Absolute size;% of Earth Surface Area;% of Earth Land Surface Area; Million km²;%;%;0.0;0.0;0.0;50.0;100.0;100.0;0.19604;0.66858;10.0;5.0"
+            ]
+        },
+        "CountryRank": {
+            "header": "scale1;scale2;scale1Top;scale1Bottom;scale2Top;scale2Bottom;div;largest;smallest;ansType;almostPer",
+            "elemList": [
+                "Percentile;Rank;100;0;1;194;4;Largest;Lowest;Rank;10.0"
+            ]
+        },
+        "CountrySelection": {
+            "header": "ansColor;selColor;backgroundColor;shapeColor;borderColor;borderStroke;offsetWidth;offsetHeight;painterHeight;painterWidth;fileName",
+            "elemList": [
+                "correct;btnBlue;white;grey;grey700;1.0;20.0;20.0;1000.0;1100.0;assets/svg_images/world_map.json"
+            ]
         },
         "contData": {
             "header": "CDID;Name;Image;surfaceSize;surfacePercent;landPercent",
@@ -210,17 +242,38 @@
             ]
         },
         "countryData": {
-            "header": "CDID;Name;Flag;rank",
+            "header": "CDID;Name;Flag;rank;similar",
             "elemList": [
                 "Conu00001;Canada;assets/flags/Canada.svg;2",
                 "Conu00002;France;assets/flags/France.svg;47",
                 "Conu00003;Germany;assets/flags/Germany.svg;62",
                 "Conu00004;Italy;assets/flags/Italy.svg;70",
                 "Conu00005;Switzerland;assets/flags/Switzerland.svg;131",
-                "Conu00006;United Kingdom;assets/flags/United_Kingdom.svg;77",
-                "Conu00007;United States;assets/flags/United_States.svg;3"
+                "Conu00006;United Kingdom;assets/flags/United_Kingdom.svg;77;[great britian, gb, uk]",
+                "Conu00007;United States;assets/flags/United_States.svg;3;[united states of america, us, usa]"
             ]
         }
+    },
+    "search": [
+        "Articles⇒items:23;",
+        "Continents⇒groups:0;Country⇒groups:1;Countries⇒groups:1;Identify Continent⇒items:0;"
+    ],
+    "menuList": [
+        "home;Home",
+        "settings;Settings",
+        "shop;Shop",
+        "search;Search;startSearch"
+    ],
+    "hints": {
+        "elemList": [
+            "Wheather is mostly hot.;Native people have black skin.;This continent is Africa.",
+            "Wheather can be very cold.;Hardly any people live there.;This continent is Antarctica.",
+            "The largest continent.;Most people live there.;This continent is Asia.",
+            "The smallest continent.;You can find kangaroos there.;This continent is Australia.",
+            "There are hardly any desert.;Most people have white skin.;This continent is Europe.",
+            "There are only two main countries in this continent.;Most people speak English.;This continent is North America.",
+            "The continent has many rain forests.;Most people speak spanish.;This continent is South America."
+        ]
     },
     "patterns": {
         "facts": {
@@ -240,32 +293,44 @@
             ]
         },
         "clauses": {
-            "mainView": "ƒ(setConfig, (config, patterns)) ⋀ ↲(mainScaffold)",
+            "mainView": "ƒ(setConfig, (config, patterns)) ⋀ ƒ(initApp, Ø) ⋀ ↲(mainScaffold)",
             "mainScaffold": [
-                "(_text ≔ ℛ(model, title)) ⋀ (_title ≔ Φ(Text)) ⋀ (_body ≔ mainBody) ⋀ ",
-                "↲(scaffoldPat)"
+                "(_text ≔ ℛ(model, title)) ⋀ (_key ≔ ƒ(key, Ø)) ⋀ (_body ≔ mainBody) ⋀ ",
+                "(_title ≔ mainAppBar) ⋀ (_child ≔ mainBottomRow) ⋀ ↲(scaffoldPat)"
+            ],
+            "mainBottomRow": [
+                "(_bar ≔ true) ⋀ (_icon ≔ 'home') ⋀ (_text ≔ 'Home') ⋀ (_icHome ≔ Φ(IconText))",
+                "(_icon ≔ 'settings') ⋀ (_text ≔ 'Settings') ⋀ (_icSet ≔ Φ(IconText))",
+                "(_icon ≔ 'shop') ⋀ (_text ≔ 'Shop') ⋀ (_icShop ≔ Φ(IconText))",
+                "ƒ(mapPat, (rowColHeader, (center, spaceAround, max, Ø))) ⋀",
+                "(_children ≔ [_icHome, _icSet, _icShop, Φ(SearchButton)]) ⋀ (_child ≔ Φ(Row)) ⋀ ↲(Φ(Container))"
             ],
             "scaffoldPat": [
-                "_title, _child, _body | (_appBar ≔ Φ(AppBar)) ⋀ ",
+                "_title, _child, _body, _key, _flexibleSpace, _leading | (_appBar ≔ Φ(AppBar)) ⋀ ",
                 "ƒ(mapPat, (patHeader, (0.05049, Ø, #FFFFFF, Ø, Ø, Ø))) ⋀ ",
                 "(_bottomNavigationBar ≔ Φ(Container)) ⋀ ↲(Φ(Scaffold))"
             ],
-            "appBar": [],
+            "mainAppBar": [
+                "_text, _flexibleSpace, _notifier | (_child ≔ Φ(Text)) ⋀ (_child ≔ Φ(Center)) ⋀ (_tText ≔ Φ(Expanded)) ⋀ ",
+                "(_onTap ≔ ƒ(createEvent, showDialog)) ⋀ (_menuList ≔ ℛ(model, menuList)) ⋀ (_tapAction ≔ Φ(MenuBubble)) ⋀ ",
+                "(_icon ≔ 'menu_hamburger') ⋀ (_iconColor ≔ ℛ(color, 'white')) ⋀ (_ic ≔ Φ(IconButton)) ⋀ ",
+                "(_child ≔ Ø) ⋀ (_width ≔ Ø) ⋀  (_decoration ≔ ℛ(appRes, blueGradBD)) ⋀ (_flexibleSpace ≔ Φ(Container)) ⋀ ",
+                "(_children ≔ [_tText, _ic]) ⋀ ↲(Φ(Row))"
+            ],
             "mainBody": [
-                "ƒ(mapPat, (rowColHeader, (center, spaceBetween, max, Ø))) ⋀ (_itemRefMap ≔ categories) ⋀ ",
-                "(_itemRef ≔ (_itemRefMap @ elemList)) ⋀ (_naviHR ≔ 0.6) ⋀ ",
-                "(_nextMap ≔ ℳ(('_tapAction', 'groupScaffold'))) ⋀ (_children ≔ ℒ(topicContainer, baseNavi)) ⋀ ",
-                "(_child ≔ Φ(ListView)) ⋀ ƒ(mapPat, (patHeader, (Ø, Ø, #FFFFFF, Ø, topCenter, Ø))) ⋀ ↲(Φ(Container))"
+                "_notifier, _key | ƒ(mapPat, (rowColHeader, (center, spaceBetween, max, Ø))) ⋀ (_itemRefMap ≔ categories) ⋀ ",
+                "(_itemRef ≔ _itemRefMap[elemList]) ⋀ (_naviHR ≔ 0.6) ⋀ (_nextMap ≔ {'_tapAction': 'groupScaffold'}) ⋀ ",
+                "(_children ≔ [topicContainer, baseNavi]) ⋀ ↲(Φ(ListView))"
             ],
             "topicContainer": [
                 "(_decoration ≔ ℛ(appRes, blueGradBD)) ⋀ ƒ(mapPat, (patHeader, (0.2463, 1.0, Ø, Ø, Ø, Ø))) ⋀ ",
                 "(_topicSelection ≔ ⊤(topicSelection)) ⋀ (_knowYourWorld ≔ ⊤(knowYourWorld)) ⋀ (_topic ≔ Φ(Topic)) ⋀ ",
-                "(_alignment ≔ ƒ(decode, (alignment, topCenter))) ⋀ (_children ≔ ℒ(_topic, topicDialog)) ⋀ (_child ≔ Φ(Stack)) ⋀ ",
+                "(_alignment ≔ ƒ(decode, (alignment, topCenter))) ⋀ (_children ≔ [_topic, topicDialog]) ⋀ (_child ≔ Φ(Stack)) ⋀ ",
                 "(_decoration ≔ Ø) ⋀ ƒ(mapPat, (patHeader, (0.3202, 1.0, Ø, Ø, Ø, Ø))) ⋀ ↲(Φ(Container))"
             ],
             "topicDialog": [
                 "(_child ≔ journeyButton) ⋀ (_alignment ≔ ƒ(decode, (alignment, center))) ⋀ (_child ≔ Φ(Container)) ⋀ ",
-                "(_borderRadius ≔ ƒ(decode, (borderRadius, ℳ(('radius', 24), ('type', circular))))) ⋀ ",
+                "(_borderRadius ≔ ƒ(decode, (borderRadius, {'radius': 24, 'type': circular}))) ⋀ ",
                 "(_child ≔ Φ(ClipRRect)) ⋀ (_decoration ≔ ℛ(appRes, diaDecoration)) ⋀ ",
                 "ƒ(mapPat, (patHeader, (0.0985, 0.9947, Ø, Ø, Ø, Ø))) ⋀ (_child ≔ Φ(Container)) ⋀ ",
                 "(_alignment ≔ ƒ(decode, (align, bottomCenter))) ⋀ ↲(Φ(Align))"
@@ -273,7 +338,7 @@
             "journeyButton": [
                 "(_text ≔ ⊤(journey)) ⋀ (_textStyle ≔ ℛ(textStyle, ControlButtonTextStyle)) ⋀ ",
                 "(_e1 ≔ Φ(Text)) ⋀ (_icon ≔ rightArrowFull) ⋀ (_iconColor ≔ ℛ(color, white)) ⋀ ",
-                "(_size ≔ 35) ⋀ (_e2 ≔ Φ(Icon)) ⋀ (_children ≔ ℒ(_e1, _e2)) ⋀ ",
+                "(_size ≔ 35) ⋀ (_e2 ≔ Φ(Icon)) ⋀ (_children ≔ [_e1, _e2]) ⋀ ",
                 "ƒ(mapPat, (rowColHeader, (center, spaceAround, Ø, Ø))) ⋀ ",
                 "(_child ≔ Φ(Row)) ⋀ ƒ(mapPat, (patHeader, (0.0468, 0.64, Ø, Ø, Ø, Ø))) ⋀ ",
                 "(_beginColor ≔ ℛ(color, correct)) ⋀ (_endColor ≔ ℛ(color, correctGradEnd)) ⋀ ↲(Φ(ColorButton))"
@@ -281,28 +346,28 @@
             "baseNavi": [
                 "_itemRef, _itemRefMap, _naviHR, _nextMap | (_padding ≔ ℛ(appRes, catBoxPadding)) ⋀ ",
                 "(_physics ≔ ℛ(appRes, clampingScrollPhysics)) ⋀ (_childPattern ≔ 'elemRow') ⋀ ",
-                "(_childMap ≔ ℳ(('_itemRefMap', _itemRefMap), ('_nextMap', _nextMap))) ⋀ (_child ≔ Φ(TapListItem)) ⋀ ",
+                "(_childMap ≔ {'_itemRefMap': _itemRefMap, '_nextMap': _nextMap}) ⋀ (_child ≔ Φ(TapListItem)) ⋀ ",
                 "ƒ(mapPat, (patHeader, (_naviHR, 1.0, Ø, Ø, topCenter, Ø))) ⋀ ↲(Φ(Container))"
             ],
             "elemRow": [
-                "_item, _index, _itemRefMap, _nextMap | (_header ≔ (_itemRefMap @ header)) ⋀ ",
+                "_item, _index, _itemRefMap, _nextMap | (_header ≔ _itemRefMap[header]) ⋀ ",
                 "ƒ(mapPat, (_header, _item)) ⋀ (_text ≔ _name) ⋀ (_textStyle ≔ ℛ(textStyle, SliderTextStyle)) ⋀ ",
                 "(_child ≔ Φ(Text)) ⋀ ƒ(mapPat, (patHeader, (0.0468, 0.96, Ø, Ø, Ø, Ø))) ⋀ ",
                 "(_bm ≔ Φ(SizedBox)) ⋀ (_itemRef ≔ ƒ(dataList, (_itemRefMap, _item))) ⋀ ",
-                "(_children ≔ ℒ(_bm, elemItemList)) ⋀ (_child ≔ Φ(Column)) ⋀ ",
+                "(_children ≔ [_bm, elemItemList]) ⋀ (_child ≔ Φ(Column)) ⋀ ",
                 "(_elevation ≔ 5.0) ⋀ (_child ≔ Φ(Card)) ⋀ ƒ(mapPat, (patHeader, (0.2217, 1.0, Ø, Ø, Ø, Ø))) ⋀ ↲(Φ(Container))"
             ],
             "elemItemList": [
                 "_itemRef, _index, _ref, _nextMap | (_childPattern ≔ 'catCol') ⋀ (_direction ≔ ƒ(decode, (axis, horizontal))) ⋀ ",
-                "(_physics ≔ ℛ(appRes, clampingScrollPhysics)) ⋀ (_childMap ≔ (ℳ(('_itemRefMap', _ref)) ⊌ _nextMap)) ⋀ ",
+                "(_physics ≔ ℛ(appRes, clampingScrollPhysics)) ⋀ (_childMap ≔ ({'_itemRefMap': _ref} ⊌ _nextMap)) ⋀ ",
                 "(_child ≔ Φ(TapListItem)) ⋀ ",
                 "ƒ(mapPat, (patHeader, (0.1539, Ø, Ø, Ø, centerLeft, Ø))) ⋀ ↲(Φ(Container))"
             ],
             "catCol": [
-                "_item, _index, _itemRefMap, _onTap | (_header ≔ (_itemRefMap @ header)) ⋀ ƒ(mapPat, (_header, _item)) ⋀ ",
+                "_item, _index, _itemRefMap, _onTap | (_header ≔ _itemRefMap[header]) ⋀ ƒ(mapPat, (_header, _item)) ⋀ ",
                 "(_children ≔ catView) ⋀ ƒ(mapPat, (rowColHeader, (center, center, Ø, Ø))) ⋀ (_child ≔ Φ(Column)) ⋀ ",
                 "ƒ(mapPat, (patHeader, (0.1539, 0.2667, Ø, Ø, Ø, Ø))) ⋀ (_itemRef ≔ ƒ(dataList, (_itemRefMap, _item))) ⋀ ",
-                "(_onTap ≔ ƒ(createEvent, (route, ℳ(('_itemRef', _itemRef), ('_itemRefMap', _ref), ('_title', _name), ('_progId', _progId), ('_PassScore', _PassScore))))) ⋀",
+                "(_onTap ≔ ƒ(createEvent, (route, {'_itemRef': _itemRef, '_itemRefMap': _ref, '_title': _name, '_progId': _progId, '_PassScore': _PassScore}))) ⋀",
                 " ↲(Φ(Container))"
             ],
             "catView": [
@@ -310,19 +375,29 @@
                 "(_iconColor ≔ ℛ(color, #1785C1)) ⋀ (_iconSize ≔ 45.0) ⋀ (_child ≔ Φ(Icon)) ⋀ ",
                 "(_decoration  ≔ ℛ(appRes, shadowDecoration)) ⋀ ƒ(mapPat, (patHeader, (0.1232, 0.2133, Ø, Ø, Ø, Ø))) ⋀ (_ic ≔ Φ(NotiElem)) ⋀ ",
                 "(_text ≔ _name) ⋀ (_textStyle ≔ ℛ(textStyle, SliderBoldTextStyle)) ⋀ (_tw ≔ Φ(Text)) ⋀ ",
-                "↲(ℒ(_ic, _sb, _tw))"
+                "↲([_ic, _sb, _tw])"
             ],
             "groupScaffold": [
-                "_itemRef, _itemRefMap | (_text ≔ ℛ(model, title)) ⋀ (_title ≔ Φ(Text)) ⋀ ",
-                "(_naviHR ≔ 0.8) ⋀ (_nextMap ≔ ℳ(('_tapAction', 'mvcScaffold'))) ⋀ (_body ≔ baseNavi) ⋀ ↲(scaffoldPat)"
+                "_itemRef, _itemRefMap, _title | (_title ≔ livesAppBar) ⋀ ",
+                "(_onTap ≔ ƒ(createEvent, popRoute)) ⋀ (_leading ≔ Φ(IconButton)) ⋀ ",
+                "(_naviHR ≔ 0.8) ⋀ (_nextMap ≔ {'_tapAction': 'mvcScaffold'}) ⋀ (_body ≔ baseNavi) ⋀ ↲(scaffoldPat)"
             ],
             "mvcScaffold": [
-                "_itemRef, _itemRefMap, _title, _progId, _PassScore | (_body ≔ mvcLayout) ⋀ (_text ≔ _title) ⋀ (_title ≔ Φ(Text)) ⋀ ",
-                "(_child ≔ ƒ(mvc, ℒ(progRow))) ⋀ (_child ≔ scaffoldPat) ⋀ (_dialog ≔ ƒ(mvc, ℒ(quitDialog))) ⋀ ↲(Φ(NaviScope))"
+                "_itemRef, _itemRefMap, _title, _progId, _PassScore | (_body ≔ mvcLayout) ⋀ (_title ≔ livesAppBar) ⋀ ",
+                "(_onTap ≔ ƒ(createEvent, showDialog)) ⋀ (_tapAction ≔ ƒ(mvc, [quitDialog])) ⋀ (_leading ≔ Φ(IconButton)) ⋀ ",
+                "(_child ≔ ƒ(mvc, [progRow])) ⋀ ↲(scaffoldPat)"
+            ],
+            "livesAppBar": [
+                "_title, _flexibleSpace, _icon, _iconColor | (_valueKey ≔ '_text') ⋀ (_valueName ≔ 'lives') ⋀ (_child ≔ Φ(Text)) ⋀ ",
+                "(_child ≔ Φ(Obx)) ⋀ (_child ≔ Φ(Center)) ⋀ (_width ≔ 40.0) ⋀ (_lives ≔ Φ(SizedBox)) ⋀ ",
+                "(_text ≔ _title) ⋀ (_child ≔ Φ(Text)) ⋀ (_child ≔ Φ(Center)) ⋀ (_tText ≔ Φ(Expanded)) ⋀ ",
+                "(_icon ≔ 'lives') ⋀ (_iconColor ≔ ℛ(color, 'white')) ⋀ (_ic ≔ Φ(Icon)) ⋀ ",
+                "(_child ≔ Ø) ⋀ (_width ≔ Ø) ⋀  (_decoration ≔ ℛ(appRes, blueGradBD)) ⋀ (_flexibleSpace ≔ Φ(Container)) ⋀ ",
+                "(_icon ≔ 'back') ⋀ (_children ≔ [_tText, _ic, _lives]) ⋀ ↲(Φ(Row))"
             ],
             "mvcLayout": [
                 "_itemRef, _itemRefMap, _progId, _PassScore | ",
-                "(_child ≔ ƒ(mvc, (newMvc, ℳ(('_itemRef', _itemRef), ('_itemRefMap', _itemRefMap), ('_progId', _progId), ('_PassScore', _PassScore))))) ⋀ ",
+                "(_child ≔ ƒ(mvc, (newMvc, {'_itemRef': _itemRef, '_itemRefMap': _itemRefMap, '_progId': _progId, '_PassScore': _PassScore}))) ⋀ ",
                 "ƒ(mapPat, (patHeader, (0.97333, Ø, Ø, Ø, topCenter, Ø))) ⋀ ↲(Φ(Container))"
             ],
             "fsmPat": [
@@ -330,7 +405,8 @@
                 "((_event = 'next') ⋀ (_state = 'confirmed') ⋀ ↲('NextGame')) ⋁ ",
                 "((_event = 'tryAgain') ⋀ (_state = 'confirmed') ⋀ ↲('TryAgain')) ⋁ ",
                 "((_event = 'showAnswer') ⋀ (_state = 'confirmed') ⋀ ↲('ShowAnswer')) ⋁ ",
-                "((_event = 'gameDone') ⋀ ↲('GameDone')) ⋁ ((_event = 'repeatGame') ⋀ ↲('RepeatGame')) ⋁ ↲(Ø)"
+                "((_event = 'gameDone') ⋀ ↲('GameDone')) ⋁ ((_event = 'repeatGame') ⋀ ↲('RepeatGame')) ⋁ ",
+                "((_event = 'cancel') ⋀ ↲('Cancel')) ⋁ ((_event = 'continue') ⋀ ↲('Continue')) ⋁ ↲(Ø)"
             ],
             "MCfsm": "_state, _event | ((_event = 'select') ⋀ ((_state = 'start') ⋁ (_state = 'selected')) ⋀ ↲('Selection')) ⋁ ↲(fsmPat)",
             "Textfsm": [

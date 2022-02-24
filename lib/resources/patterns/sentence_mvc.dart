@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sirius_geo_4/agent/config_agent.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/builder/std_pattern.dart';
@@ -24,9 +25,9 @@ class SentenceMvc extends Mvc {
   List<dynamic> dragChildList;
   List<dynamic> targetList;
   List<dynamic> selectList;
-  ValueNotifier<List<dynamic>> sentenceNoti;
-  ValueNotifier<List<dynamic>> gvNoti;
-  ValueNotifier<ProcessPattern> textNoti;
+  Rx<List<dynamic>> sentenceNoti;
+  Rx<List<dynamic>> gvNoti;
+  Rx<ProcessPattern> textNoti;
   Map<String, dynamic> imap;
   Map<String, dynamic> lmap;
   Function mvcpf;
@@ -59,9 +60,9 @@ class SentenceMvc extends Mvc {
     answers = [];
     configAgent ??= map["_configAgent"];
     if (ansList == null) {
-      ansList = configAgent.getElement(map["_Answer"], map, null);
+      ansList = configAgent.getElement(map["_Answer"], map);
       len = ansList.length;
-      options = configAgent.getElement(map["_AnswerOptions"], map, null);
+      options = configAgent.getElement(map["_AnswerOptions"], map);
       col = [];
       imap = {
         "_text": map["_Descr"],
@@ -88,12 +89,12 @@ class SentenceMvc extends Mvc {
       pe = ProcessEvent("fsm");
       tipf = getPrimePattern["TapItem"];
       List<dynamic> wc = buildSentence();
-      sentenceNoti = ValueNotifier<List<dynamic>>(wc);
+      sentenceNoti = resxController.addToResxMap("sentenceNoti", wc);
       imap = {"_runSpacing": 5.0, "_spacing": 5.0};
       pf = getPrimePattern["Wrap"];
       ProcessPattern pp = pf(imap);
-      imap = {"_notifier": sentenceNoti, "_child": pp};
-      pf = getPrimePattern["ValueTypeListener"];
+      imap = {"_valueName": "sentenceNoti", "_child": pp};
+      pf = getPrimePattern["Obx"];
       col.add(pf(imap));
       pf = getPrimePattern["Column"];
       imap = {
@@ -142,9 +143,9 @@ class SentenceMvc extends Mvc {
         };
         imap["_child"] = inTextPP;
         pp = cpf(imap);
-        textNoti = ValueNotifier<ProcessPattern>(inTextPP);
-        imap = {"_notifier": textNoti, "_child": pp};
-        pf = getPrimePattern["ValueTypeListener"];
+        textNoti = resxController.addToResxMap("textNoti", inTextPP);
+        imap = {"_valueName": "textNoti", "_child": pp};
+        pf = getPrimePattern["Obx"];
         pp = pf(imap);
         col.add(pp);
       } else {
@@ -229,7 +230,7 @@ class SentenceMvc extends Mvc {
       dragAnsList.add(pp);
     }
     children.addAll(dragChildList);
-    gvNoti = createNotifier(children);
+    gvNoti = resxController.addToResxMap("gv", children);
 
     double mainAS = 0.01847 * model.screenHeight;
     childAspectRatio = ewidth / eheight;
@@ -242,8 +243,8 @@ class SentenceMvc extends Mvc {
     };
     Function pf = getPrimePattern["GridView"];
     ProcessPattern gv = pf(imap);
-    lmap = {"_notifier": gvNoti, "_child": gv};
-    pf = getPrimePattern["ValueTypeListener"];
+    lmap = {"_valueName": "gv", "_child": gv};
+    pf = getPrimePattern["Obx"];
     imap = {
       "_width": 0.8267 * model.screenWidth,
       "_height": eheight * children.length / 2 +
@@ -650,5 +651,10 @@ class SentenceMvc extends Mvc {
       "_childInx": cinx
     };
     buildBadgedElement(type, c, null, false, childMap);
+  }
+
+  @override
+  int getHintIndex() {
+    return 0;
   }
 }

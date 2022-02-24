@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sirius_geo_4/agent/config_agent.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/model/locator.dart';
@@ -9,6 +10,7 @@ import 'package:sirius_geo_4/resources/fonts.dart';
 
 class OrderMvc extends Mvc {
   OrderMvc(Map<String, dynamic> map) : super(map);
+
   double bgHeight = 0.3941 * model.screenHeight;
   ConfigAgent configAgent;
   TextEditingController tc;
@@ -22,7 +24,7 @@ class OrderMvc extends Mvc {
   List<dynamic> dragChildList;
   List<dynamic> targetList;
   List<dynamic> selectList;
-  ValueNotifier<List<dynamic>> gvNoti;
+  Rx<List<dynamic>> gvNoti;
   Map<String, dynamic> imap;
   Map<String, dynamic> lmap;
   Function mvcpf;
@@ -54,9 +56,9 @@ class OrderMvc extends Mvc {
     answers = [];
     configAgent ??= map["_configAgent"];
     if (ansList == null) {
-      ansList = configAgent.getElement(map["_Answer"], map, null);
+      ansList = configAgent.getElement(map["_Answer"], map);
       len = ansList.length;
-      options = configAgent.getElement(map["_AnswerOptions"], map, null);
+      options = configAgent.getElement(map["_AnswerOptions"], map);
       col = [];
       imap = {
         "_text": map["_Info1"],
@@ -181,7 +183,7 @@ class OrderMvc extends Mvc {
       children.add(targetList[i]);
       answers.add("");
     }
-    gvNoti = createNotifier(children);
+    gvNoti = resxController.addToResxMap("gv", children);
 
     double mainAS = 0.01847 * model.screenHeight;
     childAspectRatio = ewidth / eheight;
@@ -194,8 +196,8 @@ class OrderMvc extends Mvc {
     };
     Function pf = getPrimePattern["GridView"];
     ProcessPattern gv = pf(imap);
-    lmap = {"_notifier": gvNoti, "_child": gv};
-    pf = getPrimePattern["ValueTypeListener"];
+    lmap = {"_valueName": "gv", "_child": gv};
+    pf = getPrimePattern["Obx"];
     imap = {
       "_width": width,
       "_height": eheight * children.length / 2 +
@@ -341,7 +343,6 @@ class OrderMvc extends Mvc {
     List<dynamic> c = [];
     c.addAll(children);
     gvNoti.value = c;
-    gvNoti.value = c;
   }
 
   @override
@@ -380,5 +381,10 @@ class OrderMvc extends Mvc {
       "_childInx": cinx
     };
     buildBadgedElement(type, c, null, false, childMap);
+  }
+
+  @override
+  int getHintIndex() {
+    return 0;
   }
 }

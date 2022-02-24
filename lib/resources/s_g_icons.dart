@@ -66,7 +66,7 @@ class SGIcons {
       IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData lives =
       IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData menu_hamburger_ =
+  static const IconData menu_hamburger =
       IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData next =
       IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -230,6 +230,7 @@ class IconPattern extends ProcessPattern {
 const Map<String, IconData> myIcons = {
   "animals": SGGameIcons.animals,
   "atmosphere": SGGameIcons.atmosphere,
+  "arrow_back": Icons.arrow_back,
   "capitals": SGGameIcons.capitals,
   "cartography": SGGameIcons.cartography,
   "caves": SGGameIcons.caves,
@@ -303,7 +304,7 @@ const Map<String, IconData> myIcons = {
   "incorrect": SGIcons.incorrect,
   "lifelost": SGIcons.lifelost,
   "lives": SGIcons.lives,
-  "menu_hamburger_": SGIcons.menu_hamburger_,
+  "menu_hamburger": SGIcons.menu_hamburger,
   "next": SGIcons.next,
   "notification": SGIcons.notification,
   "plus": SGIcons.plus,

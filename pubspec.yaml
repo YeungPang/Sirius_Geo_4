@@ -34,7 +34,6 @@ dependencies:
   intl:
   json_theme:
   scoped_model:
-  get_it:
   provider:
   meta:
   font_awesome_flutter:
@@ -53,6 +52,8 @@ dependencies:
   path_drawing:
   charts_flutter:
   webview_flutter:
+  string_validator: ^0.3.0
+  get: ^4.6.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
