@@ -9,7 +9,7 @@ import 'package:sirius_geo_4/resources/patterns/vslider_pattern.dart';
 class SliderMvc extends Mvc {
   SliderMvc(Map<String, dynamic> map) : super(map);
 
-  double bgHeight = 0.4926 * model.screenHeight;
+  double bgHeight = 0.4926 * model.scaleHeight;
   ProcessPattern view;
   ConfigAgent configAgent;
   ValueNotifier<int> sliderNoti;
@@ -55,8 +55,8 @@ class SliderMvc extends Mvc {
   setup() {
     Function pf;
     if (isVert) {
-      double h = 0.591133 * model.screenHeight;
-      double w = 0.84 * model.screenWidth;
+      double h = 0.591133 * model.scaleHeight;
+      double w = 0.84 * model.scaleWidth;
       mvmap = {
         "_state": map["_state"],
         "_scaleNoti": ValueNotifier<double>(50.0),
@@ -80,18 +80,18 @@ class SliderMvc extends Mvc {
         "_width": mvmap["_width"],
         "_color": Colors.white,
         "_alignment": Alignment.centerLeft,
-        "_btnBRadius": 18.0,
+        "_btnBRadius": 18.0 * sizeScale,
         "_child": pp
       };
       pf = getPrimePattern["ColorButton"];
       pp = pf(imap);
       imap = {
-        "_height": 0.6157635 * model.screenHeight,
-        "_width": 0.88 * model.screenWidth,
+        "_height": 0.6157635 * model.scaleHeight,
+        "_width": 0.88 * model.scaleWidth,
         "_beginColor": colorMap["btnBlue"],
         "_endColor": colorMap["btnBlueGradEnd"],
         "_alignment": Alignment.center,
-        "_btnBRadius": 20.0,
+        "_btnBRadius": size20,
         "_child": pp
       };
       map["_colElem"] = pf(imap);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/model/locator.dart';
+import 'package:sirius_geo_4/resources/basic_resources.dart';
 import 'package:sirius_geo_4/resources/fonts.dart';
 
 class ItemSearch extends SearchDelegate<String> {
@@ -91,10 +92,10 @@ class SearchButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Icon ic = map["_searchIcon"] ??
-        const Icon(
+        Icon(
           Icons.search,
-          size: 20.0,
-          color: Color(0xFF00344F),
+          size: 20.0 * sizeScale,
+          color: const Color(0xFF00344F),
         );
     String text = model.map["text"]["search"];
     TextStyle textStyle = map["_textStyle"] ?? iconSmallTextStyle;

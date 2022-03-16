@@ -92,7 +92,7 @@ class Bubble extends StatelessWidget {
                   Align(
                       alignment: map["_boxAlign"],
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(size10),
                           child: SizedBox(
                             height: map["_boxHeight"],
                             child: Column(
@@ -181,7 +181,7 @@ class ImageBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        constraints: BoxConstraints.expand(height: height),
+        constraints: BoxConstraints.expand(height: height * sizeScale),
         decoration: const BoxDecoration(color: Colors.grey),
         child: Image.asset(
           name,
@@ -502,6 +502,20 @@ class FlexiblePattern extends ProcessPattern {
   }
 }
 
+class ValueOpacityPattern extends ProcessPattern {
+  ValueOpacityPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    return ValueListenableBuilder<double>(
+      valueListenable: map["_notifier"],
+      builder: (BuildContext context, double value, Widget child) => Opacity(
+        child: getPatternWidget(map["_child"]),
+        opacity: value,
+      ),
+    );
+  }
+}
+
 class ScrollLayoutPattern extends ProcessPattern {
   ScrollLayoutPattern(Map<String, dynamic> map) : super(map);
   @override
@@ -577,13 +591,31 @@ class InteractiveViewerPattern extends ProcessPattern {
   }
 }
 
+class WillPopScopeActionsPattern extends ProcessPattern {
+  WillPopScopeActionsPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    Widget w = getPatternWidget(map["_child"]);
+    return WillPopScope(
+      onWillPop: () async {
+        ProcessEvent actions = map["_backActions"];
+        if (actions != null) {
+          model.appActions.getAgent("action").process(actions);
+        }
+        return true;
+      },
+      child: w,
+    );
+  }
+}
+
 class ColorButton extends StatelessWidget {
   final Map<String, dynamic> map;
 
   const ColorButton(this.map, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    double borderRadius = map["_btnBRadius"] ?? 10.0;
+    double borderRadius = map["_btnBRadius"] ?? size10;
     Widget w = getPatternWidget(map["_child"]);
     var grad = map["_gradient"];
     if (grad is String) {
@@ -721,7 +753,10 @@ class IconTextWidget extends StatelessWidget {
     List<Widget> children = (gap == null)
         ? [ic, Text(map["_text"], style: map["_textStyle"])]
         : [gap, ic, gap, Text(map["_text"], style: map["_textStyle"])];
-    MainAxisAlignment ma = map["_mainAxisAlignment"] ?? MainAxisAlignment.start;
+    MainAxisAlignment ma = map["_mainAxisAlignment"] ??
+        ((gap == null)
+            ? MainAxisAlignment.spaceAround
+            : MainAxisAlignment.start);
     return InkWell(
       child: isHoriz
           ? Row(
@@ -770,6 +805,27 @@ class ObxPattern extends ProcessPattern {
           ((value is List<dynamic>) ? "_children" : "_child");
       child.map[key] = value;
       return getPatternWidget(child);
+    });
+  }
+}
+
+class ObxProcessPattern extends ProcessPattern {
+  ObxProcessPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    return Obx(() {
+      String rxName = map["_processName"];
+      ProcessEvent event = resxController.getRxValue(rxName);
+      Agent a = model.appActions.getAgent("pattern");
+
+      var p = a.process(event);
+
+      if (p is ProcessPattern) {
+        return p.getWidget();
+      } else if (p is Widget) {
+        return p;
+      }
+      return null;
     });
   }
 }

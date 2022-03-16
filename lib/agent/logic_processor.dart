@@ -1,10 +1,11 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/model/locator.dart';
 import 'package:string_validator/string_validator.dart';
 
 final re = RegExp(
-    r"[⋀⋁⊻∈⋓⋂∉⋃↲⊆⊂⊄≠=≈~⇒&∣|\*\-+－＋\/%≪≫←→≥≤<>≔⊎⊌⥹⥻⟷@,Φσℒℛℝℳ𝕄𝄁ƒℓ𝒏τ𝕥‥⊖:]");
+    r"[⋀⋁⊻∈⋓⋂∉⋃↲⊆⊂⊄≠=≈~⇒&∣|\*\-+－＋\/%≪≫←→≥≤<>≔⊎⊌⥹⥻⟷@,Φσℒℛℝℳ𝕄𝄁ƒ𝓅⋓ℓητ𝕥‥⊖:]");
 
 const binOp = "∈|@∉⊆⊂⊄≠=≈~⇒&∣⊻≪≫≥≤<>－＋⥹⥻→←⟷";
 const matrixSymbol = "𝔸𝔹ℂ𝔻𝔼𝔽𝕄ℝ𝕥𝄁";
@@ -22,7 +23,7 @@ const andOr = "⋀⋁";
 
 const symbol = "∀∃∄Ø|";
 
-const unaryOp = "τ𝒏ƒℓℛℒℳΦσ↲¬∑∆∏⋓⊤㏑㏒𝓮";
+const unaryOp = "τηƒℓℛℒℳΦ𝓅⋓↲σ¬∑∆∏⋓⊤㏑㏒𝓮";
 
 const sufOp = "☒!☑☐▶✂";
 
@@ -73,7 +74,7 @@ class LogicProcessor {
 
   LogicProcessor(this.myProcess);
 
-  dynamic process(String spec) {
+  dynamic process(String spec, {Map<String, dynamic> inVar}) {
     List<String> sl = spec.split(RegExp(r"[,() ]"));
     List<dynamic> args = [];
     String type = '∃';
@@ -484,8 +485,18 @@ class LogicProcessor {
       } else if (len > 0) {}
       return null;
     }
-    if (e == 'ƒ') {
+    if ((e == 'ƒ') || (e == '𝓅')) {
       List<dynamic> rl = handleList(l);
+/*       if (e == '𝓅') {
+        var v = handlePred(e, rl);
+        var rn = (rl.length > 1) ? rl[1] : null;
+        var v = ((rn is List<dynamic>) || (rn == null))
+            ? handlePred(rl[0], rn)
+            : null;
+        if (v != null) {
+          return v;
+        }
+      } */
       int len = rl.length;
       switch (len) {
         case 1:
@@ -521,7 +532,7 @@ class LogicProcessor {
       r = vars[r] ?? r;
     }
     switch (e) {
-      case '𝒏':
+      case 'η':
         if (r is List<dynamic>) {
           return r.length;
         }
@@ -530,9 +541,16 @@ class LogicProcessor {
         }
         return null;
       case 'Φ':
-        Function getPat = model.appActions.getPattern(r);
-        if (getPat != null) {
-          return getPat(vars);
+        if (r is List<dynamic>) {
+          Function getPat = model.appActions.getPattern(r[0]);
+          if (getPat != null) {
+            return getPat(r[1]);
+          }
+        } else {
+          Function getPat = model.appActions.getPattern(r);
+          if (getPat != null) {
+            return getPat(vars);
+          }
         }
         return null;
       case '⊤':
@@ -555,13 +573,18 @@ class LogicProcessor {
           r = vars[r] ?? r;
         }
         return [r];
+      case '⋓':
+        if (r is Map<String, dynamic>) {
+          vars.addAll(r);
+        }
+        return true;
       case '¬':
         if (r is bool) {
           return !r;
         }
         return null;
       case 'τ':
-        print(r);
+        debugPrint(r);
         return true;
       case '↲':
         pr.returnObj = r;
@@ -643,6 +666,11 @@ class LogicProcessor {
             return vars[e1];
           }
         }
+        var r1 = vars[e1] ?? e1;
+        if (r1 is List<dynamic>) {
+          r1.add(r2);
+          return r1;
+        }
         return null;
       case "≫":
         if ((e2 is String) && (e2[0] == '_')) {
@@ -651,6 +679,11 @@ class LogicProcessor {
             r1.removeLast();
             return vars[e2];
           }
+        }
+        var r2 = vars[e2] ?? e2;
+        if (r2 is List<dynamic>) {
+          r2.insert(0, r1);
+          return r2;
         }
         return null;
       case "@":
@@ -1150,7 +1183,21 @@ List<dynamic> splitPred(String predSpec) {
       if (predSpec[i] == '{') {
         acp.add('ℳ');
       }
-      acp.add(cp);
+      if ((predSpec[i] == '(') &&
+          (acp.isNotEmpty &&
+              (acp.last is String) &&
+              ((acp.last[0] == '_') || isAlphanumeric(acp.last)))) {
+        cp.add(acp.last);
+        acp.removeLast();
+        acp.add('𝓅');
+        cp.add(',');
+        List<dynamic> icp = cp;
+        cp = [];
+        icp.add(cp);
+        acp.add(icp);
+      } else {
+        acp.add(cp);
+      }
       predStack.add(acp);
       i++;
     }
@@ -1167,6 +1214,9 @@ List<dynamic> splitPred(String predSpec) {
         }
         i += sk.length;
         if (sk.isNotEmpty) {
+          // if (unaryOp.contains(sk.trim())) {
+          //   cp.add(sk);
+          // } else {
           List<String> skl = splitExpr(sk);
           for (String sks in skl) {
             sks = sks.trim();
@@ -1200,6 +1250,9 @@ List<dynamic> updatePredFunc(List<dynamic> predList) {
       }
       List<dynamic> ml = [predList[i++], ',', predList[++i]];
       i++;
+      while ((i < predList.length) && (predList[i] != ',')) {
+        ml.add(predList[i++]);
+      }
       newList.add(ml);
     }
     newList = updatePredFunc(newList);

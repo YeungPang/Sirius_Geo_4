@@ -11,10 +11,59 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    model.screenHeight = MediaQuery.of(context).size.height;
-    model.screenWidth = MediaQuery.of(context).size.width;
-    print("Screen width: " + model.screenWidth.toString());
-    print("Screen height: " + model.screenHeight.toString());
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double sr = screenWidth / screenHeight;
+    double scaleHeight = 683.42857;
+    double scaleWidth = 411.42857;
+    double scr = scaleWidth / scaleHeight;
+    double r = ((sr - scr) / scr).abs();
+    if ((sr < scr) && (scaleHeight < screenHeight)) {
+      //model.sizeScale = 1.0;
+      model.sizeScale = screenWidth / scaleWidth;
+      scaleHeight = screenHeight;
+      scaleWidth = screenWidth;
+    } else if (r <= 0.1) {
+      //r = ((scaleWidth - screenWidth) / screenWidth).abs();
+      // if (r <= 0.1) {
+      //   model.sizeScale = 1.0;
+      // } else {
+      model.sizeScale = screenHeight / scaleHeight;
+      scaleHeight = screenHeight;
+      scaleWidth = screenHeight * scr;
+      // }
+    } else {
+      if (screenWidth >= scaleWidth) {
+        if (screenHeight > scaleHeight) {
+          model.sizeScale = screenHeight / scaleHeight;
+          scaleWidth = screenHeight * scr;
+          scaleHeight = screenHeight;
+        } else {
+          double sh = scaleHeight * 2.0 / 3.0;
+          if (screenHeight >= sh) {
+            model.sizeScale = 1.0;
+          } else {
+            model.sizeScale = screenHeight / scaleHeight;
+            scaleHeight = screenHeight * 3.0 / 2.0;
+            scaleWidth = scaleHeight * scr;
+          }
+        }
+      } else {
+        model.sizeScale = screenWidth / scaleWidth;
+        scaleWidth = screenWidth;
+        scaleHeight = scaleWidth / scr;
+      }
+    }
+    model.fontScale = model.sizeScale;
+    model.scaleHeight = scaleHeight;
+    model.scaleWidth = scaleWidth;
+    model.screenHeight = screenHeight;
+    model.screenWidth = screenWidth;
+    model.appBarHeight = scaleHeight * 0.9 / 10.6;
+    debugPrint("Screen width: " + screenWidth.toString());
+    debugPrint("Screen height: " + screenHeight.toString());
+    debugPrint("Scale width: " + scaleWidth.toString());
+    debugPrint("Scale height: " + scaleHeight.toString());
 /*     return BaseView<MainModel>(
         builder: (context, child, model) => BusyOverlay(
             show: model.state == ViewState.busy,
@@ -27,7 +76,7 @@ class HomePage extends StatelessWidget {
       return FutureBuilder<String>(
           future: model.getJson(context),
           builder: (context, snapshot) {
-            if (snapshot.hasError) print(snapshot.error);
+            if (snapshot.hasError) debugPrint(snapshot.error);
 
             return snapshot.hasData
                 ? _getBodyUi(model, snapshot.data)
@@ -37,12 +86,12 @@ class HomePage extends StatelessWidget {
           });
     }
     model.addCount();
-    print("Non-future call count: " + model.count.toString());
+    debugPrint("Non-future call count: " + model.count.toString());
     return model.stateData["mainWidget"];
   }
 
   Widget _getBodyUi(MainModel model, String jsonStr) {
-    print("Decoding jsonStr!!");
+    debugPrint("Decoding jsonStr!!");
     var map = json.decode(jsonStr);
     model.stateData["map"] = map;
     model.addCount();
@@ -52,7 +101,7 @@ class HomePage extends StatelessWidget {
     ProcessEvent event = ProcessEvent("mainView");
     var p = a.process(event);
 
-    print("Future call count: " + model.count.toString());
+    debugPrint("Future call count: " + model.count.toString());
     Widget w = (p is ProcessPattern) ? p.getWidget() : p;
     model.stateData["mainWidget"] = w;
     return w;

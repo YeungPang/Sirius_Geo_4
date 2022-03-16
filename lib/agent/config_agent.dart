@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sirius_geo_4/model/locator.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'dart:math';
-import 'package:json_theme/json_theme.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:string_validator/string_validator.dart';
 
@@ -556,97 +555,78 @@ List<dynamic> resolveList(List<dynamic> list, Map<String, dynamic> vars) {
   return rList;
 }
 
-dynamic getCompleted(String pid) {
+dynamic getCompleted(dynamic pid) {
   if (pid == null) {
     return false;
   }
-  int inx1 = pid.indexOf('[');
-  int inx2 = pid.indexOf(']');
-  String s = pid.substring(inx1 + 1, inx2);
-  RegExp re = RegExp(r"[\[\],]");
-  List<String> sl = s.trim().split(re);
-  int len = sl.length;
+
   List<dynamic> prog = model.map["userProfile"]["progress"];
   if (prog.isEmpty) {
-    if (len == 1) {
+    if (pid is List<int>) {
       return 0;
     } else {
       return false;
     }
   }
-  int i = int.tryParse(sl[0]);
-  int total = 0;
-  while (inx1 >= 0) {
-    for (int pi in prog) {
-      int ci = pi % 1024;
-      if (ci == i) {
-        ci = pi >> 10;
-        if (len > 1) {
-          int i3 = int.tryParse(sl[1].trim());
-          i3 = 1 << i3;
-          if ((i3 & ci) != 0) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-        while (ci != 0) {
-          if ((ci & 1) != 0) {
-            total++;
-          }
-          ci >>= 1;
-        }
+  if (pid is List<int>) {
+    int ic = 0;
+    for (int pi in pid) {
+      if (_checkCompleted(pi, prog)) {
+        ic++;
       }
     }
-    inx1 = pid.indexOf('[', inx2);
-    if (inx1 > 0) {
-      inx2 = pid.indexOf(']', inx1);
-      s = pid.substring(inx1 + 1, inx2);
-      sl = s.trim().split(re);
-      i = int.tryParse(sl[0]);
-    }
+    return ic;
+  } else {
+    return _checkCompleted(pid, prog);
   }
-  if (len > 1) {
-    return false;
-  }
-  return total;
 }
 
-setProgress(String pid) {
-  List<dynamic> prog = model.map["userProfile"]["progress"];
-  RegExp re = RegExp(r"[\[\],]");
-  List<String> sl = pid.trim().split(re);
-  int len = sl.length;
-  int k = 1;
-  List<String> nl = [];
-  while (k < len) {
-    nl.add("[" + sl[k] + "]");
-    int i = int.tryParse(sl[k++]);
-    int i3 = int.tryParse(sl[k]);
-    k += 3;
-    bool notFound = true;
-    if (prog.isNotEmpty) {
-      for (int j = 0; j < prog.length; j++) {
-        int pi = prog[j];
-        int ci = pi % 1024;
-        if (ci == i) {
-          pi |= 1 << (10 + i3);
-          prog[j] = pi;
-          notFound = false;
-          break;
-        }
+bool _checkCompleted(int pi, List<dynamic> prog) {
+  int g = pi ~/ 54;
+  int i = getProgress(pi);
+  for (int p in prog) {
+    int pg = p % 256;
+    if (g == pg) {
+      i &= p;
+      if (i > 0) {
+        return true;
       }
     }
-    if (notFound) {
-      i |= 1 << (10 + i3);
-      prog.add(i);
+  }
+  return false;
+}
+
+int getProgress(int pi) {
+  int g = pi ~/ 54;
+  int i = pi % 54;
+  i = 1 << i;
+  i <<= 8;
+  return g + i;
+}
+
+setProgress(int pi) {
+  List<dynamic> prog = model.map["userProfile"]["progress"];
+  int g = pi ~/ 54;
+  int i = getProgress(pi);
+  bool add = true;
+  if (prog.isNotEmpty) {
+    int j = 0;
+    for (int p in prog) {
+      int pg = p % 256;
+      if (g == pg) {
+        add = false;
+        p |= i;
+        prog[j] = p;
+        break;
+      }
+      j++;
     }
   }
+  if (add) {
+    prog.add(i);
+  }
 
-  resxController.setRxValue("progNoti", pid);
-  resxController.setRxValue("groupNoti", nl);
-  // model.progNoti.value = pid;
-  // model.groupNoti.value = nl;
+  resxController.setRxValue("progNoti", pi);
 }
 
 Future<String> _loadString(String fileName) async {
@@ -742,3 +722,5 @@ bool handleList(List<dynamic> input, Map<String, dynamic> map) {
   }
   return true;
 }
+
+//TextSpan getTextSpan()

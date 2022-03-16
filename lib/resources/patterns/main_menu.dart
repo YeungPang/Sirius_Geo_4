@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
+import 'package:sirius_geo_4/resources/basic_resources.dart';
 import 'package:sirius_geo_4/resources/fonts.dart';
 
 Widget topicWidget(Map<String, dynamic> map) {
   double h = map["_height"];
   double w = map["_width"];
+  String img = map["_img"] ?? 'assets/images/world.png';
+  if (img == 'learn') {
+    img = "assets/images/LearningJourney.png";
+  }
+  Text subtitle = (map["_knowYourWorld"] != null)
+      ? Text(
+          map["_knowYourWorld"],
+          style: smallSemiTextStyle.copyWith(color: Colors.white),
+        )
+      : Text(
+          map["_subtitle"],
+          style: topicTxtStyle,
+        );
   return Container(
     height: h,
     decoration: map["_decoration"],
@@ -19,7 +33,7 @@ Widget topicWidget(Map<String, dynamic> map) {
           children: [
             SizedBox(
               child: Image.asset(
-                'assets/images/world.png',
+                img,
                 width: w * 0.4,
                 height: h * 0.94,
               ),
@@ -37,11 +51,8 @@ Widget topicWidget(Map<String, dynamic> map) {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        map["_knowYourWorld"],
-                        style: smallSemiTextStyle.copyWith(color: Colors.white),
-                      ),
+                      margin: EdgeInsets.only(top: size10),
+                      child: subtitle,
                     ),
                   ],
                 )),

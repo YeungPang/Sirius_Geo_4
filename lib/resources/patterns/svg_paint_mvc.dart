@@ -9,7 +9,7 @@ import 'package:sirius_geo_4/builder/svg_paint_pattern.dart';
 class SvgPaintMvc extends Mvc {
   SvgPaintMvc(Map<String, dynamic> map) : super(map);
 
-  double bgHeight = 0.4926 * model.screenHeight;
+  double bgHeight = 0.4926 * model.scaleHeight;
   ProcessPattern view;
   ProcessPattern proInd;
   ConfigAgent configAgent;
@@ -52,14 +52,15 @@ class SvgPaintMvc extends Mvc {
     ansLabel = configAgent.getElement(map["_Answer"], map);
     if (refresh) {
       imap = {
-        "_height": 40.0,
-        "_width": 40.0,
+        "_height": 40.0 * sizeScale,
+        "_width": 40.0 * sizeScale,
         "_child": const CircularProgressIndicator(),
       };
       Function pf = getPrimePattern["SizedBox"];
       ProcessPattern pp = pf(imap);
       imap = {
-        "_margin": const EdgeInsets.only(left: 160.0, top: 215.0),
+        "_margin":
+            EdgeInsets.only(left: 160.0 * sizeScale, top: 215.0 * sizeScale),
         "_alignment": const Alignment(-1.0, -1.0),
         "_child": pp
       };
@@ -86,8 +87,8 @@ class SvgPaintMvc extends Mvc {
       pf = getPrimePattern["InteractiveViewer"];
       pp = pf(imap);
       imap = {
-        "_height": 0.66502463 * model.screenHeight,
-        "_width": 0.82666667 * model.screenHeight,
+        "_height": 0.66502463 * model.scaleHeight,
+        "_width": 0.82666667 * model.scaleHeight,
         "_alignment": Alignment.center,
         "_decoration": shadowRCDecoration,
         "_child": pp

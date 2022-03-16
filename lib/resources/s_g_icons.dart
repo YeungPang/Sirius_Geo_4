@@ -15,6 +15,7 @@
 ///
 import 'package:flutter/material.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
+import 'package:sirius_geo_4/model/locator.dart';
 
 class SGIcons {
   SGIcons._();
@@ -220,7 +221,7 @@ class IconPattern extends ProcessPattern {
     if (id == null) {
       return null;
     }
-    double size = map["_iconSize"] ?? 24.0;
+    double size = map["_iconSize"] ?? 24.0 * model.sizeScale;
     Color color = map["_iconColor"] ?? Colors.black;
     map["_widget"] ??= Icon(id, size: size, color: color);
     return map["_widget"];
@@ -283,6 +284,7 @@ const Map<String, IconData> myIcons = {
   "weather": SGGameIcons.weather,
   "almost": SGIcons.almost,
   "answer": SGIcons.answer,
+  "arrowDown": Icons.arrow_downward,
   "article": SGIcons.article,
   "back": SGIcons.back,
   "bookmark": SGIcons.bookmark,

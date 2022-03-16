@@ -6,6 +6,7 @@ class ResxController extends GetxController {
   ResxController();
 
   final Map<String, dynamic> resxMap = {};
+  final Map<String, dynamic> cacheMap = {};
 
   Rx addToResxMap(String name, dynamic input) {
     if (input is String) {
@@ -28,6 +29,8 @@ class ResxController extends GetxController {
       resxMap[name] = Rx<List<String>>(input);
     } else if (input is List<dynamic>) {
       resxMap[name] = Rx<List<dynamic>>(input);
+    } else if (input is ProcessEvent) {
+      resxMap[name] = Rx<ProcessEvent>(input);
     } else if (input is ProcessPattern) {
       resxMap[name] = Rx<ProcessPattern>(input);
     } else {
@@ -44,6 +47,8 @@ class ResxController extends GetxController {
     Rx rx = resxMap[name];
     if (rx != null) {
       rx.value = value;
+    } else {
+      addToResxMap(name, value);
     }
   }
 
@@ -54,5 +59,13 @@ class ResxController extends GetxController {
   dynamic getRxValue(String name) {
     Rx rx = resxMap[name];
     return rx.value;
+  }
+
+  setCache(String name, dynamic value) {
+    cacheMap[name] = value;
+  }
+
+  dynamic getCache(String name) {
+    return cacheMap[name];
   }
 }

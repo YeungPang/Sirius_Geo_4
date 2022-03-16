@@ -37,8 +37,8 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
   void initState() {
     rotationController = AnimationController(
         duration: const Duration(milliseconds: 300), vsync: this);
-    height = model.screenHeight;
-    width = model.screenWidth;
+    height = model.scaleHeight;
+    width = model.scaleWidth;
     _scale[0]["text"] = widget.map["_text1"];
     _scale[1]["text"] = widget.map["_text2"];
     _scale[2]["text"] = widget.map["_text3"];
@@ -94,17 +94,17 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
       Container(
           height: height * 0.6,
           width: width * 0.9,
-          margin: const EdgeInsets.only(bottom: 10),
+          margin: EdgeInsets.only(bottom: size10),
           child: Card(
-              elevation: 4,
+              elevation: 4 * sizeScale,
               color: colorMap["btnBlueGradEnd"],
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(size20),
               ),
               margin: EdgeInsets.zero,
               child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(size20),
                     gradient: blueGradient,
                   ),
                   child: Container(
@@ -158,10 +158,10 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     return Container(
         height: height * 0.195,
         width: width * 0.9,
-        margin: const EdgeInsets.all(10),
+        margin: EdgeInsets.all(size10),
         child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(size20)),
           elevation: 2,
           child: Container(
             child: Column(
@@ -177,9 +177,10 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     return Container(
       height: height * 0.195,
       width: width * 0.9,
-      margin: const EdgeInsets.all(10),
+      margin: EdgeInsets.all(size10),
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(size20)),
         elevation: 2,
         child: Container(
           child: Column(
@@ -202,7 +203,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: width * 0.04, top: height * 0.02),
+                margin: EdgeInsets.only(left: width * 0.04, top: height * 0.01),
                 child: Text(
                   _isSwitched ? _scale[1]["text"] : _scale[0]["text"],
                   style: sliderSmallTextStyle,
@@ -218,8 +219,8 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
                       isPercentRange: false, step: 0.01),
                   max: 100,
                   min: 0,
-                  handlerHeight: 20,
-                  handlerWidth: 20,
+                  handlerHeight: size20,
+                  handlerWidth: size20,
                   handler: FlutterSliderHandler(
                     child: Container(
                       child: Image.asset('assets/images/slider_circle.png'),
@@ -259,7 +260,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
                 ),
               ),
               Container(
-                  margin: EdgeInsets.only(left: width * 0.04, right: 10),
+                  margin: EdgeInsets.only(left: width * 0.04, right: size10),
                   child: Row(
                     children: [
                       Text(
@@ -290,16 +291,17 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
       Container(
         color: Colors.grey.shade700,
         height: 1,
-        margin: const EdgeInsets.only(top: 10),
+        margin: EdgeInsets.only(top: size10),
       ),
     );
     colList.addAll(_getPercentWidgets(2));
     return Container(
       height: height * 0.3,
       width: width * 0.9,
-      margin: const EdgeInsets.only(left: 10, right: 10, top: 5),
+      margin: EdgeInsets.only(left: size10, right: size10, top: 4 * sizeScale),
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(size20)),
         elevation: 2,
         child: Container(
           child: Column(
@@ -364,11 +366,12 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
               ),
       ),
       Container(
-        margin: EdgeInsets.only(left: width * 0.03, top: 5),
+        margin: EdgeInsets.only(left: width * 0.03, top: 4 * sizeScale),
         child: (_res == 1) ? _getResultIndicator(i, diff) : _getPerIndicator(i),
       ),
       Container(
-          margin: EdgeInsets.only(left: width * 0.04, top: 5, right: 10),
+          margin: EdgeInsets.only(
+              left: width * 0.04, top: 4 * sizeScale, right: size10),
           child: Row(
             children: [
               Text(
@@ -423,13 +426,13 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     pos = pos * width * 0.75 / _scale[i]["r"] / 100.0;
     double w = (diff.abs() * width * 0.75 / _scale[i]["r"] / 100.0);
     //pos = 2.0;
-    print("pos: " + pos.toString());
-    print("width:" + w.toString());
+    debugPrint("pos: " + pos.toString());
+    debugPrint("width:" + w.toString());
     return Container(
         height: 5,
         width: width * 0.75,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(size10),
             color: Colors.grey.shade200),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -444,7 +447,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     return LinearPercentIndicator(
       width: width * 0.75,
       animation: true,
-      lineHeight: 5.0,
+      lineHeight: 5.0 * sizeScale,
       animationDuration: 1,
       percent: _scale[i]["value"] / _scale[i]["r"] / 100,
       linearStrokeCap: LinearStrokeCap.roundAll,
@@ -456,11 +459,12 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
   Widget _getLengthContainer(double w, LinearGradient lg) {
     return Container(
       width: w,
-      height: 5.0,
+      height: 5.0 * sizeScale,
       decoration: BoxDecoration(
           gradient: lg,
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(size10),
+              bottomLeft: Radius.circular(size10))),
     );
   }
 
@@ -481,7 +485,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
       "resColor": c,
       "resCol": Container(
           alignment: Alignment.centerLeft,
-          margin: const EdgeInsets.only(left: 20.0),
+          margin: EdgeInsets.only(left: size20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -498,7 +502,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     ];
     m1["resCol"] = Container(
         alignment: Alignment.centerLeft,
-        margin: const EdgeInsets.only(left: 18.0),
+        margin: EdgeInsets.only(left: 18.0 * sizeScale),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -507,8 +511,8 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
         ));
     Widget w2 = _buildSliderResValue(m1);
     Widget ansC = Container(
-      width: 60.0,
-      height: 16.0,
+      width: 60.0 * sizeScale,
+      height: 16.0 * sizeScale,
       //margin: EdgeInsets.only(left: 15.0),
       color: Colors.white,
       alignment: const Alignment(-0.9, 0.0),
@@ -519,19 +523,19 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     );
 
     Widget ansW = Align(alignment: const Alignment(-0.3, -1.0), child: ansC);
-    double w = 0.213333 * model.screenWidth;
-    double h = 0.0738916 * model.screenHeight;
+    double w = 0.213333 * model.scaleWidth;
+    double h = 0.0738916 * model.scaleHeight;
     _mv["_res1"] = SizedBox(
         width: w,
         height: h,
         child: OverflowBox(
-            maxWidth: 180.0,
+            maxWidth: 180.0 * sizeScale,
             child: Stack(alignment: Alignment.topLeft, children: [w1, ansW])));
     _mv["_res2"] = SizedBox(
         width: w,
         height: h,
         child: OverflowBox(
-            maxWidth: 180.0,
+            maxWidth: 180.0 * sizeScale,
             child: Stack(alignment: Alignment.topLeft, children: [w2, ansW])));
     wl = [
       Text(
@@ -541,7 +545,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     ];
     m1["resCol"] = Container(
         alignment: Alignment.centerLeft,
-        margin: const EdgeInsets.only(left: 20.0),
+        margin: EdgeInsets.only(left: size20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -552,7 +556,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
         width: w,
         height: h,
         child: OverflowBox(
-            maxWidth: 180.0,
+            maxWidth: 180.0 * sizeScale,
             child: Stack(
                 alignment: Alignment.topLeft,
                 children: [_buildSliderResValue(m1), ansW])));
@@ -560,12 +564,12 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
 
   Widget _buildSliderResValue(Map<String, dynamic> map) {
     Map<String, dynamic> amap = {
-      "_elevation": 4.0,
-      "_cardRadius": 20.0,
-      "_height": 0.086207 * model.screenHeight,
-      "_width": 0.453333 * model.screenWidth,
-      "_margin": const EdgeInsets.only(top: 10.0),
-      "_btnBRadius": 20.0,
+      "_elevation": 4.0 * sizeScale,
+      "_cardRadius": size20,
+      "_height": 0.086207 * model.scaleHeight,
+      "_width": 0.453333 * model.scaleWidth,
+      "_margin": EdgeInsets.only(top: size10),
+      "_btnBRadius": size20,
       "_color": Colors.white,
       "_borderColor": map["resColor"],
       "_child": map["resCol"]

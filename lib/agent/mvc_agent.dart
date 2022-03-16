@@ -19,10 +19,10 @@ class MvcAgent extends Agent {
   ProcessPattern failBtnPat;
   ProcessPattern btnPat;
   ProcessPattern sizedPat;
-  double resDialWidth = 0.9333 * model.screenWidth;
-  double resDialHeight = 0.1823 * model.screenHeight;
-  double btnHeight = 0.0468 * model.screenHeight;
-  double btnWidth = 0.3733 * model.screenWidth;
+  double resDialWidth = 0.9333 * model.scaleWidth;
+  double resDialHeight = 0.1823 * model.scaleHeight;
+  double btnHeight = 0.0468 * model.scaleHeight;
+  double btnWidth = 0.3733 * model.scaleWidth;
   String image;
   Map<String, dynamic> text = model.map["text"];
   Map<String, dynamic> userProfile = model.map["userProfile"];
@@ -249,6 +249,15 @@ class MvcAgent extends Agent {
           configAgent.getElement(mapping, currMv, header: header);
       input = [header, data];
       model.appActions.doFunction("mapPat", input, currMv);
+/*       Map<String, dynamic> inMap = facts["mapping"][mapping];
+      if (inMap != null) {
+        var elemList = inMap["elemList"];
+        int inx = currMv["_mapping_inx"];
+        var data = (inx != null) ? elemList[inx] : elemList;
+        input = [inMap["header"], data];
+        model.appActions.doFunction("mapPat", input, currMv);
+      }
+ */
     }
     currMv["_configAgent"] = configAgent;
     Function mvcF = appMvc[mvcName];
@@ -308,7 +317,7 @@ class MvcAgent extends Agent {
       "_textStyle": choiceButnTxtStyle,
       "_alignment": Alignment.center,
       "_width": resDialWidth * 0.8,
-      "_height": 40.0
+      "_height": 40.0 * sizeScale
     };
     ProcessPattern pp = tpf(imap);
     imap["_child"] = pp;
@@ -322,7 +331,7 @@ class MvcAgent extends Agent {
       "_textStyle": resTxtStyle.copyWith(color: colorMap["btnBlue"]),
       "_alignment": Alignment.center,
       "_width": resDialWidth * 0.8,
-      "_height": 16.0
+      "_height": 16.0 * sizeScale
     };
     pp = tpf(imap);
     imap["_child"] = pp;
@@ -343,7 +352,7 @@ class MvcAgent extends Agent {
     int lives = userProfile["lives"];
     if (lives == 0) {
       timing ??= liveTime;
-      Map<String, dynamic> imap = {"_width": 10.0};
+      Map<String, dynamic> imap = {"_width": model.size10};
       Function pf = getPrimePattern["SizedBox"];
       space10 = pf(imap);
       imap = {
@@ -362,9 +371,9 @@ class MvcAgent extends Agent {
         "_child": pp,
         "_alignment": Alignment.center,
         "_width": resDialWidth * 0.8,
-        "_height": 16.0
+        "_height": 16.0 * sizeScale
       };
-      double h = 16.0;
+      double h = 16.0 * sizeScale;
       pp = cpf(imap);
       List<dynamic> children = [pp];
       imap = {
@@ -373,13 +382,13 @@ class MvcAgent extends Agent {
         "_textStyle": resTxtStyle.copyWith(color: colorMap["incorrect"]),
         "_alignment": Alignment.center,
         "_width": resDialWidth * 0.8,
-        "_height": 36.0
+        "_height": 36.0 * sizeScale
       };
       pp = tpf(imap);
       imap["_child"] = pp;
       pp = cpf(imap);
       children.add(pp);
-      h += 36.0;
+      h += 36.0 * sizeScale;
 
       imap = {
         "_title": text["liveOut"],
@@ -470,7 +479,7 @@ class MvcAgent extends Agent {
     };
     pf = getPrimePattern["Center"];
     pp = pf(imap);
-    imap = {"_child": pp, "_width": 40.0};
+    imap = {"_child": pp, "_width": 40.0 * sizeScale};
     pf = getPrimePattern["SizedBox"];
     livesRow.add(pf(imap));
     return livesRow;
@@ -485,7 +494,7 @@ class MvcAgent extends Agent {
         "livesSub", 1.8 * btnHeight, 1.2 * btnWidth, "blue");
     children.add(pp);
     h += btnHeight * 1.8;
-    h += 60.0;
+    h += 60.0 * sizeScale;
 
     Map<String, dynamic> imap = {
       "_mainAxisAlignment": MainAxisAlignment.spaceEvenly,
@@ -522,10 +531,10 @@ class MvcAgent extends Agent {
 
     String subTitle = currMv["_subTitle"];
     double rheight = resDialHeight;
-    double rtch = 0.02463 * model.screenHeight;
+    double rtch = 0.02463 * model.scaleHeight;
     if (sizedPat == null) {
       Function pf = getPrimePattern["SizedBox"];
-      imap = {"_height": 5.0};
+      imap = {"_height": 5.0 * sizeScale};
       sizedPat = pf(imap);
     }
     imap = {
@@ -620,9 +629,9 @@ class MvcAgent extends Agent {
             };
             List<dynamic> al = [];
             al.add(tpf(tmap));
-            double h = 0;
+            double h = 10 * sizeScale;
             for (int i = 1; i < ansList.length; i++) {
-              h += 20.0;
+              h += 20.0 * sizeScale;
               tmap["_text"] = ansList[i];
               al.add(tpf(tmap));
             }
@@ -638,7 +647,7 @@ class MvcAgent extends Agent {
             imap["_child"] = sf(tmap);
           }
         } else {
-          Map<String, dynamic> tmap = {"_height": 16.0};
+          Map<String, dynamic> tmap = {"_height": 16.0 * sizeScale};
           Function sf = getPrimePattern["SizedBox"];
           imap["_child"] = sf(tmap);
         }
@@ -659,7 +668,7 @@ class MvcAgent extends Agent {
     ProcessPattern pp = pf(imap);
     imap = {
       "_child": pp,
-      "_height": 0.07266 * model.screenHeight,
+      "_height": 0.07266 * model.scaleHeight,
       "_width": resDialWidth,
       "_decoration": getDecoration(image),
     };
@@ -671,7 +680,7 @@ class MvcAgent extends Agent {
     };
     pf = getPrimePattern["Column"];
     imap["_child"] = pf(imap);
-    imap["_borderRadius"] = const BorderRadius.all(Radius.circular(18.0));
+    imap["_borderRadius"] = BorderRadius.all(Radius.circular(18.0 * sizeScale));
     pf = getPrimePattern["ClipRRect"];
     pp = pf(imap);
     imap = {
@@ -688,6 +697,7 @@ class MvcAgent extends Agent {
     };
     pf = getPrimePattern["Align"];
     pp = pf(imap);
+    //Get.dialog(getPatternWidget(pp));
     List<dynamic> stackList = [];
     stackList.addAll(stackNoti.value);
     stackList.add(pf(imap));
@@ -734,6 +744,7 @@ class MvcAgent extends Agent {
   replaceLast(ProcessPattern pp) {
     List<dynamic> stackList = [];
     stackList.addAll(stackNoti.value);
+    //List<dynamic> stackList = stackNoti.value;
     if (pp == null) {
       stackList.removeLast();
     } else {
@@ -759,16 +770,17 @@ class MvcAgent extends Agent {
     double score = corr / ll;
     int incorr = ll - corr;
     List<dynamic> completeText = [];
-    double width = 0.93333 * model.screenWidth;
+    double width = 0.93333 * model.scaleWidth;
     TextStyle sts = yourScoreStyle;
-    TextStyle bts = yourScoreStyle.copyWith(fontSize: 50);
-    double textHeight = 0.08128 * model.screenHeight;
+    TextStyle bts = yourScoreStyle.copyWith(fontSize: 50 * fontScale);
+    double textHeight = 0.08128 * model.scaleHeight;
+    //Function tpf = getPrimePattern["Text"];
 
     bool scoreMark = score >= currMv["_PassScore"];
     if (scoreMark) {
       BoxDecoration bd = getDecoration("assets/images/star_background.png");
       imap = {
-        "_height": 0.4926 * model.screenHeight,
+        "_height": 0.4926 * model.scaleHeight,
         "_width": width,
         "_decoration": bd,
       };
@@ -783,7 +795,7 @@ class MvcAgent extends Agent {
       if (score >= 0.99) {
         pf = getPrimePattern["ImageAsset"];
         imap = {
-          "_height": 0.18473 * model.screenHeight,
+          "_height": 0.18473 * model.scaleHeight,
           "_name": "assets/images/trophy.png",
           "_boxFit": BoxFit.cover,
         };
@@ -797,7 +809,7 @@ class MvcAgent extends Agent {
         pf = getPrimePattern["Align"];
         pp = pf(imap);
         slw.add(pp);
-        textHeight = 0.1084 * model.screenHeight;
+        textHeight = 0.1084 * model.scaleHeight;
         imap = {
           "_text": text["congrat"],
           "_textStyle": complTextStyle,
@@ -826,7 +838,7 @@ class MvcAgent extends Agent {
     } else {
       sts = sts.copyWith(color: const Color(0xFFF76F71));
       bts = bts.copyWith(color: const Color(0xFFF76F71));
-      textHeight = 0.1084 * model.screenHeight;
+      textHeight = 0.1084 * model.scaleHeight;
       pf = getPrimePattern["ImageAsset"];
       imap = {
         "_name": "assets/images/circles.png",
@@ -903,13 +915,13 @@ class MvcAgent extends Agent {
     pp = pf(imap);
     imap = {
       "_alignment": Alignment.center,
-      "_height": 0.11084 * model.screenHeight,
+      "_height": 0.11084 * model.scaleHeight,
       "_width": width,
       "_child": pp,
     };
     ProcessPattern c = cpf(imap);
-    double sh = 0.1355 * model.screenHeight;
-    double sw = 0.1867 * model.screenWidth;
+    double sh = 0.1355 * model.scaleHeight;
+    double sw = 0.1867 * model.scaleWidth;
     List<dynamic> children = [];
     imap = {
       "_name": "scoreCard",
@@ -951,17 +963,17 @@ class MvcAgent extends Agent {
     imap = {
       "_alignment": Alignment.center,
       "_height": sh,
-      "_width": sw * 3 + 20.0,
+      "_width": sw * 3 + 20.0 * sizeScale,
       "_child": pp,
     };
     ProcessPattern s = cpf(imap);
-    double shareHeight = 0.07389 * model.screenHeight;
-    double bh = 0.04926 * model.screenHeight;
-    double bw = 0.32 * model.screenWidth;
+    double shareHeight = 0.07389 * model.scaleHeight;
+    double bh = 0.04926 * model.scaleHeight;
+    double bw = 0.32 * model.scaleWidth;
     Map<String, dynamic> nmap = {
       "_name": "shareContainer",
       "_width": width,
-      "_height": 0.9264 * model.screenHeight,
+      "_height": 0.9264 * model.scaleHeight,
       "_shareHeight": shareHeight,
       "_shareIcon": "assets/images/share.png"
     };
@@ -997,7 +1009,7 @@ class MvcAgent extends Agent {
     imap = {
       "_alignment": Alignment.center,
       "_width": width,
-      "_height": 0.4803 * model.screenHeight,
+      "_height": 0.4803 * model.scaleHeight,
       "_child": pp
     };
     pp = cpf(imap);
@@ -1059,20 +1071,24 @@ class MvcAgent extends Agent {
         "_iconColor": const Color(0xFF999FAD)
       };
       incorrProg = ipf(imap);
-      imap = {"_width": 10.0};
+      imap = {"_width": model.size10};
       pf = getPrimePattern["SizedBox"];
       space10 = pf(imap);
-      imap["_width"] = 5.0;
+      imap["_width"] = 5.0 * sizeScale;
       space5 = pf(imap);
-      imap["_width"] = 20.0;
+      imap["_width"] = model.size20;
       space20 = pf(imap);
       imap = {
         "_icon": "hint",
-        "_iconSize": 30.0,
+        "_iconSize": 30.0 * sizeScale,
         "_iconColor": Colors.green,
       };
       pp = ipf(imap);
-      imap = {"_width": 40.0, "_alignment": Alignment.centerLeft, "_child": pp};
+      imap = {
+        "_width": 40.0 * sizeScale,
+        "_alignment": Alignment.centerLeft,
+        "_child": pp
+      };
       hint = cpf(imap);
     }
     List<dynamic> lg = getProgIconList();
@@ -1125,7 +1141,7 @@ class MvcAgent extends Agent {
 
   ProcessPattern getQuitDialog() {
     Map<String, dynamic> imap = {
-      "_height": 0.061576 * model.screenHeight,
+      "_height": 0.061576 * model.scaleHeight,
       "_name": "assets/images/quit_bubble_arrow.png",
       "_boxFit": BoxFit.cover,
     };
@@ -1146,25 +1162,37 @@ class MvcAgent extends Agent {
     imap = {"_child": pp, "_onTap": pe, "_tapAction": l};
     Function tipf = getPrimePattern["TapItem"];
     pp = tipf(imap);
-    double boxWidth = 0.88 * model.screenWidth;
+    double boxWidth = 0.88 * model.scaleWidth;
     imap = {
       "_alignment": const Alignment(0.9, 0.0),
       "_width": boxWidth,
-      "_height": 0.0431 * model.screenHeight,
+      "_height": 0.0431 * model.scaleHeight,
       "_child": pp,
-      "_decoration": const BoxDecoration(
+      "_decoration": BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          topRight: Radius.circular(10),
-          topLeft: Radius.circular(10),
+          topRight: Radius.circular(size10),
+          topLeft: Radius.circular(size10),
         ),
       ),
     };
     ProcessPattern banner = cpf(imap);
 
+    //Function rpf = getPrimePattern["Row"];
+    //Function tpf = getPrimePattern["Text"];
     imap = {"_text": text["quitText"], "_textStyle": normalSTextStyle};
+/*     List<dynamic> children = [space20, tpf(imap)];
+    imap["_children"] = children;
+    imap["_mainAxisAlignment"] = MainAxisAlignment.start;
+    ProcessPattern rp = rpf(imap);
+    imap["_text"] = text["looseProgress"];
+    children = [space20, tpf(imap)];
+    imap["_children"] = children;
+    pp = rpf(imap);
+    children = [rp, pp];
+ */
     List<dynamic> children = [tpf(imap)];
-    imap["_height"] = 10.0;
+    imap["_height"] = model.size10;
     pf = getPrimePattern["SizedBox"];
     children.add(pf(imap));
     imap["_text"] = text["looseProgress"];
@@ -1179,11 +1207,13 @@ class MvcAgent extends Agent {
     pp = pf(imap);
 
     imap = {"_child": pp, "_alignment": const Alignment(-0.7, 0.0)};
-
+    // pp = cpf(imap);
+    // pf = getPrimePattern["Expanded"];
+    // imap = {"_child": pp};
     ProcessPattern bubbleText = cpf(imap);
 
-    double bwidth = 0.373333 * model.screenWidth;
-    double bheight = 0.046798 * model.screenHeight;
+    double bwidth = 0.373333 * model.scaleWidth;
+    double bheight = 0.046798 * model.scaleHeight;
     imap = {
       "_textStyle": controlButtonTextStyle,
       "_beginColor": colorMap["btnBlue"],
@@ -1222,21 +1252,22 @@ class MvcAgent extends Agent {
     imap = {
       "_child": rp,
       "_width": boxWidth,
-      "_height": 0.061576 * model.screenHeight,
+      "_height": 0.061576 * model.scaleHeight,
       "_color": Colors.white,
       "_alignment": Alignment.topCenter
     };
     pp = cpf(imap);
     children = [banner, bubbleText, pp];
+    double ax = (100.0 / model.screenWidth) - 1.0;
     imap = {
-      "_align": const Alignment(-0.65, -0.85),
+      "_align": Alignment(ax, -0.85),
       "_bubbleArrow": arrow,
       "_bubbleBox": children,
-      "_bubbleHeight": 0.23399 * model.screenHeight,
-      "_arrowAlign": const Alignment(-0.9, -1.0),
+      "_bubbleHeight": 0.23399 * model.scaleHeight,
+      "_arrowAlign": const Alignment(-0.95, -1.0),
       "_boxAlign": Alignment.bottomCenter,
       "_boxWidth": boxWidth,
-      "_boxHeight": 0.197044 * model.screenHeight,
+      "_boxHeight": 0.197044 * model.scaleHeight,
     };
     pf = getPrimePattern["Bubble"];
     return pf(imap);
@@ -1266,19 +1297,20 @@ class MvcAgent extends Agent {
         .replaceFirst("#n#", ix.toString())
         .replaceFirst("#t#", hints.length.toString());
     String hint = hints[currHint];
+    double ax = 1.0 - (100.0 / model.screenWidth);
     Map<String, dynamic> nmap = {
       "_hasPrev": hasPrev,
       "_last": last,
       "_hint": hint,
-      "_align": const Alignment(0.65, 0.90),
-      "_bubbleSize": 0.061576 * model.screenHeight,
+      "_align": Alignment(ax, 0.90),
+      "_bubbleSize": 0.061576 * model.scaleHeight,
       "_assetName": "assets/images/hint_bubble_arrow.png",
-      "_bubbleHeight": 0.197044 * model.screenHeight,
+      "_bubbleHeight": 0.197044 * model.scaleHeight,
       "_arrowAlign": const Alignment(0.9, 0.90),
       "_boxAlign": Alignment.topCenter,
-      "_boxWidth": 0.88 * model.screenWidth,
-      "_boxHeight": 0.1601 * model.screenHeight,
-      "_bannerHeight": 0.043103 * model.screenHeight,
+      "_boxWidth": 0.88 * model.scaleWidth,
+      "_boxHeight": 0.1601 * model.scaleHeight,
+      "_bannerHeight": 0.043103 * model.scaleHeight,
       "_hintText": hintText,
       "_prevHint": text["prevHint"],
       "_nextHint": text["nextHint"],
@@ -1297,6 +1329,11 @@ class MvcAgent extends Agent {
     } else {
       hintShowed = true;
       Get.dialog(w);
+/*       List<dynamic> stackList = [];
+      stackList.addAll(stackNoti.value);
+      stackList.add(pp);
+      stackNoti.value = stackList;
+ */
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:sirius_geo_4/builder/special_pattern.dart';
 import 'package:sirius_geo_4/builder/tap_list_item.dart';
 import 'package:sirius_geo_4/builder/webview_pattern.dart';
 import 'package:sirius_geo_4/resources/app_model.dart';
+import 'package:sirius_geo_4/resources/basic_resources.dart';
 import 'package:sirius_geo_4/resources/fonts.dart';
 import 'package:sirius_geo_4/resources/s_g_icons.dart';
 import 'package:sirius_geo_4/builder/item_search.dart';
@@ -321,6 +322,24 @@ ProcessPattern getIndexedStackPattern(Map<String, dynamic> pmap) {
     }
   }
   return IndexedStackPattern(map);
+}
+
+ProcessPattern getValueStackPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {};
+  List<String> nl = [
+    "_notifier",
+    "_alignment",
+    "_clipBehavior",
+    "_stackFit",
+    "_textDirection"
+  ];
+  for (String s in nl) {
+    dynamic d = pmap[s];
+    if (d != null) {
+      map[s] = d;
+    }
+  }
+  return ValueStackPattern(map);
 }
 
 ProcessPattern getCenterPattern(Map<String, dynamic> pmap) {
@@ -670,6 +689,14 @@ ProcessPattern getSizedBoxExpandPattern(Map<String, dynamic> pmap) {
   return SizedBoxExpandPattern(map);
 }
 
+ProcessPattern getValueOpacityPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {
+    "_child": pmap["_child"],
+    "_notifier": pmap["_notifier"]
+  };
+  return ValueOpacityPattern(map);
+}
+
 ProcessPattern getScrollLayoutPattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {"_child": pmap["_child"]};
   return ScrollLayoutPattern(map);
@@ -693,6 +720,15 @@ ProcessPattern getDottedBorderPattern(Map<String, dynamic> pmap) {
   return DottedBorderPattern(map);
 }
 
+// ProcessPattern getContextPattern(Map<String, dynamic> pmap) {
+//   Map<String, dynamic> map = {
+//     "_child": pmap["_child"],
+//     "_context": pmap["_context"]
+//   };
+//   map["_parent"] = pmap;
+//   return ContextPattern(map);
+// }
+
 ProcessPattern getInteractiveViewerPattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {};
   List<String> nl = [
@@ -709,6 +745,14 @@ ProcessPattern getInteractiveViewerPattern(Map<String, dynamic> pmap) {
     }
   }
   return InteractiveViewerPattern(map);
+}
+
+ProcessPattern getWillPopScopeActionsPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {
+    "_child": pmap["_child"],
+    "_backActions": pmap["_backActions"]
+  };
+  return WillPopScopeActionsPattern(map);
 }
 
 ProcessPattern getColorButtonPattern(Map<String, dynamic> pmap) {
@@ -913,7 +957,7 @@ ProcessPattern getIconTextPattern(Map<String, dynamic> pmap) {
     }
   }
   if (pmap["_bar"] != null) {
-    map["_iconSize"] = 20.0;
+    map["_iconSize"] = 20.0 * sizeScale;
     if (map["_iconColor"] == null) {
       map["_iconColor"] = const Color(0xFF00344F);
     }
@@ -949,6 +993,43 @@ ProcessPattern getRichTextPattern(Map<String, dynamic> pmap) {
   return RichTextPattern(map);
 }
 
+ProcessPattern getOverflowBoxPatternn(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {
+    "_child": pmap["_child"],
+    "_alignment": pmap["_alignment"],
+    "_height": pmap["_height"],
+    "_width": pmap["_width"],
+  };
+  return OverflowBoxPattern(map);
+}
+
+ProcessPattern getObxProcessPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {
+    "_processName": pmap["_processName"],
+  };
+  return ObxProcessPattern(map);
+}
+
+ProcessPattern getPositionedPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {};
+  List<String> nl = [
+    "_child",
+    "_top",
+    "_bottom",
+    "_left",
+    "_right",
+    "_height",
+    "_width",
+  ];
+  for (String s in nl) {
+    dynamic d = pmap[s];
+    if (d != null) {
+      map[s] = d;
+    }
+  }
+  return PositionedPattern(map);
+}
+
 const Map<String, Function> getPrimePattern = {
   "Align": getAlignPattern,
   "AppBar": getAppBarPattern,
@@ -960,6 +1041,7 @@ const Map<String, Function> getPrimePattern = {
   "ColorButton": getColorButtonPattern,
   "Column": getColumnPattern,
   "Container": getContainerPattern,
+//  "Context": getContextPattern,
   "DottedBorder": getDottedBorderPattern,
   "Draggable": getDraggablePattern,
   "DragTarget": getDragTargetPattern,
@@ -978,8 +1060,11 @@ const Map<String, Function> getPrimePattern = {
   "ListView": getListViewPattern,
   "NaviScope": getNaviScopePattern,
   "Obx": getObxPattern,
+  "ObxProcess": getObxProcessPattern,
   "Opacity": getOpacityPattern,
+  "OverflowBox": getOverflowBoxPatternn,
   "Padding": getPaddingPattern,
+  "Positioned": getPositionedPattern,
   "RichText": getRichTextPattern,
   "Row": getRowPattern,
   "Scaffold": getScaffolPattern,
@@ -996,9 +1081,12 @@ const Map<String, Function> getPrimePattern = {
   "Text": getTextPattern,
   "TextField": getTextFieldPattern,
   "ValueChildContainer": getValueChildContainerPattern,
+  //"ValueStack": getValueStackPattern,
+  //"ValueOpacity": getValueOpacityPattern,
   "ValueText": getValueTextPattern,
   "ValueTypeListener": getValueTypeListenerPattern,
   "Visible": getVisiblePattern,
   "WebView": getWebViewPattern,
+  //"WillPopScopeActions": getWillPopScopeActionsPattern,
   "Wrap": getWrapPattern,
 };

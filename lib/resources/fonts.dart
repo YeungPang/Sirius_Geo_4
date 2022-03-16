@@ -1,8 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:sirius_geo_4/model/locator.dart';
 
-const largeTextSize = 22.0;
-const mediumTextSize = 16.0;
-const smallTextSize = 12.0;
+final fontScale = model.fontScale;
+
+final fsize24 = 24.0 * fontScale;
+final fsize22 = 22.0 * fontScale;
+final fsize20 = 20.0 * fontScale;
+final fsize18 = 18.0 * fontScale;
+final fsize16 = 16.0 * fontScale;
+final fsize14 = 14.0 * fontScale;
+final fsize12 = 12.0 * fontScale;
+final fsize10 = 10.0 * fontScale;
+final fsize8 = 8.0 * fontScale;
+
+final w300 = (fontScale <= 0.7) ? FontWeight.w200 : FontWeight.w300;
+final w400 = (fontScale <= 0.75) ? FontWeight.w300 : FontWeight.w400;
+final w500 = (fontScale <= 0.6)
+    ? FontWeight.w300
+    : ((fontScale <= 0.8) ? FontWeight.w400 : FontWeight.w500);
+final w600 = (fontScale <= 0.6)
+    ? FontWeight.w400
+    : ((fontScale <= 0.8) ? FontWeight.w500 : FontWeight.w600);
+final w700 = (fontScale <= 0.6)
+    ? FontWeight.w500
+    : ((fontScale <= 0.8) ? FontWeight.w600 : FontWeight.w700);
+final w900 = (fontScale <= 0.6)
+    ? FontWeight.w700
+    : ((fontScale <= 0.8) ? FontWeight.w800 : FontWeight.w900);
 
 const Color textColorDark = Colors.black;
 const Color textColorLight = Colors.white;
@@ -10,211 +34,211 @@ const Color textColorAccent = Colors.red;
 const Color textColorFaint = Color.fromRGBO(125, 125, 125, 1.0);
 const Color blueGrey = Colors.blueGrey;
 
-const defaultPaddingHorizontal = 12.0;
+final defaultPaddingHorizontal = 12.0 * model.sizeScale;
 
 const String fontNameAN = 'Lato';
 
-const appBarTextStyle = TextStyle(
+final TextStyle appBarTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w300,
-  fontSize: mediumTextSize,
+  fontWeight: w300,
+  fontSize: fsize16,
   color: Colors.white,
 );
 
-const titleTextStyle = TextStyle(
+final TextStyle titleTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w300,
-  fontSize: largeTextSize,
+  fontWeight: w300,
+  fontSize: fsize22,
   color: textColorDark,
 );
 
-const subTitleTextStyle = TextStyle(
+final TextStyle subTitleTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w300,
-  fontSize: mediumTextSize,
+  fontWeight: w300,
+  fontSize: fsize16,
   color: textColorAccent,
 );
 
-const captionTextStyle = TextStyle(
+final TextStyle captionTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w300,
-  fontSize: smallTextSize,
+  fontWeight: w300,
+  fontSize: fsize12,
   color: textColorDark,
 );
 
-const normalTextStyle = TextStyle(
+final TextStyle normalTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: mediumTextSize,
-  color: Color(0xFF999FAE),
+  fontWeight: w500,
+  fontSize: fsize16,
+  color: const Color(0xFF999FAE),
 );
 
-const normalSTextStyle = TextStyle(
+final TextStyle normalSTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: 14,
-  color: Color(0xFF999FAE),
+  fontWeight: w500,
+  fontSize: fsize14,
+  color: const Color(0xFF999FAE),
 );
 
-const smallTextStyle = TextStyle(
+final TextStyle smallTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w300,
-  fontSize: 12,
-  color: Color(0xFF1785C1),
+  fontWeight: w300,
+  fontSize: fsize12,
+  color: const Color(0xFF1785C1),
 );
 
-const mediumNormalTextStyle = TextStyle(
+final TextStyle mediumNormalTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: mediumTextSize,
+  fontWeight: w500,
+  fontSize: fsize16,
   color: textColorDark,
 );
 
-const smallSemiTextStyle = TextStyle(
+final TextStyle smallSemiTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: 12,
-  color: Color(0xFF00344F),
+  fontWeight: w500,
+  fontSize: fsize12,
+  color: const Color(0xFF00344F),
 );
 
-const controlButtonTextStyle = TextStyle(
+final TextStyle controlButtonTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w600,
-  fontSize: mediumTextSize,
+  fontWeight: w600,
+  fontSize: fsize16,
   color: Colors.white,
 );
 
-const sliderTextStyle = TextStyle(
+final TextStyle sliderTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w700,
+  fontWeight: w700,
   letterSpacing: 0.25,
-  fontSize: 16,
-  color: Color(0xFF00344F),
+  fontSize: fsize16,
+  color: const Color(0xFF00344F),
 );
 
-const sliderSmallTextStyle = TextStyle(
+final TextStyle sliderSmallTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
+  fontWeight: w500,
   letterSpacing: 0.25,
-  fontSize: 10,
-  color: Color(0xFF00344F),
+  fontSize: fsize10,
+  color: const Color(0xFF00344F),
 );
 
-const iconSmallTextStyle = TextStyle(
+final TextStyle iconSmallTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
+  fontWeight: w500,
   letterSpacing: 0.25,
-  fontSize: 8,
-  color: Color(0xFF00344F),
+  fontSize: fsize8,
+  color: const Color(0xFF00344F),
 );
 
-const sliderBoldTextStyle = TextStyle(
+final TextStyle sliderBoldTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w700,
-  fontSize: 12,
-  color: Color(0xFF00344F),
+  fontWeight: w700,
+  fontSize: fsize12,
+  color: const Color(0xFF00344F),
 );
 
-const questionTextStyle = TextStyle(
+final TextStyle questionTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w400,
-  fontSize: 24,
-  color: Color(0xFF00344F),
+  fontWeight: w400,
+  fontSize: fsize24,
+  color: const Color(0xFF00344F),
 );
 
-const choiceButnTxtStyle = TextStyle(
+final TextStyle choiceButnTxtStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: mediumTextSize,
-  color: Color(0xFF1785C1),
+  fontWeight: w500,
+  fontSize: fsize16,
+  color: const Color(0xFF1785C1),
 );
 
-const dragButnTxtStyle = TextStyle(
+final TextStyle dragButnTxtStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: mediumTextSize,
-  color: Color(0xFF00344F),
+  fontWeight: w500,
+  fontSize: fsize16,
+  color: const Color(0xFF00344F),
 );
 
-const faintTxtStyle = TextStyle(
+final TextStyle faintTxtStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: mediumTextSize,
+  fontWeight: w500,
+  fontSize: fsize16,
   color: textColorFaint,
 );
 
-const selButnTxtStyle = TextStyle(
+final TextStyle selButnTxtStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: mediumTextSize,
+  fontWeight: w500,
+  fontSize: fsize16,
   color: Colors.white,
 );
 
-const incorrTxtStyle = TextStyle(
+final TextStyle incorrTxtStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: mediumTextSize,
-  color: Color(0xFFF76F71),
+  fontWeight: w500,
+  fontSize: fsize16,
+  color: const Color(0xFFF76F71),
 );
 
-const resTxtStyle = TextStyle(
+final TextStyle resTxtStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: 12.0,
-  color: Color(0xFF999FAE),
+  fontWeight: w500,
+  fontSize: fsize12,
+  color: const Color(0xFF999FAE),
 );
 
-const bannerTxtStyle = TextStyle(
+final TextStyle bannerTxtStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w700,
-  fontSize: 24.0,
+  fontWeight: w700,
+  fontSize: fsize24,
   color: Colors.white,
 );
 
-const corrTxtStyle = TextStyle(
+final TextStyle corrTxtStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w500,
-  fontSize: mediumTextSize,
-  color: Color(0xFF4DC591),
+  fontWeight: w500,
+  fontSize: fsize16,
+  color: const Color(0xFF4DC591),
 );
 
-const complTextStyle = TextStyle(
+final TextStyle complTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w900,
-  fontSize: 20,
-  color: Color(0xFF1785C1),
+  fontWeight: w900,
+  fontSize: fsize20,
+  color: const Color(0xFF1785C1),
 );
 
-const yourScoreStyle = TextStyle(
+final TextStyle yourScoreStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w700,
-  fontSize: 12,
-  color: Color(0xFF4DC591),
+  fontWeight: w700,
+  fontSize: fsize12,
+  color: const Color(0xFF4DC591),
 );
 
-const topicTxtStyle = TextStyle(
+final TextStyle topicTxtStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w700,
-  fontSize: largeTextSize,
+  fontWeight: w700,
+  fontSize: fsize22,
   color: Colors.white,
 );
 
-const viewMoreStyle = TextStyle(
+final TextStyle viewMoreStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w700,
+  fontWeight: w700,
   decoration: TextDecoration.underline,
-  fontSize: smallTextSize,
-  color: Color(0xFF999FAE),
+  fontSize: fsize12,
+  color: const Color(0xFF999FAE),
 );
 
-const legendStyle = TextStyle(
+final TextStyle legendStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: FontWeight.w700,
-  fontSize: smallTextSize,
+  fontWeight: w700,
+  fontSize: fsize12,
   color: Colors.black,
 );
 
-const Map<String, TextStyle> textStyle = {
+final Map<String, TextStyle> textStyle = {
   "AppBarTextStyle": appBarTextStyle,
   "BannerTxtStyle": bannerTxtStyle,
   "CaptionTextStyle": captionTextStyle,
@@ -233,6 +257,7 @@ const Map<String, TextStyle> textStyle = {
   "SmallSemiTextStyle": smallSemiTextStyle,
   "SmallTextStyle": smallTextStyle,
   "SubTitleTextStyle": subTitleTextStyle,
+  "TopicTxtStyle": topicTxtStyle,
   "TitleTextStyle": titleTextStyle,
   "ViewMoreStyle": viewMoreStyle,
 };

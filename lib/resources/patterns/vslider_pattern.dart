@@ -11,7 +11,7 @@ import 'package:sirius_geo_4/resources/fonts.dart';
 class VertSlider extends StatelessWidget {
   final Map<String, dynamic> map;
   final double max = 200.0;
-  final double lh = 13.0;
+  final double lh = 13.0 * sizeScale;
 
   VertSlider(this.map);
 
@@ -72,13 +72,13 @@ class VertSlider extends StatelessWidget {
         children: [
           Container(
               alignment: Alignment.centerRight,
-              height: 13.0,
+              height: 13.0 * sizeScale,
               child: Text(
                 scale,
                 style: sliderBoldTextStyle,
               )),
           SizedBox(
-              height: height - 13.0,
+              height: height - 13.0 * sizeScale,
               child: Column(
                 children: l,
                 crossAxisAlignment:
@@ -124,16 +124,17 @@ class VertSlider extends StatelessWidget {
     Map<String, dynamic> _mv = map["_mv"];
     return Container(
       margin: res
-          ? const EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0)
-          : const EdgeInsets.only(top: 10.0),
+          ? EdgeInsets.only(
+              top: size10, left: 15.0 * sizeScale, right: 15.0 * sizeScale)
+          : EdgeInsets.only(top: size10),
       height: h - lh,
       child: FlutterSlider(
         values: [_absoluteSize],
         axis: Axis.vertical,
         max: max,
         min: 0,
-        handlerHeight: res ? 5 : 20,
-        handlerWidth: res ? 5 : 20,
+        handlerHeight: res ? 5 * sizeScale : 20 * sizeScale,
+        handlerWidth: res ? 5 * sizeScale : 20 * sizeScale,
         tooltip: FlutterSliderTooltip(
           disabled: true,
         ),
@@ -181,8 +182,8 @@ class VertSlider extends StatelessWidget {
       l.add(FlutterSliderHatchMarkLabel(
           percent: i * 5.0,
           label: Container(
-            height: 5,
-            width: 5,
+            height: 5 * sizeScale,
+            width: 5 * sizeScale,
             margin: const EdgeInsets.only(right: 1),
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -276,8 +277,8 @@ class VertSlider extends StatelessWidget {
     Map<String, dynamic> gmap = {
       "_beginColor": const Color(0xFF4DC591),
       "_endColor": const Color(0xFF82EFC0),
-      "_btnBRadius": 4.0,
-      "_width": 20.0,
+      "_btnBRadius": 4.0 * sizeScale,
+      "_width": 20.0 * sizeScale,
       "_height": (gh > 0.0)
           ? gh
           : (g > 0.0)
@@ -297,8 +298,8 @@ class VertSlider extends StatelessWidget {
             (o > 0.0) ? const Color(0xFFFF9E50) : const Color(0xFFF76F71),
         "_endColor":
             (o > 0.0) ? const Color(0xFFFDBD88) : const Color(0xFFFF9DAC),
-        "_btnBRadius": 4.0,
-        "_width": 20.0,
+        "_btnBRadius": 4.0 * sizeScale,
+        "_width": 20.0 * sizeScale,
         "_height": (gh > 0.0) ? fh : -gh,
       };
       Widget fc = ColorButton(fmap);
@@ -334,10 +335,10 @@ class VertSlider extends StatelessWidget {
 
   Widget _buildVSliderScaleValue(Widget sCol) {
     Map<String, dynamic> imap = {
-      "_height": 0.07143 * model.screenHeight,
-      "_width": 0.213333333 * model.screenWidth,
+      "_height": 0.07143 * model.scaleHeight,
+      "_width": 0.213333333 * model.scaleWidth,
       "_alignment": Alignment.center,
-      "_btnBRadius": 10.0,
+      "_btnBRadius": size10,
       "_color": Colors.white,
       "_child": sCol
     };
@@ -346,18 +347,18 @@ class VertSlider extends StatelessWidget {
 
   Widget _buildVSliderScaleContainer(Widget col) {
     Map<String, dynamic> imap = {
-      "_height": 0.2364532 * model.screenHeight,
-      "_width": 0.2933333 * model.screenWidth,
+      "_height": 0.2364532 * model.scaleHeight,
+      "_width": 0.2933333 * model.scaleWidth,
       "_alignment": Alignment.center,
-      "_btnBRadius": 10.0,
+      "_btnBRadius": size10,
       "_beginColor": colorMap["btnBlue"],
       "_endColor": colorMap["btnBlueGradEnd"],
       "_child": col
     };
     Widget c = ColorButton(imap);
     imap = {
-      "_height": 0.61576354 * model.screenHeight,
-      "_width": 0.32 * model.screenWidth,
+      "_height": 0.61576354 * model.scaleHeight,
+      "_width": 0.32 * model.scaleWidth,
       "_alignment": Alignment.center,
       "_child": c
     };
@@ -388,7 +389,7 @@ buildSliderResult(Map<String, dynamic> map) {
     "resColor": c,
     "resCol": Container(
         alignment: Alignment.centerLeft,
-        margin: const EdgeInsets.only(left: 20.0),
+        margin: EdgeInsets.only(left: size20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -409,7 +410,7 @@ buildSliderResult(Map<String, dynamic> map) {
   ];
   m1["resCol"] = Container(
       alignment: Alignment.centerLeft,
-      margin: const EdgeInsets.only(left: 18.0),
+      margin: EdgeInsets.only(left: 18.0 * sizeScale),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -418,8 +419,8 @@ buildSliderResult(Map<String, dynamic> map) {
       ));
   Widget w2 = _buildSliderResValue(m1);
   Widget ansC = Container(
-    width: 60.0,
-    height: 16.0,
+    width: 60.0 * sizeScale,
+    height: 16.0 * sizeScale,
     //margin: EdgeInsets.only(left: 15.0),
     color: Colors.white,
     alignment: const Alignment(-0.9, 0.0),
@@ -433,33 +434,35 @@ buildSliderResult(Map<String, dynamic> map) {
   Widget w = Align(
       alignment: const Alignment(1.0, 0.0),
       child: SizedBox(
-          width: 0.133333 * model.screenWidth,
-          height: 0.2093596 * model.screenHeight,
+          width: 0.133333 * model.scaleWidth,
+          height: 0.2093596 * model.scaleHeight,
           child: OverflowBox(
-              maxWidth: 160.0,
+              maxWidth: 160.0 * sizeScale,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Stack(
                       alignment: Alignment.topLeft,
-                      children: [const SizedBox(height: 60.0), w2, ansW],
+                      children: [SizedBox(height: 60.0 * sizeScale), w2, ansW],
                     ),
-                    Stack(
-                        alignment: Alignment.topLeft,
-                        children: [const SizedBox(height: 60.0), w1, ansW])
+                    Stack(alignment: Alignment.topLeft, children: [
+                      SizedBox(height: 60.0 * sizeScale),
+                      w1,
+                      ansW
+                    ])
                   ]))));
   _mv["_res"] = w;
 }
 
 Widget _buildSliderResValue(Map<String, dynamic> map) {
   Map<String, dynamic> amap = {
-    "_elevation": 4.0,
-    "_cardRadius": 20.0,
-    "_height": 0.086207 * model.screenHeight,
-    "_width": 0.453333 * model.screenWidth,
-    "_margin": const EdgeInsets.only(top: 10.0),
-    "_btnBRadius": 20.0,
+    "_elevation": 4.0 * sizeScale,
+    "_cardRadius": size20,
+    "_height": 0.086207 * model.scaleHeight,
+    "_width": 0.453333 * model.scaleWidth,
+    "_margin": EdgeInsets.only(top: size10),
+    "_btnBRadius": size20,
     "_color": Colors.white,
     "_borderColor": map["resColor"],
     "_child": map["resCol"]

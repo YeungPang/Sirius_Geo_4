@@ -11,7 +11,7 @@ import 'package:sirius_geo_4/resources/fonts.dart';
 class OrderMvc extends Mvc {
   OrderMvc(Map<String, dynamic> map) : super(map);
 
-  double bgHeight = 0.3941 * model.screenHeight;
+  double bgHeight = 0.3941 * model.scaleHeight;
   ConfigAgent configAgent;
   TextEditingController tc;
   List<dynamic> answers;
@@ -34,7 +34,7 @@ class OrderMvc extends Mvc {
   double childAspectRatio;
   double eheight;
   double ewidth;
-  double width = 0.8267 * model.screenWidth;
+  double width = 0.8267 * model.scaleWidth;
   int selIndex = -1;
   int len;
   ProcessPattern view;
@@ -68,7 +68,7 @@ class OrderMvc extends Mvc {
       imap["_text"] = map["_Info2"];
       bottomtext = tpf(imap);
       imap = {
-        "_height": 20.0,
+        "_height": size20,
         "_width": width,
         "_child": pp,
         "_alignment": Alignment.centerRight,
@@ -77,8 +77,8 @@ class OrderMvc extends Mvc {
       imap["_child"] = bottomtext;
       bottomtext = cpf(imap);
 
-      eheight = 0.061576 * model.screenHeight;
-      ewidth = 0.345 * model.screenWidth;
+      eheight = 0.061576 * model.scaleHeight;
+      ewidth = 0.345 * model.scaleWidth;
       imap = {
         "_height": eheight,
         "_width": ewidth,
@@ -86,7 +86,7 @@ class OrderMvc extends Mvc {
       };
       ProcessPattern cpp = cpf(imap);
       imap = {
-        "_radius": 10.0,
+        "_radius": size10,
         "_dottedColor": colorMap["btnBlue"],
         "_strokeWidth": 2.0,
         "_child": cpp
@@ -185,14 +185,14 @@ class OrderMvc extends Mvc {
     }
     gvNoti = resxController.addToResxMap("gv", children);
 
-    double mainAS = 0.01847 * model.screenHeight;
+    double mainAS = 0.01847 * model.scaleHeight;
     childAspectRatio = ewidth / eheight;
     imap = {
       "_crossAxisCount": 2,
       "_childAspectRatio": childAspectRatio,
       "_mainAxisSpacing": mainAS,
-      "_crossAxisSpacing": 0.04 * model.screenWidth,
-      "_padding": const EdgeInsets.all(10),
+      "_crossAxisSpacing": 0.04 * model.scaleWidth,
+      "_padding": EdgeInsets.all(size10),
     };
     Function pf = getPrimePattern["GridView"];
     ProcessPattern gv = pf(imap);

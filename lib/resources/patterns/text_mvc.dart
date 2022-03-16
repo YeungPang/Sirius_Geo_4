@@ -12,7 +12,7 @@ class TextMvc extends Mvc {
   TextMvc(Map<String, dynamic> map) : super(map);
 
   List<int> excl = [];
-  double bgHeight = 0.4926 * model.screenHeight;
+  double bgHeight = 0.4926 * model.scaleHeight;
   ProcessPattern view;
   ConfigAgent configAgent;
   Rx<ProcessPattern> textNoti;
@@ -116,7 +116,7 @@ class TextMvc extends Mvc {
       imap = {
         "_hintText": model.map["text"]["typeAnswer"],
         "_clear": multi,
-        "_width": 0.666667 * model.screenWidth,
+        "_width": 0.666667 * model.scaleWidth,
         "_alignment": Alignment.center,
         "_inputBorder": textFieldBorder,
         "_textStyle": choiceButnTxtStyle,
@@ -130,10 +130,10 @@ class TextMvc extends Mvc {
       ProcessPattern pp = pf(imap);
       imap["_child"] = pp;
       inTextPP = cpf(imap);
-      double w = 0.826667 * model.screenWidth;
+      double w = 0.826667 * model.scaleWidth;
       imap = {
         "_width": w,
-        "_height": 0.1600985 * model.screenHeight,
+        "_height": 0.1600985 * model.scaleHeight,
         "_alignment": Alignment.center,
         "_decoration": shadowRCDecoration
       };
@@ -147,8 +147,8 @@ class TextMvc extends Mvc {
         imap = {"_valueName": "textNoti", "_child": pp};
         pf = getPrimePattern["Obx"];
         pp = pf(imap);
-        eheight = 0.07143 * model.screenHeight;
-        ewidth = 0.345 * model.screenWidth;
+        eheight = 0.07143 * model.scaleHeight;
+        ewidth = 0.345 * model.scaleWidth;
         imap = {
           "_height": eheight,
           "_width": ewidth,
@@ -156,7 +156,7 @@ class TextMvc extends Mvc {
         };
         ProcessPattern cpp = cpf(imap);
         imap = {
-          "_radius": 10.0,
+          "_radius": size10,
           "_dottedColor": colorMap["btnBlue"],
           "_strokeWidth": 2.0,
           "_child": cpp
@@ -170,14 +170,14 @@ class TextMvc extends Mvc {
         children = [];
         children.addAll(elemList);
         gvNoti = resxController.addToResxMap("gv", children);
-        double mainAS = 0.01847 * model.screenHeight;
+        double mainAS = 0.01847 * model.scaleHeight;
         childAspectRatio = ewidth / eheight;
         imap = {
           "_crossAxisCount": 2,
           "_childAspectRatio": childAspectRatio,
           "_mainAxisSpacing": mainAS,
-          "_crossAxisSpacing": 0.04 * model.screenWidth,
-          "_padding": const EdgeInsets.all(10),
+          "_crossAxisSpacing": 0.04 * model.scaleWidth,
+          "_padding": EdgeInsets.all(size10),
         };
         pf = getPrimePattern["GridView"];
         ProcessPattern gv = pf(imap);
@@ -193,7 +193,7 @@ class TextMvc extends Mvc {
         };
         pf = getPrimePattern["Container"];
         lmap = {
-          "_height": 0.04 * model.screenHeight,
+          "_height": 0.04 * model.scaleHeight,
         };
         Function sp = getPrimePattern["SizedBox"];
         List<ProcessPattern> col = [pp, sp(lmap), pf(imap)];

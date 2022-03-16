@@ -29,7 +29,7 @@ class McMvc extends Mvc {
   bool isImg = false;
   List<dynamic> options;
   int ans;
-  double bgHeight = 0.4926 * model.screenHeight;
+  double bgHeight = 0.4926 * model.scaleHeight;
   List<dynamic> ansList = [];
   List<dynamic> selList = [];
   List<int> rowList = [];
@@ -54,21 +54,21 @@ class McMvc extends Mvc {
     setup();
     gvNoti = resxController.addToResxMap("gv", children);
 
-    double mainAS = 0.01847 * model.screenHeight;
+    double mainAS = 0.01847 * model.scaleHeight;
     childAspectRatio = ewidth / eheight;
     imap = {
       "_crossAxisCount": 2,
       "_childAspectRatio": childAspectRatio,
       "_mainAxisSpacing": mainAS,
-      "_crossAxisSpacing": 0.04 * model.screenWidth,
-      "_padding": const EdgeInsets.all(10),
+      "_crossAxisSpacing": 0.04 * model.scaleWidth,
+      "_padding": EdgeInsets.all(size10),
     };
     Function pf = getPrimePattern["GridView"];
     ProcessPattern gv = pf(imap);
     lmap = {"_valueName": "gv", "_child": gv};
     pf = getPrimePattern["Obx"];
     imap = {
-      "_width": 0.8267 * model.screenWidth,
+      "_width": 0.8267 * model.scaleWidth,
       "_height":
           eheight * range.length / 2 + mainAS * (range.length / 2.0 + 1.5),
       "_alignment": Alignment.center,
@@ -112,8 +112,8 @@ class McMvc extends Mvc {
     // map["_question"] = question;
     String o = options[0];
     isImg = o.contains(".png") || o.contains(".svg");
-    eheight = isImg ? 0.12 * model.screenHeight : 0.07143 * model.screenHeight;
-    ewidth = 0.345 * model.screenWidth;
+    eheight = isImg ? 0.12 * model.scaleHeight : 0.07143 * model.scaleHeight;
+    ewidth = 0.345 * model.scaleWidth;
     BoxDecoration decoration = isImg ? shadowRCDecoration : elemDecoration;
     Map<String, dynamic> childMap = {
       "_height": eheight,

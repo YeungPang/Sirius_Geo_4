@@ -29,6 +29,10 @@ class AgentActions extends AppActions {
   @override
   dynamic doFunction(String name, dynamic input, Map<String, dynamic> vars) {
     switch (name) {
+      case "patMap":
+        Map<String, dynamic> imap = {};
+        controlAgent.mapPat(input, imap);
+        return imap;
       case "mapPat":
         return controlAgent.mapPat(input, vars);
       case "mvc":
@@ -121,12 +125,12 @@ class AgentActions extends AppActions {
         return true;
       case "getHeight":
         if (input is double) {
-          return input * model.screenHeight;
+          return input * model.scaleHeight;
         }
         return null;
       case "getWidth":
         if (input is double) {
-          return input * model.screenWidth;
+          return input * model.scaleWidth;
         }
         return null;
       case "checkNull":
@@ -177,6 +181,8 @@ class AgentActions extends AppActions {
           }
         }
         return false;
+      case "handleList":
+        return handleList(input, vars);
       default:
         return false;
     }
@@ -207,6 +213,8 @@ class AgentActions extends AppActions {
   dynamic getResource(String res, String spec, {dynamic value}) {
     String _res = (res.contains("Color")) ? "color" : res;
     switch (_res) {
+      case "appBarHeight":
+        return model.appBarHeight;
       case "model":
         return model.map[spec];
       case "color":
@@ -226,6 +234,23 @@ class AgentActions extends AppActions {
       case "setResxValue":
         resxController.setRxValue(spec, value);
         return true;
+      case "hratio":
+        return model.scaleHeight * (value as double);
+      case "wratio":
+        return model.scaleWidth * (value as double);
+      case "shratio":
+        return model.screenHeight * (value as double);
+      case "swratio":
+        return model.screenWidth * (value as double);
+      case "sizeScale":
+        return sizeScale * (value as double);
+      case "setCache":
+        resxController.setCache(spec, value);
+        return true;
+      case "getCache":
+        return resxController.getCache(spec);
+      case "lookup":
+        return model.map["lookup"][spec];
       default:
         return null;
     }
@@ -298,12 +323,12 @@ class ControlAgent extends Agent {
         switch (k) {
           case "_hratio":
             k = "_height";
-            double h = ipat * model.screenHeight;
+            double h = ipat * model.scaleHeight;
             vars[k] = h;
             break;
           case "_wratio":
             k = "_width";
-            double w = ipat * model.screenWidth;
+            double w = ipat * model.scaleWidth;
             vars[k] = w;
             break;
           case "_color":
@@ -377,6 +402,8 @@ class ControlAgent extends Agent {
       case "padding":
       case "margin":
         return ThemeDecoder.decodeEdgeInsetsGeometry(v, validate: false);
+      case "mainAxisAlignment":
+        return ThemeDecoder.decodeMainAxisAlignment(v, validate: false);
       default:
         return null;
     }

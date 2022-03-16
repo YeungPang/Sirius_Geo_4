@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sirius_geo_4/resources/s_g_icons.dart';
+import '../model/locator.dart';
+
+final size10 = model.size10;
+final size20 = model.size20;
+final sizeScale = model.sizeScale;
 
 const Map<String, Color> colorMap = {
   "almost": Color(0xFFFF9E50),
@@ -48,41 +53,41 @@ Map<String, dynamic> resources = {
   "rCDecoration": RCDecoration,
 };
 
-const textFieldBorder = OutlineInputBorder(
-  borderSide: BorderSide(
+final textFieldBorder = OutlineInputBorder(
+  borderSide: const BorderSide(
     color: Color(0xFF1785C1),
   ),
-  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+  borderRadius: BorderRadius.all(Radius.circular(size10)),
 );
 
-const Icon incompleteProg = Icon(
+final Icon incompleteProg = Icon(
   SGIcons.incomplete,
-  color: Color(0xFF999FAD),
-  size: 17,
+  color: const Color(0xFF999FAD),
+  size: 17.0 * sizeScale,
 );
 
-const Icon completeProg = Icon(
+final Icon completeProg = Icon(
   SGIcons.complete,
-  color: Color(0xFF4DC591),
-  size: 17,
+  color: const Color(0xFF4DC591),
+  size: 17.0 * sizeScale,
 );
 
-const Icon incorrProg = Icon(
+final Icon incorrProg = Icon(
   SGIcons.complete,
-  color: Color(0xFF999FAD),
-  size: 17,
+  color: const Color(0xFF999FAD),
+  size: 17 * sizeScale,
 );
 
-const Widget space10 = SizedBox(
-  width: 10,
+final Widget space10 = SizedBox(
+  width: size10,
 );
 
 const Widget space2 = SizedBox(
   width: 2,
 );
 
-const Widget space5 = SizedBox(
-  width: 5,
+final Widget space5 = SizedBox(
+  width: 5 * sizeScale,
 );
 
 const LinearGradient blueGradient = LinearGradient(
@@ -105,18 +110,20 @@ const LinearGradient orangeGradient = LinearGradient(
     end: Alignment.bottomRight,
     colors: [Color(0xFFFF9E50), Color(0xFFFDBD88)]);
 
-const BoxShadow bs =
-    BoxShadow(color: Color(0xFFE0E0E0), blurRadius: 5.0, spreadRadius: 2.0);
+final BoxShadow bs = BoxShadow(
+    color: const Color(0xFFE0E0E0),
+    blurRadius: 5.0 * sizeScale,
+    spreadRadius: 2.0);
 
 final BoxDecoration RCDecoration = BoxDecoration(
   color: Colors.white,
-  borderRadius: BorderRadius.circular(10),
+  borderRadius: BorderRadius.circular(size10),
 );
 
 final BoxDecoration shadowRCDecoration = BoxDecoration(
   color: Colors.white,
-  boxShadow: const [bs],
-  borderRadius: BorderRadius.circular(10),
+  boxShadow: [bs],
+  borderRadius: BorderRadius.circular(size10),
 );
 
 final BoxDecoration shadowDecoration = BoxDecoration(
@@ -124,19 +131,19 @@ final BoxDecoration shadowDecoration = BoxDecoration(
   boxShadow: const [
     BoxShadow(color: Color(0xFFE0E0E0), blurRadius: 2.0, spreadRadius: 1.0)
   ],
-  borderRadius: BorderRadius.circular(10),
+  borderRadius: BorderRadius.circular(size10),
 );
 
 final BoxDecoration diaDecoration = BoxDecoration(
   color: Colors.white,
-  boxShadow: const [bs],
-  borderRadius: BorderRadius.circular(20),
+  boxShadow: [bs],
+  borderRadius: BorderRadius.circular(size20),
 );
 
 final BoxDecoration rCDecoration = BoxDecoration(
   color: Colors.white,
   border: Border.all(color: const Color(0xFF4DC591), width: 2),
-  borderRadius: BorderRadius.circular(10),
+  borderRadius: BorderRadius.circular(size10),
 );
 
 const BoxDecoration blueGradBD = BoxDecoration(gradient: blueGradient);
@@ -144,39 +151,40 @@ const BoxDecoration blueGradBD = BoxDecoration(gradient: blueGradient);
 const BoxDecoration greenGradBD = BoxDecoration(gradient: greenGradient);
 const BoxDecoration redGradBD = BoxDecoration(gradient: redGradient);
 
-const BoxDecoration bgDecoration = BoxDecoration(
-    color: Colors.white,
-    boxShadow: [
-      BoxShadow(
-          color: Color(0xFFE0E0E0), blurRadius: 5.0, offset: Offset(0.0, 10.0))
-    ]);
+final BoxDecoration bgDecoration =
+    BoxDecoration(color: Colors.white, boxShadow: [
+  BoxShadow(
+      color: const Color(0xFFE0E0E0),
+      blurRadius: 5.0 * sizeScale,
+      offset: Offset(0.0, size10))
+]);
 
 final BoxDecoration elemDecoration = BoxDecoration(
   color: Colors.white,
   border: Border.all(color: const Color(0xFF1785C1), width: 2),
-  borderRadius: BorderRadius.circular(10),
+  borderRadius: BorderRadius.circular(size10),
 );
 
 final BoxDecoration dragDecoration = BoxDecoration(
   color: Colors.white,
   border: Border.all(color: const Color(0xFF999FAE), width: 2),
-  borderRadius: BorderRadius.circular(10),
+  borderRadius: BorderRadius.circular(size10),
 );
 
 final BoxDecoration selDecoration = BoxDecoration(
   color: const Color(0xFF1785C1),
-  borderRadius: BorderRadius.circular(10),
+  borderRadius: BorderRadius.circular(model.size10),
 );
 
 final BoxDecoration imageDecoration = BoxDecoration(
   color: Colors.grey,
-  borderRadius: BorderRadius.circular(10),
+  borderRadius: BorderRadius.circular(model.size10),
 );
 
 final BoxDecoration btnDecoration = elemDecoration;
 
-const catBoxPadding = EdgeInsets.symmetric(vertical: 10.0);
-const catIconPadding = EdgeInsets.symmetric(horizontal: 10.0);
+final catBoxPadding = EdgeInsets.symmetric(vertical: model.size10);
+final catIconPadding = EdgeInsets.symmetric(horizontal: model.size10);
 
 const clampingScrollPhysics = ClampingScrollPhysics();
 

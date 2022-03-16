@@ -337,6 +337,23 @@ class IndexedStackPattern extends ProcessPattern {
   }
 }
 
+class ValueStackPattern extends ProcessPattern {
+  ValueStackPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    return ValueListenableBuilder<List<dynamic>>(
+      valueListenable: map["_notifier"],
+      builder: (BuildContext context, List<dynamic> children, Widget child) =>
+          Stack(
+              children: getPatternWidgetList(children),
+              alignment: map["_alignment"] ?? AlignmentDirectional.topStart,
+              clipBehavior: map["_clipBehavior"] ?? Clip.hardEdge,
+              fit: map["_stackFit"] ?? StackFit.loose,
+              textDirection: map["_textDirection"]),
+    );
+  }
+}
+
 class CenterPattern extends ProcessPattern {
   CenterPattern(Map<String, dynamic> map) : super(map);
   @override
@@ -447,6 +464,37 @@ class RichTextPattern extends ProcessPattern {
     return RichText(
       text: map["_textSpan"],
       textAlign: map["_textAlign"] ?? TextAlign.start,
+    );
+  }
+}
+
+class OverflowBoxPattern extends ProcessPattern {
+  OverflowBoxPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    Widget w = getPatternWidget(map["_child"]);
+    return OverflowBox(
+      child: w,
+      alignment: map["_alignment"] ?? Alignment.center,
+      maxHeight: map["_height"],
+      maxWidth: map["_width"],
+    );
+  }
+}
+
+class PositionedPattern extends ProcessPattern {
+  PositionedPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    Widget w = getPatternWidget(map["_child"]);
+    return Positioned(
+      child: w,
+      top: map["_top"],
+      bottom: map["_bottom"],
+      left: map["_left"],
+      right: map["_right"],
+      height: map["_height"],
+      width: map["_width"],
     );
   }
 }

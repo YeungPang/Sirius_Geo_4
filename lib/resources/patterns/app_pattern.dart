@@ -15,27 +15,31 @@ class NotiElemPattern extends ProcessPattern {
   bool isGroup = false;
   int total;
   Widget w;
-  String progId;
+  dynamic progId;
   int pno = 0;
+  List<int> ids;
 
   NotiElemPattern(Map<String, dynamic> map) : super(map);
   @override
   Widget getWidget({String name}) {
     progId = map["_progId"];
-    var prog = getCompleted(progId);
-    isGroup = prog is int;
-    if (prog is int) {
+
+    isGroup = (progId is! int) && (progId != null);
+    if (isGroup) {
+      ids ??= resolveIntList(progId);
+      var prog = getCompleted(ids);
       pno = prog;
-      total = map["_progTotal"];
+      total = ids.length;
       if (prog < total) {
         return Obx(() {
-          dynamic value = resxController.getRxValue("groupNoti");
+          dynamic value = resxController.getRxValue("progNoti");
           return _buildWidget(value);
         });
       }
       return _buildWidget(null);
     } else {
-      bool done = prog as bool;
+      var prog = getCompleted(progId);
+      bool done = (progId != null) ? prog as bool : false;
       if ((!done) && (progId != null)) {
         return Obx(() {
           dynamic value = resxController.getRxValue("progNoti");
@@ -50,8 +54,8 @@ class NotiElemPattern extends ProcessPattern {
   Widget _buildWidget(dynamic value) {
     Widget ic = getPatternWidget(map["_child"]);
     if (isGroup) {
-      if (value != null) {
-        if ((value is List<String>) && (!value.contains(progId))) {
+      if ((value != null) && (value != -1)) {
+        if ((value is int) && (!ids.contains(value))) {
           if (w != null) {
             return w;
           }
@@ -60,7 +64,7 @@ class NotiElemPattern extends ProcessPattern {
         }
       }
       double wi = map["_width"];
-      double hp = 0.0184729 * model.screenHeight;
+      double hp = 0.0184729 * model.scaleHeight;
       bool full = (pno >= total);
       int i = full ? total : pno;
       Widget pi = (i == 0)
@@ -68,13 +72,14 @@ class NotiElemPattern extends ProcessPattern {
           : Container(
               width: full ? wi : wi * i / total,
               height: hp,
-              decoration: const BoxDecoration(
-                borderRadius:
-                    BorderRadius.only(bottomLeft: Radius.circular(10)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(size10 * sizeScale)),
                 gradient: greenGradient,
               ));
 
       double h = map["_height"] * 0.85;
+      double s10 = size10 * sizeScale;
       Widget pc = Positioned(
           top: h,
           left: 0.0,
@@ -83,9 +88,9 @@ class NotiElemPattern extends ProcessPattern {
                   width: wi,
                   height: hp,
                   decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                          bottomRight: Radius.circular(10),
-                          bottomLeft: Radius.circular(10)),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(s10),
+                          bottomLeft: Radius.circular(s10)),
                       border: Border.all(color: colorMap["correct"], width: 1)),
                 )
               : Container(
@@ -93,9 +98,9 @@ class NotiElemPattern extends ProcessPattern {
                   width: wi,
                   height: hp,
                   decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                          bottomRight: Radius.circular(10),
-                          bottomLeft: Radius.circular(10)),
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(s10),
+                          bottomLeft: Radius.circular(s10)),
                       border: Border.all(color: colorMap["correct"], width: 1)),
                   child: pi,
                 ));
@@ -118,7 +123,7 @@ class NotiElemPattern extends ProcessPattern {
         return w;
       }
       if ((pno == 1) && (progId != null)) {
-        double h = model.screenWidth * 0.04533333;
+        double h = model.scaleWidth * 0.04533333;
         Widget pi = Positioned(
           top: map["_height"] * 0.70,
           left: map["_width"] * 0.70,
@@ -148,6 +153,113 @@ class NotiElemPattern extends ProcessPattern {
   }
 }
 
+class GroupProgNotiPattern extends ProcessPattern {
+  int total = 0;
+  Widget w;
+  List<int> progId = [];
+  int pno = 0;
+  double cp;
+  ProcessEvent greenEvent;
+  ProcessEvent greyEvent;
+  int inx;
+  bool done = false;
+
+  GroupProgNotiPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String name}) {
+    inx = map["_index"];
+    greenEvent = map["_greenEvent"];
+    done = inx == 0;
+    List<dynamic> gid = map["_grProgId"];
+    double clp = map["_compPercent"];
+    if (!done) {
+      List<dynamic> lid = resxController.getCache("groupIds");
+      lid.add(gid);
+      List<dynamic> cl = resxController.getCache("compList");
+      cl.add(clp);
+      lid = lid[inx - 1];
+      for (String sid in lid) {
+        List<int> iid = resolveIntList(sid);
+        progId.addAll(iid);
+      }
+      total = progId.length;
+
+      int prog = getCompleted(progId);
+      pno += prog;
+      cp = cl[inx - 1] / 100.0;
+      if ((pno / total) < cp) {
+        greyEvent = map["_greyEvent"];
+      } else {
+        done = true;
+      }
+    } else {
+      List<dynamic> lid = [gid];
+      resxController.setCache("groupIds", lid);
+      List<dynamic> cl = [clp];
+      resxController.setCache("compList", cl);
+    }
+
+    if (!done) {
+      return Obx(() {
+        dynamic value = resxController.getRxValue("progNoti");
+        return _buildWidget(value);
+      });
+    }
+    return _buildWidget(null);
+  }
+
+  Widget _buildWidget(dynamic value) {
+    if (value is int) {
+      if (done || (!progId.contains(value))) {
+        if (w != null) {
+          return w;
+        }
+      } else {
+        pno++;
+      }
+    }
+    if (w != null) {
+      if (done || ((pno / total) < cp)) {
+        return w;
+      }
+    }
+    if (!done) {
+      done = ((pno / total) >= cp);
+    }
+    ProcessEvent event = done ? greenEvent : greyEvent;
+    Agent a = model.appActions.getAgent("pattern");
+
+    var p = a.process(event);
+
+    if (p is ProcessPattern) {
+      w = p.getWidget();
+    } else if (p is Widget) {
+      w = p;
+    }
+/* 
+    Widget ic;
+    if ((pno / total) < cp) {
+      ic = Image.asset("assets/images/greyarrow.png");
+    } else {
+      ic = Image.asset("assets/images/greenarrow.png");
+      if (greenName != null) {
+        String name = greenName + (++inx).toString();
+        ProcessEvent greenEvent = resxController.getCache(name);
+        if (greenEvent != null) {
+          //resxController.setRxValue(name, greenEvent);
+          greenName = null;
+        }
+      }
+    }
+    w = SizedBox(
+      child: ic,
+      width: map["_width"],
+      height: map["_height"],
+    ); */
+    return w;
+  }
+}
+
 getSvgMap(Map<String, dynamic> map) {
   String data = map["_data"];
   Map<String, dynamic> mapJson = json.decode(data);
@@ -160,7 +272,7 @@ getSvgMap(Map<String, dynamic> map) {
   int i = 0;
   for (Map<String, dynamic> c in mapList) {
     String label = c["key"];
-    ShapeText st = ShapeText(label, 24, "Lato", Colors.white70);
+    ShapeText st = ShapeText(label, 24 * fontScale, "Lato", Colors.white70);
     shapes.add(Shape(c["path"], i, st, shapePaint, borderPaint));
     if ((key != null) && (label == key)) {
       map["_ansIndex"] = i;
@@ -175,17 +287,17 @@ getSvgMap(Map<String, dynamic> map) {
 
 ProcessPattern getMenuBubble(Map<String, dynamic> map) {
   Map<String, dynamic> imap = {
-    "_height": 0.06 * model.screenHeight,
+    "_height": 0.06 * model.scaleHeight,
     "_name": "assets/images/menu_bubble.png",
     "_boxFit": BoxFit.cover,
   };
   Function pf = getPrimePattern["ImageAsset"];
   ProcessPattern arrow = pf(imap);
-  imap = {"_width": 20.0};
+  imap = {"_width": size20};
   pf = getPrimePattern["SizedBox"];
   imap = {
     "_textStyle": choiceButnTxtStyle,
-    "_iconSize": 20.0,
+    "_iconSize": size20,
     "_iconColor": colorMap["btnBlue"],
     "_highlightColor": colorMap["btnBlue"],
     "_hoverColor": colorMap["btnBlue"],
@@ -206,15 +318,16 @@ ProcessPattern getMenuBubble(Map<String, dynamic> map) {
     List<dynamic> ld = [ls[1], true];
     imap["_tapAction"] = ld;
     menuBox.add(pf(imap));
-    boxHeight += 30.0;
+    boxHeight += 30.0 * sizeScale;
   }
 
-  double boxWidth = 0.50 * model.screenWidth;
+  double boxWidth = 0.50 * model.scaleWidth;
+  double ax = 1.0 - (41.1 / model.screenWidth);
   imap = {
-    "_align": const Alignment(0.80, -0.85),
+    "_align": Alignment(ax, -0.85),
     "_bubbleArrow": arrow,
     "_bubbleBox": menuBox,
-    "_bubbleHeight": 0.23399 * model.screenHeight,
+    "_bubbleHeight": 0.23399 * model.scaleHeight,
     "_arrowAlign": const Alignment(0.9, -0.95),
     "_boxAlign": Alignment.centerRight,
     "_boxWidth": boxWidth,

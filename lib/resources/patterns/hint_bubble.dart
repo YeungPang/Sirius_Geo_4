@@ -45,9 +45,9 @@ Widget getHintBanner(Map<String, dynamic> map) {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [colorMap["correct"], colorMap["correctGradEnd"]]),
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(10),
-          topLeft: Radius.circular(10),
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(size10),
+          topLeft: Radius.circular(size10),
         ),
       ),
       child: Row(
@@ -66,18 +66,18 @@ Widget getHintBanner(Map<String, dynamic> map) {
               model.appActions.doFunction("mvc", [map["_onCancel"]], map);
             },
             child: Row(
-              children: const [
-                Text('   '),
+              children: [
+                const Text('   '),
                 Icon(
                   SGIcons.cancel,
-                  size: 16,
+                  size: 16 * sizeScale,
                   color: Colors.white,
                 ),
               ],
             ),
           ),
-          const SizedBox(
-            width: 10,
+          SizedBox(
+            width: size10,
           ),
         ],
       ));
@@ -106,14 +106,14 @@ Widget getPrevNext(Map<String, dynamic> map) {
                     child: Row(
                       children: [
                         space5,
-                        const Icon(
+                        Icon(
                           Icons.arrow_back_ios,
-                          size: 16,
-                          color: Color(0xFFBDBDBD),
+                          size: 16 * sizeScale,
+                          color: const Color(0xFFBDBDBD),
                         ),
                         Text(
                           map["_prevHint"],
-                          style: faintTxtStyle,
+                          style: dragButnTxtStyle,
                         ),
                       ],
                     ),
@@ -130,8 +130,8 @@ Widget getPrevNext(Map<String, dynamic> map) {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white38,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(size10),
                           ),
                           border: Border.all(
                             color: colorMap["btnBlue"],
@@ -158,10 +158,10 @@ Widget getPrevNext(Map<String, dynamic> map) {
                             map["_nextHint"],
                             style: faintTxtStyle,
                           ),
-                          const Icon(
+                          Icon(
                             Icons.arrow_forward_ios,
-                            size: 16,
-                            color: Color(0xFFBDBDBD),
+                            size: 16 * sizeScale,
+                            color: const Color(0xFFBDBDBD),
                           ),
                           space5
                         ],

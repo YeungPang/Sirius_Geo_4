@@ -5,6 +5,7 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:sirius_geo_4/model/locator.dart';
+import 'package:sirius_geo_4/resources/basic_resources.dart';
 import 'package:sirius_geo_4/resources/fonts.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -61,7 +62,7 @@ class GameComplete extends StatelessWidget {
 Widget getScoreCard(
     String text, int points, Color c, Alignment a, double h, double w) {
   TextStyle sts = yourScoreStyle.copyWith(color: c);
-  TextStyle bts = sts.copyWith(fontSize: 35);
+  TextStyle bts = sts.copyWith(fontSize: 35 * fontScale);
   return SizedBox(
       height: h,
       width: w,
@@ -111,8 +112,8 @@ Widget getShareContainer(Map<String, dynamic> map) {
             child: Container(
                 child: Image(
               image: AssetImage(imagePath),
-              height: 20.0,
-              width: 20.0,
+              height: size20,
+              width: size20,
               color: const Color(0xFF1785C1),
             )))
       ],
@@ -122,7 +123,7 @@ Widget getShareContainer(Map<String, dynamic> map) {
 
 Widget socialMediaButtons() {
   return Container(
-    margin: const EdgeInsets.only(top: 15, bottom: 10),
+    margin: EdgeInsets.only(top: 15 * sizeScale, bottom: size10),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -134,8 +135,8 @@ Widget socialMediaButtons() {
               child: ClipOval(
             child: Image.asset(
               'assets/images/facebook.png',
-              height: 40,
-              width: 40,
+              height: 40 * sizeScale,
+              width: 40 * sizeScale,
             ),
           )),
         ),
@@ -144,12 +145,12 @@ Widget socialMediaButtons() {
               _launchSocial(_twitterUrl, _twitterUrlFallback);
             },
             child: Container(
-              margin: const EdgeInsets.only(left: 20),
+              margin: EdgeInsets.only(left: size20),
               child: ClipOval(
                 child: Image.asset(
                   'assets/images/twitter.png',
-                  height: 40,
-                  width: 40,
+                  height: 40 * sizeScale,
+                  width: 40 * sizeScale,
                 ),
               ),
             )),
@@ -158,12 +159,12 @@ Widget socialMediaButtons() {
               _launchSocial(_instaUrl, _instaUrlFallback);
             },
             child: Container(
-              margin: const EdgeInsets.only(left: 20),
+              margin: EdgeInsets.only(left: size20),
               child: ClipOval(
                 child: Image.asset(
                   'assets/images/instagram.png',
-                  height: 40,
-                  width: 40,
+                  height: 40 * sizeScale,
+                  width: 40 * sizeScale,
                 ),
               ),
             )),
@@ -172,12 +173,12 @@ Widget socialMediaButtons() {
               _launchSocial(_pIntrestUrlFallback, _pIntrestUrlFallback);
             },
             child: Container(
-              margin: const EdgeInsets.only(left: 20),
+              margin: EdgeInsets.only(left: size20),
               child: ClipOval(
                 child: Image.asset(
                   'assets/images/pinterest.png',
-                  height: 40,
-                  width: 40,
+                  height: 40 * sizeScale,
+                  width: 40 * sizeScale,
                 ),
               ),
             )),
@@ -202,7 +203,7 @@ void _takeScreenshot() async {
     //sharing image over social apps
     Share.file("GameComplete", 'screenshot.png', _imageFile, 'image/png');
   }).catchError((onError) {
-    print(onError);
+    debugPrint(onError);
   });
 }
 

@@ -9,7 +9,7 @@ class TapListItem extends StatelessWidget {
   const TapListItem(this.map, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print("Buidling list view");
+    debugPrint("Buidling list view");
     List<dynamic> itemRef = map["_itemRef"] as List<dynamic>;
     if (map["_crossAxisCount"] == null) {
       return ListView.builder(

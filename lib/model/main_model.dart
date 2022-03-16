@@ -7,6 +7,14 @@ class MainModel {
 
   double screenHeight = 812.0;
   double screenWidth = 375.0;
+  double appBarHeight;
+
+  double fontScale;
+  double sizeScale;
+  double scaleHeight;
+  double scaleWidth;
+  double size10;
+  double size20;
 
   AppActions appActions;
 
@@ -31,5 +39,7 @@ class MainModel {
   init() {
     stateData.addAll({"cache": {}, "logical": {}, "user": {}});
     appActions = AgentActions();
+    size10 = 10.0 * sizeScale;
+    size20 = 20.0 * sizeScale;
   }
 }

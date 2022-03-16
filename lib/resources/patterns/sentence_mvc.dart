@@ -12,7 +12,7 @@ import 'package:sirius_geo_4/resources/fonts.dart';
 class SentenceMvc extends Mvc {
   SentenceMvc(Map<String, dynamic> map) : super(map);
 
-  double bgHeight = 0.4926 * model.screenHeight;
+  double bgHeight = 0.4926 * model.scaleHeight;
   ConfigAgent configAgent;
   TextEditingController tc;
   List<dynamic> answers;
@@ -69,8 +69,8 @@ class SentenceMvc extends Mvc {
         "_textStyle": dragButnTxtStyle,
       };
       col.add(tpf(imap));
-      eheight = 0.061576 * model.screenHeight; // 0.04926
-      ewidth = 0.345 * model.screenWidth;
+      eheight = 0.061576 * model.scaleHeight; // 0.04926
+      ewidth = 0.345 * model.scaleWidth;
       ctext = map["_Sentence"];
       imap = {
         "_height": eheight,
@@ -79,7 +79,7 @@ class SentenceMvc extends Mvc {
       };
       ProcessPattern cpp = cpf(imap);
       imap = {
-        "_radius": 10.0,
+        "_radius": size10,
         "_dottedColor": colorMap["btnBlue"],
         "_strokeWidth": 2.0,
         "_child": cpp
@@ -102,7 +102,7 @@ class SentenceMvc extends Mvc {
         "_children": col
       };
       pp = pf(imap);
-      imap = {"_height": 0.20 * model.screenHeight, "_child": pp};
+      imap = {"_height": 0.20 * model.scaleHeight, "_child": pp};
       pf = getPrimePattern["SizedBox"];
       col = [];
       col.add(pf(imap));
@@ -120,7 +120,7 @@ class SentenceMvc extends Mvc {
         imap = {
           "_hintText": model.map["text"]["typeAnswer"],
           "_clear": true,
-          "_width": 0.666667 * model.screenWidth,
+          "_width": 0.666667 * model.scaleWidth,
           "_alignment": Alignment.center,
           "_inputBorder": textFieldBorder,
           "_textStyle": choiceButnTxtStyle,
@@ -134,10 +134,10 @@ class SentenceMvc extends Mvc {
         pp = pf(imap);
         imap["_child"] = pp;
         inTextPP = cpf(imap);
-        double w = 0.826667 * model.screenWidth;
+        double w = 0.826667 * model.scaleWidth;
         imap = {
           "_width": w,
-          "_height": 0.1600985 * model.screenHeight,
+          "_height": 0.1600985 * model.scaleHeight,
           "_alignment": Alignment.center,
           "_decoration": shadowRCDecoration
         };
@@ -232,21 +232,21 @@ class SentenceMvc extends Mvc {
     children.addAll(dragChildList);
     gvNoti = resxController.addToResxMap("gv", children);
 
-    double mainAS = 0.01847 * model.screenHeight;
+    double mainAS = 0.01847 * model.scaleHeight;
     childAspectRatio = ewidth / eheight;
     imap = {
       "_crossAxisCount": 2,
       "_childAspectRatio": childAspectRatio,
       "_mainAxisSpacing": mainAS,
-      "_crossAxisSpacing": 0.04 * model.screenWidth,
-      "_padding": const EdgeInsets.all(10),
+      "_crossAxisSpacing": 0.04 * model.scaleWidth,
+      "_padding": EdgeInsets.all(size10),
     };
     Function pf = getPrimePattern["GridView"];
     ProcessPattern gv = pf(imap);
     lmap = {"_valueName": "gv", "_child": gv};
     pf = getPrimePattern["Obx"];
     imap = {
-      "_width": 0.8267 * model.screenWidth,
+      "_width": 0.8267 * model.scaleWidth,
       "_height": eheight * children.length / 2 +
           mainAS * (children.length / 2.0 + 1.5),
       "_alignment": Alignment.center,

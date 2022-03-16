@@ -9,7 +9,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 class WebViewMvc extends Mvc {
   WebViewMvc(Map<String, dynamic> map) : super(map);
 
-  double bgHeight = 0.4926 * model.screenHeight;
+  double bgHeight = 0.4926 * model.scaleHeight;
   ProcessPattern view;
   ProcessPattern proInd;
   ConfigAgent configAgent;
@@ -33,14 +33,14 @@ class WebViewMvc extends Mvc {
     Function pf = getPrimePattern["WebView"];
     ProcessPattern pp = pf(imap);
     imap = {
-      "_height": 0.7 * model.screenHeight,
-      "_width": model.screenWidth,
+      "_height": 0.7 * model.scaleHeight,
+      "_width": model.scaleWidth,
       "_child": pp
     };
     pf = getPrimePattern["SizedBox"];
     pp = pf(imap);
-    double bh = 0.04926 * model.screenHeight;
-    double bw = 0.32 * model.screenWidth;
+    double bh = 0.04926 * model.scaleHeight;
+    double bw = 0.32 * model.scaleWidth;
     List<dynamic> sl = [pp, getTapItemElemPattern("gameDone", bh, bw, "blue")];
     imap = {
       "_crossAxisAlignment": CrossAxisAlignment.center,

@@ -23,9 +23,9 @@ import 'package:sirius_geo_4/resources/patterns/webview_mvc.dart';
 initApp() {
   int lives = model.map["userProfile"]["lives"];
   resxController.addToResxMap("lives", lives.toString());
-  resxController.addToResxMap("progNoti", "Ø");
-  List<String> gn = [""];
-  resxController.addToResxMap("groupNoti", gn);
+  resxController.addToResxMap("progNoti", -1);
+  // List<String> gn = [""];
+  // resxController.addToResxMap("groupNoti", gn);
 }
 
 ProcessPattern getTopicPattern(Map<String, dynamic> pmap) {
@@ -35,7 +35,9 @@ ProcessPattern getTopicPattern(Map<String, dynamic> pmap) {
     "_width",
     "_decoration",
     "_topicSelection",
-    "_knowYourWorld"
+    "_knowYourWorld",
+    "_img",
+    "_subtitle"
   ];
   for (String s in nl) {
     dynamic d = pmap[s];
@@ -158,14 +160,14 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
     } else {
       pf = getPrimePattern["ImageAsset"];
     }
-    double height = 0.2685 * model.screenHeight;
+    double height = 0.2685 * model.scaleHeight;
     iMap = {
       "_name": imgs,
       "_height": height,
       "_boxFit": BoxFit.cover,
     };
     iMap["_child"] = pf(iMap);
-    // iMap["_borderRadius"] = BorderRadius.circular(10);
+    // iMap["_borderRadius"] = BorderRadius.circular(size10);
     // pf = getPrimePattern["ClipRRect"];
     // iMap["_child"] = pf(iMap);
     // iMap["_alignment"] = Alignment.center;
@@ -220,8 +222,8 @@ ProcessPattern getConfirmPattern(Map<String, dynamic> map) {
 
   Map<String, dynamic> iMap = {
     "_item": text["confirm"],
-    "_height": 0.07143 * model.screenHeight,
-    "_width": 0.872 * model.screenWidth,
+    "_height": 0.07143 * model.scaleHeight,
+    "_width": 0.872 * model.scaleWidth,
     "_alignment": Alignment.center,
     "_textStyle": controlButtonTextStyle,
     "_beginColor": colorMap["btnBlue"],
@@ -306,7 +308,6 @@ ProcessPattern getNotiElemPattern(Map<String, dynamic> pmap) {
     "_transform",
     "_width",
     "_height",
-    "_progTotal",
     "_progId"
   ];
   for (String s in nl) {
@@ -343,13 +344,13 @@ buildBadgedElement(String type, List<dynamic> children,
   if (isImg || incorr) {
     decoration = BoxDecoration(
       color: Colors.white,
-      border: Border.all(color: dc, width: 2),
-      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: dc, width: 2 * sizeScale),
+      borderRadius: BorderRadius.circular(size10),
     );
   } else {
     decoration = BoxDecoration(
       color: dc,
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(size10),
     );
   }
   Map<String, dynamic> imap = {"_icon": icon, "_iconColor": dc};
@@ -478,7 +479,7 @@ ProcessPattern getDialogPattern(Map<String, dynamic> map) {
     imap = {"_child": pp};
     pf = getPrimePattern["Expanded"];
     brow.insert(0, pf(imap));
-    imap = {"_width": 20.0};
+    imap = {"_width": size20};
     pf = getPrimePattern["SizedBox"];
     pp = pf(imap);
     brow.insert(0, pp);
@@ -498,7 +499,7 @@ ProcessPattern getDialogPattern(Map<String, dynamic> map) {
   }
   imap = {
     "_child": pp,
-    "_height": 0.07266 * model.screenHeight,
+    "_height": 0.07266 * model.scaleHeight,
     "_width": w,
     "_decoration": bd,
   };
@@ -507,8 +508,8 @@ ProcessPattern getDialogPattern(Map<String, dynamic> map) {
   pf = getPrimePattern["SizedBox"];
   imap = {"_height": 5.0};
   ProcessPattern sizedPat = pf(imap);
-  double btnHeight = map["_buttonHeight"] ?? 0.0468 * model.screenHeight;
-  double btnWidth = map["_buttonWidth"] ?? 0.3733 * model.screenWidth;
+  double btnHeight = map["_buttonHeight"] ?? 0.0468 * model.scaleHeight;
+  double btnWidth = map["_buttonWidth"] ?? 0.3733 * model.scaleWidth;
   var btns = map["_buttons"];
   ProcessPattern btnPat;
   Map<String, dynamic> iMap = {
@@ -547,13 +548,13 @@ ProcessPattern getDialogPattern(Map<String, dynamic> map) {
   };
   pf = getPrimePattern["Column"];
   imap["_child"] = pf(imap);
-  imap["_borderRadius"] = const BorderRadius.all(Radius.circular(18.0));
+  imap["_borderRadius"] = BorderRadius.all(Radius.circular(18.0 * sizeScale));
   pf = getPrimePattern["ClipRRect"];
   pp = pf(imap);
   si = map["_diaBoxHeight"];
   double h = (si == null)
-      ? 0.1823 * model.screenHeight
-      : si + 0.1823 * model.screenHeight;
+      ? 0.1823 * model.scaleHeight
+      : si + 0.1823 * model.scaleHeight;
   imap = {
     "_alignment": Alignment.center,
     "_height": h,
@@ -607,6 +608,24 @@ ProcessPattern addSubtitle(ProcessPattern title, String subTitle) {
   return pf(imap);
 }
 
+ProcessPattern getGroupProgNotiPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {};
+  List<String> nl = [
+    "_greyEvent",
+    "_greenEvent",
+    "_compPercent",
+    "_grProgId",
+    "_index"
+  ];
+  for (String s in nl) {
+    dynamic d = pmap[s];
+    if (d != null) {
+      map[s] = d;
+    }
+  }
+  return GroupProgNotiPattern(map);
+}
+
 Mvc getMcMvc(Map<String, dynamic> pmap) {
   return McMvc(pmap);
 }
@@ -647,6 +666,7 @@ const Map<String, Function> appPatterns = {
   "ThreeSlider": getThreeSliderPattern,
   "VertSlider": getVertSliderPattern,
   "MenuBubble": getMenuBubble,
+  "GroupProgNoti": getGroupProgNotiPattern,
 };
 
 const Map<String, Function> appMvc = {
