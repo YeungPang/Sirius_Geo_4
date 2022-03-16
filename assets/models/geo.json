@@ -180,8 +180,8 @@
                 "ContiC001;Continents;groups;10.0;0",
                 "CountC001;Continents and Countries;groups;40.0;0;1",
                 "WorlC001;World;groups;50.0;2;3",
-                "WaterC001;Water;groups;50.0;5;6",
-                "MountC001;Mountains;groups;50.0;8;9",
+                "WaterC001;Water;groups;50.0;5;6;7;8",
+                "MountC001;Mountains;groups;50.0;8;9;10",
                 "IslanC001;Islands;groups;50.0;11",
                 "CitieC001;Cities;groups;50.0;12;13"
             ]
