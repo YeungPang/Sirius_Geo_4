@@ -1,13 +1,15 @@
 import 'dart:convert';
+import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/model/main_model.dart';
-import 'package:sirius_geo_4/agent/resx_controller.dart';
+import '../../agent/control_agent.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
+import '../../model/main_model.dart';
+import '../../agent/resx_controller.dart';
 
 class HomePage extends StatelessWidget {
   final ResxController resxController = ResxController();
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +78,10 @@ class HomePage extends StatelessWidget {
       return FutureBuilder<String>(
           future: model.getJson(context),
           builder: (context, snapshot) {
-            if (snapshot.hasError) debugPrint(snapshot.error);
+            if (snapshot.hasError) debugPrint(snapshot.error.toString());
 
             return snapshot.hasData
-                ? _getBodyUi(model, snapshot.data)
+                ? _getBodyUi(model, snapshot.data!)
                 : const Center(
                     child: CircularProgressIndicator(),
                   );
@@ -96,6 +98,7 @@ class HomePage extends StatelessWidget {
     model.stateData["map"] = map;
     model.addCount();
     model.init();
+    model.appActions = AgentActions();
     Agent a = model.appActions.getAgent("pattern");
 
     ProcessEvent event = ProcessEvent("mainView");

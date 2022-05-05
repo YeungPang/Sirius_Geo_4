@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/agent/config_agent.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/patterns/vslider_pattern.dart';
+import '../../agent/config_agent.dart';
+import '../../builder/get_pattern.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
+import '../basic_resources.dart';
+import '../patterns/vslider_pattern.dart';
 
 class SliderMvc extends Mvc {
   SliderMvc(Map<String, dynamic> map) : super(map);
 
   double bgHeight = 0.4926 * model.scaleHeight;
-  ProcessPattern view;
-  ConfigAgent configAgent;
-  ValueNotifier<int> sliderNoti;
-  Map<String, dynamic> imap;
-  Map<String, dynamic> mvmap;
+  late ProcessPattern view;
+  ConfigAgent? configAgent;
+  late ValueNotifier<int> sliderNoti;
+  Map<String, dynamic> imap = {};
+  Map<String, dynamic> mvmap = {};
   List<int> excl = [];
-  List<dynamic> options;
-  int ans;
-  bool isVert;
+  List<dynamic> options = [];
+  int ans = 0;
+  late bool isVert;
   bool refresh = true;
   List<int> rowList = [];
 
@@ -31,8 +31,8 @@ class SliderMvc extends Mvc {
   init() {
     configAgent ??= map["_configAgent"];
     options =
-        configAgent.getElement(map["_AnswerOptions"], map, rowList: rowList);
-    if ((options == null) || (options.isEmpty)) {
+        configAgent!.getElement(map["_AnswerOptions"], map, rowList: rowList);
+    if (options.isEmpty) {
       return;
     }
     if (refresh) {
@@ -43,11 +43,11 @@ class SliderMvc extends Mvc {
     map["_sliderNoti"] = sliderNoti;
     String answer = map["_Answer"];
     if (answer.contains("_ans")) {
-      ans = getRandom(options.length, excl);
+      ans = getRandom(options.length, excl)!;
       excl.add(ans);
     }
     map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
-    // String question = configAgent.checkText("_Question", map);
+    // String question = configAgent!.checkText("_Question", map);
     // map["_question"] = question;
     setup();
   }
@@ -64,7 +64,7 @@ class SliderMvc extends Mvc {
         "_width": w
       };
       map["_mv"] = mvmap;
-      pf = model.appActions.getPattern("VertSlider");
+      pf = model.appActions.getPattern("VertSlider")!;
       ProcessPattern pp = pf(map);
       imap = {
         "_margin": catIconPadding,
@@ -73,7 +73,7 @@ class SliderMvc extends Mvc {
         "_alignment": Alignment.center,
         "_child": pp
       };
-      pf = getPrimePattern["Container"];
+      pf = getPrimePattern["Container"]!;
       pp = pf(imap);
       imap = {
         "_height": mvmap["_height"],
@@ -83,7 +83,7 @@ class SliderMvc extends Mvc {
         "_btnBRadius": 18.0 * sizeScale,
         "_child": pp
       };
-      pf = getPrimePattern["ColorButton"];
+      pf = getPrimePattern["ColorButton"]!;
       pp = pf(imap);
       imap = {
         "_height": 0.6157635 * model.scaleHeight,
@@ -98,10 +98,10 @@ class SliderMvc extends Mvc {
     } else {
       mvmap = {"_state": map["_state"]};
       map["_mv"] = mvmap;
-      pf = model.appActions.getPattern("ThreeSlider");
+      pf = model.appActions.getPattern("ThreeSlider")!;
       map["_colElem"] = pf(map);
     }
-    pf = model.appActions.getPattern("MvcColumn");
+    pf = model.appActions.getPattern("MvcColumn")!;
     view = pf(map);
   }
 
@@ -112,7 +112,7 @@ class SliderMvc extends Mvc {
   }
 
   @override
-  String doAction(String action, Map<String, dynamic> emap) {
+  String doAction(String action, Map<String, dynamic>? emap) {
     switch (action) {
       case "CheckAns":
         String r;
@@ -129,16 +129,18 @@ class SliderMvc extends Mvc {
           int ans1;
           int ans2;
           if (ansType == map["_scale1"]) {
-            ans1 = configAgent.getElement(map["_Answer"], map);
+            ans1 = configAgent!.getElement(map["_Answer"], map);
             ans2 = ((ans1 - top1) * (bottom2 - top2) / (bottom1 - top1) + top2)
                 .toInt();
-            des = ans1 - mvmap["_in1"];
+            int in1 = mvmap["_in1"]!;
+            des = ans1 - in1;
             per = (des * 100 ~/ (bottom1 - top1)).abs();
           } else {
-            ans2 = configAgent.getElement(map["_Answer"], map);
+            ans2 = configAgent!.getElement(map["_Answer"], map);
             ans1 = ((ans2 - top2) * (bottom1 - top1) / (bottom2 - top2) + top1)
                 .toInt();
-            des = ans2 - mvmap["_in2"];
+            int in2 = mvmap["_in2"]!;
+            des = ans2 - in2;
             per = (des * 100 ~/ (bottom2 - top2)).abs();
           }
           mvmap["_ans1"] = ans1;
@@ -162,10 +164,10 @@ class SliderMvc extends Mvc {
             }
           }
         } else {
-          double ans1 = configAgent.getElement(map["_scale1"], map);
+          double ans1 = configAgent!.getElement(map["_scale1"], map);
           mvmap["_ans1"] = ans1;
-          mvmap["_ans2"] = configAgent.getElement(map["_scale2"], map);
-          mvmap["_ans3"] = configAgent.getElement(map["_scale3"], map);
+          mvmap["_ans2"] = configAgent!.getElement(map["_scale2"], map);
+          mvmap["_ans3"] = configAgent!.getElement(map["_scale3"], map);
           double per = ((ans1 - mvmap["_in1"]) / ans1 * 100.00).abs();
           double corrPer = map["_corrPer"];
           map["_subTitle"] =

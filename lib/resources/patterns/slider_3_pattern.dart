@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/builder/special_pattern.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
+import '../../builder/special_pattern.dart';
+import '../../resources/basic_resources.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
+import '../fonts.dart';
 
 class ThreeSliderWidget extends StatefulWidget {
   final Map<String, dynamic> map;
@@ -19,17 +19,17 @@ class ThreeSliderWidget extends StatefulWidget {
 class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     with SingleTickerProviderStateMixin {
   //final _key = new GlobalKey<_SliderWidgetState>();
-  double height;
-  double width;
+  double height = 0.0;
+  double width = 0.0;
   int _res = 0;
   bool _isSwitched = false;
-  AnimationController rotationController;
+  late AnimationController rotationController;
   List<Map<String, dynamic>> _scale = [{}, {}, {}];
   double _absoluteValue = 0.0;
-  double _ratio12;
-  double _ratio13;
-  String _ys;
-  Map<String, dynamic> _mv;
+  double _ratio12 = 0.0;
+  double _ratio13 = 0.0;
+  String _ys = "";
+  Map<String, dynamic> _mv = {};
 
   //bool reset = false;
 
@@ -77,7 +77,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     _mv = widget.map["_mv"];
     return ValueListenableBuilder<int>(
       valueListenable: widget.map["_sliderNoti"],
-      builder: (BuildContext context, int value, Widget child) => Stack(
+      builder: (BuildContext context, int value, Widget? child) => Stack(
         clipBehavior: Clip.none,
         children: _getStackChildren(value),
       ),
@@ -315,7 +315,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
 
   List<Widget> _getPercentWidgets(int i) {
     double diff = 0.0;
-    Color c;
+    Color? c;
     if (_res == 1) {
       String rs = _mv["_resStatus"];
       c = (rs == "g")
@@ -469,7 +469,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
   }
 
   _buildSliderResult() {
-    Color c = (_mv["_resStatus"] == "g")
+    Color? c = (_mv["_resStatus"] == "g")
         ? colorMap["correct"]
         : (_mv["_resStatus"] == "o")
             ? colorMap["almost"]
@@ -586,7 +586,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
 class ThreeSliderPattern extends ProcessPattern {
   ThreeSliderPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return ThreeSliderWidget(map);
   }
 }

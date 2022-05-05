@@ -1,52 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/agent/config_agent.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/resources/app_model.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
-import 'package:sirius_geo_4/resources/patterns/hint_bubble.dart';
+import './config_agent.dart';
+import '../builder/pattern.dart';
+import '../resources/app_model.dart';
+import '../model/locator.dart';
+import '../builder/get_pattern.dart';
+import '../resources/basic_resources.dart';
+import '../resources/fonts.dart';
+import '../resources/patterns/hint_bubble.dart';
 import 'dart:async';
 
 class MvcAgent extends Agent {
-  Map<String, dynamic> currMv;
+  Map<String, dynamic>? currMv;
 
-  Mvc currMvc;
-  Agent agent;
-  ProcessPattern nextBtnPat;
-  ProcessPattern failBtnPat;
-  ProcessPattern btnPat;
-  ProcessPattern sizedPat;
+  Mvc? currMvc;
+  Agent? agent;
+  ProcessPattern? nextBtnPat;
+  ProcessPattern? failBtnPat;
+  ProcessPattern? btnPat;
+  ProcessPattern? sizedPat;
   double resDialWidth = 0.9333 * model.scaleWidth;
   double resDialHeight = 0.1823 * model.scaleHeight;
   double btnHeight = 0.0468 * model.scaleHeight;
   double btnWidth = 0.3733 * model.scaleWidth;
-  String image;
+  String? image;
   Map<String, dynamic> text = model.map["text"];
   Map<String, dynamic> userProfile = model.map["userProfile"];
-  Rx<List<dynamic>> stackNoti;
+  Rx<List<dynamic>>? stackNoti;
   //ValueNotifier<List<dynamic>> progNoti;
-  RxDouble confirmNoti;
+  RxDouble? confirmNoti;
   int liveTime = model.map["liveGenTime"];
-  RxString timeNoti;
-  int timing;
-  Timer timer;
+  RxString? timeNoti;
+  int? timing;
+  Timer? timer;
   bool liveTimeOn = false;
   int timeDuration = 1;
-  ProcessPattern bgLayout;
-  ProcessPattern incompleteProg;
-  ProcessPattern completeProg;
-  ProcessPattern incorrProg;
-  ProcessPattern space20;
-  ProcessPattern space10;
-  ProcessPattern space5;
-  ProcessPattern hint;
-  ProcessPattern quitDialog;
-  Function cpf = getPrimePattern["Container"];
-  Function tpf = getPrimePattern["Text"];
-  List<String> hints;
+  ProcessPattern? bgLayout;
+  ProcessPattern? incompleteProg;
+  ProcessPattern? completeProg;
+  ProcessPattern? incorrProg;
+  ProcessPattern? space20;
+  ProcessPattern? space10;
+  ProcessPattern? space5;
+  ProcessPattern? hint;
+  ProcessPattern? quitDialog;
+  Function cpf = getPrimePattern["Container"]!;
+  Function tpf = getPrimePattern["Text"]!;
+  List<String>? hints;
   int currHint = 0;
   bool hintShowed = false;
 
@@ -55,13 +55,13 @@ class MvcAgent extends Agent {
     switch (event.name) {
       case "newMvc":
         currMv = {};
-        currMv.addAll(event.map);
+        currMv!.addAll(event.map!);
         stackNoti = null;
-        confirmNoti ??= resxController.addToResxMap("confirm", 0.5);
+        confirmNoti ??= resxController.addToResxMap("confirm", 0.5) as RxDouble;
         return createNew(0);
       case "add":
         if (currMv != null) {
-          currMv.addAll(event.map);
+          currMv!.addAll(event.map!);
           return true;
         }
         return false;
@@ -71,14 +71,14 @@ class MvcAgent extends Agent {
         if (hintShowed) {
           break;
         }
-        List<dynamic> hintList = currMv["_hintList"];
+        List<dynamic>? hintList = currMv!["_hintList"];
         if (hintList == null) {
-          ConfigAgent configAgent = currMv["_configAgent"];
+          ConfigAgent configAgent = currMv!["_configAgent"];
           hintList = configAgent.getListContent(
-              currMv["_hints"], model.map["hints"], currMv, null);
-          currMv["_hintList"] = hintList;
+              currMv!["_hints"], model.map["hints"], currMv!, null);
+          currMv!["_hintList"] = hintList;
         }
-        int inx = currMvc.getHintIndex();
+        int inx = currMvc!.getHintIndex();
         String hintStr = hintList[inx];
         hints = hintStr.split(";");
         currHint = 0;
@@ -94,43 +94,45 @@ class MvcAgent extends Agent {
         return quitDialog;
       case "fsm":
         agent = agent ?? model.appActions.getAgent("pattern");
-        String mvcName = currMv["_Q_Pattern_Name"] + "fsm";
+        String mvcName = currMv!["_Q_Pattern_Name"] + "fsm";
         if (clauses[mvcName] == null) {
           mvcName = "fsmPat";
         }
         ProcessEvent ievent = ProcessEvent(mvcName);
-        ievent.map = {"_state": currMv["_state"]};
-        ievent.map.addAll(event.map);
-        String r = agent.process(ievent);
+        ievent.map = {"_state": currMv!["_state"]};
+        if (event.map != null) {
+          ievent.map!.addAll(event.map!);
+        }
+        String? r = agent!.process(ievent);
         if ((r != null) && (r != 'Ø')) {
-          r = currMvc.doAction(r, event.map);
+          r = currMvc!.doAction(r, event.map);
           switch (r) {
             case "Selection":
             case "Editing":
             case "Empty":
             case "DropSel":
-              if ((currMv["_state"] == "selected") ||
-                  (currMv["_state"] == "completed")) {
-                confirmNoti.value = 1.0;
+              if ((currMv!["_state"] == "selected") ||
+                  (currMv!["_state"] == "completed")) {
+                confirmNoti!.value = 1.0;
               } else {
-                confirmNoti.value = 0.5;
+                confirmNoti!.value = 0.5;
               }
               break;
             case "TryAgain":
-              List<int> il = currMv["_prog"];
+              List<int> il = currMv!["_prog"];
               if (il.last == 2) {
                 il.last = -2;
               } else {
                 il.last = -1;
               }
-              currMv["_state"] = "start";
-              confirmNoti.value = 0.5;
-              currMvc.retry();
+              currMv!["_state"] = "start";
+              confirmNoti!.value = 0.5;
+              currMvc!.retry();
               replaceLast(null);
               break;
             case "correct":
             case "almost":
-              List<int> il = currMv["_prog"];
+              List<int> il = currMv!["_prog"];
               if ((il.isEmpty) || ((il.last != -1) && (il.last != -2))) {
                 il.add(1);
               } else if (il.last != -2) {
@@ -142,7 +144,7 @@ class MvcAgent extends Agent {
               updateProg();
               break;
             case "incorrect":
-              List<int> il = currMv["_prog"];
+              List<int> il = currMv!["_prog"];
               if ((il.isEmpty) || ((il.last != -1) && (il.last != -2))) {
                 il.add(0);
                 int lives = userProfile["lives"];
@@ -165,16 +167,16 @@ class MvcAgent extends Agent {
               break;
             case "NextGame":
               replaceLast(null);
-              confirmNoti.value = 0.5;
-              List<int> il = currMv["_prog"];
-              List<dynamic> itemRef = currMv["_itemRef"];
+              confirmNoti!.value = 0.5;
+              List<int> il = currMv!["_prog"];
+              List<dynamic> itemRef = currMv!["_itemRef"];
               int ilen = il.length;
               if (ilen < itemRef.length) {
                 if (itemRef[ilen - 1] == itemRef[ilen]) {
-                  currMv["_state"] = "start";
-                  currMvc.reset(false);
-                  replaceLast(currMvc.getPattern());
-                  confirmNoti.value = 0.5;
+                  currMv!["_state"] = "start";
+                  currMvc!.reset(false);
+                  replaceLast(currMvc!.getPattern());
+                  confirmNoti!.value = 0.5;
                   checkLives();
                 } else {
                   createNew(ilen);
@@ -184,9 +186,9 @@ class MvcAgent extends Agent {
               }
               break;
             case "GameDone":
-              bool scoreMark = currMv["_scoreMark"] ?? false;
+              bool scoreMark = currMv!["_scoreMark"] ?? false;
               if (scoreMark) {
-                setProgress(currMv["_progId"]);
+                setProgress(currMv!["_progId"]);
               }
               currMvc = null;
               currMv = null;
@@ -222,31 +224,33 @@ class MvcAgent extends Agent {
     return null;
   }
 
-  ProcessPattern createNew(int it) {
-    currMv["_state"] = "start";
+  ProcessPattern? createNew(int it) {
+    currMv!["_state"] = "start";
+    currMv!["_subTitle"] = null;
+    currMv!["_scoreMark"] = null;
     hintShowed = false;
     currHint = 0;
     if (it == 0) {
       List<int> il = [];
-      currMv["_prog"] = il;
-      currMv["_hintList"] = null;
+      currMv!["_prog"] = il;
+      currMv!["_hintList"] = null;
     }
-    List<dynamic> itemRef = currMv["_itemRef"];
+    List<dynamic> itemRef = currMv!["_itemRef"];
     List<dynamic> item = itemRef[it];
-    Map<String, dynamic> itemRefMap = currMv["_itemRefMap"];
+    Map<String, dynamic> itemRefMap = currMv!["_itemRefMap"];
     var mheader = itemRefMap["header"];
     List<dynamic> header = (mheader is String) ? mheader.split(";") : mheader;
     List<dynamic> input = [header, item];
     model.appActions.doFunction("mapPat", input, currMv);
-    String mvcName = currMv["_Q_Pattern_Name"];
-    String ref = currMv["_ref"];
+    String mvcName = currMv!["_Q_Pattern_Name"];
+    String? ref = currMv!["_ref"];
     ConfigAgent configAgent =
         (ref != null) ? ConfigAgent(defName: ref) : ConfigAgent();
-    String mapping = currMv["_mapping"];
+    String? mapping = currMv!["_mapping"];
     if (mapping != null) {
       List<dynamic> header = [];
       List<dynamic> data =
-          configAgent.getElement(mapping, currMv, header: header);
+          configAgent.getElement(mapping, currMv!, header: header);
       input = [header, data];
       model.appActions.doFunction("mapPat", input, currMv);
 /*       Map<String, dynamic> inMap = facts["mapping"][mapping];
@@ -259,31 +263,32 @@ class MvcAgent extends Agent {
       }
  */
     }
-    currMv["_configAgent"] = configAgent;
-    Function mvcF = appMvc[mvcName];
+    currMv!["_configAgent"] = configAgent;
+    Function? mvcF = appMvc[mvcName];
     if (mvcF != null) {
       currMvc = mvcF(currMv);
-      currMvc.init();
+      currMvc!.init();
       Map<String, dynamic> imap = {
-        "_height": currMvc.getBgHeight(),
+        "_height": currMvc!.getBgHeight(),
         "_width": model.screenWidth,
         "_decoration": bgDecoration
       };
-      Function pf = getPrimePattern["Container"];
+      Function pf = getPrimePattern["Container"]!;
       bgLayout = pf(imap);
-      List<dynamic> children = [pf(imap), currMvc.getPattern()];
+      List<dynamic> children = [pf(imap), currMvc!.getPattern()];
       if (stackNoti != null) {
-        stackNoti.value = children;
+        stackNoti!.value = children;
         checkLives();
         return null;
       }
 
-      stackNoti = resxController.addToResxMap("mvcStack", children);
+      stackNoti = resxController.addToResxMap("mvcStack", children)
+          as Rx<List<dynamic>>;
       imap = {"_children": children};
-      pf = getPrimePattern["Stack"];
+      pf = getPrimePattern["Stack"]!;
       ProcessPattern pp = pf(imap);
       imap = {"_valueName": "mvcStack", "_child": pp};
-      pf = getPrimePattern["Obx"];
+      pf = getPrimePattern["Obx"]!;
       pp = pf(imap);
 
       if (it == 0) {
@@ -303,7 +308,7 @@ class MvcAgent extends Agent {
     } else {
       agent = agent ?? model.appActions.getAgent("pattern");
       ProcessEvent event = ProcessEvent(mvcName, map: currMv);
-      return agent.process(event);
+      return agent!.process(event);
     }
   }
 
@@ -353,19 +358,20 @@ class MvcAgent extends Agent {
     if (lives == 0) {
       timing ??= liveTime;
       Map<String, dynamic> imap = {"_width": model.size10};
-      Function pf = getPrimePattern["SizedBox"];
+      Function pf = getPrimePattern["SizedBox"]!;
       space10 = pf(imap);
       imap = {
         "_textStyle": incorrTxtStyle,
       };
       ProcessPattern pp = tpf(imap);
-      timeNoti = resxController.addToResxMap("timeNoti", getTiming());
+      timeNoti =
+          resxController.addToResxMap("timeNoti", getTiming()) as RxString;
       imap = {
         "_child": pp,
         "_valueKey": "_text",
         "_valueName": "timeNoti",
       };
-      pf = getPrimePattern["Obx"];
+      pf = getPrimePattern["Obx"]!;
       pp = pf(imap);
       imap = {
         "_child": pp,
@@ -406,24 +412,24 @@ class MvcAgent extends Agent {
   }
 
   _updateTime() {
-    timing -= timeDuration;
-    if (timing <= 0) {
+    timing = timing! - timeDuration;
+    if (timing! <= 0) {
       resxController.setRxValue("lives", '1');
       userProfile["lives"] = 1;
       if (liveTimeOn) {
         replaceLast(null);
       }
-      timer.cancel();
+      timer!.cancel();
       timer = null;
       timing = liveTime;
     } else if (liveTimeOn) {
-      timeNoti.value = getTiming();
+      timeNoti!.value = getTiming();
     }
   }
 
   String getTiming() {
-    int min = timing ~/ 60;
-    int sec = timing % 60;
+    int min = timing! ~/ 60;
+    int sec = timing! % 60;
     String t = text["nextLife"] + min.toString() + ":" + sec.toString();
     return t;
   }
@@ -433,7 +439,7 @@ class MvcAgent extends Agent {
       "_icon": 'lives',
       "_iconColor": Colors.white,
     };
-    Function pf = getPrimePattern["Icon"];
+    Function pf = getPrimePattern["Icon"]!;
     ProcessPattern pp = pf(imap);
     imap = {"_textStyle": controlButtonTextStyle, "_text": "+1"};
     List<dynamic> livesRow = [space10, pp, tpf(imap)];
@@ -444,7 +450,7 @@ class MvcAgent extends Agent {
       "_children": livesRow,
       "_mainAxisAlignment": MainAxisAlignment.spaceAround,
     };
-    pf = getPrimePattern["Row"];
+    pf = getPrimePattern["Row"]!;
     pp = pf(imap);
     imap = {
       "_child": pp,
@@ -452,7 +458,7 @@ class MvcAgent extends Agent {
       "_height": 1.2 * btnHeight,
       "_width": 1.2 * btnWidth,
     };
-    pf = getPrimePattern["ColorButton"];
+    pf = getPrimePattern["ColorButton"]!;
     return pf(imap);
   }
 
@@ -461,7 +467,7 @@ class MvcAgent extends Agent {
       "_icon": 'lives',
       "_iconColor": Colors.white,
     };
-    Function pf = getPrimePattern["Icon"];
+    Function pf = getPrimePattern["Icon"]!;
     List<dynamic> livesRow = [
       pf(imap),
     ];
@@ -472,15 +478,15 @@ class MvcAgent extends Agent {
       "_valueKey": "_text",
       "_valueName": "lives",
     };
-    pf = getPrimePattern["Obx"];
+    pf = getPrimePattern["Obx"]!;
     pp = pf(imap);
     imap = {
       "_child": pp,
     };
-    pf = getPrimePattern["Center"];
+    pf = getPrimePattern["Center"]!;
     pp = pf(imap);
     imap = {"_child": pp, "_width": 40.0 * sizeScale};
-    pf = getPrimePattern["SizedBox"];
+    pf = getPrimePattern["SizedBox"]!;
     livesRow.add(pf(imap));
     return livesRow;
   }
@@ -500,10 +506,10 @@ class MvcAgent extends Agent {
       "_mainAxisAlignment": MainAxisAlignment.spaceEvenly,
       "_children": children
     };
-    Function pf = getPrimePattern["Column"];
+    Function pf = getPrimePattern["Column"]!;
     pp = pf(imap);
     imap = {"_height": h, "_child": pp};
-    pf = getPrimePattern["SizedBox"];
+    pf = getPrimePattern["SizedBox"]!;
     pp = pf(imap);
     List<dynamic> bannerRow = getLivesRow(bannerTxtStyle);
     bannerRow.add(space10);
@@ -520,20 +526,20 @@ class MvcAgent extends Agent {
     pp = getDialogPattern(imap);
     //Get.dialog(getPatternWidget(pp));
     List<dynamic> stackList = [];
-    stackList.addAll(stackNoti.value);
+    stackList.addAll(stackNoti!.value);
     stackList.add(pp);
-    stackNoti.value = stackList;
+    stackNoti!.value = stackList;
   }
 
   buildResultDialog(String event) {
-    ProcessPattern rtc;
+    late ProcessPattern rtc;
     Map<String, dynamic> imap;
 
-    String subTitle = currMv["_subTitle"];
+    String? subTitle = currMv!["_subTitle"];
     double rheight = resDialHeight;
     double rtch = 0.02463 * model.scaleHeight;
     if (sizedPat == null) {
-      Function pf = getPrimePattern["SizedBox"];
+      Function pf = getPrimePattern["SizedBox"]!;
       imap = {"_height": 5.0 * sizeScale};
       sizedPat = pf(imap);
     }
@@ -546,7 +552,7 @@ class MvcAgent extends Agent {
     //pf = getPrimePattern["Text"];
     switch (event) {
       case "correct":
-        List<int> il = currMv["_prog"];
+        List<int> il = currMv!["_prog"];
         if (il.last == 1) {
           Map<String, dynamic> tmap = {
             "_text": text["+1point"],
@@ -613,7 +619,7 @@ class MvcAgent extends Agent {
         image = "assets/images/almost.png";
         break;
       case "ShowAnswer":
-        var anstxt = currMvc.getAnswer();
+        var anstxt = currMvc!.getAnswer();
         if (anstxt != null) {
           if (anstxt is String) {
             Map<String, dynamic> tmap = {
@@ -643,12 +649,12 @@ class MvcAgent extends Agent {
               "_mainAxisAlignment": MainAxisAlignment.spaceBetween,
               "_children": al
             };
-            Function sf = getPrimePattern["Column"];
+            Function sf = getPrimePattern["Column"]!;
             imap["_child"] = sf(tmap);
           }
         } else {
           Map<String, dynamic> tmap = {"_height": 16.0 * sizeScale};
-          Function sf = getPrimePattern["SizedBox"];
+          Function sf = getPrimePattern["SizedBox"]!;
           imap["_child"] = sf(tmap);
         }
         rtc = cpf(imap);
@@ -663,14 +669,14 @@ class MvcAgent extends Agent {
       default:
         break;
     }
-    Function pf = getPrimePattern["Align"];
+    Function pf = getPrimePattern["Align"]!;
     imap["_alignment"] = const Alignment(-0.8, 0.0);
     ProcessPattern pp = pf(imap);
     imap = {
       "_child": pp,
       "_height": 0.07266 * model.scaleHeight,
       "_width": resDialWidth,
-      "_decoration": getDecoration(image),
+      "_decoration": getDecoration(image!),
     };
     ProcessPattern banner = cpf(imap);
     List<dynamic> children = [banner, rtc, btnPat, sizedPat];
@@ -678,10 +684,10 @@ class MvcAgent extends Agent {
       "_mainAxisAlignment": MainAxisAlignment.spaceBetween,
       "_children": children
     };
-    pf = getPrimePattern["Column"];
+    pf = getPrimePattern["Column"]!;
     imap["_child"] = pf(imap);
     imap["_borderRadius"] = BorderRadius.all(Radius.circular(18.0 * sizeScale));
-    pf = getPrimePattern["ClipRRect"];
+    pf = getPrimePattern["ClipRRect"]!;
     pp = pf(imap);
     imap = {
       "_alignment": Alignment.center,
@@ -695,30 +701,30 @@ class MvcAgent extends Agent {
       "_child": pp,
       "_alignment": const Alignment(0.0, 0.99),
     };
-    pf = getPrimePattern["Align"];
+    pf = getPrimePattern["Align"]!;
     pp = pf(imap);
     //Get.dialog(getPatternWidget(pp));
     List<dynamic> stackList = [];
-    stackList.addAll(stackNoti.value);
+    stackList.addAll(stackNoti!.value);
     stackList.add(pf(imap));
-    if (currMv["_addRes"] != null) {
-      stackList.add(currMv["_addRes"]);
-      currMv["_addRes"] = null;
+    if (currMv!["_addRes"] != null) {
+      stackList.add(currMv!["_addRes"]);
+      currMv!["_addRes"] = null;
     }
-    stackNoti.value = stackList;
+    stackNoti!.value = stackList;
   }
 
   ProcessPattern createNextBtn() {
     if (nextBtnPat != null) {
-      return nextBtnPat;
+      return nextBtnPat!;
     }
     nextBtnPat = getTapItemElemPattern("next", btnHeight, btnWidth, "blue");
-    return nextBtnPat;
+    return nextBtnPat!;
   }
 
   ProcessPattern createFailBtns() {
     if (failBtnPat != null) {
-      return failBtnPat;
+      return failBtnPat!;
     }
     Map<String, dynamic> iMap = {
       "_decoration": elemDecoration,
@@ -736,31 +742,31 @@ class MvcAgent extends Agent {
       "_mainAxisAlignment": MainAxisAlignment.spaceAround,
       "_children": children,
     };
-    Function pf = getPrimePattern["Row"];
+    Function pf = getPrimePattern["Row"]!;
     failBtnPat = pf(iMap);
-    return failBtnPat;
+    return failBtnPat!;
   }
 
-  replaceLast(ProcessPattern pp) {
+  replaceLast(ProcessPattern? pp) {
     List<dynamic> stackList = [];
-    stackList.addAll(stackNoti.value);
+    stackList.addAll(stackNoti!.value);
     //List<dynamic> stackList = stackNoti.value;
     if (pp == null) {
       stackList.removeLast();
     } else {
       stackList.last = pp;
     }
-    stackNoti.value = stackList;
+    stackNoti!.value = stackList;
   }
 
   gameComplete() {
     Function pf;
-    Function cpf = getPrimePattern["Container"];
+    Function cpf = getPrimePattern["Container"]!;
     Map<String, dynamic> imap;
     ProcessPattern pp;
     int corr = 0;
     List<dynamic> slw = [];
-    List<dynamic> l = currMv["_prog"];
+    List<dynamic> l = currMv!["_prog"];
     int ll = l.length;
     for (int i = 0; i < ll; i++) {
       if (l[i] == 1) {
@@ -776,9 +782,9 @@ class MvcAgent extends Agent {
     double textHeight = 0.08128 * model.scaleHeight;
     //Function tpf = getPrimePattern["Text"];
 
-    bool scoreMark = score >= currMv["_PassScore"];
+    bool scoreMark = score >= currMv!["_PassScore"];
     if (scoreMark) {
-      BoxDecoration bd = getDecoration("assets/images/star_background.png");
+      BoxDecoration bd = getDecoration("assets/images/star_background.png")!;
       imap = {
         "_height": 0.4926 * model.scaleHeight,
         "_width": width,
@@ -789,11 +795,11 @@ class MvcAgent extends Agent {
         "_alignment": Alignment.topCenter,
         "_child": pp,
       };
-      pf = getPrimePattern["Align"];
+      pf = getPrimePattern["Align"]!;
       pp = pf(imap);
       slw.add(pp);
       if (score >= 0.99) {
-        pf = getPrimePattern["ImageAsset"];
+        pf = getPrimePattern["ImageAsset"]!;
         imap = {
           "_height": 0.18473 * model.scaleHeight,
           "_name": "assets/images/trophy.png",
@@ -806,7 +812,7 @@ class MvcAgent extends Agent {
           "_alignment": const Alignment(0.0, -0.6),
           "_child": pp,
         };
-        pf = getPrimePattern["Align"];
+        pf = getPrimePattern["Align"]!;
         pp = pf(imap);
         slw.add(pp);
         textHeight = 0.1084 * model.scaleHeight;
@@ -839,7 +845,7 @@ class MvcAgent extends Agent {
       sts = sts.copyWith(color: const Color(0xFFF76F71));
       bts = bts.copyWith(color: const Color(0xFFF76F71));
       textHeight = 0.1084 * model.scaleHeight;
-      pf = getPrimePattern["ImageAsset"];
+      pf = getPrimePattern["ImageAsset"]!;
       imap = {
         "_name": "assets/images/circles.png",
         "_boxFit": BoxFit.cover,
@@ -852,7 +858,7 @@ class MvcAgent extends Agent {
         "_alignment": Alignment.topCenter,
         "_child": pp,
       };
-      pf = getPrimePattern["Align"];
+      pf = getPrimePattern["Align"]!;
       pp = pf(imap);
       slw.add(pp);
       imap = {
@@ -875,7 +881,7 @@ class MvcAgent extends Agent {
       "_crossAxisAlignment": CrossAxisAlignment.center,
       "_children": completeText,
     };
-    pf = getPrimePattern["Column"];
+    pf = getPrimePattern["Column"]!;
     pp = pf(imap);
     imap = {
       "_alignment": Alignment.center,
@@ -888,7 +894,7 @@ class MvcAgent extends Agent {
       "_alignment": const Alignment(0.0, -0.95),
       "_child": pp,
     };
-    pf = getPrimePattern["Align"];
+    pf = getPrimePattern["Align"]!;
     pp = pf(imap);
     slw.add(pp);
     completeText = [];
@@ -911,7 +917,7 @@ class MvcAgent extends Agent {
       "_crossAxisAlignment": CrossAxisAlignment.center,
       "_children": completeText,
     };
-    pf = getPrimePattern["Column"];
+    pf = getPrimePattern["Column"]!;
     pp = pf(imap);
     imap = {
       "_alignment": Alignment.center,
@@ -958,7 +964,7 @@ class MvcAgent extends Agent {
       "_crossAxisAlignment": CrossAxisAlignment.center,
       "_children": children,
     };
-    pf = getPrimePattern["Row"];
+    pf = getPrimePattern["Row"]!;
     pp = pf(imap);
     imap = {
       "_alignment": Alignment.center,
@@ -977,7 +983,7 @@ class MvcAgent extends Agent {
       "_shareHeight": shareHeight,
       "_shareIcon": "assets/images/share.png"
     };
-    currMv["_scoreMark"] = scoreMark;
+    currMv!["_scoreMark"] = scoreMark;
     if (scoreMark) {
       imap = {"_name": "socialMediaButtons"};
       children = [
@@ -989,7 +995,7 @@ class MvcAgent extends Agent {
       ];
     } else {
       imap = {"_height": shareHeight};
-      pf = getPrimePattern["SizedBox"];
+      pf = getPrimePattern["SizedBox"]!;
       pp = pf(imap);
       children = [
         c,
@@ -1004,7 +1010,7 @@ class MvcAgent extends Agent {
       "_crossAxisAlignment": CrossAxisAlignment.center,
       "_children": children
     };
-    pf = getPrimePattern["Column"];
+    pf = getPrimePattern["Column"]!;
     pp = pf(imap);
     imap = {
       "_alignment": Alignment.center,
@@ -1014,7 +1020,7 @@ class MvcAgent extends Agent {
     };
     pp = cpf(imap);
     imap = {"_alignment": const Alignment(0.0, 0.95), "_child": pp};
-    pf = getPrimePattern["Align"];
+    pf = getPrimePattern["Align"]!;
     pp = pf(imap);
     slw.add(pp);
     nmap["_gameCompleteList"] = slw;
@@ -1026,23 +1032,23 @@ class MvcAgent extends Agent {
     ProcessPattern pp = prepareProgRow();
     Function pf;
     Map<String, dynamic> imap;
-    if (currMv["_hints"] == null) {
+    if (currMv!["_hints"] == null) {
       imap = {"_child": hint, "_opacity": 0.5};
-      pf = getPrimePattern["Opacity"];
+      pf = getPrimePattern["Opacity"]!;
     } else {
       Map<String, dynamic> eventMap = {};
       ProcessEvent pe = ProcessEvent("mvc");
       pe.map = eventMap;
       List<dynamic> l = ["showHint"];
       imap = {"_child": hint, "_onTap": pe, "_tapAction": l};
-      pf = getPrimePattern["TapItem"];
+      pf = getPrimePattern["TapItem"]!;
     }
     List<dynamic> br = [pp, pf(imap)];
     imap = {
       "_mainAxisAlignment": MainAxisAlignment.spaceBetween,
       "_children": br
     };
-    pf = getPrimePattern["Row"];
+    pf = getPrimePattern["Row"]!;
     pp = pf(imap);
     return pp;
   }
@@ -1057,7 +1063,7 @@ class MvcAgent extends Agent {
         "_iconSize": 17.0,
         "_iconColor": const Color(0xFF999FAD)
       };
-      Function ipf = getPrimePattern["Icon"];
+      Function ipf = getPrimePattern["Icon"]!;
       incompleteProg = ipf(imap);
       imap = {
         "_icon": "complete",
@@ -1072,7 +1078,7 @@ class MvcAgent extends Agent {
       };
       incorrProg = ipf(imap);
       imap = {"_width": model.size10};
-      pf = getPrimePattern["SizedBox"];
+      pf = getPrimePattern["SizedBox"]!;
       space10 = pf(imap);
       imap["_width"] = 5.0 * sizeScale;
       space5 = pf(imap);
@@ -1095,26 +1101,26 @@ class MvcAgent extends Agent {
     resxController.addToResxMap("prog", lg);
     imap = {"_children": lg};
     //progNoti = createNotifier(lg);
-    pf = getPrimePattern["Row"];
+    pf = getPrimePattern["Row"]!;
     pp = pf(imap);
     imap = {"_valueName": "prog", "_child": pp};
-    pf = getPrimePattern["Obx"];
+    pf = getPrimePattern["Obx"]!;
     pp = pf(imap);
 
     imap = {"_child": pp, "_alignment": const Alignment(0.8, 0.0)};
-    pf = getPrimePattern["Align"];
+    pf = getPrimePattern["Align"]!;
     return pf(imap);
   }
 
   List<dynamic> getProgIconList() {
-    List<dynamic> itemRef = currMv["_itemRef"];
-    List<int> il = currMv["_prog"];
+    List<dynamic> itemRef = currMv!["_itemRef"];
+    List<int> il = currMv!["_prog"];
     int ilen = il.length;
     int ln1 = ilen - 1;
     int itlen = itemRef.length;
     List<dynamic> lg = [space10];
     for (int i = 0; i < ilen; i++) {
-      ProcessPattern ic = (il[i] >= 1) ? completeProg : incorrProg;
+      ProcessPattern ic = (il[i] >= 1) ? completeProg! : incorrProg!;
       lg.add(ic);
       if (i < ln1) {
         lg.add(space5);
@@ -1145,7 +1151,7 @@ class MvcAgent extends Agent {
       "_name": "assets/images/quit_bubble_arrow.png",
       "_boxFit": BoxFit.cover,
     };
-    Function pf = getPrimePattern["ImageAsset"];
+    Function pf = getPrimePattern["ImageAsset"]!;
     ProcessPattern arrow = pf(imap);
 
     imap = {
@@ -1153,14 +1159,14 @@ class MvcAgent extends Agent {
       "_iconSize": 16.0,
       "_iconColor": const Color(0xFF999FAE),
     };
-    pf = getPrimePattern["Icon"];
+    pf = getPrimePattern["Icon"]!;
     ProcessPattern pp = pf(imap);
     //Map<String, dynamic> eventMap = {"mode": false};
     ProcessEvent pe = ProcessEvent("popRoute");
     //pe.map = eventMap;
     List<dynamic> l = ["cancel"];
     imap = {"_child": pp, "_onTap": pe, "_tapAction": l};
-    Function tipf = getPrimePattern["TapItem"];
+    Function tipf = getPrimePattern["TapItem"]!;
     pp = tipf(imap);
     double boxWidth = 0.88 * model.scaleWidth;
     imap = {
@@ -1193,12 +1199,12 @@ class MvcAgent extends Agent {
  */
     List<dynamic> children = [tpf(imap)];
     imap["_height"] = model.size10;
-    pf = getPrimePattern["SizedBox"];
+    pf = getPrimePattern["SizedBox"]!;
     children.add(pf(imap));
     imap["_text"] = text["looseProgress"];
     children.add(tpf(imap));
     children.add(pf(imap));
-    pf = getPrimePattern["Column"];
+    pf = getPrimePattern["Column"]!;
     imap = {
       "_children": children,
       "_mainAxisAlignment": MainAxisAlignment.spaceAround,
@@ -1247,7 +1253,7 @@ class MvcAgent extends Agent {
       "_mainAxisAlignment": MainAxisAlignment.spaceAround,
       "_mainAxisSize": MainAxisSize.max,
     };
-    Function rpf = getPrimePattern["Row"];
+    Function rpf = getPrimePattern["Row"]!;
     ProcessPattern rp = rpf(imap);
     imap = {
       "_child": rp,
@@ -1269,7 +1275,7 @@ class MvcAgent extends Agent {
       "_boxWidth": boxWidth,
       "_boxHeight": 0.197044 * model.scaleHeight,
     };
-    pf = getPrimePattern["Bubble"];
+    pf = getPrimePattern["Bubble"]!;
     return pf(imap);
   }
 
@@ -1292,11 +1298,11 @@ class MvcAgent extends Agent {
     String hintText = text["hintText"];
     int ix = currHint + 1;
     bool hasPrev = ix > 1;
-    bool last = ix == hints.length;
+    bool last = ix == hints!.length;
     hintText = hintText
         .replaceFirst("#n#", ix.toString())
-        .replaceFirst("#t#", hints.length.toString());
-    String hint = hints[currHint];
+        .replaceFirst("#t#", hints!.length.toString());
+    String hint = hints![currHint];
     double ax = 1.0 - (100.0 / model.screenWidth);
     Map<String, dynamic> nmap = {
       "_hasPrev": hasPrev,
@@ -1321,7 +1327,7 @@ class MvcAgent extends Agent {
       "_onNext": "nextHint",
     };
     ProcessPattern pp = getHintBubble(nmap);
-    Widget w = getPatternWidget(pp);
+    Widget w = getPatternWidget(pp)!;
     if (hintShowed) {
       Get.back();
       Get.dialog(w);

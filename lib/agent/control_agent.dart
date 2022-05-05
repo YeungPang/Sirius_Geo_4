@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/agent/config_agent.dart';
-import 'package:sirius_geo_4/agent/logic_processor.dart';
-import 'package:sirius_geo_4/agent/mvc_agent.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
+import './config_agent.dart';
+import './logic_processor.dart';
+import './mvc_agent.dart';
+import '../builder/pattern.dart';
+import '../builder/get_pattern.dart';
 import 'package:json_theme/json_theme.dart';
-import 'package:sirius_geo_4/resources/app_model.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
-import 'package:sirius_geo_4/resources/s_g_icons.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/builder/item_search.dart';
+import '../resources/app_model.dart';
+import '../resources/basic_resources.dart';
+import '../resources/fonts.dart';
+import '../resources/s_g_icons.dart';
+import '../model/locator.dart';
+import '../builder/item_search.dart';
 
 class AgentActions extends AppActions {
   final ControlAgent controlAgent = ControlAgent();
   final MvcAgent mvcAgent = MvcAgent();
+  Map<String, Function> appFunc = {};
+  Map<String, Function> appPatterns = {};
   String patName = "";
 
   @override
-  Function getFunction(String name) {
+  Function? getFunction(String name) {
     switch (name) {
       default:
         return appFunc[name];
@@ -27,14 +29,14 @@ class AgentActions extends AppActions {
   }
 
   @override
-  dynamic doFunction(String name, dynamic input, Map<String, dynamic> vars) {
+  dynamic doFunction(String name, dynamic input, Map<String, dynamic>? vars) {
     switch (name) {
       case "patMap":
         Map<String, dynamic> imap = {};
         controlAgent.mapPat(input, imap);
         return imap;
       case "mapPat":
-        return controlAgent.mapPat(input, vars);
+        return controlAgent.mapPat(input, vars!);
       case "mvc":
         List<dynamic> ld = input;
         ProcessEvent pe = ProcessEvent(ld[0]);
@@ -49,7 +51,7 @@ class AgentActions extends AppActions {
         ProcessEvent pe = ProcessEvent(input, map: vars);
         return mvcAgent.process(pe);
       case "decode":
-        return controlAgent.decode(input, vars);
+        return controlAgent.decode(input, vars!);
       case "dataList":
         if ((input is List<dynamic>) && (input.length == 2)) {
           return getDataList(input[0], input[1]);
@@ -96,22 +98,21 @@ class AgentActions extends AppActions {
         }
         switch (sel) {
           case "Search":
-            onSearch(Get.context, {});
+            onSearch(Get.context!, {});
             return true;
           default:
             return true;
         }
-        return false;
       case "setConfig":
         if (input is List<dynamic>) {
           String cName = input[0];
-          Map<String, dynamic> config = model.map[cName];
+          Map<String, dynamic>? config = model.map[cName];
           if (config == null) {
             return false;
           }
           config = splitLines(config);
           cName = input[1];
-          Map<String, dynamic> facts = model.map[cName];
+          Map<String, dynamic>? facts = model.map[cName];
           facts = (facts != null) ? facts["facts"] : null;
           if (facts == null) {
             return false;
@@ -135,12 +136,12 @@ class AgentActions extends AppActions {
         return null;
       case "checkNull":
         String name = input[0];
-        var data = vars[name] ?? input[1];
+        var data = vars![name] ?? input[1];
         vars[name] = data;
         return true;
       case "showDialog":
         Get.dialog(
-          getPatternWidget(input),
+          getPatternWidget(input)!,
           useSafeArea: true,
         );
         return true;
@@ -182,7 +183,7 @@ class AgentActions extends AppActions {
         }
         return false;
       case "handleList":
-        return handleList(input, vars);
+        return handleList(input, vars!);
       default:
         return false;
     }
@@ -190,7 +191,7 @@ class AgentActions extends AppActions {
 
   @override
   Function getPattern(String name) {
-    Function pf = getPrimePattern[name] ?? appPatterns[name];
+    Function? pf = getPrimePattern[name] ?? appPatterns[name];
     if (pf == null) {
       patName = name;
       pf = getControlPattern;
@@ -210,15 +211,18 @@ class AgentActions extends AppActions {
   }
 
   @override
-  dynamic getResource(String res, String spec, {dynamic value}) {
+  dynamic getResource(String res, String? spec, {dynamic value}) {
     String _res = (res.contains("Color")) ? "color" : res;
     switch (_res) {
       case "appBarHeight":
         return model.appBarHeight;
       case "model":
-        return model.map[spec];
+        if (value == null) {
+          return model.map[spec];
+        }
+        return model.map[spec][value];
       case "color":
-        Color c = colorMap[spec];
+        Color? c = colorMap[spec];
         if (c != null) {
           return c;
         }
@@ -230,9 +234,9 @@ class AgentActions extends AppActions {
       case "icon":
         return myIcons[spec];
       case "resxValue":
-        return resxController.getRxValue(spec);
+        return resxController.getRxValue(spec!);
       case "setResxValue":
-        resxController.setRxValue(spec, value);
+        resxController.setRxValue(spec!, value);
         return true;
       case "hratio":
         return model.scaleHeight * (value as double);
@@ -244,15 +248,40 @@ class AgentActions extends AppActions {
         return model.screenWidth * (value as double);
       case "sizeScale":
         return sizeScale * (value as double);
+      case "size5":
+        return model.size5;
+      case "size10":
+        return model.size10;
+      case "size20":
+        return model.size20;
       case "setCache":
-        resxController.setCache(spec, value);
+        resxController.setCache(spec!, value);
         return true;
       case "getCache":
-        return resxController.getCache(spec);
+        return resxController.getCache(spec!);
+      case "removeCache":
+        resxController.setCache(spec!, null);
+        return true;
       case "lookup":
         return model.map["lookup"][spec];
+      case "function":
+        return appFunc[spec];
       default:
-        return null;
+        return resources[res];
+    }
+  }
+
+  @override
+  addFunctions(Map<String, Function>? func) {
+    if (func != null) {
+      appFunc.addAll(func);
+    }
+  }
+
+  @override
+  addPatterns(Map<String, Function>? pat) {
+    if (pat != null) {
+      appPatterns.addAll(pat);
     }
   }
 }
@@ -268,23 +297,21 @@ class ControlAgent extends Agent {
     switch (_type) {
       case "process":
         return agentProcess(event);
-        break;
       case "pattern":
         LogicProcessor lp = LogicProcessor(patterns);
         if (event.map != null) {
-          lp.vars.addAll(event.map);
+          lp.vars.addAll(event.map!);
         }
         var r = lp.process(event.name);
-        if ((event.map != null) && (event.map.length < lp.vars.length)) {
+        if ((event.map != null) && (event.map!.length < lp.vars.length)) {
           List<String> l = lp.vars.keys.toList();
           for (String k in l) {
-            if (event.map[k] == null) {
-              event.map[k] = lp.vars[k];
+            if (event.map![k] == null) {
+              event.map![k] = lp.vars[k];
             }
           }
         }
         return r;
-        break;
       default:
         break;
     }
@@ -304,9 +331,6 @@ class ControlAgent extends Agent {
       return false;
     }
     List<dynamic> pl = (l[1] is String) ? l[1].split(';') : l[1];
-    if (pl == null) {
-      return false;
-    }
     List<dynamic> patHeader = (l[0] is String) ? l[0].split(';') : l[0];
     int len = (patHeader.length > pl.length) ? pl.length : patHeader.length;
     for (int i = 0; i < len; i++) {
@@ -368,7 +392,30 @@ class ControlAgent extends Agent {
                                 ? false
                                 : ipat))
                 : ipat;
-            vars[k] = s;
+            if (s is String) {
+              if (s[0] == '[') {
+                s = s.substring(1, s.length - 1);
+                List<String> ls = s.split(',');
+                List<dynamic> ld = [];
+                for (int i = 0; i < ls.length; i++) {
+                  ld.add(resolveStr(ls[i]));
+                }
+                vars[k] = ld;
+              } else if (s[0] == '{') {
+                s = s.substring(1, s.length - 1);
+                List<String> ls = s.split(',');
+                Map<String, dynamic> ms = {};
+                for (String es in ls) {
+                  List<String> les = es.split(':');
+                  ms[les[0]] = resolveStr(les[1]);
+                }
+                vars[k] = ms;
+              } else {
+                vars[k] = s;
+              }
+            } else {
+              vars[k] = s;
+            }
             break;
         }
       } else {
@@ -392,6 +439,8 @@ class ControlAgent extends Agent {
           return Alignment(v["horiz"], v["vert"]);
         }
         return ThemeDecoder.decodeAlignment(v, validate: false);
+      case "textAlign":
+        return ThemeDecoder.decodeTextAlign(v, validate: false);
       case "axis":
         if (v == "horizontal") {
           return Axis.horizontal;

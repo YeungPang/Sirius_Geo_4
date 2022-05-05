@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 abstract class ProcessPattern {
   final Map<String, dynamic> map;
   ProcessPattern(this.map);
-  Widget getWidget({String name});
+  Widget getWidget({String? name});
 }
 
 abstract class Agent {
@@ -16,7 +16,7 @@ abstract class Mvc {
   init();
   reset(bool startNew);
   retry();
-  String doAction(String action, Map<String, dynamic> emap);
+  String doAction(String action, Map<String, dynamic>? emap);
   ProcessPattern getPattern();
   dynamic getAnswer();
   double getBgHeight();
@@ -25,20 +25,22 @@ abstract class Mvc {
 
 class ProcessEvent {
   final String name;
-  Map<String, dynamic> map;
+  Map<String, dynamic>? map;
 
   ProcessEvent(this.name, {this.map});
 }
 
 abstract class AppActions {
-  Function getFunction(String name);
-  dynamic doFunction(String name, dynamic input, Map<String, dynamic> vars);
-  Function getPattern(String name);
+  addFunctions(Map<String, Function> func);
+  Function? getFunction(String name);
+  dynamic doFunction(String name, dynamic input, Map<String, dynamic>? vars);
+  addPatterns(Map<String, Function> pat);
+  Function? getPattern(String name);
   Agent getAgent(String name);
-  dynamic getResource(String res, String spec, {dynamic value});
+  dynamic getResource(String res, String? spec, {dynamic value});
 }
 
-Widget getPatternWidget(dynamic e) {
+Widget? getPatternWidget(dynamic e) {
   return (e is ProcessPattern)
       ? e.getWidget()
       : (e is Widget)
@@ -49,7 +51,7 @@ Widget getPatternWidget(dynamic e) {
 List<Widget> getPatternWidgetList(List<dynamic> ml) {
   List<Widget> lw = (ml is List<Widget>) ? ml : [];
   for (dynamic e in ml) {
-    Widget w = (e is ProcessPattern)
+    Widget? w = (e is ProcessPattern)
         ? e.getWidget()
         : (e is Widget)
             ? e

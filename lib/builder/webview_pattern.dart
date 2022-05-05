@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
+import '../builder/pattern.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewExpl extends StatefulWidget {
   final Map<String, dynamic> map;
 
-  WebViewExpl(this.map);
+  const WebViewExpl(this.map, {Key? key}) : super(key: key);
   @override
   _WebViewExplState createState() => _WebViewExplState();
 }
@@ -30,9 +30,7 @@ class _WebViewExplState extends State<WebViewExpl> {
       javascriptMode: widget.map["_scriptMode"] ?? JavascriptMode.disabled,
       onWebViewCreated: (WebViewController webViewController) {
         _controller.complete(webViewController);
-        if (_mv != null) {
-          _mv["_wvController"] = webViewController;
-        }
+        _mv["_wvController"] = webViewController;
       },
     ));
   }
@@ -41,7 +39,7 @@ class _WebViewExplState extends State<WebViewExpl> {
 class WebViewPattern extends ProcessPattern {
   WebViewPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return WebViewExpl(map);
   }
 }

@@ -1,48 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/agent/config_agent.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/resources/app_model.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
+import '../../agent/config_agent.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
+import '../../builder/get_pattern.dart';
+import '../app_model.dart';
+import '../basic_resources.dart';
+import '../fonts.dart';
 
 class OrderMvc extends Mvc {
   OrderMvc(Map<String, dynamic> map) : super(map);
 
   double bgHeight = 0.3941 * model.scaleHeight;
-  ConfigAgent configAgent;
-  TextEditingController tc;
-  List<dynamic> answers;
-  List<dynamic> options;
-  List<dynamic> ansList;
-  List<dynamic> children;
-  List<dynamic> col;
-  List<dynamic> draggingList;
-  List<dynamic> dragAnsList;
-  List<dynamic> dragChildList;
-  List<dynamic> targetList;
-  List<dynamic> selectList;
-  Rx<List<dynamic>> gvNoti;
-  Map<String, dynamic> imap;
-  Map<String, dynamic> lmap;
-  Function mvcpf;
-  Function tipf;
-  Function tpf = getPrimePattern["Text"];
-  Function cpf = getPrimePattern["Container"];
-  double childAspectRatio;
-  double eheight;
-  double ewidth;
+  ConfigAgent? configAgent;
+  List<dynamic> answers = [];
+  List<dynamic> options = [];
+  List<dynamic> ansList = [];
+  List<dynamic> children = [];
+  List<dynamic> col = [];
+  List<dynamic> draggingList = [];
+  List<dynamic> dragAnsList = [];
+  List<dynamic> dragChildList = [];
+  List<dynamic> targetList = [];
+  List<dynamic> selectList = [];
+  Rx<List<dynamic>>? gvNoti;
+  Map<String, dynamic> imap = {};
+  Map<String, dynamic> lmap = {};
+  Function? mvcpf;
+  Function tipf = getPrimePattern["TapItem"]!;
+  Function tpf = getPrimePattern["Text"]!;
+  Function cpf = getPrimePattern["Container"]!;
+  double childAspectRatio = 0.0;
+  double eheight = 0.0;
+  double ewidth = 0.0;
   double width = 0.8267 * model.scaleWidth;
   int selIndex = -1;
-  int len;
-  ProcessPattern view;
-  ProcessPattern holder;
+  int len = 0;
+  late ProcessPattern view;
+  late ProcessPattern holder;
   bool refresh = false;
   bool completed = false;
-  ProcessPattern bottomtext;
-  ProcessEvent pe;
+  late ProcessPattern bottomtext;
+  late ProcessEvent pe;
 
   @override
   double getBgHeight() {
@@ -55,10 +54,10 @@ class OrderMvc extends Mvc {
     map["_state"] = "incomplete";
     answers = [];
     configAgent ??= map["_configAgent"];
-    if (ansList == null) {
-      ansList = configAgent.getElement(map["_Answer"], map);
+    if (ansList.isEmpty) {
+      ansList = configAgent!.getElement(map["_Answer"], map);
       len = ansList.length;
-      options = configAgent.getElement(map["_AnswerOptions"], map);
+      options = configAgent!.getElement(map["_AnswerOptions"], map);
       col = [];
       imap = {
         "_text": map["_Info1"],
@@ -91,7 +90,7 @@ class OrderMvc extends Mvc {
         "_strokeWidth": 2.0,
         "_child": cpp
       };
-      Function pf = getPrimePattern["DottedBorder"];
+      Function pf = getPrimePattern["DottedBorder"]!;
       holder = pf(imap);
       pp = buildGridView();
       col.add(pp);
@@ -99,7 +98,7 @@ class OrderMvc extends Mvc {
     }
     map["_colElem"] = col;
     mvcpf ??= model.appActions.getPattern("MvcColumn");
-    view = mvcpf(map);
+    view = mvcpf!(map);
   }
 
   ProcessPattern buildGridView() {
@@ -127,9 +126,8 @@ class OrderMvc extends Mvc {
     };
 
     pe = ProcessEvent("fsm");
-    tipf = getPrimePattern["TapItem"];
 
-    Function dpf = getPrimePattern["Draggable"];
+    Function dpf = getPrimePattern["Draggable"]!;
     for (int i = 0; i < options.length; i++) {
       Map<String, dynamic> dragAction = {
         "_event": "dropSel",
@@ -176,14 +174,14 @@ class OrderMvc extends Mvc {
       ProcessEvent dpe = ProcessEvent("fsm");
       dpe.map = {"_dropIndex": i};
       imap = {"_target": pp, "_dropAction": dpe};
-      Function pf = getPrimePattern["DragTarget"];
+      Function pf = getPrimePattern["DragTarget"]!;
       pp = pf(imap);
       targetList.add(pp);
       children.add(dragChildList[i]);
       children.add(targetList[i]);
       answers.add("");
     }
-    gvNoti = resxController.addToResxMap("gv", children);
+    gvNoti = resxController.addToResxMap("gv", children) as Rx<List<dynamic>>;
 
     double mainAS = 0.01847 * model.scaleHeight;
     childAspectRatio = ewidth / eheight;
@@ -194,10 +192,10 @@ class OrderMvc extends Mvc {
       "_crossAxisSpacing": 0.04 * model.scaleWidth,
       "_padding": EdgeInsets.all(size10),
     };
-    Function pf = getPrimePattern["GridView"];
+    Function pf = getPrimePattern["GridView"]!;
     ProcessPattern gv = pf(imap);
     lmap = {"_valueName": "gv", "_child": gv};
-    pf = getPrimePattern["Obx"];
+    pf = getPrimePattern["Obx"]!;
     imap = {
       "_width": width,
       "_height": eheight * children.length / 2 +
@@ -206,7 +204,7 @@ class OrderMvc extends Mvc {
       "_decoration": shadowRCDecoration,
       "_child": pf(lmap)
     };
-    pf = getPrimePattern["Container"];
+    pf = getPrimePattern["Container"]!;
     return pf(imap);
   }
 
@@ -217,12 +215,12 @@ class OrderMvc extends Mvc {
   }
 
   @override
-  String doAction(String action, Map<String, dynamic> emap) {
+  String doAction(String action, Map<String, dynamic>? emap) {
     switch (action) {
       case "Selection":
-        int inx = emap["_index"];
+        int inx = emap!["_index"]! as int;
         if (selIndex == -1) {
-          if (emap["_item"] == "target") {
+          if (emap["_item"]! == "target") {
             break;
           }
           selIndex = inx;
@@ -232,7 +230,7 @@ class OrderMvc extends Mvc {
           }
           children[ix] = draggingList[inx];
         } else {
-          if (emap["_item"] == "target") {
+          if (emap["_item"]! == "target") {
             swap(selIndex, inx);
           } else {
             int ix = children.indexOf(draggingList[selIndex]);
@@ -256,10 +254,10 @@ class OrderMvc extends Mvc {
         }
         List<dynamic> c = [];
         c.addAll(children);
-        gvNoti.value = c;
+        gvNoti!.value = c;
         break;
       case "DropSel":
-        swap(emap["_index"], emap["_dropIndex"]);
+        swap(emap!["_index"]!, emap["_dropIndex"]!);
         break;
       case "CheckAns":
         bool cor = true;
@@ -267,7 +265,8 @@ class OrderMvc extends Mvc {
         map["_state"] = "confirmed";
         for (int i = 0; i < ansList.length; i++) {
           String r = "correct";
-          if (answers[i].toLowerCase() != ansList[i].toString().toLowerCase()) {
+          if (answers[i].toString().trim().toLowerCase() !=
+              ansList[i].toString().trim().toLowerCase()) {
             r = "incorrect";
             cor = false;
           }
@@ -276,13 +275,12 @@ class OrderMvc extends Mvc {
         }
         List<dynamic> c = [];
         c.addAll(children);
-        gvNoti.value = c;
+        gvNoti!.value = c;
         if (cor) {
           return "correct";
         } else {
           return "incorrect";
         }
-        break;
       case "ShowAnswer":
         answers = ansList;
         int ix = 1;
@@ -292,7 +290,7 @@ class OrderMvc extends Mvc {
         }
         List<dynamic> c = [];
         c.addAll(children);
-        gvNoti.value = c;
+        gvNoti!.value = c;
         break;
       case "TryAgain":
         break;
@@ -342,7 +340,7 @@ class OrderMvc extends Mvc {
     selIndex = -1;
     List<dynamic> c = [];
     c.addAll(children);
-    gvNoti.value = c;
+    gvNoti!.value = c;
   }
 
   @override
@@ -369,7 +367,7 @@ class OrderMvc extends Mvc {
     selIndex = -1;
     List<dynamic> c = [];
     c.addAll(children);
-    gvNoti.value = c;
+    gvNoti!.value = c;
   }
 
   buildBadgedElem(int i, int cinx, String type, List<dynamic> c) {

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/main_model.dart';
-import 'package:sirius_geo_4/ui/views/home_page.dart';
+import './/agent/resx_controller.dart';
+import './/builder/pattern.dart';
+import './/model/main_model.dart';
+import './/ui/views/home_page.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/agent/resx_controller.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     MainModel model = Get.put(MainModel());
@@ -33,13 +33,13 @@ class MyApp extends StatelessWidget {
     Map<String, dynamic> map = Get.arguments;
     Agent a = model.appActions.getAgent("pattern");
 
-    ProcessEvent event = ProcessEvent(Get.parameters["screen"], map: map);
+    ProcessEvent event = ProcessEvent(Get.parameters["screen"]!, map: map);
     var p = a.process(event);
 
     if (p is ProcessPattern) {
       screen = p.getWidget();
-    } else if (p is Widget) {
-      screen = p;
+    } else {
+      screen = p as Widget;
     }
     return screen;
   }

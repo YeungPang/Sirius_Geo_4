@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
+import '../model/locator.dart';
+import '../builder/pattern.dart';
 import 'dart:math';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:string_validator/string_validator.dart';
@@ -9,12 +9,12 @@ final Map<String, dynamic> facts = model.map["patterns"]["facts"];
 final Map<String, dynamic> clauses = model.map["patterns"]["clauses"];
 
 class ConfigAgent {
-  String defName;
-  Map<String, dynamic> defMap;
+  String? defName;
+  Map<String, dynamic>? defMap;
   ConfigAgent({this.defName});
 
   dynamic getElement(var iv, Map<String, dynamic> vars,
-      {List<int> rowList, List<dynamic> header}) {
+      {List<int>? rowList, List<dynamic>? header}) {
     if ((iv == null) || ((iv is String) && (iv.isEmpty))) {
       return null;
     }
@@ -24,10 +24,11 @@ class ConfigAgent {
         if (rowList != null) {
           rowList.add(iv);
         }
-        return defMap["elemList"][iv];
+        return defMap!["elemList"][iv];
       }
     }
-    if ((iv is double) || (iv is bool)) {
+    //if ((iv is double) || (iv is bool)) {
+    if (iv is! String) {
       return iv;
     }
     String s = iv;
@@ -42,31 +43,25 @@ class ConfigAgent {
         defMap ??= facts;
       }
       for (int i = 1; i < (ll - 1); i++) {
-        defMap = defMap[ls[i].trim()];
+        defMap = defMap![ls[i].trim()];
       }
       src = ls[1].trim();
       if (src.isEmpty) {
         return defMap;
       }
       if (isAlphanumeric(src) && !isNumeric(src)) {
-        return defMap[src];
+        return defMap![src];
       }
     }
-    var si = int.tryParse(src) ??
-        (double.tryParse(src) ??
-            ((src == "true")
-                ? true
-                : (src == "false")
-                    ? false
-                    : src));
+    var si = resolveStr(src);
     if (si is int) {
       if (defMap != null) {
         if (rowList != null) {
           rowList.add(si);
         }
-        dynamic r = defMap["elemList"];
+        dynamic r = defMap!["elemList"];
         if (header != null) {
-          var h = defMap["header"];
+          var h = defMap!["header"];
           List<dynamic> hl;
           hl = (h is String) ? h.split(';') : h;
           header.addAll(hl);
@@ -94,22 +89,14 @@ class ConfigAgent {
         if (ls2.length > 1) {
           s2 = ls2[ls2.length - 1].trim();
         }
-        if ((s2 is String) && (s2[0] == '_')) {
+        if (s2[0] == '_') {
           s2 = vars[s2] ?? s2;
         }
-        si = int.tryParse(s2) ??
-            (double.tryParse(s2) ??
-                ((s2 == "true")
-                    ? true
-                    : (s2 == "false")
-                        ? false
-                        : s2));
+        si = resolveStr(s2);
         if ((si is int) && (defMap != null)) {
           List<dynamic> ds2 = [];
           for (List<dynamic> ld in ds1) {
-            if (ld != null) {
-              ds2.add(ld[si]);
-            }
+            ds2.add(ld[si]);
           }
           return ds2;
         }
@@ -121,34 +108,22 @@ class ConfigAgent {
     String s0 = ls[0].trim();
     si = (s0[0] == '_') ? vars[s0] ?? s0 : s0;
     if (si is String) {
-      si = int.tryParse(si) ??
-          (double.tryParse(si) ??
-              ((si == "true")
-                  ? true
-                  : (si == "false")
-                      ? false
-                      : si));
+      si = resolveStr(si);
     }
     int inx = ls.length - 1;
-    String s1 = (ls.length > 1) ? ls[inx].trim() : null;
+    String? s1 = (ls.length > 1) ? ls[inx].trim() : null;
     var si2 = (s1 == null) ? null : ((s1[0] == '_') ? (vars[s1] ?? s1) : s1);
     if (si2 is String) {
-      si2 = int.tryParse(si2) ??
-          (double.tryParse(si2) ??
-              ((s1 == "true")
-                  ? true
-                  : (si2 == "false")
-                      ? false
-                      : si2));
+      si2 = resolveStr(si2);
     }
     if ((defMap != null) && (si is int)) {
       if (header != null) {
-        var h = defMap["header"];
+        var h = defMap!["header"];
         List<dynamic> hl;
         hl = (h is String) ? h.split(';') : h;
         header.addAll(hl);
       }
-      List<dynamic> ld = defMap["elemList"][si];
+      List<dynamic> ld = defMap!["elemList"][si];
       if (rowList != null) {
         rowList.add(si);
       }
@@ -164,8 +139,8 @@ class ConfigAgent {
     return si;
   }
 
-  List<dynamic> getListContent(String s, Map<String, dynamic> defMap,
-      Map<String, dynamic> vars, List<int> rowList) {
+  List<dynamic> getListContent(String s, Map<String, dynamic>? defMap,
+      Map<String, dynamic> vars, List<int>? rowList) {
     RegExp re = RegExp(r"[\[\],]");
     List<String> ls1 = s.split(re);
     List<dynamic> ds1 = [];
@@ -179,12 +154,12 @@ class ConfigAgent {
           if (sr[0] == '_') {
             sr = vars[sr] ?? sr;
           }
-          int r1 = int.tryParse(sr);
+          int? r1 = int.tryParse(sr);
           sr = rs[1].trim();
           if (sr[0] == '_') {
             sr = vars[sr] ?? sr;
           }
-          int r2 = int.tryParse(sr);
+          int? r2 = int.tryParse(sr);
           if ((r1 != null) && (r2 != null) && (defMap != null)) {
             notRange = false;
             for (int r = r1; r <= r2; r++) {
@@ -205,24 +180,24 @@ class ConfigAgent {
     return ds1;
   }
 
-  List<dynamic> mapPatternList(String patName, String elemName,
+  List<dynamic> mapPatternList(String patName, String? elemName,
       List<dynamic> elemList, Map<String, dynamic> map) {
-    Function pf = model.appActions.getPattern(patName);
+    Function? pf = model.appActions.getPattern(patName);
     List<dynamic> pl = [];
     for (var v in elemList) {
       if ((v is Map<String, dynamic>) && (elemName == null)) {
         map.addAll(v);
       } else {
-        map[elemName] = v;
+        map[elemName!] = v;
       }
-      ProcessPattern p = pf(map);
+      ProcessPattern p = pf!(map);
       pl.add(p);
     }
     return pl;
   }
 
-  String checkText(String textName, Map<String, dynamic> map) {
-    String text = map[textName];
+  String? checkText(String textName, Map<String, dynamic> map) {
+    String? text = map[textName];
     if (text == null) {
       return null;
     }
@@ -244,13 +219,7 @@ List<dynamic> splitElemList(List<dynamic> list) {
       List<String> ls = v.split(';');
       List<dynamic> lv = [];
       for (String s in ls) {
-        dynamic vs = int.tryParse(s);
-        vs ??= double.tryParse(s);
-        vs ??= (s == "true")
-            ? true
-            : (s == "false")
-                ? false
-                : s;
+        dynamic vs = resolveStr(s);
         lv.add(vs);
       }
       vl.add(lv);
@@ -260,13 +229,7 @@ List<dynamic> splitElemList(List<dynamic> list) {
       vl.add(splitElemList(v));
     } else {
       if (v is String) {
-        dynamic vs = int.tryParse(v);
-        vs ??= double.tryParse(v);
-        vs ??= (v == "true")
-            ? true
-            : (v == "false")
-                ? false
-                : v;
+        dynamic vs = resolveStr(v);
         vl.add(vs);
       } else {
         vl.add(v);
@@ -292,13 +255,13 @@ Map<String, dynamic> splitLines(Map<String, dynamic> map) {
   return rMap;
 }
 
-List<dynamic> getDataList(Map<String, dynamic> m, var ielem) {
+List<dynamic>? getDataList(Map<String, dynamic> m, var ielem) {
   List<dynamic> elem;
   if (ielem is String) {
     List<String> il = ielem.split(";");
     elem = [];
     for (int i = 0; i < il.length; i++) {
-      int ii = int.tryParse(il[i]);
+      int? ii = int.tryParse(il[i]);
       if (ii != null) {
         elem.add(ii);
       } else {
@@ -312,12 +275,12 @@ List<dynamic> getDataList(Map<String, dynamic> m, var ielem) {
   List<dynamic> header = (mheader is String) ? mheader.split(";") : mheader;
   var mr = m["dataStart"];
   int inx = header.indexOf("ref");
-  String ref = elem[inx];
+  String? ref = (inx >= 0) ? elem[inx] : null;
   String inxName = (mr is List<dynamic>) ? mr[0] : mr;
   inx = header.indexOf(inxName);
   if (ref != null) {
-    Map<String, dynamic> em = facts[ref];
-    List<dynamic> el = (em != null) ? em["elemList"] : null;
+    Map<String, dynamic>? em = facts[ref];
+    List<dynamic>? el = (em != null) ? em["elemList"] : null;
     if ((inx >= 0) && (el != null)) {
       List<dynamic> dl = [];
       List<int> excl = [];
@@ -325,7 +288,7 @@ List<dynamic> getDataList(Map<String, dynamic> m, var ielem) {
         var einx = elem[i];
         if (einx is String) {
           List<int> il = resolveIntList(einx.trim());
-          int ri = getRandom(il.length, excl);
+          int ri = getRandom(il.length, excl)!;
           excl.add(ri);
           ri = il[ri];
           var v = el[ri];
@@ -350,13 +313,13 @@ List<int> resolveIntList(String einx) {
   for (String s in sl) {
     if (s.contains('‥')) {
       List<String> sdl = s.split('‥');
-      int i0 = int.tryParse(sdl[0].trim());
-      int i1 = int.tryParse(sdl[1].trim());
+      int i0 = int.tryParse(sdl[0].trim())!;
+      int i1 = int.tryParse(sdl[1].trim())!;
       for (int j = i0; j <= i1; j++) {
         il.add(j);
       }
     } else {
-      int i0 = int.tryParse(s.trim());
+      int i0 = int.tryParse(s.trim())!;
       il.add(i0);
     }
   }
@@ -372,7 +335,7 @@ dynamic lookup(String estr) {
     for (String s in il) {
       elem = elem[s];
     }
-    int inx = int.tryParse(sl[1]);
+    int? inx = int.tryParse(sl[1]);
     if (inx != null) {
       List<dynamic> elemList = elem["elemList"];
       return elemList[inx];
@@ -463,7 +426,7 @@ dynamic setNotiValue(dynamic input) {
   return false;
 }
 
-int getRandom(int range, List<int> exclude) {
+int? getRandom(int range, List<int> exclude) {
   Random random = Random();
   if (exclude.length >= range) {
     return null;
@@ -478,7 +441,8 @@ int getRandom(int range, List<int> exclude) {
   return n;
 }
 
-List<int> getRandomList(int size, int range, List<int> incl, List<int> excl) {
+List<int>? getRandomList(
+    int size, int range, List<int>? incl, List<int>? excl) {
   int olen = size - range;
   int exlen = (excl != null) ? excl.length : 0;
   if (olen < exlen) {
@@ -494,7 +458,7 @@ List<int> getRandomList(int size, int range, List<int> incl, List<int> excl) {
   }
   exclude.addAll(rlist);
   while (rlist.length < range) {
-    int ri = getRandom(size, exclude);
+    int ri = getRandom(size, exclude)!;
     exclude.add(ri);
     if ((rlist.isEmpty) || (rlist.last < ri)) {
       rlist.add(ri);
@@ -510,12 +474,12 @@ List<int> getRandomList(int size, int range, List<int> incl, List<int> excl) {
   return rlist;
 }
 
-List<dynamic> mapList(List<int> inxList, List<dynamic> list) {
+List<dynamic>? mapList(List<int> inxList, List<dynamic> list) {
   if (inxList.length > list.length) {
     return null;
   }
   List<dynamic> mapList = [];
-  for (int i; i < inxList.length; i++) {
+  for (int i = 0; i < inxList.length; i++) {
     int inx = inxList[i];
     if (inx >= list.length) {
       return null;
@@ -525,7 +489,7 @@ List<dynamic> mapList(List<int> inxList, List<dynamic> list) {
   return mapList;
 }
 
-List<dynamic> resolveList(List<dynamic> list, Map<String, dynamic> vars) {
+List<dynamic>? resolveList(List<dynamic> list, Map<String, dynamic> vars) {
   List<dynamic> rList = [];
   for (var e in list) {
     var v = ((e is String) && (e[0] == '_')) ? vars[e] : e;
@@ -534,8 +498,8 @@ List<dynamic> resolveList(List<dynamic> list, Map<String, dynamic> vars) {
       if (ls.length != 2) {
         return null;
       }
-      int int1 = int.tryParse(ls[0]);
-      int int2 = int.tryParse(ls[1]);
+      int? int1 = int.tryParse(ls[0]);
+      int? int2 = int.tryParse(ls[1]);
       if ((int1 == null) || (int2 == null)) {
         return null;
       }
@@ -629,14 +593,14 @@ setProgress(int pi) {
   resxController.setRxValue("progNoti", pi);
 }
 
-Future<String> _loadString(String fileName) async {
+Future<String> loadString(String fileName) async {
   return await rootBundle.loadString(fileName);
 }
 
 loadData(Map<String, dynamic> map) async {
   String fileName = map["_fileName"];
-  Function func = model.appActions.getFunction(map["_func"]);
-  _loadString(fileName).then((value) {
+  Function func = model.appActions.getFunction(map["_func"])!;
+  loadString(fileName).then((value) {
     map["_data"] = value;
     func(map);
   });
@@ -663,7 +627,7 @@ bool handleList(List<dynamic> input, Map<String, dynamic> map) {
       if (input.length < 3) {
         return false;
       }
-      int index = (input.length == 4) ? input[3] : map["_index"];
+      int? index = (input.length == 4) ? input[3] : map["_index"];
       if (index == null) {
         return false;
       }
@@ -691,7 +655,7 @@ bool handleList(List<dynamic> input, Map<String, dynamic> map) {
       if (input.length == 3) {
         list.removeAt(input[2]);
       } else {
-        int index = map["_index"];
+        int? index = map["_index"];
         if (index == null) {
           return false;
         }
@@ -703,15 +667,15 @@ bool handleList(List<dynamic> input, Map<String, dynamic> map) {
       break;
     case "removeRange":
       bool inse = input.length == 5;
-      int start = inse ? input[3] : map["_start"];
-      int end = inse ? input[4] : map["_end"];
+      int? start = inse ? input[3] : map["_start"];
+      int? end = inse ? input[4] : map["_end"];
       if ((start == null) || (end == null)) {
         return false;
       }
       list.removeRange(start, end);
       break;
     case "replace":
-      int index = (input.length == 4) ? input[3] : map["_index"];
+      int? index = (input.length == 4) ? input[3] : map["_index"];
       if ((index == null) || (input.length < 3)) {
         return false;
       }
@@ -723,4 +687,13 @@ bool handleList(List<dynamic> input, Map<String, dynamic> map) {
   return true;
 }
 
-//TextSpan getTextSpan()
+dynamic resolveStr(String src) {
+  dynamic d = int.tryParse(src) ??
+      (double.tryParse(src) ??
+          ((src == "true")
+              ? true
+              : (src == "false")
+                  ? false
+                  : src));
+  return d;
+}

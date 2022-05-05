@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/resources/patterns/app_pattern.dart';
-import 'package:sirius_geo_4/resources/patterns/game_complete.dart';
-import 'package:sirius_geo_4/resources/patterns/main_menu.dart';
-import 'package:sirius_geo_4/resources/patterns/mc_mvc.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
-import 'package:sirius_geo_4/agent/config_agent.dart';
-import 'package:sirius_geo_4/resources/patterns/order_mvc.dart';
-import 'package:sirius_geo_4/resources/patterns/sentence_mvc.dart';
-import 'package:sirius_geo_4/resources/patterns/slider_3_pattern.dart';
-import 'package:sirius_geo_4/resources/patterns/slider_mvc.dart';
-import 'package:sirius_geo_4/resources/patterns/svg_paint_mvc.dart';
-import 'package:sirius_geo_4/builder/svg_paint_pattern.dart';
-import 'package:sirius_geo_4/resources/patterns/text_mvc.dart';
-import 'package:sirius_geo_4/resources/patterns/vslider_pattern.dart';
-import 'package:sirius_geo_4/resources/patterns/webview_mvc.dart';
+import '../../model/locator.dart';
+import '../../builder/get_pattern.dart';
+import '../../builder/pattern.dart';
+import './patterns/app_pattern.dart';
+import './patterns/game_complete.dart';
+import './patterns/main_menu.dart';
+import './patterns/mc_mvc.dart';
+import './basic_resources.dart';
+import './fonts.dart';
+import '../../agent/config_agent.dart';
+import './patterns/order_mvc.dart';
+import './patterns/sentence_mvc.dart';
+import './patterns/slider_3_pattern.dart';
+import './patterns/slider_mvc.dart';
+import './patterns/svg_paint_mvc.dart';
+import '../../builder/svg_paint_pattern.dart';
+import './patterns/text_mvc.dart';
+import './patterns/vslider_pattern.dart';
+import './patterns/webview_mvc.dart';
 
 initApp() {
   int lives = model.map["userProfile"]["lives"];
   resxController.addToResxMap("lives", lives.toString());
   resxController.addToResxMap("progNoti", -1);
+  model.appActions.addPatterns(appPatterns);
+  model.appActions.addFunctions(appFunc);
   // List<String> gn = [""];
   // resxController.addToResxMap("groupNoti", gn);
 }
@@ -35,7 +37,7 @@ ProcessPattern getTopicPattern(Map<String, dynamic> pmap) {
     "_width",
     "_decoration",
     "_topicSelection",
-    "_knowYourWorld",
+    "_smallTitle",
     "_img",
     "_subtitle"
   ];
@@ -111,8 +113,8 @@ ProcessPattern getItemElemPattern(Map<String, dynamic> pmap) {
     }
   }
   var item = map["_item"];
-  int index = map["_index"];
-  Map<String, dynamic> eventMap = map["_eventMap"];
+  int? index = map["_index"];
+  Map<String, dynamic>? eventMap = map["_eventMap"];
   if (eventMap != null) {
     eventMap["_item"] = item;
     eventMap["_index"] = index;
@@ -122,12 +124,12 @@ ProcessPattern getItemElemPattern(Map<String, dynamic> pmap) {
     if (item.contains("png") || item.contains("svg")) {
       map["_name"] = item;
       if (item.contains("svg")) {
-        pf = getPrimePattern["SVGAsset"];
+        pf = getPrimePattern["SVGAsset"]!;
       } else {
-        pf = getPrimePattern["ImageAsset"];
+        pf = getPrimePattern["ImageAsset"]!;
       }
     } else {
-      pf = getPrimePattern["Text"];
+      pf = getPrimePattern["Text"]!;
       map["_text"] = item;
     }
     map["_child"] = pf(map);
@@ -135,12 +137,12 @@ ProcessPattern getItemElemPattern(Map<String, dynamic> pmap) {
     map["_child"] = item;
   }
   Function cf = (map["_beginColor"] != null)
-      ? getPrimePattern["ColorButton"]
-      : getPrimePattern["Container"];
+      ? getPrimePattern["ColorButton"]!
+      : getPrimePattern["Container"]!;
   ProcessPattern cp = cf(map);
   if (map["_badgeContext"] != null) {
     map["_child"] = cp;
-    cf = getPrimePattern["Badge"];
+    cf = getPrimePattern["Badge"]!;
     cp = cf(map);
   }
   return cp;
@@ -150,15 +152,15 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
   ConfigAgent configAgent = map["_configAgent"];
   List<dynamic> children = [];
   Function pf;
-  Function cpf = getPrimePattern["Container"];
+  Function cpf = getPrimePattern["Container"]!;
   ProcessPattern pp;
   Map<String, dynamic> iMap;
-  String imgs = configAgent.getElement(map["_Q_Image"], map);
+  String? imgs = configAgent.getElement(map["_Q_Image"], map);
   if (imgs != null) {
     if (imgs.contains("svg")) {
-      pf = getPrimePattern["SVGAsset"];
+      pf = getPrimePattern["SVGAsset"]!;
     } else {
-      pf = getPrimePattern["ImageAsset"];
+      pf = getPrimePattern["ImageAsset"]!;
     }
     double height = 0.2685 * model.scaleHeight;
     iMap = {
@@ -183,11 +185,11 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
     "_textStyle": questionTextStyle,
     "_alignment": Alignment.center,
   };
-  pf = getPrimePattern["Text"];
+  pf = getPrimePattern["Text"]!;
   iMap["_child"] = pf(iMap);
   pp = cpf(iMap);
   children.add(pp);
-  String instr = map["_Instruction"];
+  String? instr = map["_Instruction"];
   if (instr != null) {
     iMap["_text"] = instr;
     iMap["_textStyle"] = resTxtStyle;
@@ -208,9 +210,9 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
     "_mainAxisSize": MainAxisSize.max,
     "_children": children,
   };
-  pf = getPrimePattern["Column"];
+  pf = getPrimePattern["Column"]!;
   iMap["_child"] = pf(iMap);
-  pf = getPrimePattern["ScrollLayout"];
+  pf = getPrimePattern["ScrollLayout"]!;
   return pf(iMap);
 }
 
@@ -235,15 +237,15 @@ ProcessPattern getConfirmPattern(Map<String, dynamic> map) {
   ProcessEvent pe = ProcessEvent("fsm");
   pe.map = eventMap;
   iMap["_onTap"] = pe;
-  Function pf = getPrimePattern["TapItem"];
+  Function pf = getPrimePattern["TapItem"]!;
   iMap["_child"] = pf(iMap);
 /*   iMap["_notifier"] = createNotifier(0.5);
   map["_confirmNoti"] = iMap["_notifier"];
   pf = getPrimePattern["ValueOpacity"]; */
 
-  pf = getPrimePattern["Opacity"];
+  pf = getPrimePattern["Opacity"]!;
   iMap = {"_child": pf(iMap), "_valueName": "confirm", "_valueKey": "_opacity"};
-  pf = getPrimePattern["Obx"];
+  pf = getPrimePattern["Obx"]!;
   return pf(iMap);
 }
 
@@ -290,7 +292,7 @@ ProcessPattern getTapItemElemPattern(
   ProcessEvent pe = ProcessEvent("fsm");
   pe.map = eventMap;
   iMap["_onTap"] = pe;
-  Function pf = getPrimePattern["TapItem"];
+  Function pf = getPrimePattern["TapItem"]!;
   return pf(iMap);
 }
 
@@ -320,22 +322,22 @@ ProcessPattern getNotiElemPattern(Map<String, dynamic> pmap) {
 }
 
 buildBadgedElement(String type, List<dynamic> children,
-    Rx<List<dynamic>> gvNoti, bool isImg, Map<String, dynamic> map) {
+    Rx<List<dynamic>>? gvNoti, bool isImg, Map<String, dynamic> map) {
   BoxDecoration decoration;
   Color dc;
   bool incorr = type == "incorrect";
   String icon;
   switch (type) {
     case "correct":
-      dc = colorMap["correct"];
+      dc = colorMap["correct"]!;
       icon = "correct";
       break;
     case "incorrect":
-      dc = colorMap["incorrect"];
+      dc = colorMap["incorrect"]!;
       icon = "incorrect";
       break;
     case "answer":
-      dc = colorMap["btnBlue"];
+      dc = colorMap["btnBlue"]!;
       icon = "correct";
       break;
     default:
@@ -354,7 +356,7 @@ buildBadgedElement(String type, List<dynamic> children,
     );
   }
   Map<String, dynamic> imap = {"_icon": icon, "_iconColor": dc};
-  Function pf = getPrimePattern["Icon"];
+  Function pf = getPrimePattern["Icon"]!;
   ProcessPattern pp = pf(imap);
   Map<String, dynamic> childMap = {
     "_alignment": Alignment.center,
@@ -364,13 +366,15 @@ buildBadgedElement(String type, List<dynamic> children,
     "_badgeColor": Colors.white,
   };
   childMap.addAll(map);
-  Function iepf = model.appActions.getPattern("ItemElem");
+  Function iepf = model.appActions.getPattern("ItemElem")!;
   pp = iepf(childMap);
   int ci = map["_childInx"];
   children[ci] = pp;
   if (gvNoti != null) {
     List<dynamic> c = [];
-    c.addAll(children);
+    List<dynamic> cc = gvNoti.value;
+    cc[ci] = pp;
+    c.addAll(cc);
     gvNoti.value = c;
   }
 }
@@ -458,43 +462,43 @@ ProcessPattern getSvgPaintPattern(Map<String, dynamic> pmap) {
 }
 
 ProcessPattern getDialogPattern(Map<String, dynamic> map) {
-  Function pf = getPrimePattern["Text"];
+  Function pf = getPrimePattern["Text"]!;
   Map<String, dynamic> imap = {
     "_text": map["_title"],
     "_textStyle": bannerTxtStyle,
   };
   ProcessPattern pp = pf(imap);
-  String subTitle = map["_subTitle"];
+  String? subTitle = map["_subTitle"];
   if (subTitle != null) {
     pp = addSubtitle(pp, subTitle);
   }
-  String bi = map["_bannerImage"];
+  String? bi = map["_bannerImage"];
   String style = map["_diaStyle"];
   BoxDecoration bd = map["_bannerBD"] ??
       ((bi != null) ? getDecoration(bi) : getStyleBoxDecoration(style));
   double w = map["_width"];
-  List<dynamic> brow = map["_bannerRow"];
+  List<dynamic>? brow = map["_bannerRow"];
   //double bw = w;
   if (brow != null) {
     imap = {"_child": pp};
-    pf = getPrimePattern["Expanded"];
+    pf = getPrimePattern["Expanded"]!;
     brow.insert(0, pf(imap));
     imap = {"_width": size20};
-    pf = getPrimePattern["SizedBox"];
+    pf = getPrimePattern["SizedBox"]!;
     pp = pf(imap);
     brow.insert(0, pp);
     imap = {
       "_children": brow,
       "_mainAxisAlignment": MainAxisAlignment.spaceEvenly
     };
-    pf = getPrimePattern["Row"];
+    pf = getPrimePattern["Row"]!;
     pp = pf(imap);
     // imap = {"_width": w * 0.4, "_child": pp};
     // pf = getPrimePattern["Container"];
     // pp = pf(imap);
   } else {
     imap = {"_child": pp, "_alignment": const Alignment(-0.8, 0.0)};
-    pf = getPrimePattern["Align"];
+    pf = getPrimePattern["Align"]!;
     pp = pf(imap);
   }
   imap = {
@@ -503,9 +507,9 @@ ProcessPattern getDialogPattern(Map<String, dynamic> map) {
     "_width": w,
     "_decoration": bd,
   };
-  pf = getPrimePattern["Container"];
+  pf = getPrimePattern["Container"]!;
   ProcessPattern banner = pf(imap);
-  pf = getPrimePattern["SizedBox"];
+  pf = getPrimePattern["SizedBox"]!;
   imap = {"_height": 5.0};
   ProcessPattern sizedPat = pf(imap);
   double btnHeight = map["_buttonHeight"] ?? 0.0468 * model.scaleHeight;
@@ -531,7 +535,7 @@ ProcessPattern getDialogPattern(Map<String, dynamic> map) {
       "_mainAxisAlignment": MainAxisAlignment.spaceAround,
       "_children": children,
     };
-    Function pf = getPrimePattern["Row"];
+    Function pf = getPrimePattern["Row"]!;
     btnPat = pf(iMap);
   } else {
     dynamic mbs = map["_btnStyle"];
@@ -546,10 +550,10 @@ ProcessPattern getDialogPattern(Map<String, dynamic> map) {
     "_mainAxisAlignment": MainAxisAlignment.spaceBetween,
     "_children": children
   };
-  pf = getPrimePattern["Column"];
+  pf = getPrimePattern["Column"]!;
   imap["_child"] = pf(imap);
   imap["_borderRadius"] = BorderRadius.all(Radius.circular(18.0 * sizeScale));
-  pf = getPrimePattern["ClipRRect"];
+  pf = getPrimePattern["ClipRRect"]!;
   pp = pf(imap);
   si = map["_diaBoxHeight"];
   double h = (si == null)
@@ -562,17 +566,17 @@ ProcessPattern getDialogPattern(Map<String, dynamic> map) {
     "_decoration": diaDecoration,
     "_child": pp
   };
-  pf = getPrimePattern["Container"];
+  pf = getPrimePattern["Container"]!;
   pp = pf(imap);
   imap = {
     "_child": pp,
     "_alignment": const Alignment(0.0, 0.99),
   };
-  pf = getPrimePattern["Align"];
+  pf = getPrimePattern["Align"]!;
   return pf(imap);
 }
 
-BoxDecoration getStyleBoxDecoration(String style) {
+BoxDecoration? getStyleBoxDecoration(String style) {
   switch (style) {
     case "blue":
       return blueGradBD;
@@ -597,14 +601,14 @@ ProcessPattern addSubtitle(ProcessPattern title, String subTitle) {
     "_text": subTitle,
     "_textStyle": selButnTxtStyle,
   };
-  Function pf = getPrimePattern["Text"];
+  Function pf = getPrimePattern["Text"]!;
   c.add(pf(imap));
   imap = {
     "_crossAxisAlignment": CrossAxisAlignment.start,
     "_mainAxisAlignment": MainAxisAlignment.spaceAround,
     "_children": c
   };
-  pf = getPrimePattern["Column"];
+  pf = getPrimePattern["Column"]!;
   return pf(imap);
 }
 

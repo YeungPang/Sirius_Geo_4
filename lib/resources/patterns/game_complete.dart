@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:esys_flutter_share/esys_flutter_share.dart';
+//import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
+import '../basic_resources.dart';
+import '../fonts.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,11 +27,11 @@ class GameComplete extends StatelessWidget {
   final Map<String, dynamic> map;
   final ScreenshotController _screenshotController = ScreenshotController();
 
-  GameComplete(this.map);
+  GameComplete(this.map, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     dynamic ml = map["_gameCompleteList"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
@@ -52,7 +53,7 @@ class GameComplete extends StatelessWidget {
                   Color(0xFFD4ECF9),
                 ])),
                 child: Stack(
-                  children: lw,
+                  children: lw!,
                 ),
               ),
             )));
@@ -107,7 +108,7 @@ Widget getShareContainer(Map<String, dynamic> map) {
         ),
         GestureDetector(
             onTap: () {
-              _takeScreenshot();
+              //_takeScreenshot();
             },
             child: Container(
                 child: Image(
@@ -188,7 +189,8 @@ Widget socialMediaButtons() {
 }
 
 final ScreenshotController _screenshotController = ScreenshotController();
-void _takeScreenshot() async {
+
+/* void _takeScreenshot() async {
   _screenshotController.capture().then((Uint8List image) async {
     //Screenshot captured
     var _imageFile = image;
@@ -205,24 +207,23 @@ void _takeScreenshot() async {
   }).catchError((onError) {
     debugPrint(onError);
   });
-}
+} */
 
 void _launchSocial(String url, String fallbackUrl) async {
   try {
-    bool launched =
-        await launch(url, forceSafariVC: false, forceWebView: false);
+    bool launched = await launchUrlString(url);
     if (!launched) {
-      await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+      await launchUrlString(fallbackUrl);
     }
   } catch (e) {
-    await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
+    await launchUrlString(fallbackUrl);
   }
 }
 
 class GameCompletePattern extends ProcessPattern {
   GameCompletePattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return GameComplete(map);
   }
 }
@@ -230,7 +231,7 @@ class GameCompletePattern extends ProcessPattern {
 class GameItemPattern extends ProcessPattern {
   GameItemPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     switch (map["_name"]) {
       case "scoreCard":
         return getScoreCard(map["_text"], map["_points"], map["_color"],
@@ -240,8 +241,7 @@ class GameItemPattern extends ProcessPattern {
       case "socialMediaButtons":
         return socialMediaButtons();
       default:
-        break;
+        throw Exception("Invalid game object: " + map["_name"]);
     }
-    return null;
   }
 }

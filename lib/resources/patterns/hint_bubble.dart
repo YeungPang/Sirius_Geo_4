@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
-import 'package:sirius_geo_4/resources/s_g_icons.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
+import '../../builder/get_pattern.dart';
+import '../basic_resources.dart';
+import '../fonts.dart';
+import '../s_g_icons.dart';
 
 ProcessPattern getHintBubble(Map<String, dynamic> map) {
   Map<String, dynamic> imap = {
@@ -12,7 +12,7 @@ ProcessPattern getHintBubble(Map<String, dynamic> map) {
     "_name": map["_assetName"],
     "_boxFit": BoxFit.cover
   };
-  Function pf = getPrimePattern["ImageAsset"];
+  Function pf = getPrimePattern["ImageAsset"]!;
   map["_bubbleArrow"] = pf(imap);
   List<dynamic> hintBox = [
     getHintBanner(map),
@@ -20,7 +20,7 @@ ProcessPattern getHintBubble(Map<String, dynamic> map) {
     getPrevNext(map),
   ];
   map["_bubbleBox"] = hintBox;
-  pf = getPrimePattern["Bubble"];
+  pf = getPrimePattern["Bubble"]!;
   return pf(map);
 }
 
@@ -44,7 +44,7 @@ Widget getHintBanner(Map<String, dynamic> map) {
         gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [colorMap["correct"], colorMap["correctGradEnd"]]),
+            colors: [colorMap["correct"]!, colorMap["correctGradEnd"]!]),
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(size10),
           topLeft: Radius.circular(size10),
@@ -134,7 +134,7 @@ Widget getPrevNext(Map<String, dynamic> map) {
                             Radius.circular(size10),
                           ),
                           border: Border.all(
-                            color: colorMap["btnBlue"],
+                            color: colorMap["btnBlue"]!,
                             width: 2,
                           ),
                         ),

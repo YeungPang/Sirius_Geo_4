@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/builder/std_pattern.dart';
-import 'package:sirius_geo_4/builder/special_pattern.dart';
-import 'package:sirius_geo_4/builder/tap_list_item.dart';
-import 'package:sirius_geo_4/builder/webview_pattern.dart';
-import 'package:sirius_geo_4/resources/app_model.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
-import 'package:sirius_geo_4/resources/s_g_icons.dart';
-import 'package:sirius_geo_4/builder/item_search.dart';
+import './pattern.dart';
+import './std_pattern.dart';
+import './special_pattern.dart';
+import './tap_list_item.dart';
+import './webview_pattern.dart';
+import '../resources/app_model.dart';
+import '../resources/basic_resources.dart';
+import '../resources/fonts.dart';
+import '../resources/s_g_icons.dart';
+import './item_search.dart';
 import 'package:json_theme/json_theme.dart';
 
-BoxDecoration getDecoration(String image) {
+BoxDecoration? getDecoration(String image) {
   return ThemeDecoder.decodeBoxDecoration({
     "image": {
       "image": {"assetName": image, "type": "asset"},
@@ -167,6 +167,24 @@ ProcessPattern getTextPattern(Map<String, dynamic> pmap) {
     }
   }
   return TextPattern(map);
+}
+
+ProcessPattern getDividerPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {};
+  List<String> nl = [
+    "_color",
+    "_endIndent",
+    "_indent",
+    "_height",
+    "_thickness",
+  ];
+  for (String s in nl) {
+    dynamic d = pmap[s];
+    if (d != null) {
+      map[s] = d;
+    }
+  }
+  return DividerPattern(map);
 }
 
 ProcessPattern getImageAssetPattern(Map<String, dynamic> pmap) {
@@ -429,24 +447,6 @@ ProcessPattern getSizedBoxPattern(Map<String, dynamic> pmap) {
   return SizedBoxPattern(map);
 }
 
-ProcessPattern getNaviScopePattern(Map<String, dynamic> pmap) {
-  Map<String, dynamic> map = {};
-  List<String> nl = [
-    "_child",
-    "_dialog",
-    "_textExit",
-    "_textNo",
-    "_textYesExit"
-  ];
-  for (String s in nl) {
-    dynamic d = pmap[s];
-    if (d != null) {
-      map[s] = d;
-    }
-  }
-  return NaviScopePattern(map);
-}
-
 ProcessPattern getBubblePattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {};
   List<String> nl = [
@@ -542,12 +542,12 @@ ProcessPattern getInTextFieldPattern(Map<String, dynamic> pmap) {
   return InTextFieldPattern(map);
 }
 
-ProcessPattern getValueTextPattern(Map<String, dynamic> pmap) {
+ProcessPattern? getValueTextPattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {
     "_notifier": pmap["_notifier"],
     "_converter": pmap["_converter"]
   };
-  ValueNotifier notifier = map["_notifier"];
+  ValueNotifier? notifier = map["_notifier"];
   if (notifier == null) {
     return null;
   }
@@ -780,13 +780,13 @@ ProcessPattern getColorButtonPattern(Map<String, dynamic> pmap) {
   return ColorButtonPattern(map);
 }
 
-ProcessPattern getValueTypeListenerPattern(Map<String, dynamic> pmap) {
+ProcessPattern? getValueTypeListenerPattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {
     "_notifier": pmap["_notifier"],
     "_notifierKey": pmap["_notifierKey"],
     "_child": pmap["_child"]
   };
-  ValueNotifier notifier = map["_notifier"];
+  ValueNotifier? notifier = map["_notifier"];
   if (notifier == null) {
     return null;
   }
@@ -1030,6 +1030,71 @@ ProcessPattern getPositionedPattern(Map<String, dynamic> pmap) {
   return PositionedPattern(map);
 }
 
+ProcessPattern getListTilePattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {};
+  List<String> nl = [
+    "_key",
+    "_leading",
+    "_title",
+    "_subtitle",
+    "_trailing",
+    "_isThreeLine",
+    "_selected",
+    "_selectedColor",
+    "_selectedTileColor",
+    "_iconColor",
+    "_textColor",
+    "_tileColor",
+    "_contentPadding",
+    "_enabled",
+    "_focusColor",
+    "_hoverColor",
+    "_autofocus",
+    "_onLongPress",
+    "_onTap",
+    "_tapAction",
+  ];
+  for (String s in nl) {
+    dynamic d = pmap[s];
+    if (d != null) {
+      map[s] = d;
+    }
+  }
+  return ListTilePattern(map);
+}
+
+ProcessPattern getDropdownButtonPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {};
+  List<String> nl = [
+    "_type",
+    "_value",
+    "_items",
+    "_cacheName",
+    "_rxName",
+    "_fsmName",
+    "_hint",
+    "_textStyle",
+    "_icon",
+    "_iconSize",
+    "_inMap",
+  ];
+  for (String s in nl) {
+    dynamic d = pmap[s];
+    if (d != null) {
+      map[s] = d;
+    }
+  }
+  return DropdownButtonPattern(map);
+}
+
+ProcessPattern getProgressTextPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {
+    "_text": pmap["_text"],
+    "_textStyle": pmap["_textStyle"],
+  };
+  return ProgressTextPattern(map);
+}
+
 const Map<String, Function> getPrimePattern = {
   "Align": getAlignPattern,
   "AppBar": getAppBarPattern,
@@ -1041,10 +1106,12 @@ const Map<String, Function> getPrimePattern = {
   "ColorButton": getColorButtonPattern,
   "Column": getColumnPattern,
   "Container": getContainerPattern,
-//  "Context": getContextPattern,
+  "Divider": getDividerPattern,
   "DottedBorder": getDottedBorderPattern,
   "Draggable": getDraggablePattern,
   "DragTarget": getDragTargetPattern,
+  "DropdownButton": getDropdownButtonPattern,
+  "ProgressText": getProgressTextPattern,
   "Expanded": getExpandedPattern,
   "FittedBox": getFittedBoxPattern,
   "Flexible": getFlexiblePattern,
@@ -1057,8 +1124,8 @@ const Map<String, Function> getPrimePattern = {
   "IndexedStack": getIndexedStackPattern,
   "InteractiveViewer": getInteractiveViewerPattern,
   "InTextField": getInTextFieldPattern,
+  "ListTile": getListTilePattern,
   "ListView": getListViewPattern,
-  "NaviScope": getNaviScopePattern,
   "Obx": getObxPattern,
   "ObxProcess": getObxProcessPattern,
   "Opacity": getOpacityPattern,

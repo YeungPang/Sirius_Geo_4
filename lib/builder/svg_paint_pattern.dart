@@ -2,15 +2,15 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_drawing/path_drawing.dart';
-import 'package:sirius_geo_4/agent/resx_controller.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
+import '../agent/resx_controller.dart';
+import '../builder/pattern.dart';
+import '../resources/basic_resources.dart';
 
 class SvgPaint extends StatelessWidget {
   final Map<String, dynamic> map;
   final ResxController resxController = Get.find<ResxController>();
 
-  SvgPaint(this.map);
+  SvgPaint(this.map, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class SvgPaint extends StatelessWidget {
   }
 
   Offset toLocal(BuildContext context, Offset position) {
-    RenderBox renderBox = context.findRenderObject();
+    RenderBox renderBox = context.findRenderObject()! as RenderBox;
     return renderBox.globalToLocal(position);
   }
 
@@ -63,7 +63,7 @@ class Shape {
       _transformedPath = _path.transform(matrix.storage);
 
   final Path _path;
-  Path _transformedPath;
+  Path? _transformedPath;
   final Paint _paint;
   final Paint _borderPaint;
   final ShapeText _shapeText;
@@ -76,8 +76,8 @@ class SvgPainter extends CustomPainter {
   final Map<String, dynamic> map;
   Size _size = Size.zero;
   final List<Shape> shapes;
-  Paint selPaint;
-  Paint ansPaint;
+  Paint? selPaint;
+  Paint? ansPaint;
 
   SvgPainter(this.map, this.shapes, this._notifier, this._mv)
       : super(repaint: _notifier);
@@ -88,7 +88,7 @@ class SvgPainter extends CustomPainter {
     ansPaint = _mv["_ansPaint"];
     //bool showLabel = map["showLabel"] ?? false;
     bool showSelLabel = map["_showSelLabel"] ?? false;
-    String ansLabel = _mv["_ansLabel"];
+    String? ansLabel = _mv["_ansLabel"];
     double offsetWidth = map["_offsetWidth"] ?? 0.0;
     double offsetHeight = map["_offsetHeight"] ?? 0.0;
     // double offsetWidth = 0.0;
@@ -105,7 +105,7 @@ class SvgPainter extends CustomPainter {
       for (var shape in shapes) {
         shape.transform(matrix);
       }
-      print('new size: $_size');
+      debugPrint('new size: $_size');
     }
 
     canvas
@@ -114,7 +114,7 @@ class SvgPainter extends CustomPainter {
 
     bool hasSelection = false;
     for (var shape in shapes) {
-      final path = shape._transformedPath;
+      final path = shape._transformedPath!;
       final selected = path.contains(_notifier.value);
       Paint paint = (shape._shapeText._label == ansLabel)
           ? _mv["_ansPaint"]
@@ -131,13 +131,18 @@ class SvgPainter extends CustomPainter {
       canvas.drawPath(path, shape._borderPaint);
 
       if (selected && showSelLabel) {
+        List<BoxShadow>? ls = kElevationToShadow[1];
+        List<BoxShadow>? ls2 = kElevationToShadow[2];
+        if ((ls != null) && (ls2 != null)) {
+          ls.addAll(ls2);
+        }
         final builder = ui.ParagraphBuilder(ui.ParagraphStyle(
           fontSize: shape._shapeText._fontSize,
           fontFamily: shape._shapeText._fontFamily,
         ))
           ..pushStyle(ui.TextStyle(
             color: shape._shapeText._color,
-            shadows: kElevationToShadow[1] + kElevationToShadow[2],
+            shadows: ls,
           ))
           ..addText(shape._shapeText._label);
         final paragraph = builder.build()
@@ -160,14 +165,14 @@ class SvgPainter extends CustomPainter {
 initSvgPainter(Map<String, dynamic> map) {
   Map<String, dynamic> _mv = map["_mv"];
   _mv["_selPaint"] = Paint()
-    ..color = colorMap[map["_selColor"]]
+    ..color = colorMap[map["_selColor"]]!
     ..style = PaintingStyle.fill;
   _mv["_ansPaint"] = Paint()
-    ..color = colorMap[map["_ansColor"]]
+    ..color = colorMap[map["_ansColor"]]!
     ..style = PaintingStyle.fill;
   if (map["_shapeColor"] != null) {
     map["_shapePaint"] = Paint()
-      ..color = colorMap[map["_shapeColor"]]
+      ..color = colorMap[map["_shapeColor"]]!
       ..style = PaintingStyle.fill;
   }
   _mv["_background"] = colorMap[map["_backgroundColor"]];
@@ -175,7 +180,7 @@ initSvgPainter(Map<String, dynamic> map) {
     _mv["_selLabelColor"] = colorMap[map["_selLabelColor"]];
   }
   map["_borderPaint"] = Paint()
-    ..color = colorMap[map["_borderColor"]]
+    ..color = colorMap[map["_borderColor"]]!
     ..strokeWidth = map["_borderStroke"] ?? 3.0
     ..style = PaintingStyle.stroke;
 }
@@ -183,7 +188,7 @@ initSvgPainter(Map<String, dynamic> map) {
 class SvgPaintPattern extends ProcessPattern {
   SvgPaintPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return SvgPaint(map);
   }
 }

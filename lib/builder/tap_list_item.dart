@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
+import './get_pattern.dart';
+import './pattern.dart';
+import '../model/locator.dart';
 
 class TapListItem extends StatelessWidget {
   final Map<String, dynamic> map;
 
-  const TapListItem(this.map, {Key key}) : super(key: key);
+  const TapListItem(this.map, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     debugPrint("Buidling list view");
@@ -17,7 +17,7 @@ class TapListItem extends StatelessWidget {
         padding: map["_padding"],
         shrinkWrap: map["_shrinkWrap"] ?? true,
         physics: map["_physics"],
-        itemCount: (itemRef == null) ? 0 : itemRef.length,
+        itemCount: itemRef.length,
         itemBuilder: (context, index) => _itemBuilder(itemRef[index], index),
       );
     }
@@ -43,12 +43,12 @@ class TapListItem extends StatelessWidget {
       "_item": item,
       "_index": index,
     };
-    Function pf = model.appActions.getPattern(map["_childPattern"]);
-    Map<String, dynamic> cmap = map["_childMap"];
+    Function pf = model.appActions.getPattern(map["_childPattern"])!;
+    Map<String, dynamic>? cmap = map["_childMap"];
     if (cmap != null) {
       lmap.addAll(cmap);
     }
-    ProcessEvent tevent = map["_onTap"];
+    ProcessEvent? tevent = map["_onTap"];
     if (tevent != null) {
       lmap["_onTap"] = tevent;
     }
@@ -66,7 +66,7 @@ class TapListItem extends StatelessWidget {
 class TapListItemPattern extends ProcessPattern {
   TapListItemPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     map["_widget"] ??= TapListItem(map);
     return map["_widget"];
   }

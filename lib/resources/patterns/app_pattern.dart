@@ -2,34 +2,46 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/agent/config_agent.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/resources/s_g_icons.dart';
-import 'package:sirius_geo_4/builder/svg_paint_pattern.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
+import '../basic_resources.dart';
+import '../../agent/config_agent.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
+import '../s_g_icons.dart';
+import '../../builder/svg_paint_pattern.dart';
+import '../../builder/get_pattern.dart';
+import '../fonts.dart';
 
 class NotiElemPattern extends ProcessPattern {
   bool isGroup = false;
-  int total;
-  Widget w;
+  int total = 0;
+  Widget? w;
   dynamic progId;
   int pno = 0;
-  List<int> ids;
+  List<int>? ids;
+  bool waiting = false;
 
   NotiElemPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     progId = map["_progId"];
 
     isGroup = (progId is! int) && (progId != null);
     if (isGroup) {
-      ids ??= resolveIntList(progId);
+      if (ids == null) {
+        if (progId is String) {
+          ids = resolveIntList(progId);
+        } else if (progId is List<int>) {
+          ids = progId;
+        } else if (progId is List<dynamic>) {
+          ids = [];
+          for (int n in progId) {
+            ids!.add(n);
+          }
+        }
+      }
       var prog = getCompleted(ids);
       pno = prog;
-      total = ids.length;
+      total = ids!.length;
       if (prog < total) {
         return Obx(() {
           dynamic value = resxController.getRxValue("progNoti");
@@ -52,22 +64,25 @@ class NotiElemPattern extends ProcessPattern {
   }
 
   Widget _buildWidget(dynamic value) {
-    Widget ic = getPatternWidget(map["_child"]);
+    Widget? ic = getPatternWidget(map["_child"]);
     if (isGroup) {
       if ((value != null) && (value != -1)) {
-        if ((value is int) && (!ids.contains(value))) {
+        if ((value is int) && (!ids!.contains(value))) {
           if (w != null) {
-            return w;
+            return w!;
           }
         } else {
-          pno++;
+          if (waiting) {
+            pno++;
+          }
         }
       }
+      waiting = true;
       double wi = map["_width"];
       double hp = 0.0184729 * model.scaleHeight;
       bool full = (pno >= total);
       int i = full ? total : pno;
-      Widget pi = (i == 0)
+      Widget? pi = (i == 0)
           ? null
           : Container(
               width: full ? wi : wi * i / total,
@@ -91,7 +106,8 @@ class NotiElemPattern extends ProcessPattern {
                       borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(s10),
                           bottomLeft: Radius.circular(s10)),
-                      border: Border.all(color: colorMap["correct"], width: 1)),
+                      border:
+                          Border.all(color: colorMap["correct"]!, width: 1)),
                 )
               : Container(
                   alignment: Alignment.centerLeft,
@@ -101,7 +117,8 @@ class NotiElemPattern extends ProcessPattern {
                       borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(s10),
                           bottomLeft: Radius.circular(s10)),
-                      border: Border.all(color: colorMap["correct"], width: 1)),
+                      border:
+                          Border.all(color: colorMap["correct"]!, width: 1)),
                   child: pi,
                 ));
       ic = Align(
@@ -114,13 +131,13 @@ class NotiElemPattern extends ProcessPattern {
       );
     } else {
       if ((value != progId) && (w != null)) {
-        return w;
+        return w!;
       }
       if ((progId != null) && (value == progId)) {
         pno++;
       }
       if (pno > 1) {
-        return w;
+        return w!;
       }
       if ((pno == 1) && (progId != null)) {
         double h = model.scaleWidth * 0.04533333;
@@ -132,7 +149,7 @@ class NotiElemPattern extends ProcessPattern {
         );
         ic = Stack(
           alignment: Alignment.center,
-          children: [ic, pi],
+          children: [ic!, pi],
         );
       }
     }
@@ -149,24 +166,24 @@ class NotiElemPattern extends ProcessPattern {
         margin: map["_margin"],
         padding: map["_padding"],
         transform: map["_transform"]);
-    return w;
+    return w!;
   }
 }
 
 class GroupProgNotiPattern extends ProcessPattern {
   int total = 0;
-  Widget w;
+  Widget? w;
   List<int> progId = [];
   int pno = 0;
-  double cp;
-  ProcessEvent greenEvent;
-  ProcessEvent greyEvent;
-  int inx;
+  late double cp;
+  ProcessEvent? greenEvent;
+  ProcessEvent? greyEvent;
+  int inx = 0;
   bool done = false;
 
   GroupProgNotiPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     inx = map["_index"];
     greenEvent = map["_greenEvent"];
     done = inx == 0;
@@ -212,7 +229,7 @@ class GroupProgNotiPattern extends ProcessPattern {
     if (value is int) {
       if (done || (!progId.contains(value))) {
         if (w != null) {
-          return w;
+          return w!;
         }
       } else {
         pno++;
@@ -220,13 +237,13 @@ class GroupProgNotiPattern extends ProcessPattern {
     }
     if (w != null) {
       if (done || ((pno / total) < cp)) {
-        return w;
+        return w!;
       }
     }
     if (!done) {
       done = ((pno / total) >= cp);
     }
-    ProcessEvent event = done ? greenEvent : greyEvent;
+    ProcessEvent event = done ? greenEvent! : greyEvent!;
     Agent a = model.appActions.getAgent("pattern");
 
     var p = a.process(event);
@@ -256,7 +273,7 @@ class GroupProgNotiPattern extends ProcessPattern {
       width: map["_width"],
       height: map["_height"],
     ); */
-    return w;
+    return w!;
   }
 }
 
@@ -268,7 +285,7 @@ getSvgMap(Map<String, dynamic> map) {
   List<Shape> shapes = [];
   Paint borderPaint = map["_borderPaint"];
   Paint shapePaint = map["_shapePaint"];
-  String key = map["_matchKey"];
+  String? key = map["_matchKey"];
   int i = 0;
   for (Map<String, dynamic> c in mapList) {
     String label = c["key"];
@@ -281,7 +298,7 @@ getSvgMap(Map<String, dynamic> map) {
   }
   map["_shapes"] = shapes;
   ValueNotifier<ProcessPattern> noti = map["_childNoti"];
-  Function pf = model.appActions.getPattern("SvgPaint");
+  Function pf = model.appActions.getPattern("SvgPaint")!;
   noti.value = pf(map);
 }
 
@@ -291,10 +308,10 @@ ProcessPattern getMenuBubble(Map<String, dynamic> map) {
     "_name": "assets/images/menu_bubble.png",
     "_boxFit": BoxFit.cover,
   };
-  Function pf = getPrimePattern["ImageAsset"];
+  Function pf = getPrimePattern["ImageAsset"]!;
   ProcessPattern arrow = pf(imap);
   imap = {"_width": size20};
-  pf = getPrimePattern["SizedBox"];
+  pf = getPrimePattern["SizedBox"]!;
   imap = {
     "_textStyle": choiceButnTxtStyle,
     "_iconSize": size20,
@@ -306,7 +323,7 @@ ProcessPattern getMenuBubble(Map<String, dynamic> map) {
     "_key": map["_key"],
   };
   List<dynamic> menuBox = [];
-  pf = getPrimePattern["IconText"];
+  pf = getPrimePattern["IconText"]!;
   List<dynamic> menuList = map["_menuList"];
   ProcessEvent pe = ProcessEvent("menu");
   double boxHeight = 0.0;
@@ -334,6 +351,6 @@ ProcessPattern getMenuBubble(Map<String, dynamic> map) {
     "_mainAxisAlignment": MainAxisAlignment.spaceEvenly,
     "_boxHeight": boxHeight,
   };
-  pf = getPrimePattern["Bubble"];
+  pf = getPrimePattern["Bubble"]!;
   return pf(imap);
 }

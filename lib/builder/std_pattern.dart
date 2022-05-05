@@ -1,14 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
+import './pattern.dart';
 
 class ColumnPattern extends ProcessPattern {
   ColumnPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     dynamic ml = map["_children"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
@@ -21,16 +21,16 @@ class ColumnPattern extends ProcessPattern {
         textBaseline: map["_textBaseline"],
         textDirection: map["_textDirection"],
         verticalDirection: map["_verticalDirection"] ?? VerticalDirection.down,
-        children: lw);
+        children: lw!);
   }
 }
 
 class RowPattern extends ProcessPattern {
   RowPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     dynamic ml = map["_children"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
@@ -44,16 +44,16 @@ class RowPattern extends ProcessPattern {
         textBaseline: map["_textBaseline"],
         textDirection: map["_textDirection"],
         verticalDirection: map["_verticalDirection"] ?? VerticalDirection.down,
-        children: lw);
+        children: lw!);
   }
 }
 
 class WrapPattern extends ProcessPattern {
   WrapPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     dynamic ml = map["_children"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
@@ -70,29 +70,29 @@ class WrapPattern extends ProcessPattern {
         textDirection: map["_textDirection"],
         verticalDirection: map["_verticalDirection"] ?? VerticalDirection.down,
         clipBehavior: map["_clipBehavior"] ?? Clip.none,
-        children: lw);
+        children: lw!);
   }
 }
 
 class ScaffolPattern extends ProcessPattern {
   ScaffolPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget w = getPatternWidget(map["_body"]);
-    Widget a = getPatternWidget(map["_appBar"]);
-    Widget bs = getPatternWidget(map["_bottomSheet"]);
-    Widget bn = getPatternWidget(map["_bottomNavigationBar"]);
-    Widget d = getPatternWidget(map["_drawer"]);
-    Widget ed = getPatternWidget(map["_endDrawer"]);
+  Widget getWidget({String? name}) {
+    Widget? w = getPatternWidget(map["_body"]);
+    Widget? a = getPatternWidget(map["_appBar"]);
+    Widget? bs = getPatternWidget(map["_bottomSheet"]);
+    Widget? bn = getPatternWidget(map["_bottomNavigationBar"]);
+    Widget? d = getPatternWidget(map["_drawer"]);
+    Widget? ed = getPatternWidget(map["_endDrawer"]);
     dynamic ml = map["_persistentFooterButtons"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
             : null;
     return Scaffold(
       key: map["_key"],
-      appBar: a,
+      appBar: (a != null) ? a as AppBar : null,
       body: w,
       backgroundColor: map['_backgroundColor'],
       bottomNavigationBar: bn,
@@ -118,12 +118,12 @@ class ScaffolPattern extends ProcessPattern {
 class AppBarPattern extends ProcessPattern {
   AppBarPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget f = getPatternWidget(map["_flexibleSpace"]);
-    Widget lg = getPatternWidget(map["_leading"]);
-    Widget t = getPatternWidget(map["_title"]);
+  Widget getWidget({String? name}) {
+    Widget? f = getPatternWidget(map["_flexibleSpace"]);
+    Widget? lg = getPatternWidget(map["_leading"]);
+    Widget? t = getPatternWidget(map["_title"]);
     dynamic ml = map["_actions"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
@@ -158,7 +158,7 @@ class AppBarPattern extends ProcessPattern {
 class TextPattern extends ProcessPattern {
   TextPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return Text(
       map["_text"],
       locale: map["_locale"],
@@ -180,7 +180,7 @@ class TextPattern extends ProcessPattern {
 class ImageAssetPattern extends ProcessPattern {
   ImageAssetPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return Image.asset(map["_name"],
         bundle: map["_bundle"],
         frameBuilder: map["_frameBuilder"],
@@ -209,7 +209,7 @@ class ImageAssetPattern extends ProcessPattern {
 class SVGAssetPattern extends ProcessPattern {
   SVGAssetPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return SvgPicture.asset(
       map["_name"],
       height: map["_height"],
@@ -220,15 +220,15 @@ class SVGAssetPattern extends ProcessPattern {
 class StackPattern extends ProcessPattern {
   StackPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     dynamic ml = map["_children"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
             : null;
     return Stack(
-        children: lw,
+        children: lw!,
         alignment: map["_alignment"] ?? AlignmentDirectional.topStart,
         clipBehavior: map["_clipBehavior"] ?? Clip.hardEdge,
         fit: map["_stackFit"] ?? StackFit.loose,
@@ -239,8 +239,8 @@ class StackPattern extends ProcessPattern {
 class ContainerPattern extends ProcessPattern {
   ContainerPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget w = getPatternWidget(map["_child"]);
+  Widget getWidget({String? name}) {
+    Widget? w = getPatternWidget(map["_child"]);
     return Container(
         child: w,
         color: map["_color"],
@@ -260,8 +260,8 @@ class ContainerPattern extends ProcessPattern {
 class SingleChildScrollViewPattern extends ProcessPattern {
   SingleChildScrollViewPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget w = getPatternWidget(map["_child"]);
+  Widget getWidget({String? name}) {
+    Widget? w = getPatternWidget(map["_child"]);
     return SingleChildScrollView(
         key: map["_key"],
         child: w,
@@ -280,9 +280,9 @@ class SingleChildScrollViewPattern extends ProcessPattern {
 class GridViewPattern extends ProcessPattern {
   GridViewPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     dynamic ml = map["_children"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
@@ -304,7 +304,7 @@ class GridViewPattern extends ProcessPattern {
       addRepaintBoundaries: map["_addRepaintBoundaries"] ?? true,
       addSemanticIndexes: map["_addSemanticIndexes"] ?? true,
       cacheExtent: map["_cacheExtent"],
-      children: lw,
+      children: lw!,
       semanticChildCount: map["_semanticChildCount"],
       dragStartBehavior: map["_dragStartBehavior"] ?? DragStartBehavior.start,
       keyboardDismissBehavior: map["_keyboardDismissBehavior"] ??
@@ -318,17 +318,17 @@ class GridViewPattern extends ProcessPattern {
 class IndexedStackPattern extends ProcessPattern {
   IndexedStackPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     dynamic ml = map["_children"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
             : null;
     return ValueListenableBuilder<int>(
       valueListenable: map["_notifier"],
-      builder: (BuildContext context, int value, Widget child) => IndexedStack(
-          children: lw,
+      builder: (BuildContext context, int value, Widget? child) => IndexedStack(
+          children: lw!,
           alignment: map["_alignment"] ?? AlignmentDirectional.topStart,
           sizing: map["_sizing"] ?? StackFit.loose,
           index: value,
@@ -340,10 +340,10 @@ class IndexedStackPattern extends ProcessPattern {
 class ValueStackPattern extends ProcessPattern {
   ValueStackPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return ValueListenableBuilder<List<dynamic>>(
       valueListenable: map["_notifier"],
-      builder: (BuildContext context, List<dynamic> children, Widget child) =>
+      builder: (BuildContext context, List<dynamic> children, Widget? child) =>
           Stack(
               children: getPatternWidgetList(children),
               alignment: map["_alignment"] ?? AlignmentDirectional.topStart,
@@ -357,8 +357,8 @@ class ValueStackPattern extends ProcessPattern {
 class CenterPattern extends ProcessPattern {
   CenterPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget w = getPatternWidget(map["_child"]);
+  Widget getWidget({String? name}) {
+    Widget? w = getPatternWidget(map["_child"]);
     return Center(
         child: w,
         heightFactor: map["_heightFactor"],
@@ -370,9 +370,9 @@ class CenterPattern extends ProcessPattern {
 class TextFieldPattern extends ProcessPattern {
   TextFieldPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget p = getPatternWidget(map["_prefixIcon"]);
-    Widget s = getPatternWidget(map["_suffixIcon"]);
+  Widget getWidget({String? name}) {
+    Widget? p = getPatternWidget(map["_prefixIcon"]);
+    Widget? s = getPatternWidget(map["_suffixIcon"]);
     return TextField(
       autocorrect: map["_autocorrect"] ?? true,
       autofocus: map["_autofocus"] ?? false,
@@ -404,9 +404,9 @@ class TextFieldPattern extends ProcessPattern {
 class ListViewPattern extends ProcessPattern {
   ListViewPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     dynamic ml = map["_children"];
-    List<Widget> lw = (ml is List<Widget>)
+    List<Widget>? lw = (ml is List<Widget>)
         ? ml
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
@@ -424,7 +424,7 @@ class ListViewPattern extends ProcessPattern {
       addRepaintBoundaries: map["_addRepaintBoundaries"] ?? true,
       addSemanticIndexes: map["_addSemanticIndexes"] ?? true,
       cacheExtent: map["_cacheExtent"],
-      children: lw,
+      children: lw!,
       semanticChildCount: map["_semanticChildCount"],
       dragStartBehavior: map["_dragStartBehavior"] ?? DragStartBehavior.start,
       keyboardDismissBehavior: map["_keyboardDismissBehavior"] ??
@@ -438,8 +438,8 @@ class ListViewPattern extends ProcessPattern {
 class SizedBoxPattern extends ProcessPattern {
   SizedBoxPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget w = getPatternWidget(map["_child"]);
+  Widget getWidget({String? name}) {
+    Widget? w = getPatternWidget(map["_child"]);
     return SizedBox(
       child: w,
       height: map["_height"],
@@ -451,8 +451,8 @@ class SizedBoxPattern extends ProcessPattern {
 class OpacityPattern extends ProcessPattern {
   OpacityPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget w = getPatternWidget(map["_child"]);
+  Widget getWidget({String? name}) {
+    Widget? w = getPatternWidget(map["_child"]);
     return Opacity(opacity: map["_opacity"], child: w);
   }
 }
@@ -460,7 +460,7 @@ class OpacityPattern extends ProcessPattern {
 class RichTextPattern extends ProcessPattern {
   RichTextPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return RichText(
       text: map["_textSpan"],
       textAlign: map["_textAlign"] ?? TextAlign.start,
@@ -471,8 +471,8 @@ class RichTextPattern extends ProcessPattern {
 class OverflowBoxPattern extends ProcessPattern {
   OverflowBoxPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget w = getPatternWidget(map["_child"]);
+  Widget getWidget({String? name}) {
+    Widget? w = getPatternWidget(map["_child"]);
     return OverflowBox(
       child: w,
       alignment: map["_alignment"] ?? Alignment.center,
@@ -485,16 +485,30 @@ class OverflowBoxPattern extends ProcessPattern {
 class PositionedPattern extends ProcessPattern {
   PositionedPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
-    Widget w = getPatternWidget(map["_child"]);
+  Widget getWidget({String? name}) {
+    Widget? w = getPatternWidget(map["_child"]);
     return Positioned(
-      child: w,
+      child: w!,
       top: map["_top"],
       bottom: map["_bottom"],
       left: map["_left"],
       right: map["_right"],
       height: map["_height"],
       width: map["_width"],
+    );
+  }
+}
+
+class DividerPattern extends ProcessPattern {
+  DividerPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String? name}) {
+    return Divider(
+      color: map["_color"],
+      endIndent: map["_endIndent"],
+      indent: map["_indent"],
+      height: map["_height"],
+      thickness: map["_thickness"],
     );
   }
 }

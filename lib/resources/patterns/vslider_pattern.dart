@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/builder/special_pattern.dart';
-import 'package:sirius_geo_4/builder/std_pattern.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
+import '../../builder/special_pattern.dart';
+import '../../builder/std_pattern.dart';
+import '../basic_resources.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
+import '../../resources/fonts.dart';
 
 class VertSlider extends StatelessWidget {
   final Map<String, dynamic> map;
   final double max = 200.0;
   final double lh = 13.0 * sizeScale;
 
-  VertSlider(this.map);
+  VertSlider(this.map, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -92,10 +92,10 @@ class VertSlider extends StatelessWidget {
   }
 
   Widget _getSliderView(double h) {
-    ValueNotifier<double> vn = map["_mv"]["_scaleNoti"];
+    ValueNotifier<double> vn = map["_mv"]!["_scaleNoti"]!;
     return ValueListenableBuilder<int>(
       valueListenable: map["_sliderNoti"],
-      builder: (BuildContext context, int value, Widget child) => (value > 0)
+      builder: (BuildContext context, int value, Widget? child) => (value > 0)
           ? _getSliderStack(h, value)
           : _sliderWidget(h, vn.value, false),
     );
@@ -167,7 +167,7 @@ class VertSlider extends StatelessWidget {
           _absoluteSize = lowerValue;
           //print(lowerValue);
           //print(upperValue);
-          ValueNotifier<double> vn = map["_mv"]["_scaleNoti"];
+          ValueNotifier<double>? vn = map["_mv"]["_scaleNoti"];
           if (vn != null) {
             vn.value = lowerValue;
           }
@@ -367,12 +367,12 @@ class VertSlider extends StatelessWidget {
 }
 
 buildSliderResult(Map<String, dynamic> map) {
-  Map<String, dynamic> _mv = map["_mv"];
+  Map<String, dynamic> _mv = map["_mv"]!;
   Color c = (_mv["_resStatus"] == "g")
-      ? colorMap["correct"]
+      ? colorMap["correct"]!
       : (_mv["_resStatus"] == "o")
-          ? colorMap["almost"]
-          : colorMap["incorrect"];
+          ? colorMap["almost"]!
+          : colorMap["incorrect"]!;
   TextStyle ts = sliderTextStyle.copyWith(color: c);
   TextStyle ts1 = complTextStyle.copyWith(color: c);
   List<Widget> wl = [
@@ -478,7 +478,7 @@ Widget _buildSliderResValue(Map<String, dynamic> map) {
 class VertSliderPattern extends ProcessPattern {
   VertSliderPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     return VertSlider(map);
   }
 }

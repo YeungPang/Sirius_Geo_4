@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/model/locator.dart';
+import '../../model/locator.dart';
 
 final fontScale = model.fontScale;
 
@@ -47,7 +47,7 @@ final TextStyle appBarTextStyle = TextStyle(
 
 final TextStyle titleTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: w300,
+  fontWeight: w500,
   fontSize: fsize22,
   color: textColorDark,
 );
@@ -77,12 +77,12 @@ final TextStyle normalSTextStyle = TextStyle(
   fontFamily: fontNameAN,
   fontWeight: w500,
   fontSize: fsize14,
-  color: const Color(0xFF999FAE),
+  color: textColorDark,
 );
 
 final TextStyle smallTextStyle = TextStyle(
   fontFamily: fontNameAN,
-  fontWeight: w300,
+  fontWeight: w500,
   fontSize: fsize12,
   color: const Color(0xFF1785C1),
 );
@@ -248,6 +248,7 @@ final Map<String, TextStyle> textStyle = {
   "DragButnTxtStyle": dragButnTxtStyle,
   "IncorrTxtStyle": incorrTxtStyle,
   "MediumNormalTextStyle": mediumNormalTextStyle,
+  "NormalTextStyle": normalTextStyle,
   "QuestionTextStyle": questionTextStyle,
   "ResTxtStyle": resTxtStyle,
   "SelButnTxtStyle": selButnTxtStyle,

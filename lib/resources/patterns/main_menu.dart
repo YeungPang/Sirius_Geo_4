@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
+import '../../builder/pattern.dart';
+import '../fonts.dart';
+
+import '../basic_resources.dart';
 
 Widget topicWidget(Map<String, dynamic> map) {
   double h = map["_height"];
@@ -10,9 +11,9 @@ Widget topicWidget(Map<String, dynamic> map) {
   if (img == 'learn') {
     img = "assets/images/LearningJourney.png";
   }
-  Text subtitle = (map["_knowYourWorld"] != null)
+  Text subtitle = (map["_smallTitle"] != null)
       ? Text(
-          map["_knowYourWorld"],
+          map["_smallTitle"],
           style: smallSemiTextStyle.copyWith(color: Colors.white),
         )
       : Text(
@@ -66,7 +67,7 @@ Widget topicWidget(Map<String, dynamic> map) {
 class TopicPattern extends ProcessPattern {
   TopicPattern(Map<String, dynamic> map) : super(map);
   @override
-  Widget getWidget({String name}) {
+  Widget getWidget({String? name}) {
     map["_widget"] ??= topicWidget(map);
     return map["_widget"];
   }

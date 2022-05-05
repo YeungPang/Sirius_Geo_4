@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/agent/config_agent.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/resources/app_model.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
+import '../../agent/config_agent.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
+import '../../builder/get_pattern.dart';
+import '../app_model.dart';
+import '../basic_resources.dart';
+import '../fonts.dart';
 
 class McMvc extends Mvc {
   McMvc(Map<String, dynamic> map) : super(map);
-  ConfigAgent configAgent;
+  ConfigAgent? configAgent;
   List<int> excl = [];
-  Map<String, dynamic> imap;
-  Map<String, dynamic> lmap;
+  Map<String, dynamic> imap = {};
+  Map<String, dynamic> lmap = {};
   List<dynamic> children = [];
-  Function iepf;
-  Function tipf;
-  Function mvcpf;
-  Rx<List<dynamic>> gvNoti;
-  ProcessPattern view;
-  double eheight;
-  double ewidth;
-  double childAspectRatio;
+  Function? iepf;
+  Function? tipf;
+  Function? mvcpf;
+  Rx<List<dynamic>>? gvNoti;
+  late ProcessPattern view;
+  double eheight = 0.0;
+  double ewidth = 0.0;
+  double childAspectRatio = 0.0;
   List<dynamic> elemList = [];
   int currSel = -1;
-  List<int> range;
+  List<int> range = [];
   bool isImg = false;
-  List<dynamic> options;
-  int ans;
+  List<dynamic> options = [];
+  int ans = 0;
   double bgHeight = 0.4926 * model.scaleHeight;
   List<dynamic> ansList = [];
   List<dynamic> selList = [];
@@ -46,13 +46,13 @@ class McMvc extends Mvc {
     }
     configAgent ??= map["_configAgent"];
     options =
-        configAgent.getElement(map["_AnswerOptions"], map, rowList: rowList);
-    if ((options == null) || (options.isEmpty)) {
+        configAgent!.getElement(map["_AnswerOptions"], map, rowList: rowList);
+    if (options.isEmpty) {
       return;
     }
     excl = [];
     setup();
-    gvNoti = resxController.addToResxMap("gv", children);
+    gvNoti = resxController.addToResxMap("gv", children) as Rx<List<dynamic>>;
 
     double mainAS = 0.01847 * model.scaleHeight;
     childAspectRatio = ewidth / eheight;
@@ -63,10 +63,10 @@ class McMvc extends Mvc {
       "_crossAxisSpacing": 0.04 * model.scaleWidth,
       "_padding": EdgeInsets.all(size10),
     };
-    Function pf = getPrimePattern["GridView"];
+    Function pf = getPrimePattern["GridView"]!;
     ProcessPattern gv = pf(imap);
     lmap = {"_valueName": "gv", "_child": gv};
-    pf = getPrimePattern["Obx"];
+    pf = getPrimePattern["Obx"]!;
     imap = {
       "_width": 0.8267 * model.scaleWidth,
       "_height":
@@ -75,10 +75,10 @@ class McMvc extends Mvc {
       "_decoration": shadowRCDecoration,
       "_child": pf(lmap)
     };
-    pf = getPrimePattern["Container"];
+    pf = getPrimePattern["Container"]!;
     map["_colElem"] = pf(imap);
     mvcpf = model.appActions.getPattern("MvcColumn");
-    view = mvcpf(map);
+    view = mvcpf!(map);
   }
 
   setup() {
@@ -87,24 +87,36 @@ class McMvc extends Mvc {
     children = [];
     selList = [];
     //excl = [];
-    String answer = map["_Answer"];
-    if (answer.contains("_ans")) {
-      ans = getRandom(options.length, excl);
-    } else if (answer.contains('[')) {
-      ansList = configAgent.getElement(map["_Answer"], map);
+    var answer = map["_Answer"];
+    if (answer is String) {
+      if (answer.contains("_ans")) {
+        ans = getRandom(options.length, excl)!;
+      } else if (answer.contains('[')) {
+        ansList = configAgent!.getElement(map["_Answer"], map);
+        range = [];
+        for (int k = 0; k < options.length; k++) {
+          range.add(k);
+        }
+      } else {
+        RegExp re = RegExp(r"[(),]");
+        List<String> sl = answer.trim().split(re);
+        ans = (sl.length > 1)
+            ? (int.tryParse(sl[1].trim()) ?? 0)
+            : (int.tryParse(sl[0].trim()) ?? 0);
+      }
+    } else if (answer is int) {
+      ans = answer;
+    } else if (answer is List<dynamic>) {
+      ansList = answer;
       range = [];
       for (int k = 0; k < options.length; k++) {
         range.add(k);
       }
-    } else {
-      RegExp re = RegExp(r"[(),]");
-      List<String> sl = answer.trim().split(re);
-      ans = int.tryParse(sl[1].trim());
     }
     if (ansList.isEmpty) {
       List<int> incl = [ans];
       map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
-      range = getRandomList(options.length, map["_range"], incl, []);
+      range = getRandomList(options.length, map["_range"], incl, [])!;
       excl.add(ans);
     }
     map["_ansInx"] = ans;
@@ -133,10 +145,10 @@ class McMvc extends Mvc {
         "_index": i
       };
       childMap["_tapAction"] = tapAction;
-      childMap["_child"] = iepf(childMap);
+      childMap["_child"] = iepf!(childMap);
       ProcessEvent pe = ProcessEvent("fsm");
       childMap["_onTap"] = pe;
-      ProcessPattern pp = tipf(childMap);
+      ProcessPattern pp = tipf!(childMap);
       children.add(pp);
       elemList.add(0);
     }
@@ -146,16 +158,16 @@ class McMvc extends Mvc {
   reset(bool startNew) {
     excl = startNew ? [] : excl;
     setup();
-    gvNoti.value = children;
-    view = mvcpf(map);
+    gvNoti!.value = children;
+    view = mvcpf!(map);
   }
 
   @override
-  String doAction(String action, Map<String, dynamic> emap) {
-    int inx = emap["_index"];
+  String doAction(String action, Map<String, dynamic>? emap) {
+    int? inx = emap!["_index"];
     switch (action) {
       case "Selection":
-        swapChoiceElem(inx);
+        swapChoiceElem(inx!);
         break;
       case "CheckAns":
         String r;
@@ -196,7 +208,7 @@ class McMvc extends Mvc {
           for (int k = 0; k < options.length; k++) {
             if (ansList.contains(options[k])) {
               buildBadgedElem(k, "answer");
-              children = gvNoti.value;
+              children = gvNoti!.value;
             }
           }
           children = c;
@@ -245,10 +257,10 @@ class McMvc extends Mvc {
         "_index": i
       };
       childMap["_tapAction"] = tapAction;
-      childMap["_child"] = iepf(childMap);
+      childMap["_child"] = iepf!(childMap);
       ProcessEvent pe = ProcessEvent("fsm");
       childMap["_onTap"] = pe;
-      ProcessPattern pp = tipf(childMap);
+      ProcessPattern pp = tipf!(childMap);
       elemList[ri] = children[ri];
       children[ri] = pp;
       if (ansList.isEmpty) {
@@ -301,7 +313,7 @@ class McMvc extends Mvc {
 
   @override
   dynamic getAnswer() {
-    return configAgent.checkText("_Answer_Text", map);
+    return configAgent!.checkText("_Answer_Text", map);
   }
 
   @override
@@ -309,7 +321,7 @@ class McMvc extends Mvc {
     List<dynamic> c = [];
     c.addAll(children);
     children = c;
-    gvNoti.value = children;
+    gvNoti!.value = children;
   }
 
   buildBadgedElem(int i, String type) {

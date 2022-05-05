@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/resources/s_g_icons.dart';
+import './s_g_icons.dart';
+
 import '../model/locator.dart';
 
+final size5 = model.size5;
 final size10 = model.size10;
 final size20 = model.size20;
 final sizeScale = model.sizeScale;
@@ -42,6 +44,7 @@ final List<dynamic> pinkColorList = [
 
 Map<String, dynamic> resources = {
   "textFieldBorder": textFieldBorder,
+  "boxPadding": boxPadding,
   "catBoxPadding": catBoxPadding,
   "catIconPadding": catIconPadding,
   "clampingScrollPhysics": clampingScrollPhysics,
@@ -51,6 +54,7 @@ Map<String, dynamic> resources = {
   "shadowDecoration": shadowDecoration,
   "bgDecoration": bgDecoration,
   "rCDecoration": RCDecoration,
+  "selemDecoration": selemDecoration,
 };
 
 final textFieldBorder = OutlineInputBorder(
@@ -165,6 +169,12 @@ final BoxDecoration elemDecoration = BoxDecoration(
   borderRadius: BorderRadius.circular(size10),
 );
 
+final BoxDecoration selemDecoration = BoxDecoration(
+  color: Colors.white,
+  border: Border.all(color: const Color(0xFF1785C1), width: 1),
+  borderRadius: BorderRadius.circular(size5),
+);
+
 final BoxDecoration dragDecoration = BoxDecoration(
   color: Colors.white,
   border: Border.all(color: const Color(0xFF999FAE), width: 2),
@@ -185,6 +195,7 @@ final BoxDecoration btnDecoration = elemDecoration;
 
 final catBoxPadding = EdgeInsets.symmetric(vertical: model.size10);
 final catIconPadding = EdgeInsets.symmetric(horizontal: model.size10);
+final boxPadding = EdgeInsets.all(model.size20);
 
 const clampingScrollPhysics = ClampingScrollPhysics();
 
@@ -200,5 +211,5 @@ m 98.804,243.486 -8.455,-4.733 -15.1,-21.496 7.702,0 c 1.836,0 3.627,-0.642 5.04
 m 136.06,107.943 4.304,3.261 0,39.436 c 0,4.382 3.567,7.947 7.951,7.947 1.535,0 3.034,-0.45 4.335,-1.302 l 27.258,-17.822 c 1.707,-1.116 2.906,-2.823 3.378,-4.806 l 9.091,-38.182 c 0.678,-2.85 -0.261,-5.828 -2.45,-7.773 l -8.403,-7.47 c -2.229,-1.982 -5.52,-2.545 -8.282,-1.414 l -35.365,14.468 c -2.666,1.09 -4.485,3.446 -4.865,6.301 -0.38,2.855 0.759,5.605 3.048,7.356 z'''
         .split('\n');
 
-List<Map<String, dynamic>> worldMapCountryList;
+//List<Map<String, dynamic>> worldMapCountryList;
 const String worldMapPath = 'assets/svg_images/world_map.json';

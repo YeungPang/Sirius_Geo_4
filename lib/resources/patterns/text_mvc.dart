@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/agent/config_agent.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/resources/app_model.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
+import '../../agent/config_agent.dart';
+import '../../builder/pattern.dart';
+import '../../model/locator.dart';
+import '../../builder/get_pattern.dart';
+import '../app_model.dart';
+import '../basic_resources.dart';
+import '../fonts.dart';
 import 'package:get/get.dart';
 
 class TextMvc extends Mvc {
@@ -13,31 +13,31 @@ class TextMvc extends Mvc {
 
   List<int> excl = [];
   double bgHeight = 0.4926 * model.scaleHeight;
-  ProcessPattern view;
-  ConfigAgent configAgent;
-  Rx<ProcessPattern> textNoti;
+  late ProcessPattern view;
+  ConfigAgent? configAgent;
+  Rx<ProcessPattern>? textNoti;
   TextEditingController tc = TextEditingController();
-  List<dynamic> answers;
-  List<dynamic> options;
-  List<dynamic> ansList;
-  List<dynamic> acceptedList;
-  List<dynamic> elemList;
-  List<dynamic> checkList;
-  Map<String, dynamic> imap;
-  Map<String, dynamic> lmap;
-  List<dynamic> children;
-  Function mvcpf;
-  Function tipf = getPrimePattern["Text"];
-  Rx<List<dynamic>> gvNoti;
-  double childAspectRatio;
+  late List<dynamic> answers;
+  List<dynamic>? options;
+  late List<dynamic> ansList;
+  List<dynamic>? acceptedList;
+  List<dynamic>? elemList;
+  List<dynamic>? checkList;
+  Map<String, dynamic> imap = {};
+  Map<String, dynamic> lmap = {};
+  List<dynamic>? children;
+  Function? mvcpf;
+  Function tipf = getPrimePattern["Text"]!;
+  Rx<List<dynamic>>? gvNoti;
+  double? childAspectRatio;
   bool multi = false;
-  double eheight;
-  double ewidth;
-  Function cpf = getPrimePattern["Container"];
+  double eheight = 0.0;
+  double ewidth = 0.0;
+  Function cpf = getPrimePattern["Container"]!;
   int selIndex = -1;
-  int len;
-  ProcessPattern inTextPP;
-  ProcessPattern editText;
+  int len = 0;
+  ProcessPattern? inTextPP;
+  ProcessPattern? editText;
   bool retrying = false;
   bool refresh = false;
   //Map<String, dynamic> equi = model.map["equivalence"];
@@ -55,27 +55,27 @@ class TextMvc extends Mvc {
     map["_state"] = "incomplete";
     answers = [];
     configAgent ??= map["_configAgent"];
-    String answer = map["_Answer"];
+    String answer = map["_Answer"].toString();
     if ((!retrying) && (map["_Accepted_Answers"] != null)) {
       acceptedList = [];
       List<dynamic> rList =
-          configAgent.getElement(map["_Accepted_Answers"], map);
+          configAgent!.getElement(map["_Accepted_Answers"], map);
       RegExp re = RegExp(r"[\[\],]");
       for (String s in rList) {
         List<String> sl = s.trim().split(re);
-        acceptedList.add(sl);
+        acceptedList!.add(sl);
       }
     }
     if (answer.contains("_ans")) {
       if (!retrying) {
-        options = configAgent.getElement(map["_AnswerOptions"], map,
-            rowList: rowList);
-        ans = getRandom(options.length, excl);
+        options = configAgent!
+            .getElement(map["_AnswerOptions"], map, rowList: rowList);
+        ans = getRandom(options!.length, excl)!;
         excl.add(ans);
         map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
-        ansList = [options[ans]];
+        ansList = [options![ans]];
         if (acceptedList != null) {
-          List<dynamic> al = acceptedList[ans];
+          List<dynamic> al = acceptedList![ans];
           for (String a in al) {
             if (a.isNotEmpty) {
               ansList.add(a.trim());
@@ -86,9 +86,10 @@ class TextMvc extends Mvc {
       }
     } else {
       refresh = false;
-      ansList = configAgent.getElement(map["_Answer"], map);
+      var al = configAgent!.getElement(map["_Answer"], map);
+      ansList = (al is List<dynamic>) ? al : [al];
       if (acceptedList != null) {
-        for (List<dynamic> al in acceptedList) {
+        for (List<dynamic> al in acceptedList!) {
           for (String a in al) {
             if (a.isNotEmpty) {
               ansList.add(a.trim());
@@ -126,7 +127,7 @@ class TextMvc extends Mvc {
         "_retainFocus": multi,
         "_textEditingController": tc
       };
-      Function pf = getPrimePattern["InTextField"];
+      Function pf = getPrimePattern["InTextField"]!;
       ProcessPattern pp = pf(imap);
       imap["_child"] = pp;
       inTextPP = cpf(imap);
@@ -143,9 +144,10 @@ class TextMvc extends Mvc {
       pp = cpf(imap);
 
       if (multi) {
-        textNoti = resxController.addToResxMap("textNoti", inTextPP);
+        textNoti = resxController.addToResxMap("textNoti", inTextPP)
+            as Rx<ProcessPattern>;
         imap = {"_valueName": "textNoti", "_child": pp};
-        pf = getPrimePattern["Obx"];
+        pf = getPrimePattern["Obx"]!;
         pp = pf(imap);
         eheight = 0.07143 * model.scaleHeight;
         ewidth = 0.345 * model.scaleWidth;
@@ -161,15 +163,16 @@ class TextMvc extends Mvc {
           "_strokeWidth": 2.0,
           "_child": cpp
         };
-        pf = getPrimePattern["DottedBorder"];
+        pf = getPrimePattern["DottedBorder"]!;
         cpp = pf(imap);
         elemList = [];
         for (int j = 0; j < len; j++) {
-          elemList.add(cpp);
+          elemList!.add(cpp);
         }
         children = [];
-        children.addAll(elemList);
-        gvNoti = resxController.addToResxMap("gv", children);
+        children!.addAll(elemList!);
+        gvNoti =
+            resxController.addToResxMap("gv", children) as Rx<List<dynamic>>;
         double mainAS = 0.01847 * model.scaleHeight;
         childAspectRatio = ewidth / eheight;
         imap = {
@@ -179,10 +182,10 @@ class TextMvc extends Mvc {
           "_crossAxisSpacing": 0.04 * model.scaleWidth,
           "_padding": EdgeInsets.all(size10),
         };
-        pf = getPrimePattern["GridView"];
+        pf = getPrimePattern["GridView"]!;
         ProcessPattern gv = pf(imap);
         lmap = {"_valueName": "gv", "_child": gv};
-        pf = getPrimePattern["Obx"];
+        pf = getPrimePattern["Obx"]!;
         int l = (len + 1) ~/ 2;
         imap = {
           "_width": w,
@@ -191,31 +194,31 @@ class TextMvc extends Mvc {
           "_decoration": shadowRCDecoration,
           "_child": pf(lmap)
         };
-        pf = getPrimePattern["Container"];
+        pf = getPrimePattern["Container"]!;
         lmap = {
           "_height": 0.04 * model.scaleHeight,
         };
-        Function sp = getPrimePattern["SizedBox"];
+        Function sp = getPrimePattern["SizedBox"]!;
         List<ProcessPattern> col = [pp, sp(lmap), pf(imap)];
-        pf = getPrimePattern["Column"];
+        pf = getPrimePattern["Column"]!;
         imap = {"_children": col};
         map["_colElem"] = pf(imap);
-        mvcpf ??= model.appActions.getPattern("MvcColumn");
-        view = mvcpf(map);
+        mvcpf ??= model.appActions.getPattern("MvcColumn")!;
+        view = mvcpf!(map);
       } else {
         map["_colElem"] = pp;
         mvcpf ??= model.appActions.getPattern("MvcColumn");
-        view = mvcpf(map);
+        view = mvcpf!(map);
       }
     } else {
       if (multi) {
         children = [];
-        children.addAll(elemList);
-        gvNoti.value = children;
-        textNoti.value = inTextPP;
+        children!.addAll(elemList!);
+        gvNoti!.value = children!;
+        textNoti!.value = inTextPP!;
       } else if (refresh) {
         mvcpf ??= model.appActions.getPattern("MvcColumn");
-        view = mvcpf(map);
+        view = mvcpf!(map);
       }
       tc.clear();
     }
@@ -229,7 +232,7 @@ class TextMvc extends Mvc {
   }
 
   @override
-  String doAction(String action, Map<String, dynamic> emap) {
+  String doAction(String action, Map<String, dynamic>? emap) {
     switch (action) {
       case "Editing":
         int i;
@@ -249,10 +252,10 @@ class TextMvc extends Mvc {
           };
           ProcessPattern ep =
               getTapItemElemPattern("select", eheight, ewidth, imap);
-          children[i] = ep;
+          children![i] = ep;
           List<dynamic> c = [];
-          c.addAll(children);
-          gvNoti.value = c;
+          c.addAll(children!);
+          gvNoti!.value = c;
           if (answers.length == len) {
             map["_state"] = "completed";
             if (editText == null) {
@@ -262,7 +265,7 @@ class TextMvc extends Mvc {
               };
               editText = tipf(imap);
             }
-            textNoti.value = editText;
+            textNoti!.value = editText!;
           } else {
             map["_state"] = "incomplete";
           }
@@ -282,7 +285,7 @@ class TextMvc extends Mvc {
         }
         break;
       case "Selection":
-        int inx = emap["_index"];
+        int inx = emap!["_index"];
         if (inx != selIndex) {
           imap = {
             "_decoration": selDecoration,
@@ -292,7 +295,7 @@ class TextMvc extends Mvc {
           };
           ProcessPattern ep =
               getTapItemElemPattern("select", eheight, ewidth, imap);
-          children[inx] = ep;
+          children![inx] = ep;
           if (selIndex > -1) {
             imap = {
               "_decoration": elemDecoration,
@@ -300,14 +303,14 @@ class TextMvc extends Mvc {
               "_index": selIndex,
               "_item": answers[selIndex],
             };
-            children[selIndex] =
+            children![selIndex] =
                 getTapItemElemPattern("select", eheight, ewidth, imap);
           }
           selIndex = inx;
           tc.text = answers[inx];
           if (map["_state"] == "completed") {
             map["_state"] = "incomplete";
-            textNoti.value = inTextPP;
+            textNoti!.value = inTextPP!;
           }
         } else {
           if (answers.length == len) {
@@ -319,7 +322,7 @@ class TextMvc extends Mvc {
               };
               editText = tipf(imap);
             }
-            textNoti.value = editText;
+            textNoti!.value = editText!;
           }
           imap = {
             "_decoration": elemDecoration,
@@ -327,14 +330,14 @@ class TextMvc extends Mvc {
             "_index": selIndex,
             "_item": answers[selIndex],
           };
-          children[selIndex] =
+          children![selIndex] =
               getTapItemElemPattern("select", eheight, ewidth, imap);
           selIndex = -1;
           tc.clear();
         }
         List<dynamic> c = [];
-        c.addAll(children);
-        gvNoti.value = c;
+        c.addAll(children!);
+        gvNoti!.value = c;
         break;
       case "CheckAns":
         String r;
@@ -342,13 +345,13 @@ class TextMvc extends Mvc {
         if (checkList == null) {
           checkList = [];
           for (int i = 0; i < ansList.length; i++) {
-            checkList.add(ansList[i].toString().toLowerCase());
+            checkList!.add(ansList[i].toString().trim().toLowerCase());
           }
         }
         if (len == 1) {
-          String ansText = tc.text.toLowerCase();
+          String ansText = tc.text.trim().toLowerCase();
           //ansText = equi[ansText] ?? ansText;
-          if (checkList.contains(ansText)) {
+          if (checkList!.contains(ansText)) {
             return "correct";
           } else {
             return "incorrect";
@@ -356,12 +359,12 @@ class TextMvc extends Mvc {
         }
         List<int> dl = [];
         List<dynamic> c = [];
-        c.addAll(children);
+        c.addAll(children!);
         if (answers.length == len) {
           for (int i = 0; i < len; i++) {
             String ansText = answers[i].toString().toLowerCase();
             //ansText = equi[ansText] ?? ansText;
-            int inx = checkList.indexOf(ansText);
+            int inx = checkList!.indexOf(ansText);
             if (inx < 0) {
               r = "incorrect";
             } else {
@@ -383,7 +386,7 @@ class TextMvc extends Mvc {
         if (multi) {
           answers = ansList;
           List<dynamic> c = [];
-          c.addAll(children);
+          c.addAll(children!);
           for (int i = 0; i < c.length; i++) {
             buildBadgedElem(i, "answer", c);
           }
@@ -409,7 +412,7 @@ class TextMvc extends Mvc {
   dynamic getAnswer() {
     if (len == 1) {
       if (map["_Answer_Text"] != null) {
-        return configAgent.checkText("_Answer_Text", map);
+        return configAgent!.checkText("_Answer_Text", map);
       }
       return ansList[0];
     }
@@ -430,11 +433,11 @@ class TextMvc extends Mvc {
       "_index": i,
       "_childInx": i
     };
-    if (i == (c.length - 1)) {
-      buildBadgedElement(type, c, gvNoti, false, childMap);
-    } else {
-      buildBadgedElement(type, c, null, false, childMap);
-    }
+    //if (i == (c.length - 1)) {
+    buildBadgedElement(type, c, gvNoti, false, childMap);
+    //} else {
+    //buildBadgedElement(type, c, null, false, childMap);
+    //}
   }
 
   @override

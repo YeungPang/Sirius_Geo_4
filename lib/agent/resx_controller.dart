@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
 import 'package:get/get.dart';
+import '../builder/pattern.dart';
 
 class ResxController extends GetxController {
   ResxController();
@@ -44,7 +44,7 @@ class ResxController extends GetxController {
       resxMap[name] = null;
       return;
     }
-    Rx rx = resxMap[name];
+    Rx? rx = resxMap[name];
     if (rx != null) {
       rx.value = value;
     } else {

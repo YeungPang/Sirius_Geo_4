@@ -1,52 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/agent/config_agent.dart';
-import 'package:sirius_geo_4/builder/pattern.dart';
-import 'package:sirius_geo_4/builder/std_pattern.dart';
-import 'package:sirius_geo_4/model/locator.dart';
-import 'package:sirius_geo_4/builder/get_pattern.dart';
-import 'package:sirius_geo_4/resources/app_model.dart';
-import 'package:sirius_geo_4/resources/basic_resources.dart';
-import 'package:sirius_geo_4/resources/fonts.dart';
+import '../../agent/config_agent.dart';
+import '../../builder/pattern.dart';
+import '../../builder/std_pattern.dart';
+import '../../model/locator.dart';
+import '../../builder/get_pattern.dart';
+import '../app_model.dart';
+import '../basic_resources.dart';
+import '../fonts.dart';
 
 class SentenceMvc extends Mvc {
   SentenceMvc(Map<String, dynamic> map) : super(map);
 
   double bgHeight = 0.4926 * model.scaleHeight;
-  ConfigAgent configAgent;
-  TextEditingController tc;
-  List<dynamic> answers;
-  List<dynamic> options;
-  List<dynamic> ansList;
-  List<dynamic> children;
-  List<dynamic> col;
-  List<dynamic> draggingList;
-  List<dynamic> dragAnsList;
-  List<dynamic> dragChildList;
-  List<dynamic> targetList;
-  List<dynamic> selectList;
-  Rx<List<dynamic>> sentenceNoti;
-  Rx<List<dynamic>> gvNoti;
-  Rx<ProcessPattern> textNoti;
-  Map<String, dynamic> imap;
-  Map<String, dynamic> lmap;
-  Function mvcpf;
-  Function tipf;
-  Function tpf = getPrimePattern["Text"];
-  Function cpf = getPrimePattern["Container"];
-  double childAspectRatio;
-  double eheight;
-  double ewidth;
+  ConfigAgent? configAgent;
+  TextEditingController? tc;
+  List<dynamic> answers = [];
+  List<dynamic> options = [];
+  List<dynamic> ansList = [];
+  List<dynamic> children = [];
+  List<dynamic> col = [];
+  List<dynamic> draggingList = [];
+  List<dynamic> dragAnsList = [];
+  List<dynamic> dragChildList = [];
+  List<dynamic> targetList = [];
+  List<dynamic> selectList = [];
+  late Rx<List<dynamic>> sentenceNoti;
+  Rx<List<dynamic>>? gvNoti;
+  Rx<ProcessPattern>? textNoti;
+  Map<String, dynamic> imap = {};
+  Map<String, dynamic> lmap = {};
+  Function? mvcpf;
+  Function tipf = getPrimePattern["TapItem"]!;
+  Function tpf = getPrimePattern["Text"]!;
+  Function cpf = getPrimePattern["Container"]!;
+  double childAspectRatio = 0.0;
+  double eheight = 0.0;
+  double ewidth = 0.0;
   int selIndex = -1;
-  int len;
-  ProcessPattern view;
-  ProcessPattern inTextPP;
-  ProcessPattern editText;
-  ProcessPattern holder;
+  int len = 0;
+  late ProcessPattern view;
+  ProcessPattern? inTextPP;
+  ProcessPattern? editText;
+  ProcessPattern? holder;
   bool refresh = false;
   bool completed = false;
-  String ctext;
-  ProcessEvent pe;
+  String ctext = "";
+  ProcessEvent? pe;
 
   @override
   double getBgHeight() {
@@ -59,10 +59,10 @@ class SentenceMvc extends Mvc {
     map["_state"] = "incomplete";
     answers = [];
     configAgent ??= map["_configAgent"];
-    if (ansList == null) {
-      ansList = configAgent.getElement(map["_Answer"], map);
+    if (ansList.isEmpty) {
+      ansList = configAgent!.getElement(map["_Answer"], map);
       len = ansList.length;
-      options = configAgent.getElement(map["_AnswerOptions"], map);
+      options = configAgent!.getElement(map["_AnswerOptions"], map) ?? [];
       col = [];
       imap = {
         "_text": map["_Descr"],
@@ -84,29 +84,29 @@ class SentenceMvc extends Mvc {
         "_strokeWidth": 2.0,
         "_child": cpp
       };
-      Function pf = getPrimePattern["DottedBorder"];
+      Function pf = getPrimePattern["DottedBorder"]!;
       holder = pf(imap);
       pe = ProcessEvent("fsm");
-      tipf = getPrimePattern["TapItem"];
       List<dynamic> wc = buildSentence();
-      sentenceNoti = resxController.addToResxMap("sentenceNoti", wc);
+      sentenceNoti =
+          resxController.addToResxMap("sentenceNoti", wc) as Rx<List<dynamic>>;
       imap = {"_runSpacing": 5.0, "_spacing": 5.0};
-      pf = getPrimePattern["Wrap"];
+      pf = getPrimePattern["Wrap"]!;
       ProcessPattern pp = pf(imap);
       imap = {"_valueName": "sentenceNoti", "_child": pp};
-      pf = getPrimePattern["Obx"];
+      pf = getPrimePattern["Obx"]!;
       col.add(pf(imap));
-      pf = getPrimePattern["Column"];
+      pf = getPrimePattern["Column"]!;
       imap = {
         "_mainAxisAlignment": MainAxisAlignment.spaceBetween,
         "_children": col
       };
       pp = pf(imap);
       imap = {"_height": 0.20 * model.scaleHeight, "_child": pp};
-      pf = getPrimePattern["SizedBox"];
+      pf = getPrimePattern["SizedBox"]!;
       col = [];
       col.add(pf(imap));
-      if (options == null) {
+      if (options.isEmpty) {
         tc = TextEditingController();
         map["_textEditingController"] = tc;
         ProcessEvent cpe = ProcessEvent("fsm");
@@ -130,7 +130,7 @@ class SentenceMvc extends Mvc {
           "_retainFocus": true,
           "_textEditingController": tc
         };
-        pf = getPrimePattern["InTextField"];
+        pf = getPrimePattern["InTextField"]!;
         pp = pf(imap);
         imap["_child"] = pp;
         inTextPP = cpf(imap);
@@ -141,11 +141,12 @@ class SentenceMvc extends Mvc {
           "_alignment": Alignment.center,
           "_decoration": shadowRCDecoration
         };
-        imap["_child"] = inTextPP;
+        imap["_child"] = inTextPP!;
         pp = cpf(imap);
-        textNoti = resxController.addToResxMap("textNoti", inTextPP);
+        textNoti = resxController.addToResxMap("textNoti", inTextPP!)
+            as Rx<ProcessPattern>;
         imap = {"_valueName": "textNoti", "_child": pp};
-        pf = getPrimePattern["Obx"];
+        pf = getPrimePattern["Obx"]!;
         pp = pf(imap);
         col.add(pp);
       } else {
@@ -155,17 +156,17 @@ class SentenceMvc extends Mvc {
       // pf = getPrimePattern["Column"];
       // imap = {"_children": col};
       map["_colElem"] = col;
-      mvcpf ??= model.appActions.getPattern("MvcColumn");
-      view = mvcpf(map);
+      mvcpf ??= model.appActions.getPattern("MvcColumn")!;
+      view = mvcpf!(map);
     } else {
       List<dynamic> wc = buildSentence();
       sentenceNoti.value = wc;
       if (refresh) {
-        mvcpf ??= model.appActions.getPattern("MvcColumn");
-        view = mvcpf(map);
+        mvcpf ??= model.appActions.getPattern("MvcColumn")!;
+        view = mvcpf!(map);
       }
       if (tc != null) {
-        tc.clear();
+        tc!.clear();
       }
     }
   }
@@ -192,7 +193,7 @@ class SentenceMvc extends Mvc {
       "_childWhenDragging": holder,
     };
 
-    Function dpf = getPrimePattern["Draggable"];
+    Function dpf = getPrimePattern["Draggable"]!;
     for (int i = 0; i < options.length; i++) {
       Map<String, dynamic> dragAction = {
         "_event": "dropSel",
@@ -230,7 +231,7 @@ class SentenceMvc extends Mvc {
       dragAnsList.add(pp);
     }
     children.addAll(dragChildList);
-    gvNoti = resxController.addToResxMap("gv", children);
+    gvNoti = resxController.addToResxMap("gv", children) as Rx<List<dynamic>>;
 
     double mainAS = 0.01847 * model.scaleHeight;
     childAspectRatio = ewidth / eheight;
@@ -241,10 +242,10 @@ class SentenceMvc extends Mvc {
       "_crossAxisSpacing": 0.04 * model.scaleWidth,
       "_padding": EdgeInsets.all(size10),
     };
-    Function pf = getPrimePattern["GridView"];
+    Function pf = getPrimePattern["GridView"]!;
     ProcessPattern gv = pf(imap);
     lmap = {"_valueName": "gv", "_child": gv};
-    pf = getPrimePattern["Obx"];
+    pf = getPrimePattern["Obx"]!;
     imap = {
       "_width": 0.8267 * model.scaleWidth,
       "_height": eheight * children.length / 2 +
@@ -253,14 +254,14 @@ class SentenceMvc extends Mvc {
       "_decoration": shadowRCDecoration,
       "_child": pf(lmap)
     };
-    pf = getPrimePattern["Container"];
+    pf = getPrimePattern["Container"]!;
     return pf(imap);
   }
 
   List<dynamic> buildSentence() {
     int inx = 0;
     int i = 0;
-    Function dpf = getPrimePattern["DragTarget"];
+    Function dpf = getPrimePattern["DragTarget"]!;
     List<dynamic> wc = [];
     targetList = [];
     while (inx < ctext.length) {
@@ -290,7 +291,7 @@ class SentenceMvc extends Mvc {
           };
           imap = {"_child": holder, "_onTap": pe, "_tapAction": tapAction};
           ProcessPattern pp = tipf(imap);
-          if (options != null) {
+          if (options.isNotEmpty) {
             ProcessEvent dpe = ProcessEvent("fsm");
             dpe.map = {"_dropIndex": i};
             imap = {"_target": pp, "_dropAction": dpe};
@@ -330,7 +331,7 @@ class SentenceMvc extends Mvc {
   }
 
   @override
-  String doAction(String action, Map<String, dynamic> emap) {
+  String doAction(String action, Map<String, dynamic>? emap) {
     switch (action) {
       case "Editing":
         int i = 0;
@@ -338,16 +339,16 @@ class SentenceMvc extends Mvc {
           while ((answers[i] != "") && (i < answers.length)) {
             i++;
           }
-          answers[i] = tc.text;
+          answers[i] = tc!.text;
         } else {
           i = selIndex;
-          answers[selIndex] = tc.text;
+          answers[selIndex] = tc!.text;
         }
         imap = {
           "_decoration": elemDecoration,
           "_textStyle": choiceButnTxtStyle,
           "_index": i,
-          "_item": tc.text,
+          "_item": tc!.text,
         };
         ProcessPattern ep =
             getTapItemElemPattern("select", eheight, ewidth, imap);
@@ -368,7 +369,7 @@ class SentenceMvc extends Mvc {
             };
             editText = tpf(imap);
           }
-          textNoti.value = editText;
+          textNoti!.value = editText!;
         } else {
           map["_state"] = "incomplete";
         }
@@ -382,11 +383,11 @@ class SentenceMvc extends Mvc {
           }
           selIndex = i;
         }
-        tc.text = answers[selIndex];
+        tc!.text = answers[selIndex];
         break;
       case "Selection":
-        int inx = emap["_index"];
-        if (options == null) {
+        int inx = emap!["_index"];
+        if (options.isEmpty) {
           if (inx != selIndex) {
             imap = {
               "_decoration": selDecoration,
@@ -414,10 +415,10 @@ class SentenceMvc extends Mvc {
             }
             sentenceNoti.value = wc;
             selIndex = inx;
-            tc.text = answers[inx];
+            tc!.text = answers[inx];
             if (map["_state"] == "completed") {
               map["_state"] = "incomplete";
-              textNoti.value = inTextPP;
+              textNoti!.value = inTextPP!;
             }
           } else {
             if (completed) {
@@ -429,7 +430,7 @@ class SentenceMvc extends Mvc {
                 };
                 editText = tpf(imap);
               }
-              textNoti.value = editText;
+              textNoti!.value = editText!;
             }
             ProcessPattern ep;
 
@@ -447,7 +448,7 @@ class SentenceMvc extends Mvc {
             sentenceNoti.value =
                 rebuildSentence(selIndex, ep, sentenceNoti.value);
             selIndex = -1;
-            tc.clear();
+            tc!.clear();
           }
         } else {
           if (selIndex == -1) {
@@ -502,11 +503,11 @@ class SentenceMvc extends Mvc {
           }
           List<dynamic> c = [];
           c.addAll(children);
-          gvNoti.value = c;
+          gvNoti!.value = c;
         }
         break;
       case "DropSel":
-        swap(emap["_index"], emap["_dropIndex"]);
+        swap(emap!["_index"], emap["_dropIndex"]);
         break;
       case "CheckAns":
         bool cor = true;
@@ -531,7 +532,6 @@ class SentenceMvc extends Mvc {
         } else {
           return "incorrect";
         }
-        break;
       case "ShowAnswer":
         answers = ansList;
         List<dynamic> c = [];
@@ -608,7 +608,7 @@ class SentenceMvc extends Mvc {
     sentenceNoti.value = wc;
     List<dynamic> c = [];
     c.addAll(children);
-    gvNoti.value = c;
+    gvNoti!.value = c;
   }
 
   @override
@@ -633,12 +633,12 @@ class SentenceMvc extends Mvc {
     }
     sentenceNoti.value = wc;
     selIndex = -1;
-    if (options == null) {
-      textNoti.value = inTextPP;
+    if (options.isEmpty) {
+      textNoti!.value = inTextPP!;
     } else {
       children = [];
       children.addAll(dragChildList);
-      gvNoti.value = children;
+      gvNoti!.value = children;
     }
   }
 
