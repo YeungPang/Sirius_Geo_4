@@ -74,12 +74,12 @@ class MvcAgent extends Agent {
         List<dynamic>? hintList = currMv!["_hintList"];
         if (hintList == null) {
           ConfigAgent configAgent = currMv!["_configAgent"];
-          hintList = configAgent.getListContent(
-              currMv!["_hints"], model.map["hints"], currMv!, null);
+          hintList = configAgent.getElement(currMv!["_hints"], currMv!,
+              map: model.map["hints"]);
           currMv!["_hintList"] = hintList;
         }
         int inx = currMvc!.getHintIndex();
-        String hintStr = hintList[inx];
+        String hintStr = hintList![inx];
         hints = hintStr.split(";");
         currHint = 0;
         setHint(event.name);

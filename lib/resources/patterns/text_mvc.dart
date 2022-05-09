@@ -56,6 +56,9 @@ class TextMvc extends Mvc {
     answers = [];
     configAgent ??= map["_configAgent"];
     String answer = map["_Answer"].toString();
+/*     if (answer[0] == 'ℛ') {
+      answer = configAgent!.getElement(map["_Answer"], map);
+    } */
     if ((!retrying) && (map["_Accepted_Answers"] != null)) {
       acceptedList = [];
       List<dynamic> rList =

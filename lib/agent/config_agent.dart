@@ -14,17 +14,24 @@ class ConfigAgent {
   ConfigAgent({this.defName});
 
   dynamic getElement(var iv, Map<String, dynamic> vars,
-      {List<int>? rowList, List<dynamic>? header}) {
+      {List<int>? rowList, List<dynamic>? header, Map<String, dynamic>? map}) {
     if ((iv == null) || ((iv is String) && (iv.isEmpty))) {
       return null;
     }
     defMap = ((defName != null) ? facts[defName] : defMap);
+    map ??= defMap;
     if (iv is int) {
-      if (defMap != null) {
+      if (map != null) {
         if (rowList != null) {
           rowList.add(iv);
         }
-        return defMap!["elemList"][iv];
+        if (header != null) {
+          var h = map["header"];
+          List<dynamic> hl;
+          hl = (h is String) ? h.split(';') : h;
+          header.addAll(hl);
+        }
+        return map["elemList"][iv];
       }
     }
     //if ((iv is double) || (iv is bool)) {
@@ -33,35 +40,55 @@ class ConfigAgent {
     }
     String s = iv;
     String src = s.trim();
-    List<String> ls = s.split(':');
+    if (src[0] != 'ℛ') {
+      return resolveStr(src);
+    }
+    return getRefContent(src.substring(1), map, vars, rowList, header);
+  }
+
+  dynamic getRefContent(String s, Map<String, dynamic>? map,
+      Map<String, dynamic> vars, List<int>? rowList, List<dynamic>? header) {
+/*     if (s.isEmpty || (s[0] != '(') || (s[s.length - 1] != ')')) {
+      throw Exception("Invalid reference: ℛ" + s);
+    } */
+    String src = (s[0] == '(') ? s.substring(1, s.length - 1) : s;
+    if ((src[0] == '[') && (src[src.length - 1] == ']')) {
+      return getListContent(src, map, vars, rowList, header);
+    }
+    List<String> ls = src.split(':');
     int ll = ls.length;
     if (ll > 1) {
       String ref = ls[0].trim();
       if (ref.isNotEmpty) {
-        defMap = facts[ref] ?? model.map[ref];
+        map = facts[ref] ?? model.map[ref];
       } else {
-        defMap ??= facts;
+        map ??= facts;
       }
+      int l = 1;
       for (int i = 1; i < (ll - 1); i++) {
-        defMap = defMap![ls[i].trim()];
+        map = map![ls[i].trim()];
+        l++;
       }
-      src = ls[1].trim();
+      src = ls[l].trim();
       if (src.isEmpty) {
-        return defMap;
+        return map;
       }
-      if (isAlphanumeric(src) && !isNumeric(src)) {
-        return defMap![src];
+      if (isAlphanumeric(src) && !isInt(src)) {
+        return map![src];
       }
+    }
+    if ((src[0] == '[') && (src[src.length - 1] == ']')) {
+      return getListContent(src, map, vars, rowList, header);
     }
     var si = resolveStr(src);
     if (si is int) {
-      if (defMap != null) {
+      if (map != null) {
         if (rowList != null) {
           rowList.add(si);
         }
-        dynamic r = defMap!["elemList"];
+        dynamic r = map["elemList"];
         if (header != null) {
-          var h = defMap!["header"];
+          var h = map["header"];
           List<dynamic> hl;
           hl = (h is String) ? h.split(';') : h;
           header.addAll(hl);
@@ -72,17 +99,11 @@ class ConfigAgent {
     if (si is! String) {
       return si;
     }
-    RegExp re = RegExp(r"[()]");
-    ls = src.split(re);
-    if (ls.length > 1) {
-      src = ls[1].trim();
-    }
-
-    re = RegExp(r"[,]");
+    RegExp re = RegExp(r"[,]");
     if (src[0] == '[') {
       int inx = src.indexOf(']');
       String s1 = src.substring(1, inx);
-      List<dynamic> ds1 = getListContent(s1, defMap, vars, rowList);
+      List<dynamic> ds1 = getListContent(s1, map, vars, rowList, header);
       if (src.length > ++inx) {
         String s2 = src.substring(inx);
         List<String> ls2 = s2.split(re);
@@ -93,7 +114,7 @@ class ConfigAgent {
           s2 = vars[s2] ?? s2;
         }
         si = resolveStr(s2);
-        if ((si is int) && (defMap != null)) {
+        if ((si is int) && (map != null)) {
           List<dynamic> ds2 = [];
           for (List<dynamic> ld in ds1) {
             ds2.add(ld[si]);
@@ -116,14 +137,14 @@ class ConfigAgent {
     if (si2 is String) {
       si2 = resolveStr(si2);
     }
-    if ((defMap != null) && (si is int)) {
+    if ((map != null) && (si is int)) {
       if (header != null) {
-        var h = defMap!["header"];
+        var h = map["header"];
         List<dynamic> hl;
         hl = (h is String) ? h.split(';') : h;
         header.addAll(hl);
       }
-      List<dynamic> ld = defMap!["elemList"][si];
+      List<dynamic> ld = map["elemList"][si];
       if (rowList != null) {
         rowList.add(si);
       }
@@ -139,10 +160,38 @@ class ConfigAgent {
     return si;
   }
 
-  List<dynamic> getListContent(String s, Map<String, dynamic>? defMap,
-      Map<String, dynamic> vars, List<int>? rowList) {
-    RegExp re = RegExp(r"[\[\],]");
-    List<String> ls1 = s.split(re);
+  List<dynamic> getListContent(String s, Map<String, dynamic>? map,
+      Map<String, dynamic> vars, List<int>? rowList, List<dynamic>? header) {
+    //RegExp re = RegExp(r"[\[\],]");
+    String src = (s[0] == '[') ? s.substring(1, s.length - 1) : s;
+    List<String> lstack = [];
+    int inx = src.indexOf('(');
+    while (inx >= 0) {
+      int einx = src.indexOf(')', inx) + 1;
+      String s1 = src.substring(0, inx);
+      inx = s1.lastIndexOf(',');
+      if (inx < 0) {
+        inx = 0;
+      }
+      s1 = src.substring(inx, einx);
+      lstack.add(s1);
+      src = src.replaceFirst(s1, 'ç');
+      inx = src.indexOf('(');
+    }
+    inx = src.indexOf('[');
+    while (inx >= 0) {
+      int einx = src.indexOf(']', inx) + 1;
+      String s1 = src.substring(0, inx);
+      inx = s1.lastIndexOf(',');
+      if (inx < 0) {
+        inx = 0;
+      }
+      s1 = src.substring(inx, einx);
+      lstack.add(s1);
+      src = src.replaceFirst(s1, 'ç');
+      inx = src.indexOf('[');
+    }
+    List<String> ls1 = src.split(',');
     List<dynamic> ds1 = [];
     for (String ds in ls1) {
       if (ds.isNotEmpty) {
@@ -160,10 +209,10 @@ class ConfigAgent {
             sr = vars[sr] ?? sr;
           }
           int? r2 = int.tryParse(sr);
-          if ((r1 != null) && (r2 != null) && (defMap != null)) {
+          if ((r1 != null) && (r2 != null) && (map != null)) {
             notRange = false;
             for (int r = r1; r <= r2; r++) {
-              var v = defMap["elemList"][r];
+              var v = map["elemList"][r];
               if (rowList != null) {
                 rowList.add(r);
               }
@@ -172,8 +221,21 @@ class ConfigAgent {
           }
         }
         if (notRange) {
-          var v = getElement(ds, vars, rowList: rowList);
-          ds1.add(v);
+          dynamic v;
+          if (ds == 'ç') {
+            ds = lstack[0];
+            lstack.removeAt(0);
+            v = getRefContent(ds, map, vars, rowList, header);
+            if (v is List<dynamic>) {
+              ds1.addAll(v);
+            } else {
+              ds1.add(v);
+            }
+          } else {
+            v = getElement(resolveStr(ds), vars,
+                rowList: rowList, header: header, map: map);
+            ds1.add(v);
+          }
         }
       }
     }

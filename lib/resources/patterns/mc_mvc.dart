@@ -122,7 +122,7 @@ class McMvc extends Mvc {
     map["_ansInx"] = ans;
     // String question = configAgent.checkText("_Question", map);
     // map["_question"] = question;
-    String o = options[0];
+    String o = options[0].toString();
     isImg = o.contains(".png") || o.contains(".svg");
     eheight = isImg ? 0.12 * model.scaleHeight : 0.07143 * model.scaleHeight;
     ewidth = 0.345 * model.scaleWidth;
@@ -137,11 +137,12 @@ class McMvc extends Mvc {
     iepf = model.appActions.getPattern("ItemElem");
     tipf = model.appActions.getPattern("TapItem");
     for (int i in range) {
-      childMap["_item"] = options[i];
+      String its = options[i].toString();
+      childMap["_item"] = its;
       childMap["_index"] = i;
       Map<String, dynamic> tapAction = {
         "_event": "select",
-        "_item": options[i],
+        "_item": its,
         "_index": i
       };
       childMap["_tapAction"] = tapAction;
@@ -242,18 +243,19 @@ class McMvc extends Mvc {
     int ri = range.indexOf(i);
     if (elemList[ri] is int) {
       BoxDecoration decoration = isImg ? elemDecoration : selDecoration;
+      String its = options[i].toString();
       Map<String, dynamic> childMap = {
         "_height": eheight,
         "_width": ewidth,
         "_alignment": Alignment.center,
         "_decoration": decoration,
         "_textStyle": selButnTxtStyle,
-        "_item": options[i],
+        "_item": its,
         "_index": i,
       };
       Map<String, dynamic> tapAction = {
         "_event": "select",
-        "_item": options[i],
+        "_item": its,
         "_index": i
       };
       childMap["_tapAction"] = tapAction;
@@ -328,7 +330,7 @@ class McMvc extends Mvc {
     Map<String, dynamic> childMap = {
       "_height": eheight,
       "_width": ewidth,
-      "_item": options[i],
+      "_item": options[i].toString(),
       "_index": i,
       "_childInx": range.indexOf(i)
     };
