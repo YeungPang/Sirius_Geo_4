@@ -61,13 +61,17 @@ class TextMvc extends Mvc {
     } */
     if ((!retrying) && (map["_Accepted_Answers"] != null)) {
       acceptedList = [];
-      List<dynamic> rList =
-          configAgent!.getElement(map["_Accepted_Answers"], map);
-      RegExp re = RegExp(r"[\[\],]");
-      for (String s in rList) {
-        List<String> sl = s.trim().split(re);
-        acceptedList!.add(sl);
+      dynamic rList = configAgent!.getElement(map["_Accepted_Answers"], map);
+      if (rList is List<dynamic>) {
+        acceptedList!.addAll(rList);
+      } else {
+        acceptedList!.add(rList);
       }
+      // RegExp re = RegExp(r"[\[\],]");
+      // for (String s in rList) {
+      //   List<String> sl = s.trim().split(re);
+      //   acceptedList!.add(sl);
+      // }
     }
     if (answer.contains("_ans")) {
       if (!retrying) {
@@ -77,6 +81,7 @@ class TextMvc extends Mvc {
         excl.add(ans);
         map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
         ansList = [options![ans]];
+        len = map["_range"] ?? ansList.length;
         if (acceptedList != null) {
           List<dynamic> al = acceptedList![ans];
           for (String a in al) {
@@ -91,18 +96,22 @@ class TextMvc extends Mvc {
       refresh = false;
       var al = configAgent!.getElement(map["_Answer"], map);
       ansList = (al is List<dynamic>) ? al : [al];
+      len = map["_range"] ?? ansList.length;
       if (acceptedList != null) {
-        for (List<dynamic> al in acceptedList!) {
-          for (String a in al) {
-            if (a.isNotEmpty) {
-              ansList.add(a.trim());
+        for (var al in acceptedList!) {
+          if (al is List<dynamic>) {
+            for (String a in al) {
+              if (a.isNotEmpty) {
+                ansList.add(a.trim());
+              }
             }
+          } else {
+            ansList.add(al.toString().trim());
           }
         }
       }
     }
     retrying = false;
-    len = map["_range"] ?? ansList.length;
     if (inTextPP == null) {
       if (map["_Q_Image"] == null) {
         bgHeight = 0.8 * bgHeight;
