@@ -146,7 +146,7 @@
             "elemList": [
                 "ContG0001;Identify Continent;continents;0.6;1;questions;0;0;0",
                 "ContG0002;Continent Size;continents;0.75;2;questions;25;4;1",
-                "ContG0003;Continent Quiz;continents;0.75;3;questions;2",
+                "ContG0003;Continent Quiz;continents;0.75;3;questions;24;2",
                 "CounG0001;Identify Country;countries;0.75;4;questions;6",
                 "CounG0002;Identify Flag;flags;0.75;5;questions;[7‥13];[7‥13];7‥13",
                 "CounG0003;Country Quiz;countries;0.75;6;questions;20;16",
@@ -226,7 +226,7 @@
                 "CounQ0022;SvgMap;countryData;Select #ℛ(_ans,1)#.;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(CountrySelection:0)",
                 "CounQ0023;MC;;What is the population of Switzerland in millions?;;;4;8 millions;1;;[4,8,10,12]",
                 "CounQ0024;MC;countryData;What is the largest country by area?;;;6;The largest country is #ℛ(188,2)#;ℛ(188,2);;ℛ([15, 32, 43, 48, 109, 110, 122, 211, 241],2)",
-                "QID00025;MC;contData;What is the smallest continent?;;;4;Australia/Oceania is the smallest continent.;6;;[Europe,Asia,Africa,Antractica,North America,South America,Australia]",
+                "QID00025;MC;contData;What is the smallest continent?;;;5;Australia/Oceania is the smallest continent.;6;;[Europe,Asia,Africa,Antractica,North America,South America,Australia]",
                 "QID00026;Text;;What is the smallest continent?;;;;Australia/Oceania is the smallest continent.;Australia;Oceania"
             ]
         },

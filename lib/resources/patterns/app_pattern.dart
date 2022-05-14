@@ -194,9 +194,9 @@ class GroupProgNotiPattern extends ProcessPattern {
       lid.add(gid);
       List<dynamic> cl = resxController.getCache("compList");
       cl.add(clp);
-      lid = lid[inx - 1];
-      for (String sid in lid) {
-        List<int> iid = resolveIntList(sid);
+      List<dynamic> ilid = lid[inx - 1];
+      for (List<dynamic> sid in ilid) {
+        List<int> iid = sid.map((s) => s as int).toList();
         progId.addAll(iid);
       }
       total = progId.length;
@@ -204,7 +204,7 @@ class GroupProgNotiPattern extends ProcessPattern {
       int prog = getCompleted(progId);
       pno += prog;
       cp = cl[inx - 1] / 100.0;
-      if ((pno / total) < cp) {
+      if ((total == 0) || ((pno / total) < cp)) {
         greyEvent = map["_greyEvent"];
       } else {
         done = true;

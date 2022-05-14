@@ -522,16 +522,13 @@ List<int>? getRandomList(
   while (rlist.length < range) {
     int ri = getRandom(size, exclude)!;
     exclude.add(ri);
-    if ((rlist.isEmpty) || (rlist.last < ri)) {
-      rlist.add(ri);
-    } else {
-      for (int i = 0; i < rlist.length; i++) {
-        if (rlist[i] > ri) {
-          rlist.insert(i, ri);
-          break;
-        }
-      }
-    }
+    rlist.add(ri);
+  }
+  int pos = getRandom(range, [])!;
+  for (int i = pos; i < rlist.length; i++) {
+    int e = rlist.last;
+    rlist.removeLast();
+    rlist.insert(0, e);
   }
   return rlist;
 }

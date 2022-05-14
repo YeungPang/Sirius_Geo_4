@@ -682,28 +682,26 @@ class LogicProcessor {
         }
         return null;
       case "≪":
-        if ((e1 is String) && (e1[0] == '_')) {
+        if ((r1 is String) && (r1[0] == '_')) {
           if ((r2 is List<dynamic>) && (r2.isNotEmpty)) {
             if (r2[0] is String) vars[e1] = r2[0];
             r2.removeAt(0);
             return vars[e1];
           }
         }
-        var r1 = vars[e1] ?? e1;
         if (r1 is List<dynamic>) {
           r1.add(r2);
           return r1;
         }
         return null;
       case "≫":
-        if ((e2 is String) && (e2[0] == '_')) {
+        if ((r2 is String) && (r2[0] == '_')) {
           if ((r1 is List<dynamic>) && (r1.isNotEmpty)) {
             vars[e2] = r1.last;
             r1.removeLast();
             return vars[e2];
           }
         }
-        var r2 = vars[e2] ?? e2;
         if (r2 is List<dynamic>) {
           r2.insert(0, r1);
           return r2;

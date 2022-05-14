@@ -55,9 +55,10 @@ class McMvc extends Mvc {
     gvNoti = resxController.addToResxMap("gv", children) as Rx<List<dynamic>>;
 
     double mainAS = 0.01847 * model.scaleHeight;
-    childAspectRatio = ewidth / eheight;
+    childAspectRatio =
+        (range.length > 1) ? ewidth / eheight : 2 * ewidth / eheight;
     imap = {
-      "_crossAxisCount": 2,
+      "_crossAxisCount": (range.length > 1) ? 2 : 1,
       "_childAspectRatio": childAspectRatio,
       "_mainAxisSpacing": mainAS,
       "_crossAxisSpacing": 0.04 * model.scaleWidth,
@@ -69,8 +70,8 @@ class McMvc extends Mvc {
     pf = getPrimePattern["Obx"]!;
     imap = {
       "_width": 0.8267 * model.scaleWidth,
-      "_height":
-          eheight * range.length / 2 + mainAS * (range.length / 2.0 + 1.5),
+      "_height": eheight * ((range.length + 1) ~/ 2) +
+          mainAS * (range.length / 2.0 + 1.5),
       "_alignment": Alignment.center,
       "_decoration": shadowRCDecoration,
       "_child": pf(lmap)

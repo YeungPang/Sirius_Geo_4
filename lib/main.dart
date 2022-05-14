@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
 
   Widget _getPage(MainModel model) {
     Widget screen;
-    Map<String, dynamic> map = Get.arguments;
+    Map<String, dynamic>? map = Get.arguments;
     Agent a = model.appActions.getAgent("pattern");
 
     ProcessEvent event = ProcessEvent(Get.parameters["screen"]!, map: map);
