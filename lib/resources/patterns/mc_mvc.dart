@@ -59,6 +59,7 @@ class McMvc extends Mvc {
         (range.length > 1) ? ewidth / eheight : 2 * ewidth / eheight;
     imap = {
       "_crossAxisCount": (range.length > 1) ? 2 : 1,
+      //"_crossAxisCount": 2,
       "_childAspectRatio": childAspectRatio,
       "_mainAxisSpacing": mainAS,
       "_crossAxisSpacing": 0.04 * model.scaleWidth,
@@ -134,6 +135,7 @@ class McMvc extends Mvc {
       "_alignment": Alignment.center,
       "_decoration": decoration,
       "_textStyle": choiceButnTxtStyle,
+      "_textAlign": TextAlign.center,
     };
     iepf = model.appActions.getPattern("ItemElem");
     tipf = model.appActions.getPattern("TapItem");
@@ -184,7 +186,7 @@ class McMvc extends Mvc {
         } else {
           r = "correct";
           for (int k in selList) {
-            if (ansList.contains(options[k])) {
+            if (ansList.contains(k)) {
               buildBadgedElem(k, "correct");
             } else {
               buildBadgedElem(k, "incorrect");

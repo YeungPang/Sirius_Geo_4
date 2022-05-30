@@ -6,7 +6,7 @@ import '../model/locator.dart';
 import 'package:string_validator/string_validator.dart';
 
 final re = RegExp(
-    r"[⋀⋁⊻∈⋓⋂∉⋃↲⊆⊂⊄≠=≈~⇒&∣|\*\-+－＋\/%≪≫←→≥≤<>≔⊎⊌⥹⥻⟷@,Φσℒℛℝℳ𝕄𝄁ƒ𝓅⋓ℓητ𝕥‥⊖:]");
+    r"[⋀⋁⊻∈⋓⋂∉⋃↲⊆⊂⊄≠=≈~⇒&∥∣|\*\-+－＋\/%≪≫←→≥≤<>≔⊎⊌⥹⥻⟷@,Φσℒℛℝℳ𝕄𝄁ƒ𝓅⋓ℓητ𝕥‥⊖:]");
 
 const binOp = "∈|@∉⊆⊂⊄≠=≈~⇒&∣⊻≪≫≥≤<>－＋⥹⥻→←⟷";
 const matrixSymbol = "𝔸𝔹ℂ𝔻𝔼𝔽𝕄ℝ𝕥𝄁";
@@ -548,6 +548,13 @@ class LogicProcessor {
       }
       return m;
     }
+    if ((e == 'ç') && (l.length == 1)) {
+      var r = l[0];
+      if (r is String) {
+        r = vars[r] ?? r;
+      }
+      return r;
+    }
     var r = (l.isEmpty) ? l : resolveDynList(l);
     if (r is String) {
       r = vars[r] ?? r;
@@ -684,7 +691,7 @@ class LogicProcessor {
       case "≪":
         if ((r1 is String) && (r1[0] == '_')) {
           if ((r2 is List<dynamic>) && (r2.isNotEmpty)) {
-            if (r2[0] is String) vars[e1] = r2[0];
+            vars[e1] = r2[0];
             r2.removeAt(0);
             return vars[e1];
           }

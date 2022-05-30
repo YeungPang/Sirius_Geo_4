@@ -258,19 +258,42 @@ class ConfigAgent {
     return pl;
   }
 
-  String? checkText(String textName, Map<String, dynamic> map) {
-    String? text = map[textName];
-    if (text == null) {
+  dynamic checkText(String textName, Map<String, dynamic> map) {
+    dynamic t = map[textName];
+    if (t == null) {
       return null;
     }
-    int inx = text.indexOf("#");
-    if (inx >= 0) {
-      int inx1 = text.indexOf("#", inx + 1);
-      String v = text.substring(inx + 1, inx1);
-      String elem = getElement(v, map);
-      text = text.replaceFirst("#" + v + "#", elem);
+    List<dynamic> tl = (t is List<dynamic>) ? t : [t];
+    for (int i = 0; i < tl.length; i++) {
+      String text = tl[i];
+
+      int inx = text.indexOf("#");
+      if (inx >= 0) {
+        int inx1 = text.indexOf("#", inx + 1);
+        String v = text.substring(inx + 1, inx1);
+        String elem = getElement(v, map);
+        text = text.replaceFirst("#" + v + "#", elem);
+      }
+      inx = 0;
+      while (inx >= 0) {
+        inx = text.indexOf('⊤');
+        if (inx >= 0) {
+          int inx1 = text.indexOf(")", inx + 1);
+          String v = text.substring(inx + 2, inx1);
+          String? elem = lookup(v) ?? model.map["text"][v];
+          if (elem != null) {
+            text = text.replaceFirst("⊤(" + v + ")", elem);
+          } else {
+            text = text.replaceFirst("⊤(" + v + ")", "");
+          }
+        }
+      }
+      tl[i] = text;
     }
-    return text;
+    if (tl.length == 1) {
+      return tl[0];
+    }
+    return tl;
   }
 }
 

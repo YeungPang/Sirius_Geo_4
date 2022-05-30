@@ -537,7 +537,8 @@ class MvcAgent extends Agent {
 
     String? subTitle = currMv!["_subTitle"];
     double rheight = resDialHeight;
-    double rtch = 0.02463 * model.scaleHeight;
+    //double rtch = 0.02463 * model.scaleHeight;
+    double rtch = 0.032 * model.scaleHeight;
     if (sizedPat == null) {
       Function pf = getPrimePattern["SizedBox"]!;
       imap = {"_height": 5.0 * sizeScale};
@@ -675,6 +676,7 @@ class MvcAgent extends Agent {
     imap = {
       "_child": pp,
       "_height": 0.07266 * model.scaleHeight,
+      //"_height": 0.08 * model.scaleHeight,
       "_width": resDialWidth,
       "_decoration": getDecoration(image!),
     };
