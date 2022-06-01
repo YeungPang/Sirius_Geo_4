@@ -262,6 +262,7 @@ const Map<String, IconData> myIcons = {
   "solar_system": SGGameIcons.solar_system,
   "star": Icons.star,
   "sun": SGGameIcons.sun,
+  "support": Icons.contact_support,
   "svg": SGGameIcons.svg,
   "tectonic_plates": SGGameIcons.tectonic_plates,
   "time_zones": SGGameIcons.time_zones,

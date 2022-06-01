@@ -27,7 +27,6 @@ class MvcAgent extends Agent {
   Map<String, dynamic> text = model.map["text"];
   Map<String, dynamic> userProfile = model.map["userProfile"];
   Rx<List<dynamic>>? stackNoti;
-  //ValueNotifier<List<dynamic>> progNoti;
   RxDouble? confirmNoti;
   int liveTime = model.map["liveGenTime"];
   RxString? timeNoti;

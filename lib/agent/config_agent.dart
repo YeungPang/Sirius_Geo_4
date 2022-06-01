@@ -38,7 +38,7 @@ class ConfigAgent {
     if (iv is! String) {
       return iv;
     }
-    String s = iv;
+    String s = checkModelText(iv);
     String src = s.trim();
     if (src[0] != 'ℛ') {
       return resolveStr(src);
@@ -274,21 +274,7 @@ class ConfigAgent {
         String elem = getElement(v, map);
         text = text.replaceFirst("#" + v + "#", elem);
       }
-      inx = 0;
-      while (inx >= 0) {
-        inx = text.indexOf('⊤');
-        if (inx >= 0) {
-          int inx1 = text.indexOf(")", inx + 1);
-          String v = text.substring(inx + 2, inx1);
-          String? elem = lookup(v) ?? model.map["text"][v];
-          if (elem != null) {
-            text = text.replaceFirst("⊤(" + v + ")", elem);
-          } else {
-            text = text.replaceFirst("⊤(" + v + ")", "");
-          }
-        }
-      }
-      tl[i] = text;
+      tl[i] = checkModelText(text);
     }
     if (tl.length == 1) {
       return tl[0];
@@ -776,6 +762,24 @@ dynamic resolveStr(String src) {
               ? true
               : (src == "false")
                   ? false
-                  : src));
+                  : checkModelText(src)));
   return d;
+}
+
+String checkModelText(String text) {
+  int inx = 0;
+  while (inx >= 0) {
+    inx = text.indexOf('⊤');
+    if (inx >= 0) {
+      int inx1 = text.indexOf(")", inx + 1);
+      String v = text.substring(inx + 2, inx1);
+      String? elem = lookup(v) ?? model.map["text"][v];
+      if (elem != null) {
+        text = text.replaceFirst("⊤(" + v + ")", elem);
+      } else {
+        text = text.replaceFirst("⊤(" + v + ")", "");
+      }
+    }
+  }
+  return text;
 }

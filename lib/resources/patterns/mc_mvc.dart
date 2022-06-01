@@ -253,6 +253,7 @@ class McMvc extends Mvc {
         "_alignment": Alignment.center,
         "_decoration": decoration,
         "_textStyle": selButnTxtStyle,
+        "_textAlign": TextAlign.center,
         "_item": its,
         "_index": i,
       };

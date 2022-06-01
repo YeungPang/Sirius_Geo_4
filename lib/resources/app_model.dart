@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../builder/item_search.dart';
 import '../../model/locator.dart';
 import '../../builder/get_pattern.dart';
 import '../../builder/pattern.dart';
@@ -362,6 +363,7 @@ buildBadgedElement(String type, List<dynamic> children,
     "_alignment": Alignment.center,
     "_decoration": decoration,
     "_textStyle": incorr ? incorrTxtStyle : selButnTxtStyle,
+    "_textAlign": TextAlign.center,
     "_badgeContext": pp,
     "_badgeColor": Colors.white,
   };
@@ -683,4 +685,7 @@ const Map<String, Function> appMvc = {
   "WebView": getWebViewMvc,
 };
 
-const Map<String, Function> appFunc = {"getSvgMap": getSvgMap};
+const Map<String, Function> appFunc = {
+  "getSvgMap": getSvgMap,
+  "onSearch": onSearch
+};

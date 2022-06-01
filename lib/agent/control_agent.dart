@@ -19,6 +19,7 @@ class AgentActions extends AppActions {
   Map<String, Function> appFunc = {};
   Map<String, Function> appPatterns = {};
   String patName = "";
+  bool themeChanged = false;
 
   @override
   Function? getFunction(String name) {
@@ -50,6 +51,10 @@ class AgentActions extends AppActions {
       case "process":
         ProcessEvent pe = ProcessEvent(input, map: vars);
         return mvcAgent.process(pe);
+      case "fsmEvent":
+        ProcessEvent pe = ProcessEvent(input, map: vars);
+        Agent a = getAgent("pattern");
+        return a.process(pe);
       case "decode":
         return controlAgent.decode(input, vars!);
       case "dataList":
@@ -139,6 +144,19 @@ class AgentActions extends AppActions {
         var data = vars![name] ?? input[1];
         vars[name] = data;
         return true;
+      case "isNull":
+        return (input == null) || (input == nil);
+      case "buildDialog":
+        if (input == null) {
+          return false;
+        }
+        //Agent a = getAgent("pattern");
+        ProcessEvent event = (input is List<dynamic>)
+            ? ProcessEvent(input[0])
+            : ProcessEvent(input);
+        event.map = (input is List<dynamic>) ? input[1] : vars;
+        _getDialog(event);
+        return true;
       case "showDialog":
         Get.dialog(
           getPatternWidget(input)!,
@@ -184,7 +202,29 @@ class AgentActions extends AppActions {
         return false;
       case "handleList":
         return handleList(input, vars!);
+      case "changeTheme":
+        if (themeChanged) {
+          return true;
+        }
+        Get.changeTheme(getMainTheme());
+        themeChanged = true;
+        return true;
       default:
+        if ((facts[name] != null) || (clauses[name] != null)) {
+          ProcessEvent pe = ProcessEvent(name, map: input);
+          Agent a = getAgent("pattern");
+          return a.process(pe);
+        }
+        Function? func = appFunc[name];
+        if (func != null) {
+          dynamic r;
+          if (input != null) {
+            r = func(input);
+          } else {
+            r = func();
+          }
+          return (r != null) ? r : true;
+        }
         return false;
     }
   }
@@ -228,6 +268,11 @@ class AgentActions extends AppActions {
         }
         return ThemeDecoder.decodeColor(spec, validate: false);
       case "textStyle":
+        if (value != null) {
+          Map<String, dynamic> m = value;
+          Color c = getResource("color", m["_color"]!);
+          return getTextStyle(c, m["_size"], m["_weight"]);
+        }
         return textStyle[spec];
       case "appRes":
         return resources[spec];
@@ -284,6 +329,15 @@ class AgentActions extends AppActions {
       appPatterns.addAll(pat);
     }
   }
+
+  _getDialog(ProcessEvent event) async {
+    Agent a = getAgent("pattern");
+    ProcessPattern p = a.process(event);
+    Widget w = AlertDialog(
+      content: getPatternWidget(p)!,
+    );
+    Get.dialog(w, navigatorKey: GlobalKey());
+  }
 }
 
 class ControlAgent extends Agent {
@@ -338,9 +392,7 @@ class ControlAgent extends Agent {
       ipat = (ipat is String)
           ? (ipat.isEmpty)
               ? nil
-              : (ipat[0] == '_')
-                  ? vars[ipat] ?? ipat
-                  : ipat
+              : ((ipat[0] == '_') ? vars[ipat] ?? ipat : checkModelText(ipat))
           : ipat;
       String k = '_' + patHeader[i];
       if ((ipat != nil) && (ipat != exist)) {

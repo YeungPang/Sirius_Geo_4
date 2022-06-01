@@ -219,7 +219,7 @@ class LogicProcessor {
           if (varList.isNotEmpty) {
             return varList;
           } else {
-            debugPrint("Fail at: " + expr.toString());
+            //debugPrint("Fail at: " + expr.toString());
             //return false;
             return r;
           }

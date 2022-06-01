@@ -17,13 +17,11 @@ class MyApp extends StatelessWidget {
     MainModel model = Get.put(MainModel());
     Get.put(ResxController());
     return GetMaterialApp(
-      //title: model.map["title"],
       getPages: [
         GetPage(name: "/home", page: () => HomePage()),
         GetPage(name: "/page", page: () => _getPage(model)),
       ],
       initialRoute: "/home",
-
       //onGenerateRoute: _routes(),
     );
   }

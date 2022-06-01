@@ -38,6 +38,26 @@ final defaultPaddingHorizontal = 12.0 * model.sizeScale;
 
 const String fontNameAN = 'Lato';
 
+TextStyle getTextStyle(Color color, double size, int w) {
+  double s = size * fontScale;
+  FontWeight fw = (w == 300)
+      ? w300
+      : ((w == 400)
+          ? w400
+          : ((w == 500)
+              ? w500
+              : ((w == 600) ? w600 : ((w == 700) ? w700 : w900))));
+  switch (w) {
+    case 300:
+  }
+  return TextStyle(
+    fontFamily: fontNameAN,
+    fontSize: s,
+    fontWeight: fw,
+    color: color,
+  );
+}
+
 final TextStyle appBarTextStyle = TextStyle(
   fontFamily: fontNameAN,
   fontWeight: w300,
@@ -153,6 +173,13 @@ final TextStyle choiceButnTxtStyle = TextStyle(
   color: const Color(0xFF1785C1),
 );
 
+final TextStyle errTxtStyle = TextStyle(
+  fontFamily: fontNameAN,
+  fontWeight: w500,
+  fontSize: fsize16,
+  color: textColorAccent,
+);
+
 final TextStyle dragButnTxtStyle = TextStyle(
   fontFamily: fontNameAN,
   fontWeight: w500,
@@ -246,6 +273,7 @@ final Map<String, TextStyle> textStyle = {
   "ControlButtonTextStyle": controlButtonTextStyle,
   "CorrTxtStyle": corrTxtStyle,
   "DragButnTxtStyle": dragButnTxtStyle,
+  "errTxtStyle": errTxtStyle,
   "IncorrTxtStyle": incorrTxtStyle,
   "MediumNormalTextStyle": mediumNormalTextStyle,
   "NormalTextStyle": normalTextStyle,

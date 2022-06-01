@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './fonts.dart';
 import './s_g_icons.dart';
 
 import '../model/locator.dart';
@@ -213,3 +214,42 @@ m 136.06,107.943 4.304,3.261 0,39.436 c 0,4.382 3.567,7.947 7.951,7.947 1.535,0 
 
 //List<Map<String, dynamic>> worldMapCountryList;
 const String worldMapPath = 'assets/svg_images/world_map.json';
+OutlineInputBorder _buildBorder(Color color) {
+  return OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(size10)),
+    borderSide: BorderSide(
+      color: color,
+      width: 1.0,
+    ),
+  );
+}
+
+InputDecorationTheme inputTheme() => InputDecorationTheme(
+      //isDense: true,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
+      enabledBorder: _buildBorder(Colors.grey[600]!),
+      errorBorder: _buildBorder(Colors.red),
+      focusedErrorBorder: _buildBorder(Colors.red),
+      focusedBorder: _buildBorder(Colors.grey[600]!),
+      disabledBorder: _buildBorder(Colors.grey[400]!),
+      border: _buildBorder(Colors.grey[600]!),
+      labelStyle: faintTxtStyle,
+      floatingLabelStyle: dragButnTxtStyle,
+      helperStyle: resTxtStyle,
+      hintStyle: dragButnTxtStyle,
+      errorStyle: errTxtStyle,
+      suffixStyle: mediumNormalTextStyle,
+      fillColor: Colors.grey[300],
+      filled: true,
+      focusColor: textColorFaint,
+      hoverColor: textColorFaint,
+      constraints: BoxConstraints(maxWidth: model.scaleWidth * 0.9),
+    );
+
+ThemeData getMainTheme() => ThemeData(
+      primarySwatch: Colors.blue,
+      inputDecorationTheme: inputTheme(),
+    );
+
+final RegExp pwre = RegExp(
+    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
