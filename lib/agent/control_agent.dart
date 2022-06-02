@@ -103,7 +103,7 @@ class AgentActions extends AppActions {
         }
         switch (sel) {
           case "Search":
-            onSearch(Get.context!, {});
+            onSearch({});
             return true;
           default:
             return true;

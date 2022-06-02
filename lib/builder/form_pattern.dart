@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prototype4/builder/special_pattern.dart';
-import 'package:prototype4/resources/basic_resources.dart';
-import 'package:prototype4/resources/fonts.dart';
+import '../../builder/special_pattern.dart';
+import '../../resources/basic_resources.dart';
+import '../../resources/fonts.dart';
 import 'package:string_validator/string_validator.dart';
 import './pattern.dart';
 import 'package:get/get.dart';

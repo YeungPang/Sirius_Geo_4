@@ -8,9 +8,9 @@ Widget topicWidget(Map<String, dynamic> map) {
   double h = map["_height"];
   double w = map["_width"];
   String img = map["_img"] ?? 'assets/images/world.png';
-  if (img == 'learn') {
-    img = "assets/images/LearningJourney.png";
-  }
+  // if (img == 'learn') {
+  //   img = "assets/images/LearningJourney.png";
+  // }
   Text subtitle = (map["_smallTitle"] != null)
       ? Text(
           map["_smallTitle"],

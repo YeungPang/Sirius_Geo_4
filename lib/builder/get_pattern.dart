@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './form_pattern.dart';
 import './pattern.dart';
 import './std_pattern.dart';
 import './special_pattern.dart';
@@ -1095,6 +1096,14 @@ ProcessPattern getProgressTextPattern(Map<String, dynamic> pmap) {
   return ProgressTextPattern(map);
 }
 
+ProcessPattern getFormPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {
+    "_formFields": pmap["_formFields"],
+    "_formData": pmap["_formData"],
+  };
+  return FormPattern(map);
+}
+
 const Map<String, Function> getPrimePattern = {
   "Align": getAlignPattern,
   "AppBar": getAppBarPattern,
@@ -1111,6 +1120,7 @@ const Map<String, Function> getPrimePattern = {
   "Draggable": getDraggablePattern,
   "DragTarget": getDragTargetPattern,
   "DropdownButton": getDropdownButtonPattern,
+  "Form": getFormPattern,
   "ProgressText": getProgressTextPattern,
   "Expanded": getExpandedPattern,
   "FittedBox": getFittedBoxPattern,

@@ -108,7 +108,7 @@ class SearchButton extends StatelessWidget {
       onTap: () async {
         // GlobalKey key = map["_key"];
         // BuildContext bc = (key == null) ? context : key.currentContext;
-        onSearch(Get.context!, map);
+        onSearch(map);
       },
       highlightColor: map["_highlightColor"],
     );
@@ -130,11 +130,11 @@ class SearchButton extends StatelessWidget {
   }
 }
 
-onSearch(BuildContext context, Map<String, dynamic> map) async {
+onSearch(Map<String, dynamic> map) async {
   SearchDelegate<String>? sd = map["_searchDelegate"];
-  Future<String?> f =
-      showSearch<String>(context: context, delegate: sd ?? ItemSearch(map));
-  f.then((r) => handleResult(context, r!));
+  Future<String?> f = showSearch<String>(
+      context: Get.context!, delegate: sd ?? ItemSearch(map));
+  f.then((r) => handleResult(Get.context!, r!));
   // String r = "Continents";
   //model.appActions.doFunction("found", r, map["_searchElemList"]);
 }
