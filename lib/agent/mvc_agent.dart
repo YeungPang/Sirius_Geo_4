@@ -1061,29 +1061,30 @@ class MvcAgent extends Agent {
     if (incompleteProg == null) {
       imap = {
         "_icon": "incomplete",
-        "_iconSize": 17.0,
+        "_iconSize": 12.0,
         "_iconColor": const Color(0xFF999FAD)
       };
       Function ipf = getPrimePattern["Icon"]!;
       incompleteProg = ipf(imap);
       imap = {
         "_icon": "complete",
-        "_iconSize": 17.0,
+        "_iconSize": 12.0,
         "_iconColor": const Color(0xFF4DC591)
       };
       completeProg = ipf(imap);
       imap = {
         "_icon": "complete",
-        "_iconSize": 17.0,
+        "_iconSize": 12.0,
         "_iconColor": const Color(0xFF999FAD)
       };
       incorrProg = ipf(imap);
-      imap = {"_width": model.size10};
+      imap = {"_width": 8.0 * sizeScale};
       pf = getPrimePattern["SizedBox"]!;
       space10 = pf(imap);
-      imap["_width"] = 5.0 * sizeScale;
+      imap["_width"] = 3.0 * sizeScale;
       space5 = pf(imap);
-      imap["_width"] = model.size20;
+      //imap["_width"] = model.size20;
+      imap["_width"] = 15.0 * sizeScale;
       space20 = pf(imap);
       imap = {
         "_icon": "hint",
@@ -1102,12 +1103,19 @@ class MvcAgent extends Agent {
     resxController.addToResxMap("prog", lg);
     imap = {"_children": lg};
     //progNoti = createNotifier(lg);
-    pf = getPrimePattern["Row"]!;
+    pf = getPrimePattern["Wrap"]!;
     pp = pf(imap);
     imap = {"_valueName": "prog", "_child": pp};
     pf = getPrimePattern["Obx"]!;
     pp = pf(imap);
-
+    imap = {
+      "_width": 0.83 * model.scaleWidth,
+      "_alignment": Alignment.centerLeft,
+      "_margin": const EdgeInsets.only(left: 5),
+      //"_height": size20 + size10 + size5,
+      "_child": pp
+    };
+    pp = cpf(imap);
     imap = {"_child": pp, "_alignment": const Alignment(0.8, 0.0)};
     pf = getPrimePattern["Align"]!;
     return pf(imap);
@@ -1119,7 +1127,7 @@ class MvcAgent extends Agent {
     int ilen = il.length;
     int ln1 = ilen - 1;
     int itlen = itemRef.length;
-    List<dynamic> lg = [space10];
+    List<dynamic> lg = [];
     for (int i = 0; i < ilen; i++) {
       ProcessPattern ic = (il[i] >= 1) ? completeProg! : incorrProg!;
       lg.add(ic);

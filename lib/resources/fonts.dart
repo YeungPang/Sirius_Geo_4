@@ -72,6 +72,13 @@ final TextStyle titleTextStyle = TextStyle(
   color: textColorDark,
 );
 
+final TextStyle blueTitleTextStyle = TextStyle(
+  fontFamily: fontNameAN,
+  fontWeight: w500,
+  fontSize: fsize22,
+  color: const Color(0xFF1785C1),
+);
+
 final TextStyle subTitleTextStyle = TextStyle(
   fontFamily: fontNameAN,
   fontWeight: w300,
@@ -268,6 +275,7 @@ final TextStyle legendStyle = TextStyle(
 final Map<String, TextStyle> textStyle = {
   "AppBarTextStyle": appBarTextStyle,
   "BannerTxtStyle": bannerTxtStyle,
+  "BlueTitleStyle": blueTitleTextStyle,
   "CaptionTextStyle": captionTextStyle,
   "ChoiceButnTxtStyle": choiceButnTxtStyle,
   "ControlButtonTextStyle": controlButtonTextStyle,

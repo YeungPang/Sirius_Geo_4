@@ -101,7 +101,7 @@ Widget _getField(Map<String, dynamic> map) {
   String type = map["_inputType"] ?? "text";
   bool isReq = map["_isReq"] ?? false;
   return Padding(
-      padding: EdgeInsets.all(size10),
+      padding: EdgeInsets.symmetric(horizontal: size10),
       child: TextFormField(
         enabled: map["_enabled"] ?? true,
         maxLines: map["_maxLines"] ?? 1,
@@ -175,7 +175,7 @@ class _FormWidgetState extends State<FormWidget> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(children: _c),
+      child: SizedBox(child: Column(children: _c), height: 300.0),
     );
   }
 }
@@ -204,8 +204,11 @@ class FormPattern extends ProcessPattern {
   @override
   Widget getWidget({String? name}) {
     map["_key"] = GlobalKey<FormState>();
+    Widget? w = getPatternWidget(map["_title"]);
     return Column(
-      children: [FormWidget(map), _getSendButton(map)],
+      children: (w == null)
+          ? [FormWidget(map), _getSendButton(map)]
+          : [w, FormWidget(map), _getSendButton(map)],
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
     );

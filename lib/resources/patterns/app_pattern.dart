@@ -325,15 +325,17 @@ ProcessPattern getMenuBubble(Map<String, dynamic> map) {
   List<dynamic> menuBox = [];
   pf = getPrimePattern["IconText"]!;
   List<dynamic> menuList = map["_menuList"];
-  ProcessEvent pe = ProcessEvent("menu");
+  //ProcessEvent pe = ProcessEvent("menu");
   double boxHeight = 0.0;
   for (String mStr in menuList) {
+    ProcessEvent pe = ProcessEvent("fsmEvent");
     List<String> ls = mStr.split(";");
+    pe.map = {"_event": ls[0], "_title": ls[1]};
     imap["_icon"] = ls[0];
     imap["_text"] = ls[1];
     imap["_onTap"] = pe;
-    List<dynamic> ld = [ls[1], true];
-    imap["_tapAction"] = ld;
+    //List<dynamic> ld = [ls[1], true];
+    imap["_tapAction"] = "menufsm";
     menuBox.add(pf(imap));
     boxHeight += 30.0 * sizeScale;
   }

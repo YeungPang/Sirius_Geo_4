@@ -512,3 +512,21 @@ class DividerPattern extends ProcessPattern {
     );
   }
 }
+
+class LayoutPattern extends ProcessPattern {
+  LayoutPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String? name}) {
+    Widget? w = getPatternWidget(map["_child"]);
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+      return SingleChildScrollView(
+          child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: map["_height"] ?? viewportConstraints.maxHeight,
+                minWidth: map["_width"] ?? viewportConstraints.maxWidth,
+              ),
+              child: w));
+    });
+  }
+}

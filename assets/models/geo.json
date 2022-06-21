@@ -19,6 +19,8 @@
         "corrText": "CORRECT!",
         "editText": "Select element to edit.",
         "error": "Report Error",
+        "errMessage": "Please describe the error.",
+        "FAQ": "FAQ",
         "feedback": "Give Feedback",
         "forQuiz": "FOR THIS QUIZ!",
         "gameDone": "DONE",
@@ -46,8 +48,9 @@
         "notQuite": "NOT QUITE.",
         "password": "Password",
         "playAgain": "You can explore articles and content but not play any games until you have lives again",
-        "prevHint": "Previous Hint",
         "practice": "PRACTICE ON THIS ONE.",
+        "prevHint": "Previous Hint",
+        "problem": "Where did the error occur?",
         "pwNotMatch": "Passwords do not match!",
         "quit": "QUIT",
         "quitText": "Are you sure you want to quit?",
@@ -280,9 +283,9 @@
         "contData": {
             "header": "CDID;Name;Image;surfaceSize;surfacePercent;landPercent",
             "elemList": [
-                "Cont00001;Hello, this is the large ⊤(single_quote)Africa⊤(single_quote).;assets/images/Africa.png;30.37;5.95;20.31",
+                "Cont00001;Africa;assets/images/Africa.png;30.37;5.95;20.31",
                 "Cont00002;Antarctica;assets/images/Antarctica.png;14.2;2.78;9.49",
-                "Cont00003;Hello, this is the largest ⊤(single_quote)Asia⊤(single_quote).;assets/images/Asia.png;44.58;8.74;29.80",
+                "Cont00003;Asia;assets/images/Asia.png;44.58;8.74;29.80",
                 "Cont00004;Australia;assets/images/Australia.png;7.69;1.51;5.14",
                 "Cont00005;Europe;assets/images/Europe.png;10.18;2.00;6.81",
                 "Cont00006;North America;assets/images/NorthAmerica.png;24.71;4.84;16.52",
@@ -525,14 +528,19 @@
                 "_width: ℛ(swratio, Ø, 1.0), _topicSelection: 'Support', _smallTitle: ⊤(supportSubtitle), _img: ℛ(lookup, support)}))"
             ],
             "supportCards": [
-                "_event | (_event = subscription) ⋁ ((_formData ≔ {}) ⋀ τ(support) ⋀ ",
-                "(_event = support) ⋀ (_h ≔ ⊤(support)) ⋀ (_sj  ≔ {_name: 'subject', _label: ⊤(subject), _isReq: true}) ⋀ ",
-                "(_m ≔ {_name: 'message', _label: ⊤(message), _isReq: true, _maxLines: 4}) ⋀ ",
-                "(_e ≔ {_name: 'Email', _inputType: 'email', _isReq: true}) ⋀ ",
-                "(_formFields ≔ [_sj, _m, _e]) ⋀ mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
+                "_event | ((_event = subscription) ⋀ ↲(Φ(Container, {_child: Φ(Text, {_text: 'Not implemented'})}))) ⋁ (_formData ≔ {}) ⋀ supportFields ⋀ ",
+                "(_title ≔ Φ(Text, {_text: ⊤(_event), _textStyle: ℛ(textStyle, BlueTitleStyle)})) ⋀ mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
                 "⋓({_child: Φ(Padding, {_child: Φ(Form), _padding: ℛ(appRes, boxPadding)}), _elevation: ℛ(hratio, Ø, 0.01), ",
                 "_cardRadius: ℛ(hratio, Ø, 0.05)}) ⋀ ⋓({_child: Φ(Card), _width: ℛ(swratio, Ø, 1.0), _height: ℛ(hratio, Ø, 0.675)}) ⋀ ",
-                "↲(Φ(Align, {_child: Φ(Container), _alignment: decode(align, bottomCenter)})))"
+                "↲(Φ(Align, {_child: Φ(Container), _alignment: decode(align, bottomCenter)}))"
+            ],
+            "supportFields": [
+                "_event, _formFields | (((_event = error) ⋀ (_sj  ≔ {_name: 'problem', _label: ⊤(problem), _isReq: true}) ⋀ ",
+                "(_m ≔ {_name: 'errMessage', _label: ⊤(errMessage), _isReq: true, _maxLines: 4})) ⋁ ",
+                "((_sj  ≔ {_name: 'subject', _label: ⊤(subject), _isReq: true}) ⋀ ",
+                "(_m ≔ {_name: 'message', _label: ⊤(message), _isReq: true, _maxLines: 4}))) ⋀ ",
+                "(_e ≔ {_name: 'Email', _inputType: 'email', _isReq: true}) ⋀ ↲(_formFields ≔ [_sj, _m, _e])",
+                ""
             ],
             "lcard": [
                 "_children | mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
@@ -575,7 +583,7 @@
             "supportAppBar": [
                 "_flexibleSpace | (_child ≔ Φ(Text, {_text: 'Support', _textStyle: ℛ(textStyle, TopicTxtStyle)})) ⋀ ",
                 "(_child ≔ Φ(Center)) ⋀ (_tText ≔ Φ(Expanded)) ⋀ (_ic ≔ hamburgerMenu) ⋀ ",
-                "(_flexibleSpace ≔ Φ(Container, {_decoration: ℛ(appRes, blueGradBD)})) ⋀ (_children ≔ [_tText, _ic]) ⋀ ↲(Φ(Row))"
+                "(_flexibleSpace ≔ Φ(Container, {_decoration: ℛ(appRes, blueGradBD)})) ⋀ (_children ≔ [_tText]) ⋀ ↲(Φ(Row))"
             ],
             "fsmPat": [
                 "_state, _event | ((_event = 'confirm') ⋀ ((_state = 'selected') ⋁ (_state = 'completed')) ⋀ ↲('CheckAns')) ⋁ ",
@@ -606,7 +614,7 @@
                 "_event, _title | (_h ≔ Φ(Text, {_text: _title, _textStyle: ℛ(textStyle, TitleTextStyle)})) ⋀ ",
                 "(_e ≔ Φ(IconButton, {_onTap: createEvent(fsmEvent), _tapAction: 'closeDialog', _iconColor: 'grey700', _icon: 'cancel', _iconSize: 16.0})) ⋀ ",
                 "(_mainAxisAlignment ≔ decode(mainAxisAlignment, spaceBetween)) ⋀ (_children ≔ [_h, _e]) ⋀ (_h ≔ Φ(Row)) ⋀ ",
-                "mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (_children ≔ aSetting) ⋀ (_height ≔ ℛ(hratio, Ø, (0.035 * η(_children) + 0.04))) ⋀ ",
+                "mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (_children ≔ aSetting) ⋀ (_height ≔ ℛ(hratio, Ø, (0.035 * η(_children) + 0.05))) ⋀ ",
                 "(_children ≔ [_h, lcard]) ⋀ ⋓({_child: Φ(Column), _width: ℛ(hratio, Ø, 0.9)}) ⋀ ↲(Φ(Container))"
             ],
             "closeDialog": "↲(popRoute())",

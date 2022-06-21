@@ -1031,6 +1031,15 @@ ProcessPattern getPositionedPattern(Map<String, dynamic> pmap) {
   return PositionedPattern(map);
 }
 
+ProcessPattern getLayoutPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {
+    "_child": pmap["_child"],
+    "_height": pmap["_height"],
+    "_width": pmap["_width"],
+  };
+  return LayoutPattern(map);
+}
+
 ProcessPattern getListTilePattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {};
   List<String> nl = [
@@ -1100,6 +1109,7 @@ ProcessPattern getFormPattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {
     "_formFields": pmap["_formFields"],
     "_formData": pmap["_formData"],
+    "_title": pmap["_title"],
   };
   return FormPattern(map);
 }
@@ -1134,6 +1144,7 @@ const Map<String, Function> getPrimePattern = {
   "IndexedStack": getIndexedStackPattern,
   "InteractiveViewer": getInteractiveViewerPattern,
   "InTextField": getInTextFieldPattern,
+  "Layout": getLayoutPattern,
   "ListTile": getListTilePattern,
   "ListView": getListViewPattern,
   "Obx": getObxPattern,
