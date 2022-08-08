@@ -1,4 +1,6 @@
+import 'dart:core';
 import 'package:flutter/material.dart';
+import '../agent/version_agent.dart';
 import '../builder/pattern.dart';
 
 class MainModel {
@@ -21,7 +23,7 @@ class MainModel {
   BuildContext? context;
 
   Map<String, dynamic> stateData = {};
-  Map<String, dynamic> get map => stateData["map"];
+  Map<String, dynamic> map = {};
 
   List<List<dynamic>> stack = [];
 
@@ -29,12 +31,22 @@ class MainModel {
 
   int get count => _count;
 
+  final VersionAgent versionAgent = VersionAgent();
+
   addCount() {
     _count++;
   }
 
-  Future<String> getJson(BuildContext context) {
+  Future<String> getJson(BuildContext context) async {
+    await Future.delayed(const Duration(milliseconds: 500));
     return DefaultAssetBundle.of(context).loadString(mainModelName);
+  }
+
+  Future<Map<String, dynamic>> getMap(BuildContext context) async {
+    String jsonStr = await getJson(context);
+    stateData["map"] = await versionAgent.getMap(jsonStr);
+    map = stateData["map"];
+    return map;
   }
 
   init(BuildContext context) {

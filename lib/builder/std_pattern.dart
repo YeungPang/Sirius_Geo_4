@@ -1,6 +1,11 @@
+import 'dart:typed_data';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage_2/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../resources/fonts.dart';
 import './pattern.dart';
 
 class ColumnPattern extends ProcessPattern {
@@ -58,11 +63,19 @@ class WrapPattern extends ProcessPattern {
         : (ml is List<dynamic>)
             ? getPatternWidgetList(ml)
             : null;
+    dynamic d = map["_direction"];
+    if (d is String) {
+      if (d == 'vertical') {
+        d = Axis.vertical;
+      } else {
+        d = Axis.horizontal;
+      }
+    }
     return Wrap(
         key: map["_key"],
         crossAxisAlignment:
             map["_crossAxisAlignment"] ?? WrapCrossAlignment.center,
-        direction: map["_direction"] ?? Axis.horizontal,
+        direction: d ?? Axis.horizontal,
         alignment: map["_alignment"] ?? WrapAlignment.start,
         runAlignment: map["_runAlignment"] ?? WrapAlignment.start,
         runSpacing: map["_runSpacing"] ?? 0.0,
@@ -159,6 +172,10 @@ class TextPattern extends ProcessPattern {
   TextPattern(Map<String, dynamic> map) : super(map);
   @override
   Widget getWidget({String? name}) {
+    dynamic _style = map["_textStyle"];
+    if (_style is String) {
+      _style = textStyle[_style];
+    }
     return Text(
       map["_text"],
       locale: map["_locale"],
@@ -167,7 +184,7 @@ class TextPattern extends ProcessPattern {
       semanticsLabel: map["_semanticsLabel"],
       softWrap: map["_softWrap"],
       strutStyle: map["_strutStyle"],
-      style: map["_textStyle"],
+      style: _style,
       textAlign: map["_textAlign"],
       textDirection: map["_textDirection"],
       textHeightBehavior: map["_textHeightBehavior"],
@@ -181,6 +198,28 @@ class ImageAssetPattern extends ProcessPattern {
   ImageAssetPattern(Map<String, dynamic> map) : super(map);
   @override
   Widget getWidget({String? name}) {
+    String _name = map["_name"];
+    if (_name.contains("http")) {
+      return Image(
+        image: CachedNetworkImageProvider(_name),
+        frameBuilder: map["_frameBuilder"],
+        errorBuilder: map["_errorBuilder"],
+        semanticLabel: map["_semanticLabel"],
+        excludeFromSemantics: map["_excludeFromSemantics"] ?? false,
+        width: map["_width"],
+        height: map["_height"],
+        color: map["_color"],
+        colorBlendMode: map["_colorBlendMode"],
+        fit: map["_boxFit"],
+        alignment: map["_alignment"] ?? Alignment.center,
+        repeat: map["_repeat"] ??= ImageRepeat.noRepeat,
+        centerSlice: map["_centerSlice"],
+        matchTextDirection: map["_matchTextDirection"] ?? false,
+        gaplessPlayback: map["_gaplessPlayback"] ?? false,
+        isAntiAlias: map["_isAntiAlias"] ?? false,
+        filterQuality: map["_filterQuality"] ?? FilterQuality.low,
+      );
+    }
     return Image.asset(map["_name"],
         bundle: map["_bundle"],
         frameBuilder: map["_frameBuilder"],
@@ -210,6 +249,24 @@ class SVGAssetPattern extends ProcessPattern {
   SVGAssetPattern(Map<String, dynamic> map) : super(map);
   @override
   Widget getWidget({String? name}) {
+    String _name = map["_name"];
+    if (_name.contains("http")) {
+      return SvgPicture(
+        AdvancedNetworkSvg(
+            _name,
+            (theme) => (bytes, colorFilter, key) {
+                  return svg.svgPictureDecoder(
+                    bytes ?? Uint8List.fromList(const []),
+                    false,
+                    colorFilter,
+                    key,
+                    theme: theme,
+                  );
+                },
+            useDiskCache: true),
+        height: map["_height"],
+      );
+    }
     return SvgPicture.asset(
       map["_name"],
       height: map["_height"],
@@ -242,6 +299,7 @@ class ContainerPattern extends ProcessPattern {
   Widget getWidget({String? name}) {
     Widget? w = getPatternWidget(map["_child"]);
     return Container(
+        key: map["_key"],
         child: w,
         color: map["_color"],
         alignment: map["_alignment"],

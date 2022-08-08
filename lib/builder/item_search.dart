@@ -7,6 +7,8 @@ import '../resources/fonts.dart';
 
 class ItemSearch extends SearchDelegate<String> {
   final Map<String, dynamic> map;
+  String label = model.map["text"]["search"];
+  List<dynamic>? searchTypes;
   List<String>? itemList;
   //List<dynamic>? searchList;
   List<String>? refList;
@@ -14,18 +16,56 @@ class ItemSearch extends SearchDelegate<String> {
   ItemSearch(this.map);
 
   @override
-  List<Widget> buildActions(BuildContext context) {
-    Widget? iw = getPatternWidget(map["_clear"]);
-    if (iw != null) {
-      return [iw];
+  String get searchFieldLabel => _getLabel();
+
+  // @override
+  // ThemeData appBarTheme(BuildContext context) {
+  //   return Theme.of(context);
+  // }
+  String _getLabel() {
+    if ((searchTypes != null) || (map["_searchTypes"] == null)) {
+      return label;
     }
-    return [
-      IconButton(
-          onPressed: () {
-            query = '';
-          },
-          icon: const Icon(Icons.clear))
-    ];
+    if (searchTypes == null) {
+      searchTypes = map["_searchTypes"];
+      label = searchTypes![0];
+    }
+    return label;
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    List<Widget>? iw = (map["_actions"] != null)
+        ? getPatternWidgetList(map["_actions"])
+        : null;
+    if (iw != null) {
+      return iw;
+    }
+    return (map["_searchTypes"] == null)
+        ? [
+            IconButton(
+                onPressed: () {
+                  query = '';
+                },
+                icon: const Icon(Icons.clear)),
+          ]
+        : [
+            IconButton(
+                onPressed: () {
+                  query = '';
+                },
+                icon: const Icon(Icons.clear)),
+            const VerticalDivider(
+              color: Colors.grey,
+            ),
+            IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: () {
+                label = "Pressed 1";
+                query = '';
+              },
+            )
+          ];
   }
 
   @override
@@ -112,21 +152,6 @@ class SearchButton extends StatelessWidget {
       },
       highlightColor: map["_highlightColor"],
     );
-/*     return IconButton(
-        // onPressed: () async {
-        //   final String r = await showSearch(
-        //       context: context, delegate: sd ?? ItemSearch(map));
-        onPressed: () async {
-          GlobalKey key = map["_key"];
-          BuildContext bc = (key == null) ? context : key.currentContext;
-          Future<String> f = showSearch<String>(
-              context: context, delegate: sd ?? ItemSearch(map));
-          f.then((r) => handleResult(bc, r));
-          // String r = "Continents";
-          //model.appActions.doFunction("found", r, map["_searchElemList"]);
-        },
-        icon: ic ?? const Icon(Icons.search));
- */
   }
 }
 
@@ -135,8 +160,6 @@ onSearch(Map<String, dynamic> map) async {
   Future<String?> f = showSearch<String>(
       context: Get.context!, delegate: sd ?? ItemSearch(map));
   f.then((r) => handleResult(Get.context!, r!));
-  // String r = "Continents";
-  //model.appActions.doFunction("found", r, map["_searchElemList"]);
 }
 
 void handleResult(BuildContext context, String r) {

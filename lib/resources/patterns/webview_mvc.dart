@@ -24,9 +24,20 @@ class WebViewMvc extends Mvc {
   @override
   init() {
     configAgent ??= map["_configAgent"];
-    String url = map["_url"];
+    String? url = map["_url"];
     mvmap = {};
-    imap = {"_url": url, "_mv": mvmap};
+    dynamic html = map["_html"];
+    if (html != null) {
+      html = configAgent!.getElement(html, map);
+      if (html is List<dynamic>) {
+        String hstr = "";
+        for (String s in html) {
+          hstr += s;
+        }
+        html = hstr;
+      }
+    }
+    imap = {"_url": url, "_mv": mvmap, "_html": html};
     if (map["_scriptEnable"]) {
       imap["_scriptMode"] = JavascriptMode.unrestricted;
     }
@@ -41,7 +52,7 @@ class WebViewMvc extends Mvc {
     pp = pf(imap);
     double bh = 0.04926 * model.scaleHeight;
     double bw = 0.32 * model.scaleWidth;
-    List<dynamic> sl = [pp, getTapItemElemPattern("gameDone", bh, bw, "blue")];
+    List<dynamic> sl = [pp, getTapItemElemPattern("next", bh, bw, "blue")];
     imap = {
       "_crossAxisAlignment": CrossAxisAlignment.center,
       "_mainAxisAlignment": MainAxisAlignment.spaceAround,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../builder/special_pattern.dart';
-import '../../resources/basic_resources.dart';
-import '../../resources/fonts.dart';
+import './special_pattern.dart';
+import '../resources/basic_resources.dart';
+import '../resources/fonts.dart';
 import 'package:string_validator/string_validator.dart';
 import './pattern.dart';
 import 'package:get/get.dart';
@@ -175,7 +175,8 @@ class _FormWidgetState extends State<FormWidget> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: SizedBox(child: Column(children: _c), height: 300.0),
+      child: SizedBox(
+          child: Column(children: _c), height: 0.45 * model.scaleHeight),
     );
   }
 }

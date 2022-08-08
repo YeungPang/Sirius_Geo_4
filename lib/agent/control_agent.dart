@@ -74,6 +74,9 @@ class AgentActions extends AppActions {
           Get.back();
         }
         return true;
+      case "home":
+        Get.offAllNamed("/home");
+        return true;
       case "createNotifier":
         return createNotifier(input);
       case "setNotiValue":
@@ -90,6 +93,10 @@ class AgentActions extends AppActions {
           return ProcessEvent(input);
         }
         return null;
+      case "search":
+        Map<String, dynamic> m = vars ?? {};
+        onSearch(m);
+        return true;
       case "menu":
         String sel;
         //ValueNotifier<bool> noti;
@@ -128,6 +135,7 @@ class AgentActions extends AppActions {
         return false;
       case "initApp":
         initApp();
+        mvcAgent.init();
         return true;
       case "getHeight":
         if (input is double) {
@@ -299,6 +307,8 @@ class AgentActions extends AppActions {
         return model.size10;
       case "size20":
         return model.size20;
+      case "fontScale":
+        return model.fontScale * (value as double);
       case "setCache":
         resxController.setCache(spec!, value);
         return true;
@@ -309,6 +319,8 @@ class AgentActions extends AppActions {
         return true;
       case "lookup":
         return model.map["lookup"][spec];
+      case "text":
+        return text[spec];
       case "function":
         return appFunc[spec];
       default:

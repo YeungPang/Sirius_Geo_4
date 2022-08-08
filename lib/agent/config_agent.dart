@@ -659,6 +659,7 @@ setProgress(int pi) {
   }
 
   resxController.setRxValue("progNoti", pi);
+  model.versionAgent.saveProfile();
 }
 
 Future<String> loadString(String fileName) async {

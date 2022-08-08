@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../builder/pattern.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 class WebViewExpl extends StatefulWidget {
   final Map<String, dynamic> map;
@@ -14,23 +14,40 @@ class WebViewExpl extends StatefulWidget {
 }
 
 class _WebViewExplState extends State<WebViewExpl> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  final Completer<WebViewPlusController> _controller =
+      Completer<WebViewPlusController>();
+
+  @override
+  void dispose() {
+    widget.map["_mv"]["_wvController"] = null;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var verticalGestures = Factory<VerticalDragGestureRecognizer>(
-        () => VerticalDragGestureRecognizer());
-    //var gestureSet = Set.from([verticalGestures]);
     Map<String, dynamic> _mv = widget.map["_mv"];
+    String? url = widget.map["_url"];
+    dynamic html = widget.map["_html"];
+
     return SafeArea(
-        child: WebView(
-      initialUrl: widget.map["_url"],
+        child: WebViewPlus(
+      gestureRecognizers: Set()
+        ..add(
+          Factory<DragGestureRecognizer>(
+            () => VerticalDragGestureRecognizer(),
+          ),
+        ),
+      //initialUrl: widget.map["_url"],
       //gestureRecognizers: gestureSet,
       javascriptMode: widget.map["_scriptMode"] ?? JavascriptMode.disabled,
-      onWebViewCreated: (WebViewController webViewController) {
-        _controller.complete(webViewController);
-        _mv["_wvController"] = webViewController;
+      onWebViewCreated: (WebViewPlusController controller) {
+        _controller.complete(controller);
+        _mv["_wvController"] = controller;
+        if (url != null) {
+          controller.loadUrl(url);
+        } else if (html is String) {
+          controller.loadString(html);
+        }
       },
     ));
   }

@@ -107,6 +107,13 @@ final TextStyle normalSTextStyle = TextStyle(
   color: textColorDark,
 );
 
+final TextStyle normalThinTextStyle = TextStyle(
+  fontFamily: fontNameAN,
+  fontWeight: w300,
+  fontSize: fsize14,
+  color: textColorDark,
+);
+
 final TextStyle smallTextStyle = TextStyle(
   fontFamily: fontNameAN,
   fontWeight: w500,
@@ -118,7 +125,28 @@ final TextStyle mediumNormalTextStyle = TextStyle(
   fontFamily: fontNameAN,
   fontWeight: w500,
   fontSize: fsize16,
-  color: textColorDark,
+  color: const Color(0xFF00344F),
+);
+
+final TextStyle boldNormalTextStyle = TextStyle(
+  fontFamily: fontNameAN,
+  fontWeight: w700,
+  fontSize: fsize16,
+  color: const Color(0xFF00344F),
+);
+
+final TextStyle boldCorrTextStyle = TextStyle(
+  fontFamily: fontNameAN,
+  fontWeight: w700,
+  fontSize: fsize16,
+  color: const Color(0xFF4DC591),
+);
+
+final TextStyle boldInCorrTextStyle = TextStyle(
+  fontFamily: fontNameAN,
+  fontWeight: w700,
+  fontSize: fsize16,
+  color: const Color(0xFFF76F71),
 );
 
 final TextStyle smallSemiTextStyle = TextStyle(
@@ -276,6 +304,9 @@ final Map<String, TextStyle> textStyle = {
   "AppBarTextStyle": appBarTextStyle,
   "BannerTxtStyle": bannerTxtStyle,
   "BlueTitleStyle": blueTitleTextStyle,
+  "BoldCorrTextStyle": boldCorrTextStyle,
+  "BoldInCorrTextStyle": boldInCorrTextStyle,
+  "BoldNormalTextStyle": boldNormalTextStyle,
   "CaptionTextStyle": captionTextStyle,
   "ChoiceButnTxtStyle": choiceButnTxtStyle,
   "ControlButtonTextStyle": controlButtonTextStyle,
@@ -284,7 +315,9 @@ final Map<String, TextStyle> textStyle = {
   "errTxtStyle": errTxtStyle,
   "IncorrTxtStyle": incorrTxtStyle,
   "MediumNormalTextStyle": mediumNormalTextStyle,
+  "NormalSTextStyle": normalSTextStyle,
   "NormalTextStyle": normalTextStyle,
+  "NormalThinTextStyle": normalThinTextStyle,
   "QuestionTextStyle": questionTextStyle,
   "ResTxtStyle": resTxtStyle,
   "SelButnTxtStyle": selButnTxtStyle,

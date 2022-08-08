@@ -21,8 +21,6 @@ class MvcAgent extends Agent {
   ProcessPattern? sizedPat;
   double resDialWidth = 0.9333 * model.scaleWidth;
   double resDialHeight = 0.1823 * model.scaleHeight;
-  double btnHeight = 0.0468 * model.scaleHeight;
-  double btnWidth = 0.3733 * model.scaleWidth;
   String? image;
   Map<String, dynamic> text = model.map["text"];
   Map<String, dynamic> userProfile = model.map["userProfile"];
@@ -48,6 +46,39 @@ class MvcAgent extends Agent {
   List<String>? hints;
   int currHint = 0;
   bool hintShowed = false;
+  int configLives = model.map["userProfile"]["configLives"];
+  int maxconfigLives = model.map["maxConfigLives"];
+  bool limit = true;
+  //int configLives = model.map["userProfile"]["lives"];
+
+  init() {
+    limit = userProfile["userType"] == "User";
+    if (limit) {
+      if (configLives < maxconfigLives) {
+        configLives = maxconfigLives;
+      }
+      int lives = userProfile["lives"];
+      if (lives < configLives) {
+        int now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+        int un = userProfile["liveTimestamp"];
+        int timediff = now - un;
+        int l = timediff ~/ liveTime;
+        lives += l;
+        if (lives > configLives) {
+          lives = configLives;
+        }
+        userProfile["lives"] = lives;
+        userProfile["liveTimestamp"] = now;
+        resxController.setRxValue("lives", lives.toString());
+      }
+      if (lives < configLives) {
+        timer = Timer.periodic(
+            Duration(seconds: liveTime), (timer) => _updateTime());
+      }
+    } else {
+      resxController.setRxValue("lives", '∞');
+    }
+  }
 
   @override
   dynamic process(ProcessEvent event) {
@@ -91,6 +122,38 @@ class MvcAgent extends Agent {
       case "quitDialog":
         quitDialog ??= getQuitDialog();
         return quitDialog;
+      case "subscription":
+        currMv = event.map;
+        String e = currMv!["_event"];
+        Function pf = getPrimePattern["Align"]!;
+        Map<String, dynamic> imap = {
+          "_child": _buildDialog(e),
+          "_alignment": const Alignment(0.0, 0.1),
+        };
+        List<dynamic> l1 = resxController.getRxValue("mvcStack");
+        List<dynamic> l = [];
+        l.add(l1[0]);
+        if (e == "unsubscribed") {
+          userProfile["userType"] = "User";
+          userProfile["renew"] = "";
+          userProfile["lives"] = maxconfigLives;
+          resxController.setRxValue("lives", maxconfigLives.toString());
+          limit = true;
+          model.versionAgent.saveProfile();
+        } else if (e.contains("Subscribe")) {
+          userProfile["userType"] = e[0] + "Subscriber";
+          userProfile["renew"] = currMv!["_time"];
+          resxController.setRxValue("lives", '∞');
+          if (timer != null) {
+            timer!.cancel();
+            timer = null;
+          }
+          limit = false;
+          model.versionAgent.saveProfile();
+        }
+        l.add(pf(imap));
+        resxController.setRxValue("mvcStack", l);
+        break;
       case "fsm":
         agent = agent ?? model.appActions.getAgent("pattern");
         String mvcName = currMv!["_Q_Pattern_Name"] + "fsm";
@@ -131,6 +194,7 @@ class MvcAgent extends Agent {
               break;
             case "correct":
             case "almost":
+            case "pass":
               List<int> il = currMv!["_prog"];
               if ((il.isEmpty) || ((il.last != -1) && (il.last != -2))) {
                 il.add(1);
@@ -139,7 +203,12 @@ class MvcAgent extends Agent {
               } else {
                 il.last = 2;
               }
-              buildResultDialog(r);
+              updateProg();
+              if (r == "pass") {
+                nextGame();
+              } else {
+                buildResultDialog(r);
+              }
               updateProg();
               break;
             case "incorrect":
@@ -147,10 +216,17 @@ class MvcAgent extends Agent {
               if ((il.isEmpty) || ((il.last != -1) && (il.last != -2))) {
                 il.add(0);
                 int lives = userProfile["lives"];
-                if (lives > 0) {
+                if (limit && (lives > 0)) {
                   r = "lostLife";
                   userProfile["lives"] = --lives;
                   resxController.setRxValue("lives", lives.toString());
+                  if (timer == null) {
+                    timer = Timer.periodic(
+                        Duration(seconds: liveTime), (timer) => _updateTime());
+                    userProfile["liveTimestamp"] =
+                        DateTime.now().millisecondsSinceEpoch ~/ 1000;
+                  }
+                  model.versionAgent.saveProfile();
                 }
               } else if (il.last != -2) {
                 il.last = 0;
@@ -167,22 +243,7 @@ class MvcAgent extends Agent {
             case "NextGame":
               replaceLast(null);
               confirmNoti!.value = 0.5;
-              List<int> il = currMv!["_prog"];
-              List<dynamic> itemRef = currMv!["_itemRef"];
-              int ilen = il.length;
-              if (ilen < itemRef.length) {
-                if (itemRef[ilen - 1] == itemRef[ilen]) {
-                  currMv!["_state"] = "start";
-                  currMvc!.reset(false);
-                  replaceLast(currMvc!.getPattern());
-                  confirmNoti!.value = 0.5;
-                  checkLives();
-                } else {
-                  createNew(ilen);
-                }
-              } else {
-                gameComplete();
-              }
+              nextGame();
               break;
             case "GameDone":
               bool scoreMark = currMv!["_scoreMark"] ?? false;
@@ -227,6 +288,7 @@ class MvcAgent extends Agent {
     currMv!["_state"] = "start";
     currMv!["_subTitle"] = null;
     currMv!["_scoreMark"] = null;
+    currMv!["_mapping"] = null;
     hintShowed = false;
     currHint = 0;
     if (it == 0) {
@@ -403,23 +465,39 @@ class MvcAgent extends Agent {
       };
 
       setDialog(children, h, imap);
-
       liveTimeOn = true;
-      timer ??= Timer.periodic(
+      if (timer != null) {
+        timer!.cancel();
+      }
+      timer = Timer.periodic(
           Duration(seconds: timeDuration), (timer) => _updateTime());
+      userProfile["liveTimestamp"] = DateTime.now().millisecondsSinceEpoch;
     }
   }
 
   _updateTime() {
-    timing = timing! - timeDuration;
+    if (liveTimeOn) {
+      timing = timing! - timeDuration;
+    } else {
+      timing = 0;
+    }
     if (timing! <= 0) {
-      resxController.setRxValue("lives", '1');
-      userProfile["lives"] = 1;
+      int lives = userProfile["lives"] + 1;
+      resxController.setRxValue("lives", lives.toString());
+      userProfile["lives"] = lives;
+      model.versionAgent.saveProfile();
       if (liveTimeOn) {
         replaceLast(null);
+        liveTimeOn = false;
       }
       timer!.cancel();
       timer = null;
+      if (lives < configLives) {
+        timer = Timer.periodic(
+            Duration(seconds: liveTime), (timer) => _updateTime());
+        userProfile["liveTimestamp"] =
+            DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      }
       timing = liveTime;
     } else if (liveTimeOn) {
       timeNoti!.value = getTiming();
@@ -431,34 +509,6 @@ class MvcAgent extends Agent {
     int sec = timing! % 60;
     String t = text["nextLife"] + min.toString() + ":" + sec.toString();
     return t;
-  }
-
-  ProcessPattern getWatchAd() {
-    Map<String, dynamic> imap = {
-      "_icon": 'lives',
-      "_iconColor": Colors.white,
-    };
-    Function pf = getPrimePattern["Icon"]!;
-    ProcessPattern pp = pf(imap);
-    imap = {"_textStyle": controlButtonTextStyle, "_text": "+1"};
-    List<dynamic> livesRow = [space10, pp, tpf(imap)];
-    imap["_text"] = text["watchAd"];
-    livesRow.insert(0, tpf(imap));
-    livesRow.insert(0, space10);
-    imap = {
-      "_children": livesRow,
-      "_mainAxisAlignment": MainAxisAlignment.spaceAround,
-    };
-    pf = getPrimePattern["Row"]!;
-    pp = pf(imap);
-    imap = {
-      "_child": pp,
-      "_gradient": greenGradient,
-      "_height": 1.2 * btnHeight,
-      "_width": 1.2 * btnWidth,
-    };
-    pf = getPrimePattern["ColorButton"]!;
-    return pf(imap);
   }
 
   List<dynamic> getLivesRow(dynamic textStyle) {
@@ -491,7 +541,7 @@ class MvcAgent extends Agent {
   }
 
   setDialog(List<dynamic> children, double h, Map<String, dynamic> map) {
-    ProcessPattern pp = getWatchAd();
+    ProcessPattern pp = getWatchAd(null);
     children.add(pp);
     h += 1.2 * btnHeight;
 
@@ -530,7 +580,7 @@ class MvcAgent extends Agent {
     stackNoti!.value = stackList;
   }
 
-  buildResultDialog(String event) {
+  ProcessPattern _buildDialog(String event) {
     late ProcessPattern rtc;
     Map<String, dynamic> imap;
 
@@ -549,20 +599,36 @@ class MvcAgent extends Agent {
       "_alignment": Alignment.center,
       "_color": Colors.white,
     };
-    //pf = getPrimePattern["Text"];
+    BoxDecoration? decoration;
+    List<dynamic>? supplement;
     switch (event) {
       case "correct":
-        List<int> il = currMv!["_prog"];
-        if (il.last == 1) {
-          Map<String, dynamic> tmap = {
-            "_text": text["+1point"],
-            "_textStyle": resTxtStyle.copyWith(color: const Color(0xFF4DC591)),
-          };
-          imap["_child"] = tpf(tmap);
+      case "aSubscribePrice":
+      case "mSubscribePrice":
+      case "unsubscribed":
+        String? btn;
+        if (event == "correct") {
+          List<int> il = currMv!["_prog"];
+          if (il.last == 1) {
+            Map<String, dynamic> tmap = {
+              "_text": text["+1point"],
+              "_textStyle":
+                  resTxtStyle.copyWith(color: const Color(0xFF4DC591)),
+            };
+            imap["_child"] = tpf(tmap);
+          }
+        } else {
+          imap["_child"] = currMv!["_child"];
+          btn = "continue";
+          rheight += currMv!["_height"];
+          imap["_height"] = currMv!["_height"];
         }
         rtc = cpf(imap);
+        String txt = (event == "correct")
+            ? text["corrText"]
+            : (event.contains("Price") ? text["subscribed"] : text[event]);
         imap = {
-          "_text": text["corrText"],
+          "_text": txt,
           "_textStyle": bannerTxtStyle,
         };
         if (subTitle != null) {
@@ -570,7 +636,7 @@ class MvcAgent extends Agent {
         } else {
           imap["_child"] = tpf(imap);
         }
-        btnPat = createNextBtn();
+        btnPat = createNextBtn(event: btn);
         image = "assets/images/correct.png";
         break;
       case "incorrect":
@@ -592,7 +658,7 @@ class MvcAgent extends Agent {
         } else {
           imap["_child"] = tpf(imap);
         }
-        btnPat = createFailBtns();
+        btnPat = createTwoBtns();
         image = (event == "lostLife")
             ? "assets/images/looseLife.png"
             : "assets/images/fail.png";
@@ -615,7 +681,7 @@ class MvcAgent extends Agent {
         } else {
           imap["_child"] = tpf(imap);
         }
-        btnPat = createFailBtns();
+        btnPat = createTwoBtns();
         image = "assets/images/almost.png";
         break;
       case "ShowAnswer":
@@ -666,21 +732,52 @@ class MvcAgent extends Agent {
         btnPat = createNextBtn();
         image = "assets/images/answer.jpeg";
         break;
+      case "mCancel":
+      case "aCancel":
+        imap["_child"] = currMv!["_child"];
+
+        rheight += currMv!["_height"];
+        imap["_height"] = currMv!["_height"];
+        rtc = cpf(imap);
+        imap = {
+          "_text": text["cancelSubs"],
+          "_textStyle": bannerTxtStyle,
+        };
+        imap["_child"] = tpf(imap);
+        btnPat = createTwoBtns();
+        image = null;
+        decoration = redGradBD;
+        if (event == "aCancel") {
+          Map<String, dynamic> pmap = {
+            "_event": currMv!["_sEvent"],
+            "_height": currMv!["_sHeight"],
+            "_spec": currMv!["_spec"],
+          };
+          rheight += currMv!["_height"] * 2.5;
+          supplement = [currMv!["_sChild"], getTapItemElemP(pmap)];
+        }
+        break;
       default:
         break;
     }
     Function pf = getPrimePattern["Align"]!;
-    imap["_alignment"] = const Alignment(-0.8, 0.0);
+    imap["_alignment"] = (image != null)
+        ? const Alignment(-0.8, 0.0)
+        : const Alignment(0.0, 0.0);
     ProcessPattern pp = pf(imap);
     imap = {
       "_child": pp,
       "_height": 0.07266 * model.scaleHeight,
       //"_height": 0.08 * model.scaleHeight,
       "_width": resDialWidth,
-      "_decoration": getDecoration(image!),
+      "_decoration": (image != null) ? getDecoration(image!) : decoration,
     };
     ProcessPattern banner = cpf(imap);
-    List<dynamic> children = [banner, rtc, btnPat, sizedPat];
+    List<dynamic> children = [banner, rtc, btnPat];
+    if (supplement != null) {
+      children.addAll(supplement);
+    }
+    children.add(sizedPat);
     imap = {
       "_mainAxisAlignment": MainAxisAlignment.spaceBetween,
       "_children": children
@@ -698,13 +795,16 @@ class MvcAgent extends Agent {
       "_child": pp
     };
     pp = cpf(imap);
-    imap = {
-      "_child": pp,
+
+    return pp;
+  }
+
+  buildResultDialog(String event) {
+    Map<String, dynamic> imap = {
+      "_child": _buildDialog(event),
       "_alignment": const Alignment(0.0, 0.99),
     };
-    pf = getPrimePattern["Align"]!;
-    pp = pf(imap);
-    //Get.dialog(getPatternWidget(pp));
+    Function pf = getPrimePattern["Align"]!;
     List<dynamic> stackList = [];
     stackList.addAll(stackNoti!.value);
     stackList.add(pf(imap));
@@ -715,29 +815,52 @@ class MvcAgent extends Agent {
     stackNoti!.value = stackList;
   }
 
-  ProcessPattern createNextBtn() {
-    if (nextBtnPat != null) {
+  ProcessPattern createNextBtn({String? event}) {
+    if (event == null) {
+      nextBtnPat ??= getTapItemElemPattern("next", btnHeight, btnWidth, "blue");
       return nextBtnPat!;
+    } else {
+      return getTapItemElemPattern(event, btnHeight, btnWidth,
+          {"_btnType": "blue", "_onTap": currMv!["_onTap"]});
     }
-    nextBtnPat = getTapItemElemPattern("next", btnHeight, btnWidth, "blue");
-    return nextBtnPat!;
   }
 
-  ProcessPattern createFailBtns() {
-    if (failBtnPat != null) {
-      return failBtnPat!;
-    }
+  ProcessPattern createTwoBtns() {
+    String btn1 = "showAnswer";
+    String btn2 = "tryAgain";
+    late ProcessPattern pp;
+    late List<dynamic> children;
+    Map<String, dynamic>? m1 = currMv!["_btn1"];
+    Map<String, dynamic>? m2 = currMv!["_btn2"];
     Map<String, dynamic> iMap = {
       "_decoration": elemDecoration,
       "_textStyle": choiceButnTxtStyle,
     };
-    ProcessPattern pp =
-        getTapItemElemPattern("showAnswer", btnHeight, btnWidth, iMap);
+    if (m1 == null) {
+      if (failBtnPat != null) {
+        return failBtnPat!;
+      }
+      pp = getTapItemElemPattern(btn1, btnHeight, btnWidth, iMap);
+      children = [pp, getTapItemElemPattern(btn2, btnHeight, btnWidth, "blue")];
+    } else {
+      Map<String, dynamic> nmap = {};
+      nmap.addAll(m1);
+      Map<String, dynamic> spec = iMap;
+      if (m1["_spec"] != null) {
+        spec.addAll(m1["_spec"]);
+      }
+      nmap["_spec"] = spec;
+      pp = getTapItemElemP(nmap);
+      nmap = {};
+      nmap.addAll(m2!);
+      spec = {};
+      if (m2["_spec"] != null) {
+        spec.addAll(m2["_spec"]);
+      }
+      nmap["_spec"] = spec;
+      children = [pp, getTapItemElemP(nmap)];
+    }
 
-    List<dynamic> children = [
-      pp,
-      getTapItemElemPattern("tryAgain", btnHeight, btnWidth, "blue")
-    ];
     iMap = {
       "_crossAxisAlignment": CrossAxisAlignment.center,
       "_mainAxisAlignment": MainAxisAlignment.spaceAround,
@@ -758,6 +881,25 @@ class MvcAgent extends Agent {
       stackList.last = pp;
     }
     stackNoti!.value = stackList;
+  }
+
+  nextGame() {
+    List<int> il = currMv!["_prog"];
+    List<dynamic> itemRef = currMv!["_itemRef"];
+    int ilen = il.length;
+    if (ilen < itemRef.length) {
+      if (itemRef[ilen - 1] == itemRef[ilen]) {
+        currMv!["_state"] = "start";
+        currMvc!.reset(false);
+        replaceLast(currMvc!.getPattern());
+        //confirmNoti!.value = 0.5;
+        checkLives();
+      } else {
+        createNew(ilen);
+      }
+    } else {
+      gameComplete();
+    }
   }
 
   gameComplete() {
@@ -982,7 +1124,9 @@ class MvcAgent extends Agent {
       "_width": width,
       "_height": 0.9264 * model.scaleHeight,
       "_shareHeight": shareHeight,
-      "_shareIcon": "assets/images/share.png"
+      "_shareIcon": "assets/images/share.png",
+      "_screenName": "GameCompleteScreen",
+      "_sharedScreenText": model.map["text"]["sharedScreenText"],
     };
     currMv!["_scoreMark"] = scoreMark;
     if (scoreMark) {

@@ -8,6 +8,8 @@ final size5 = model.size5;
 final size10 = model.size10;
 final size20 = model.size20;
 final sizeScale = model.sizeScale;
+final double btnHeight = 0.0468 * model.scaleHeight;
+final double btnWidth = 0.3733 * model.scaleWidth;
 
 const Map<String, Color> colorMap = {
   "almost": Color(0xFFFF9E50),
@@ -56,6 +58,7 @@ Map<String, dynamic> resources = {
   "bgDecoration": bgDecoration,
   "rCDecoration": RCDecoration,
   "selemDecoration": selemDecoration,
+  "elemDecoration": elemDecoration,
 };
 
 final textFieldBorder = OutlineInputBorder(
@@ -214,6 +217,7 @@ m 136.06,107.943 4.304,3.261 0,39.436 c 0,4.382 3.567,7.947 7.951,7.947 1.535,0 
 
 //List<Map<String, dynamic>> worldMapCountryList;
 const String worldMapPath = 'assets/svg_images/world_map.json';
+
 OutlineInputBorder _buildBorder(Color color) {
   return OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(size10)),

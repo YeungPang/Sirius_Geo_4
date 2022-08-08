@@ -48,7 +48,7 @@ class TapListItem extends StatelessWidget {
     if (cmap != null) {
       lmap.addAll(cmap);
     }
-    ProcessEvent? tevent = map["_onTap"];
+    dynamic tevent = map["_onTap"];
     if (tevent != null) {
       lmap["_onTap"] = tevent;
     }

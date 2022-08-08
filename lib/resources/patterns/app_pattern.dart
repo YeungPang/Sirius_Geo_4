@@ -122,7 +122,7 @@ class NotiElemPattern extends ProcessPattern {
                   child: pi,
                 ));
       ic = Align(
-        alignment: const Alignment(0.0, -0.25),
+        alignment: const Alignment(0.0, -0.3),
         child: ic,
       );
       ic = Stack(
@@ -150,6 +150,11 @@ class NotiElemPattern extends ProcessPattern {
         ic = Stack(
           alignment: Alignment.center,
           children: [ic!, pi],
+        );
+      } else {
+        ic = Stack(
+          alignment: Alignment.center,
+          children: [ic!],
         );
       }
     }
@@ -188,7 +193,7 @@ class GroupProgNotiPattern extends ProcessPattern {
     greenEvent = map["_greenEvent"];
     done = inx == 0;
     List<dynamic> gid = map["_grProgId"];
-    double clp = map["_compPercent"];
+    double clp = map["_compPercent"] ?? 0.0;
     if (!done) {
       List<dynamic> lid = resxController.getCache("groupIds");
       lid.add(gid);

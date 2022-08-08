@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../util/util.dart';
 import '../../builder/item_search.dart';
 import '../../model/locator.dart';
 import '../../builder/get_pattern.dart';
@@ -27,6 +28,7 @@ initApp() {
   resxController.addToResxMap("progNoti", -1);
   model.appActions.addPatterns(appPatterns);
   model.appActions.addFunctions(appFunc);
+  setLocale();
   // List<String> gn = [""];
   // resxController.addToResxMap("groupNoti", gn);
 }
@@ -80,7 +82,9 @@ ProcessPattern getGameItemPattern(Map<String, dynamic> pmap) {
     "_color",
     "_alignment",
     "_shareIcon",
-    "_shareHeight"
+    "_shareHeight",
+    "_screenName",
+    "_sharedScreenText",
   ];
   for (String s in nl) {
     dynamic d = pmap[s];
@@ -257,8 +261,9 @@ ProcessPattern getTapItemElemPattern(
   };
   Map<String, dynamic> spec = (inspec is Map<String, dynamic>) ? inspec : {};
   tapAction.addAll(spec);
-  if (inspec is String) {
-    switch (inspec) {
+  dynamic btnType = (inspec is String) ? inspec : spec["_btnType"];
+  if (btnType is String) {
+    switch (btnType) {
       case "blue":
         spec = {
           "_textStyle": controlButtonTextStyle,
@@ -289,10 +294,15 @@ ProcessPattern getTapItemElemPattern(
   };
   iMap.addAll(spec);
   iMap["_child"] = getItemElemPattern(iMap);
-  Map<String, dynamic> eventMap = {"_item": text[event]};
-  ProcessEvent pe = ProcessEvent("fsm");
-  pe.map = eventMap;
-  iMap["_onTap"] = pe;
+  if (tapAction["_onTap"] == null) {
+    Map<String, dynamic> eventMap = {"_item": text[event]};
+    ProcessEvent pe = ProcessEvent("fsm");
+    pe.map = eventMap;
+    iMap["_onTap"] = pe;
+  } else {
+    iMap["_onTap"] = tapAction["_onTap"];
+    iMap["_tapAction"] = tapAction["_tapAction"];
+  }
   Function pf = getPrimePattern["TapItem"]!;
   return pf(iMap);
 }
@@ -632,6 +642,35 @@ ProcessPattern getGroupProgNotiPattern(Map<String, dynamic> pmap) {
   return GroupProgNotiPattern(map);
 }
 
+ProcessPattern getWatchAd(Map<String, dynamic>? pmap) {
+  Map<String, dynamic> imap = {
+    "_icon": 'lives',
+    "_iconColor": Colors.white,
+  };
+  Function pf = getPrimePattern["Icon"]!;
+  ProcessPattern pp = pf(imap);
+  imap = {"_textStyle": controlButtonTextStyle, "_text": "+1"};
+  pf = getPrimePattern["Text"]!;
+  List<dynamic> livesRow = [space10, pp, pf(imap)];
+  imap["_text"] = model.map['text']["watchAd"];
+  livesRow.insert(0, pf(imap));
+  livesRow.insert(0, space10);
+  imap = {
+    "_children": livesRow,
+    "_mainAxisAlignment": MainAxisAlignment.spaceAround,
+  };
+  pf = getPrimePattern["Row"]!;
+  pp = pf(imap);
+  imap = {
+    "_child": pp,
+    "_gradient": greenGradient,
+    "_height": 1.2 * btnHeight,
+    "_width": 1.2 * btnWidth,
+  };
+  pf = getPrimePattern["ColorButton"]!;
+  return pf(imap);
+}
+
 Mvc getMcMvc(Map<String, dynamic> pmap) {
   return McMvc(pmap);
 }
@@ -660,19 +699,46 @@ Mvc getWebViewMvc(Map<String, dynamic> pmap) {
   return WebViewMvc(pmap);
 }
 
+ProcessPattern getTapItemElemP(Map<String, dynamic> pmap) {
+  double h = pmap["_height"] ?? btnHeight;
+  double w = pmap["_width"] ?? btnWidth;
+  return getTapItemElemPattern(pmap["_event"]!, h, w, pmap["_spec"]);
+}
+
+ProcessPattern getBorderButton(Map<String, dynamic> pmap) {
+  double h = pmap["_height"] ?? btnHeight;
+  double w = pmap["_width"] ?? btnWidth;
+  Map<String, dynamic> spec = pmap["_spec"] ?? {};
+  String btnType = pmap["_btnType"];
+  late Color c = colorMap[btnType]!;
+  spec["_decoration"] = BoxDecoration(
+    color: Colors.white,
+    border: Border.all(color: c, width: 2),
+    borderRadius: BorderRadius.circular(size10),
+  );
+  spec["_textStyle"] = TextStyle(
+    fontFamily: fontNameAN,
+    fontWeight: w500,
+    fontSize: fsize16,
+    color: c,
+  );
+  return getTapItemElemPattern(pmap["_event"]!, h, w, spec);
+}
+
 const Map<String, Function> appPatterns = {
-  "Topic": getTopicPattern,
-  "ItemElem": getItemElemPattern,
-  "TapItemElem": getTapItemElemPattern,
-  "MvcColumn": getMvcColumnPattern,
   "Confirm": getConfirmPattern,
   "GameComplete": getGameCompletePattern,
   "GameItemPattern": getGameItemPattern,
-  "NotiElem": getNotiElemPattern,
-  "ThreeSlider": getThreeSliderPattern,
-  "VertSlider": getVertSliderPattern,
-  "MenuBubble": getMenuBubble,
   "GroupProgNoti": getGroupProgNotiPattern,
+  "ItemElem": getItemElemPattern,
+  "MenuBubble": getMenuBubble,
+  "MvcColumn": getMvcColumnPattern,
+  "NotiElem": getNotiElemPattern,
+  "TapItemElem": getTapItemElemP,
+  "ThreeSlider": getThreeSliderPattern,
+  "Topic": getTopicPattern,
+  "VertSlider": getVertSliderPattern,
+  "WatchAd": getWatchAd,
 };
 
 const Map<String, Function> appMvc = {
@@ -685,7 +751,14 @@ const Map<String, Function> appMvc = {
   "WebView": getWebViewMvc,
 };
 
+clearCache() {
+  model.versionAgent.removeCachedMap();
+}
+
 const Map<String, Function> appFunc = {
   "getSvgMap": getSvgMap,
-  "onSearch": onSearch
+  "onSearch": onSearch,
+  "onShare": onShare,
+  "clearCache": clearCache,
+  "getRenewDay": getRenewDay,
 };

@@ -1,0 +1,13 @@
+{
+    "versionTimestamp": 1636210285,
+    "append": {
+        "config": {
+            "categories": {
+                "elemList": [
+                    "IslanC001;Islands;groups;11",
+                    "CitieC001;Cities;groups;12;13"
+                ]
+            }
+        }
+    }
+}

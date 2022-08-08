@@ -6,6 +6,7 @@ import './std_pattern.dart';
 import '../model/locator.dart';
 import '../resources/basic_resources.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:screenshot/screenshot.dart';
 
 class Bubble extends StatelessWidget {
   final Map<String, dynamic> map;
@@ -313,10 +314,21 @@ tapAction(Map<String, dynamic> map) {
 }
 
 _onTap(BuildContext? context, Map<String, dynamic> map) {
-  ProcessEvent? actionMap = map["_onTap"];
-  if (actionMap != null) {
+  dynamic onTap = map["_onTap"];
+  String? func;
+  dynamic m;
+  Map<String, dynamic>? _map;
+  if (onTap is Map<String, dynamic>) {
+    func = onTap["_func"];
+    m = onTap["_tapAction"];
+    _map = onTap["_map"];
+  } else if (onTap is ProcessEvent) {
+    func = onTap.name;
+    m = map["_tapAction"];
+    _map = onTap.map;
+  }
+  if (func != null) {
     GlobalKey? key = map["_key"];
-    dynamic m = map["_tapAction"];
     if (m is Map<String, dynamic>) {
       dynamic rxName = m["_rxName"];
       double op = (rxName == null) ? 1.0 : resxController.getRxValue(rxName);
@@ -325,8 +337,7 @@ _onTap(BuildContext? context, Map<String, dynamic> map) {
       }
     }
     model.context = (key == null) ? context : key.currentContext;
-    model.appActions.doFunction(actionMap.name, m, actionMap.map);
-    //controller.model.context = null;
+    model.appActions.doFunction(func, m, _map);
   }
 }
 
@@ -705,8 +716,24 @@ class IconTextWidget extends StatelessWidget {
     bool isHoriz = map["_horiz"] ?? false;
     Widget? gap = (map["_gap"] == null) ? null : getPatternWidget(map["_gap"]);
     List<Widget> children = (gap == null)
-        ? [w!, Text(map["_text"], style: map["_textStyle"])]
-        : [gap, w!, gap, Text(map["_text"], style: map["_textStyle"])];
+        ? [
+            w!,
+            Text(
+              map["_text"],
+              style: map["_textStyle"],
+              textAlign: TextAlign.center,
+            )
+          ]
+        : [
+            gap,
+            w!,
+            gap,
+            Text(
+              map["_text"],
+              style: map["_textStyle"],
+              textAlign: TextAlign.center,
+            )
+          ];
     MainAxisAlignment ma = map["_mainAxisAlignment"] ??
         ((gap == null)
             ? MainAxisAlignment.spaceAround
@@ -967,5 +994,17 @@ class ListTilePattern extends ProcessPattern {
   @override
   Widget getWidget({String? name}) {
     return ListTileWidget(map);
+  }
+}
+
+class ScreenShotPattern extends ProcessPattern {
+  final ScreenshotController _screenshotController = ScreenshotController();
+
+  ScreenShotPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String? name}) {
+    resxController.setCache(map["_screenName"]!, _screenshotController);
+    Widget? w = getPatternWidget(map["_child"]);
+    return Screenshot(child: w!, controller: _screenshotController);
   }
 }

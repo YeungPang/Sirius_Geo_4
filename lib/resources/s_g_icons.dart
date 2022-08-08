@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../builder/pattern.dart';
 import '../model/locator.dart';
 import './basic_resources.dart';
@@ -203,14 +205,47 @@ class IconPattern extends ProcessPattern {
   IconPattern(Map<String, dynamic> map) : super(map);
   @override
   Widget getWidget({String? name}) {
-    IconData? id = myIcons[map["_icon"]];
+    String iname = map["_icon"]!;
+    IconData? id = myIcons[iname];
     double size = map["_iconSize"] ?? 24.0 * model.sizeScale;
-    var c = map["_iconColor"] ?? Colors.black;
+    var c = map["_iconColor"] ?? const Color(0xFF00344F);
     if (c is String) {
       c = colorMap[c];
     }
     Color color = c;
-    map["_widget"] ??= Icon(id, size: size, color: color);
+    if (map["_widget"] == null) {
+      if (id != null) {
+        map["_widget"] = Icon(id, size: size, color: color);
+      } else {
+        String img = imgIcons[iname] ?? iname;
+        if (img.contains("http")) {
+          if (img.contains("svg")) {
+            map["_widget"] = SvgPicture.network(
+              img,
+              height: size,
+            );
+          } else {
+            map["_widget"] = ImageIcon(
+              CachedNetworkImageProvider(img),
+              color: color,
+              size: size * 2.0,
+            );
+          }
+        } else if (img.contains("svg")) {
+          map["_widget"] = SvgPicture.asset(
+            img,
+            fit: BoxFit.contain,
+            height: size,
+          );
+        } else {
+          map["_widget"] = ImageIcon(
+            AssetImage(img),
+            color: color,
+            size: size * 2.0,
+          );
+        }
+      }
+    }
     return map["_widget"];
   }
 }
@@ -227,7 +262,7 @@ const Map<String, IconData> myIcons = {
   "climate_zones": SGGameIcons.climate_zones,
   "clouds": SGGameIcons.clouds,
   "conservation": SGGameIcons.conservation,
-  "continents": SGGameIcons.continents,
+  //"continents": SGGameIcons.continents,
   "countries": SGGameIcons.countries,
   "culture": SGGameIcons.culture,
   "deserts": SGGameIcons.deserts,
@@ -309,11 +344,16 @@ const Map<String, IconData> myIcons = {
   "search": SGIcons.search,
   "settings": SGIcons.settings,
   "share": SGIcons.share,
-  "shop": SGIcons.shop,
+  "shop": Icons.shop,
   "thumbsup": SGIcons.thumbsup,
   "toggle_off": SGIcons.toggle_off,
   "toggle_on": SGIcons.toggle_on,
   "unread": SGIcons.unread,
   "upload": SGIcons.upload,
   "wrong": SGIcons.wrong,
+};
+
+const Map<String, String> imgIcons = {
+  "continents": "assets/images/continents.png",
+  //"continents": "https://via.placeholder.com/350x150",
 };

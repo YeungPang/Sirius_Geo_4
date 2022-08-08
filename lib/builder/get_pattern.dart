@@ -116,6 +116,7 @@ ProcessPattern getAppBarPattern(Map<String, dynamic> pmap) {
   List<String> nl = [
     "_actions",
     "_actionsIconTheme",
+    "_automaticallyImplyLeading",
     "_backgroundColor",
     "_bottom",
     "_bottomOpacity",
@@ -918,14 +919,16 @@ ProcessPattern getWebViewPattern(Map<String, dynamic> pmap) {
     "_url": pmap["_url"],
     "_scriptMode": pmap["_scriptMode"],
     "_mv": pmap["_mv"],
+    "_html": pmap["_html"],
   };
   return WebViewPattern(map);
 }
 
 ProcessPattern getSearchButtonPattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {
+    "_searchTypes": pmap["_searchTypes"],
     "_itemList": pmap["_itemList"],
-    "_clear": pmap["_clear"],
+    "_actions": pmap["_actions"],
     "_searchIcon": pmap["_searchIcon"],
     "_searchDelegate": pmap["_searchDelegate"],
     "_highlightColor": pmap["_highlightColor"],
@@ -1114,6 +1117,14 @@ ProcessPattern getFormPattern(Map<String, dynamic> pmap) {
   return FormPattern(map);
 }
 
+ProcessPattern getScreenShotPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {
+    "_child": pmap["_child"],
+    "_screenName": pmap["_screenName"],
+  };
+  return ScreenShotPattern(map);
+}
+
 const Map<String, Function> getPrimePattern = {
   "Align": getAlignPattern,
   "AppBar": getAppBarPattern,
@@ -1156,6 +1167,7 @@ const Map<String, Function> getPrimePattern = {
   "RichText": getRichTextPattern,
   "Row": getRowPattern,
   "Scaffold": getScaffolPattern,
+  "ScreenShot": getScreenShotPattern,
   "ScrollLayout": getScrollLayoutPattern,
   "SearchButton": getSearchButtonPattern,
   "SingleChildScrollView": getSingleChildScrollViewPattern,
