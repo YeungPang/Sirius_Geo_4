@@ -63,8 +63,10 @@ class AgentActions extends AppActions {
         }
         return null;
       case "route":
-        Get.toNamed("/page?screen=" + input, arguments: vars);
-        //Navigator.pushNamed(model.context, input, arguments: {"map": vars});
+        String screen = (input is List<dynamic>) ? input[0] : input;
+        Map<String, dynamic> m =
+            ((input is List<dynamic>) && (input.length > 1)) ? input[1] : vars;
+        Get.toNamed("/page?screen=" + screen, arguments: m);
         return true;
       case "popRoute":
         bool mode = (vars != null) ? vars["mode"] ?? false : false;
@@ -517,6 +519,10 @@ class ControlAgent extends Agent {
         return ThemeDecoder.decodeEdgeInsetsGeometry(v, validate: false);
       case "mainAxisAlignment":
         return ThemeDecoder.decodeMainAxisAlignment(v, validate: false);
+      case "wrapAlignment":
+        return ThemeDecoder.decodeWrapAlignment(v, validate: false);
+      case "wrapCrossAlignment":
+        return ThemeDecoder.decodeWrapCrossAlignment(v, validate: false);
       default:
         return null;
     }

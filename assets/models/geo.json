@@ -485,7 +485,7 @@
             ],
             "catView": [
                 "_item, _index, _name, _icon, _progId | (_sb ≔ Φ(SizedBox, {_height: 5.0})) ⋀ ",
-                "⋓({_iconColor: ℛ(color, #1785C1), _iconSize: ℛ(sizeScale, Ø, 45.0)}) ⋀ ⋓({_child: Φ(Icon), _width: ℛ(hratio, Ø, 0.128353), ",
+                "⋓({_iconColor: ℛ(color, '#1785C1'), _iconSize: ℛ(sizeScale, Ø, 45.0)}) ⋀ ⋓({_child: Φ(Icon), _width: ℛ(hratio, Ø, 0.128353), ",
                 "_decoration: ℛ(appRes, shadowDecoration)}) ⋀ mapPat(patHeader, (0.1232, Ø, Ø, Ø, Ø, Ø)) ⋀ ",
                 "(_ic ≔ Φ(NotiElem)) ⋀ (_tw ≔ Φ(Text, {_text: _name, _textStyle: ℛ(textStyle, SliderBoldTextStyle)})) ⋀ ↲([_ic, _sb, _tw])"
             ],
@@ -545,7 +545,7 @@
             ],
             "learnCatContainer": [
                 "_itemRef, _index, _ref, _nextMap, _grProgId, _childPattern | ⋓({_direction: decode(axis, horizontal), ",
-                "_colWidth: (η(_itemRef) * ℛ(hratio, Ø, 0.155)), _childMap: ({_itemRefMap: _ref, _grProgId: _grProgId} ⊌ _nextMap)}) ⋀ ",
+                "_colWidth: (#(_itemRef) * ℛ(hratio, Ø, 0.155)), _childMap: ({_itemRefMap: _ref, _grProgId: _grProgId} ⊌ _nextMap)}) ⋀ ",
                 "(_child ≔ Φ(TapListItem))⋀ mapPat(patHeader, (0.1539, _colWidth, Ø, Ø, center, Ø)) ⋀ ↲(Φ(Container))"
             ],
             "greenContainer": [
@@ -706,7 +706,7 @@
                 "(_width ≔ ℛ(sizeScale, Ø, 300.0)) ⋀ (_c1 ≔ Φ(Container)) ⋀ (_map ≔ {_event: _event, _height: ℛ(sizeScale, Ø, 50.0), _child: _c1, ",
                 "_btn2: {_event: 'keep', _spec: {_btnType: 'blue', _onTap: {_func: 'popRoute'}}}, _btn1: ({_event: _event, ",
                 "_spec: subscribedDial({_event: 'unsubscribed'})})}) ⋀ ",
-                "(((_event = 'mCancel') ⋀ ↲(createEvent(process, _map))) ⋁ ((_child ≔ Φ(Text, {_text: ⊤('altSub'), _textStyle: 'ChoiceButnTxtStyle', ",
+                "(((_event = 'mCancel') ⋀ ↲({_func: process, _tapAction: 'subscription', _map: _map})) ⋁ ((_child ≔ Φ(Text, {_text: ⊤('altSub'), _textStyle: 'ChoiceButnTxtStyle', ",
                 "_textAlign: decode(textAlign, center)})) ⋀ (_time ≔ getRenewDay({_nextMonth: true})) ⋀ (_c2 ≔ Φ(Container)) ⋀ (_event ≔ 'mSubscribePrice') ⋀ ",
                 "↲({_func: process, _tapAction: 'subscription', _map: (_map ⋃ {_height: _height, _sChild: _c2, _sEvent: 'switchm', _sHeight: ℛ(sizeScale, Ø, 50.0), _spec: subscribedDial})})))"
             ],
@@ -752,7 +752,7 @@
                 "_event, _title | (_h ≔ Φ(Text, {_text: _title, _textStyle: ℛ(textStyle, TitleTextStyle)})) ⋀ ",
                 "(_e ≔ Φ(IconButton, {_onTap: {_func: fsmEvent, _tapAction: 'closeDialog'}, _iconColor: 'grey700', _icon: 'cancel', _iconSize: 16.0})) ⋀ ",
                 "(_mainAxisAlignment ≔ decode(mainAxisAlignment, spaceBetween)) ⋀ (_children ≔ [_h, _e]) ⋀ (_h ≔ Φ(Row)) ⋀ ",
-                "mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (_children ≔ aSetting) ⋀ (_height ≔ ℛ(hratio, Ø, (0.035 * η(_children) + 0.05))) ⋀ ",
+                "mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (_children ≔ aSetting) ⋀ (_height ≔ ℛ(hratio, Ø, (0.035 * #(_children) + 0.05))) ⋀ ",
                 "(_children ≔ [_h, lcard]) ⋀ ⋓({_child: Φ(Column), _width: ℛ(hratio, Ø, 0.9)}) ⋀ ↲(Φ(Container))"
             ],
             "closeDialog": "↲(popRoute())",

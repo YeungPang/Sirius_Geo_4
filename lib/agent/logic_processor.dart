@@ -6,9 +6,9 @@ import '../model/locator.dart';
 import 'package:string_validator/string_validator.dart';
 
 final re = RegExp(
-    r"[⋀⋁⊻∈⋓⋂∉⋃∄↲⊆⊂⊄≠=≈~⇒&∣|\*\-+－＋⁺⁻\/≁≪≫⋘⋙←→≥≤<>≔⊌⥹⥻⟷@,Φσℒℛℝℳ𝕄𝄁ƒ𝓅⋓ℓητ𝕥‥⊖:]");
+    r"[⋀⋁⊻∈⋓⋂∉⋃∄↲⊆⊂⊄≠=≈~⇒&∣|\*\-+－＋⁺⁻\/≁≪≫⋘⋙←→≥≤<>≔⊌⥹⥻⟷@,Φσℒℛℝℳ𝕄𝄁ƒ𝓅⋓ℓ#τ𝕥‥⊖:]");
 
-const binOp = "∈|@∉⊆⊂⊄≠=≈~⇒&∣⊻≪≫≥≤<>－＋⥹⥻⋘⋙";
+const binOp = "∈|@∉⊆⊂⊄≠=≈~⇒&∣⊻≪≫≥≤<>－＋⥹⥻";
 const matrixSymbol = "𝔸𝔹ℂ𝔻𝔼𝔽𝕄ℝ𝕥𝄁";
 const matrixOp = "¯𝗑ᵀ﹒";
 
@@ -17,7 +17,7 @@ const priorArithOp = "*/≁÷";
 const checkNeg = "≠=≈≥≤<>≔:,*/≁+÷";
 const arithFunc = "㏑㏒𝓮";
 
-const setOP = "⋂⋃⊌－⊖";
+const setOP = "⋂⋃⊌－⊖⊆⊂⥹⥻";
 
 const uniqueBiOp = '≔';
 
@@ -25,7 +25,7 @@ const andOr = "⋀⋁";
 
 const symbol = "∀∃∄Ø|";
 
-const unaryOp = "τηƒℓℛℒℳΦ𝓅⋓↲ç∄σ¬∑∆∏⋓⊤㏑㏒𝓮";
+const unaryOp = "'τ#ƒℓℛℒℳΦ𝓅⋓↲ç∄∃σ¬∑∆∏⋓⊤㏑㏒𝓮";
 
 const sufOp = "☒!☑☐▶✂";
 
@@ -176,15 +176,27 @@ class LogicProcessor {
             ? rl[0]
             : resolveDynList(rl);
         if (e is List<dynamic>) {
-          if (e[0] is List<dynamic>) {
+          var v = (e[0] is String) ? vars[e[0]] : e[0];
+          if (v is List<dynamic>) {
             if (e[2] is int) {
-              e[0][e[2]] = r;
+              if (r == nil) {
+                v.removeAt(e[2]);
+              } else {
+                v[e[2]] = r;
+              }
             } else {
               r = false;
               break;
             }
-          } else if (e[0] is Map<String, dynamic>) {
-            e[0][e[2]] = r;
+          } else if (v is Map<String, dynamic>) {
+            var n = (e[2] is List<dynamic>)
+                ? resolveDynList(e[2])
+                : (vars[e[2]] ?? e[2]);
+            if (r == nil) {
+              v.remove(n);
+            } else {
+              v[n] = r;
+            }
           } else {
             r = false;
             break;
@@ -541,6 +553,12 @@ class LogicProcessor {
   }
 
   dynamic handleUnaryOp(String e, List<dynamic> l) {
+    if (e == "'") {
+      if (l.length == 1) {
+        return l[0];
+      }
+      return null;
+    }
     if (e == 'ℛ') {
       List<dynamic> r = handleList(l);
       int len = r.length;
@@ -561,7 +579,8 @@ class LogicProcessor {
       if (name[0] == '_') {
         name = vars[name];
       }
-      List<dynamic> rl = l;
+      List<dynamic> rl = [];
+      rl.addAll(l);
       rl.removeAt(0);
       if (rl.isNotEmpty) {
         rl = handleList(rl);
@@ -631,7 +650,7 @@ class LogicProcessor {
       r = vars[r] ?? r;
     }
     switch (e) {
-      case 'η':
+      case '#':
         if (r is List<dynamic>) {
           return r.length;
         }
@@ -694,6 +713,20 @@ class LogicProcessor {
           return r.isEmpty;
         }
         return (r == null) || (r == nil);
+      case '∃':
+        if (r is String) {
+          if (r.isEmpty) {
+            return false;
+          }
+          if (r[0] == '_') {
+            return false;
+          }
+          return true;
+        }
+        if (r is List<dynamic>) {
+          return r.isNotEmpty;
+        }
+        return !((r == null) || (r == nil));
       case '¬':
         if (r is bool) {
           return !r;
@@ -768,11 +801,11 @@ class LogicProcessor {
             if (keys.isEmpty) {
               return false;
             }
-            List<dynamic> values = r2.values.toList();
-            for (int j = 1; j < keys.length; j++) {
+            //List<dynamic> values = r2.values.toList();
+            for (int j = 0; j < keys.length; j++) {
               Map<String, dynamic> rvars = {};
               rvars.addAll(vars);
-              rvars[r1] = [keys[j], values[j]];
+              rvars[r1] = keys[j];
               varList.add(rvars);
             }
             vars = varList[0];
@@ -826,6 +859,8 @@ class LogicProcessor {
           return r1[r2];
         }
         return null;
+      case '≠':
+        return !checkEqual(r1, r2);
       case '=':
         return checkEqual(r1, r2);
       case '≈':
@@ -895,32 +930,83 @@ class LogicProcessor {
     bool isMap = (e0 is Map<String, dynamic>) || (e2 is Map<String, dynamic>);
     int len = expr.length;
     if (isMap) {
-      Map<String, dynamic> e = (e1 == '⊌') ? e0 : {};
-      if ((e1 != '⊌') && (e0 is Map<String, dynamic>)) {
-        e.addAll(e0);
+      if (((e1 == '⊆') || (e1 == '⊂')) &&
+          ((e0 is Map<String, dynamic>) && (e2 is Map<String, dynamic>))) {
+        List<dynamic> l0 = e0.keys.toList();
+        for (var m in l0) {
+          if (e2[m] != e0[m]) {
+            return false;
+          }
+        }
+        return true;
       }
+      Map<String, dynamic> e = (e1 == '⊌') ? e0 : {};
       while (ev.pos <= len) {
         String op = e1;
-        Map<String, dynamic> m = e2;
+        Map<String, dynamic> m = (e2 is Map<String, dynamic>) ? e2 : {};
         switch (op) {
           //case '⊎':
           case '⊌':
             e.addAll(m);
             break;
           case '⋃':
+            e.addAll(e0);
             Map<String, dynamic> et = {};
             et.addAll(m);
             e.addAll(et);
             break;
           case '⋂':
-            e.forEach((key, value) {
-              e[key] = m[key];
+            e0.forEach((key, value) {
+              if (m[key] == e0[key]) {
+                e[key] = m[key];
+              }
             });
             break;
           case '－':
-            e.forEach((key, value) {
-              e[key] = (m[key] != null) ? null : value;
+            e0.forEach((key, value) {
+              if (value != m[key]) {
+                e[key] = value;
+              }
             });
+            break;
+          case '⊖':
+            e.addAll(m);
+            e0.forEach((key, value) {
+              if (e[key] != value) {
+                e[key] = value;
+              } else {
+                e.remove(key);
+              }
+            });
+            break;
+          case '⥹':
+            if ((e0 is Map<String, dynamic>) && (e2 is int)) {
+              int i = e0.length - e2;
+              if (i < 0) {
+                return null;
+              }
+              int j = 0;
+              e0.forEach((key, value) {
+                if (j >= i) {
+                  e[key] = value;
+                }
+                j++;
+              });
+            } else {
+              return null;
+            }
+            break;
+          case '⥻':
+            if ((e0 is Map<String, dynamic>) && (e2 is int)) {
+              int i = 0;
+              e0.forEach((key, value) {
+                if (i++ < e2) {
+                  e[key] = value;
+                }
+              });
+            } else {
+              return null;
+            }
             break;
           default:
             return null;
@@ -934,8 +1020,15 @@ class LogicProcessor {
       }
       return e;
     } else {
-      if (e2 is! List<dynamic>) {
-        return null;
+      if (((e1 == '⊆') || (e1 == '⊂')) &&
+          (e0 is List<dynamic>) &&
+          (e2 is List<dynamic>)) {
+        for (var m in e0) {
+          if (!e2.contains(m)) {
+            return false;
+          }
+        }
+        return true;
       }
       List<dynamic> e = (e1 == '⊌') ? e0 : [];
       if ((e1 != '⊌') && (e0 is! String)) {
@@ -943,7 +1036,7 @@ class LogicProcessor {
       }
       while (ev.pos <= len) {
         String op = e1;
-        List<dynamic> m = e2;
+        List<dynamic> m = (e2 is List<dynamic>) ? e2 : [];
         switch (op) {
           //case '⊎':
           case '⊌':
@@ -951,15 +1044,51 @@ class LogicProcessor {
             e.addAll(m);
             break;
           case '⋂':
-            for (var element in e) {
-              if (!m.contains(element)) {
-                e.remove(element);
+            e = [];
+            for (var element in e0) {
+              if (m.contains(element)) {
+                e.add(element);
               }
             }
             break;
           case '－':
             for (var element in m) {
               e.remove(element);
+            }
+            break;
+          case '⊖':
+            List<dynamic> et = [];
+            et.addAll(m);
+            for (var value in e) {
+              if (et.contains(value)) {
+                et.remove(value);
+              } else {
+                et.add(value);
+              }
+            }
+            break;
+          case '⥹':
+            if ((e0 is List<dynamic>) && (e2 is int)) {
+              int i = e0.length - e2;
+              if (i < 0) {
+                return null;
+              }
+              e = [];
+              for (int j = i; j < e0.length; j++) {
+                e.add(e0[j]);
+              }
+            } else {
+              return null;
+            }
+            break;
+          case '⥻':
+            if ((e0 is List<dynamic>) && (e2 is int) && (e2 <= e0.length)) {
+              e = [];
+              for (int j = 0; j < e2; j++) {
+                e.add(e0[j]);
+              }
+            } else {
+              return null;
             }
             break;
           default:
@@ -1252,23 +1381,12 @@ class Clause {
             vars[args[i]] = margs[i];
           }
         }
-/*         if (margs[i][0] == '_') {
-          clientVars ??= {};
-          clientVars![margs[i]] = args[i];
-        } */
       } else {
         if (args[i][0] != '_') {
           return false;
         }
         var v = mVars[args[i]];
-        // if (v == null) {
-        //   return false;
-        // }
         vars[args[i]] = v;
-/*         if ((v == nil) || (v == null)) {
-          clientVars ??= {};
-          clientVars![args[i]] = args[i];
-        } */
       }
     }
     return true;
@@ -1317,15 +1435,41 @@ List<String> splitExpr(String exStr) {
 List<dynamic> splitPred(String predSpec) {
   List<dynamic> predStack = [];
   List<String> bracStack = [];
-  RegExp reb = RegExp(r"[\[({]");
+  RegExp reb = RegExp("[[({'\"]");
   List<String> brac = predSpec.split(reb);
   reb = RegExp(r"[\])}]");
   int ketLen = 0;
   int bracLen = 0;
   List<dynamic> cp = [];
   int i = 0;
+  String? qStr;
+  int iq = 0;
+  int istr = 0;
   for (String s in brac) {
-    if ((predSpec[i] == '(') || (predSpec[i] == '[') || (predSpec[i] == '{')) {
+    if ((predSpec[i] == "'") || (predSpec[i] == '"')) {
+      if (qStr == null) {
+        int j = i + 1;
+        iq = predSpec.indexOf(predSpec[i], j);
+        if (iq < 0) {
+          throw Exception("No ending qoute ' in " + predSpec.substring(j));
+        }
+        qStr = predSpec.substring(j, iq);
+      }
+      istr += s.length + 1;
+      if (istr >= qStr.length) {
+        cp.addAll([
+          "'",
+          [qStr]
+        ]);
+        i = iq + 1;
+        iq = 0;
+        istr = 0;
+      }
+    }
+    if ((qStr == null) &&
+        ((predSpec[i] == '(') ||
+            (predSpec[i] == '[') ||
+            (predSpec[i] == '{'))) {
       bracLen++;
       switch (predSpec[i]) {
         case '(':
@@ -1372,7 +1516,7 @@ List<dynamic> splitPred(String predSpec) {
       predStack.add(acp);
       i++;
     }
-    if (s.isNotEmpty) {
+    if ((s.isNotEmpty) && (qStr == null)) {
       List<String> ket = s.split(reb);
       for (String sk in ket) {
 /*         if (bracStack.isNotEmpty && (bracStack.last == '}') && sk.isNotEmpty) {
@@ -1424,6 +1568,10 @@ List<dynamic> splitPred(String predSpec) {
             }
           }
         }
+      }
+    } else {
+      if (istr == 0) {
+        qStr = null;
       }
     }
   }
