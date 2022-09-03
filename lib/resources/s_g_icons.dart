@@ -212,7 +212,7 @@ class IconPattern extends ProcessPattern {
     if (c is String) {
       c = colorMap[c];
     }
-    Color color = c;
+    Color? color = c;
     if (map["_widget"] == null) {
       if (id != null) {
         map["_widget"] = Icon(id, size: size, color: color);
@@ -351,6 +351,7 @@ const Map<String, IconData> myIcons = {
   "unread": SGIcons.unread,
   "upload": SGIcons.upload,
   "wrong": SGIcons.wrong,
+  "world": Icons.travel_explore,
 };
 
 const Map<String, String> imgIcons = {

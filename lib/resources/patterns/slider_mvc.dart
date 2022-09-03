@@ -21,6 +21,7 @@ class SliderMvc extends Mvc {
   late bool isVert;
   bool refresh = true;
   List<int> rowList = [];
+  String _scale1 = "_scale1";
 
   @override
   double getBgHeight() {
@@ -38,7 +39,7 @@ class SliderMvc extends Mvc {
     if (refresh) {
       excl = [];
     }
-    isVert = map["_scale3"] == null;
+    isVert = (map["_scale3"] == null) && (map["_scale"] == null);
     sliderNoti = ValueNotifier<int>(0);
     map["_sliderNoti"] = sliderNoti;
     String answer = map["_Answer"];
@@ -57,13 +58,17 @@ class SliderMvc extends Mvc {
     if (isVert) {
       double h = 0.591133 * model.scaleHeight;
       double w = 0.84 * model.scaleWidth;
-      mvmap = {
-        "_state": map["_state"],
-        "_scaleNoti": ValueNotifier<double>(50.0),
-        "_height": h,
-        "_width": w
-      };
-      map["_mv"] = mvmap;
+      if (mvmap.isEmpty) {
+        mvmap = {
+          "_state": map["_state"],
+          "_scaleNoti": ValueNotifier<double>(50.0),
+          "_height": h,
+          "_width": w
+        };
+        map["_mv"] = mvmap;
+      } else {
+        mvmap["_state"] = "start";
+      }
       pf = model.appActions.getPattern("VertSlider")!;
       ProcessPattern pp = pf(map);
       imap = {
@@ -96,9 +101,16 @@ class SliderMvc extends Mvc {
       };
       map["_colElem"] = pf(imap);
     } else {
-      mvmap = {"_state": map["_state"]};
-      map["_mv"] = mvmap;
-      pf = model.appActions.getPattern("ThreeSlider")!;
+      if (mvmap.isEmpty) {
+        mvmap = {"_state": map["_state"]};
+        map["_mv"] = mvmap;
+      }
+      if (map["_scale"] == null) {
+        pf = model.appActions.getPattern("ThreeSlider")!;
+      } else {
+        _scale1 = "_scale";
+        pf = model.appActions.getPattern("Slider")!;
+      }
       map["_colElem"] = pf(map);
     }
     pf = model.appActions.getPattern("MvcColumn")!;
@@ -164,10 +176,12 @@ class SliderMvc extends Mvc {
             }
           }
         } else {
-          double ans1 = configAgent!.getElement(map["_scale1"], map);
+          double ans1 = configAgent!.getElement(map[_scale1], map);
           mvmap["_ans1"] = ans1;
-          mvmap["_ans2"] = configAgent!.getElement(map["_scale2"], map);
-          mvmap["_ans3"] = configAgent!.getElement(map["_scale3"], map);
+          if (_scale1 == "_scale1") {
+            mvmap["_ans2"] = configAgent!.getElement(map["_scale2"], map);
+            mvmap["_ans3"] = configAgent!.getElement(map["_scale3"], map);
+          }
           double per = ((ans1 - mvmap["_in1"]) / ans1 * 100.00).abs();
           double corrPer = map["_corrPer"];
           map["_subTitle"] =
@@ -217,14 +231,6 @@ class SliderMvc extends Mvc {
     ProcessPattern v = view;
     sliderNoti.value = 0;
     setup();
-    ValueNotifier<List<dynamic>> stackNoti = map["_stackNoti"];
-    List<dynamic> stackList = stackNoti.value;
-    for (int i = 0; i < stackList.length; i++) {
-      if (stackList[i] == v) {
-        stackList[i] = view;
-        break;
-      }
-    }
   }
 
   @override

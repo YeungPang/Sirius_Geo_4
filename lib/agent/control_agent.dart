@@ -64,7 +64,7 @@ class AgentActions extends AppActions {
         return null;
       case "route":
         String screen = (input is List<dynamic>) ? input[0] : input;
-        Map<String, dynamic> m =
+        Map<String, dynamic>? m =
             ((input is List<dynamic>) && (input.length > 1)) ? input[1] : vars;
         Get.toNamed("/page?screen=" + screen, arguments: m);
         return true;
@@ -262,6 +262,15 @@ class AgentActions extends AppActions {
 
   @override
   dynamic getResource(String res, String? spec, {dynamic value}) {
+    if (res == "textStyleColor") {
+      if (value != null) {
+        Color c = getResource("color", spec!);
+        TextStyle ts = value!;
+        ts = ts.copyWith(color: c);
+        return ts;
+      }
+      return null;
+    }
     String _res = (res.contains("Color")) ? "color" : res;
     switch (_res) {
       case "appBarHeight":
@@ -303,6 +312,12 @@ class AgentActions extends AppActions {
         return model.screenWidth * (value as double);
       case "sizeScale":
         return sizeScale * (value as double);
+      case "vertPadding":
+        return EdgeInsets.symmetric(vertical: value);
+      case "horzPadding":
+        return EdgeInsets.symmetric(horizontal: value);
+      case "boxPadding":
+        return EdgeInsets.all(value);
       case "size5":
         return model.size5;
       case "size10":

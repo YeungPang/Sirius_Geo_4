@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import './patterns/slider_pattern.dart';
 import '../util/util.dart';
 import '../../builder/item_search.dart';
 import '../../model/locator.dart';
@@ -420,6 +421,25 @@ ProcessPattern getThreeSliderPattern(Map<String, dynamic> pmap) {
   return ThreeSliderPattern(map);
 }
 
+ProcessPattern getSliderPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {};
+  List<String> nl = [
+    "_text",
+    "_suffix",
+    "_start",
+    "_end",
+    "_sliderNoti",
+    "_mv"
+  ];
+  for (String s in nl) {
+    dynamic d = pmap[s];
+    if (d != null) {
+      map[s] = d;
+    }
+  }
+  return SliderPattern(map);
+}
+
 ProcessPattern getVertSliderPattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {};
   List<String> nl = [
@@ -726,6 +746,7 @@ ProcessPattern getBorderButton(Map<String, dynamic> pmap) {
 }
 
 const Map<String, Function> appPatterns = {
+  "BorderButton": getBorderButton,
   "Confirm": getConfirmPattern,
   "GameComplete": getGameCompletePattern,
   "GameItemPattern": getGameItemPattern,
@@ -734,6 +755,7 @@ const Map<String, Function> appPatterns = {
   "MenuBubble": getMenuBubble,
   "MvcColumn": getMvcColumnPattern,
   "NotiElem": getNotiElemPattern,
+  "Slider": getSliderPattern,
   "TapItemElem": getTapItemElemP,
   "ThreeSlider": getThreeSliderPattern,
   "Topic": getTopicPattern,

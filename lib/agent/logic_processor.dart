@@ -712,6 +712,9 @@ class LogicProcessor {
         if (r is List<dynamic>) {
           return r.isEmpty;
         }
+        if (r is Map<String, dynamic>) {
+          return r.isEmpty;
+        }
         return (r == null) || (r == nil);
       case '∃':
         if (r is String) {
@@ -724,6 +727,9 @@ class LogicProcessor {
           return true;
         }
         if (r is List<dynamic>) {
+          return r.isNotEmpty;
+        }
+        if (r is Map<String, dynamic>) {
           return r.isNotEmpty;
         }
         return !((r == null) || (r == nil));

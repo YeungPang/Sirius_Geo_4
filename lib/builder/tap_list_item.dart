@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../resources/basic_resources.dart';
 import './get_pattern.dart';
 import './pattern.dart';
 import '../model/locator.dart';
@@ -16,7 +17,7 @@ class TapListItem extends StatelessWidget {
         scrollDirection: map["_direction"] ?? Axis.vertical,
         padding: map["_padding"],
         shrinkWrap: map["_shrinkWrap"] ?? true,
-        physics: map["_physics"],
+        physics: (map["_noPhysics"] == true) ? null : bouncingScrollPhysics,
         itemCount: itemRef.length,
         itemBuilder: (context, index) => _itemBuilder(itemRef[index], index),
       );

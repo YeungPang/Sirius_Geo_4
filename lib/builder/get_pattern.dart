@@ -853,6 +853,7 @@ ProcessPattern getTapListItemPattern(Map<String, dynamic> pmap) {
     "_reverse",
     "_controller",
     "_physics",
+    "_noPhysics",
     "_shrinkWrap",
     "_padding",
     "_crossAxisCount",

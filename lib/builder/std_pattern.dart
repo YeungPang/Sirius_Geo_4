@@ -71,13 +71,81 @@ class WrapPattern extends ProcessPattern {
         d = Axis.horizontal;
       }
     }
+    dynamic _ca = map["_crossAxisAlignment"];
+    WrapCrossAlignment _wca = WrapCrossAlignment.center;
+    if (_ca is String) {
+      switch (_ca) {
+        case "start":
+          _wca = WrapCrossAlignment.start;
+          break;
+        case "end":
+          _wca = WrapCrossAlignment.end;
+          break;
+        default:
+          break;
+      }
+    } else if (_ca != null) {
+      _wca = _ca;
+    }
+
+    dynamic _a = map["_alignment"];
+    WrapAlignment _wa = WrapAlignment.start;
+    if (_a is String) {
+      switch (_a) {
+        case "center":
+          _wa = WrapAlignment.center;
+          break;
+        case "end":
+          _wa = WrapAlignment.end;
+          break;
+        case "spaceAround":
+          _wa = WrapAlignment.spaceAround;
+          break;
+        case "spaceBetween":
+          _wa = WrapAlignment.spaceBetween;
+          break;
+        case "spaceEvenly":
+          _wa = WrapAlignment.spaceEvenly;
+          break;
+        default:
+          break;
+      }
+    } else if (_a != null) {
+      _wa = _a;
+    }
+
+    dynamic _ra = map["_runAlignment"];
+    WrapAlignment _wra = WrapAlignment.start;
+    if (_ra is String) {
+      switch (_ra) {
+        case "center":
+          _wra = WrapAlignment.center;
+          break;
+        case "end":
+          _wra = WrapAlignment.end;
+          break;
+        case "spaceAround":
+          _wra = WrapAlignment.spaceAround;
+          break;
+        case "spaceBetween":
+          _wra = WrapAlignment.spaceBetween;
+          break;
+        case "spaceEvenly":
+          _wra = WrapAlignment.spaceEvenly;
+          break;
+        default:
+          break;
+      }
+    } else if (_ra != null) {
+      _wra = _ra;
+    }
+
     return Wrap(
         key: map["_key"],
-        crossAxisAlignment:
-            map["_crossAxisAlignment"] ?? WrapCrossAlignment.center,
+        crossAxisAlignment: _wca,
         direction: d ?? Axis.horizontal,
-        alignment: map["_alignment"] ?? WrapAlignment.start,
-        runAlignment: map["_runAlignment"] ?? WrapAlignment.start,
+        alignment: _wa,
+        runAlignment: _wra,
         runSpacing: map["_runSpacing"] ?? 0.0,
         spacing: map["_spacing"] ?? 0.0,
         textDirection: map["_textDirection"],

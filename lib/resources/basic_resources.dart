@@ -47,9 +47,11 @@ final List<dynamic> pinkColorList = [
 
 Map<String, dynamic> resources = {
   "textFieldBorder": textFieldBorder,
+  "bouncingScrollPhysics": bouncingScrollPhysics,
   "boxPadding": boxPadding,
   "catBoxPadding": catBoxPadding,
   "catIconPadding": catIconPadding,
+  "vertBoxPadding": vertBoxPadding,
   "clampingScrollPhysics": clampingScrollPhysics,
   "vSliderResAlignment": vSliderResAlignment,
   "blueGradBD": blueGradBD,
@@ -197,11 +199,13 @@ final BoxDecoration imageDecoration = BoxDecoration(
 
 final BoxDecoration btnDecoration = elemDecoration;
 
+final vertBoxPadding = EdgeInsets.symmetric(vertical: model.size20);
 final catBoxPadding = EdgeInsets.symmetric(vertical: model.size10);
 final catIconPadding = EdgeInsets.symmetric(horizontal: model.size10);
 final boxPadding = EdgeInsets.all(model.size20);
 
 const clampingScrollPhysics = ClampingScrollPhysics();
+const bouncingScrollPhysics = BouncingScrollPhysics();
 
 const vSliderResAlignment = Alignment(-0.4, 0.0);
 

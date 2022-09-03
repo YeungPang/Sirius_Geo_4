@@ -29,7 +29,8 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
   double _ratio12 = 0.0;
   double _ratio13 = 0.0;
   String _ys = "";
-  Map<String, dynamic> _mv = {};
+  late Map<String, dynamic> _mv;
+  late Map<String, dynamic> map;
 
   //bool reset = false;
 
@@ -39,20 +40,21 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
         duration: const Duration(milliseconds: 300), vsync: this);
     height = model.scaleHeight;
     width = model.scaleWidth;
-    _scale[0]["text"] = widget.map["_text1"];
-    _scale[1]["text"] = widget.map["_text2"];
-    _scale[2]["text"] = widget.map["_text3"];
-    _scale[0]["start"] = widget.map["_start1"];
-    _scale[1]["start"] = widget.map["_start2"];
-    _scale[2]["start"] = widget.map["_start3"];
-    _scale[0]["end"] = widget.map["_end1"];
-    _scale[1]["end"] = widget.map["_end2"];
-    _scale[2]["end"] = widget.map["_end3"];
-    _ratio12 = widget.map["_ratio12"];
-    _ratio13 = widget.map["_ratio13"];
-    _scale[0]["s"] = widget.map["_suffix1"];
-    _scale[1]["s"] = widget.map["_suffix2"];
-    _scale[2]["s"] = widget.map["_suffix3"];
+    map = widget.map;
+    _scale[0]["text"] = map["_text1"];
+    _scale[1]["text"] = map["_text2"];
+    _scale[2]["text"] = map["_text3"];
+    _scale[0]["start"] = map["_start1"];
+    _scale[1]["start"] = map["_start2"];
+    _scale[2]["start"] = map["_start3"];
+    _scale[0]["end"] = map["_end1"];
+    _scale[1]["end"] = map["_end2"];
+    _scale[2]["end"] = map["_end3"];
+    _ratio12 = map["_ratio12"];
+    _ratio13 = map["_ratio13"];
+    _scale[0]["s"] = map["_suffix1"];
+    _scale[1]["s"] = map["_suffix2"];
+    _scale[2]["s"] = map["_suffix3"];
     _ys = model.map["text"]["yourSel"];
     _scale[0]["r"] = (_scale[0]["end"] - _scale[0]["start"]) / 100.0;
     _scale[1]["r"] = (_scale[1]["end"] - _scale[1]["start"]) / 100.0;
@@ -62,6 +64,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
   }
 
   _reset() {
+    _mv = map["_mv"];
     _absoluteValue = 0.0;
     _isSwitched = false;
     _scale[0]["value"] = 0.0;
@@ -70,13 +73,15 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     _scale[0]["t"] = _scale[0]["start"].toString() + _scale[0]["s"];
     _scale[1]["t"] = _scale[1]["start"].toString() + _scale[1]["s"];
     _scale[2]["t"] = _scale[2]["start"].toString() + _scale[2]["s"];
+    RxDouble _confirmNoti = resxController.getRx("confirm");
+    _confirmNoti.value = 0.5;
+    _mv["_state"] = "start";
   }
 
   @override
   Widget build(BuildContext context) {
-    _mv = widget.map["_mv"];
     return ValueListenableBuilder<int>(
-      valueListenable: widget.map["_sliderNoti"],
+      valueListenable: map["_sliderNoti"],
       builder: (BuildContext context, int value, Widget? child) => Stack(
         clipBehavior: Clip.none,
         children: _getStackChildren(value),
@@ -477,7 +482,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     TextStyle ts = sliderTextStyle.copyWith(color: c);
     List<Widget> wl = [
       Text(
-        _mv["_ans1"].toString() + widget.map["_suffix1"],
+        _mv["_ans1"].toString() + map["_suffix1"],
         style: ts,
       ),
     ];
@@ -496,7 +501,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     Widget w1 = _buildSliderResValue(m1);
     wl = [
       Text(
-        _mv["_ans2"].toString() + widget.map["_suffix2"],
+        _mv["_ans2"].toString() + map["_suffix2"],
         style: ts,
       ),
     ];
@@ -539,7 +544,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
             child: Stack(alignment: Alignment.topLeft, children: [w2, ansW])));
     wl = [
       Text(
-        _mv["_ans3"].toString() + widget.map["_suffix3"],
+        _mv["_ans3"].toString() + map["_suffix3"],
         style: ts,
       ),
     ];
