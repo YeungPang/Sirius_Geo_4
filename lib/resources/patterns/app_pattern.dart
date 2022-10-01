@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xml/xml.dart';
 import '../basic_resources.dart';
 import '../../agent/config_agent.dart';
 import '../../builder/pattern.dart';
@@ -10,6 +10,17 @@ import '../s_g_icons.dart';
 import '../../builder/svg_paint_pattern.dart';
 import '../../builder/get_pattern.dart';
 import '../fonts.dart';
+
+final List<String> styleCode = [
+  "fill",
+  "fill-opacity",
+  "opacity",
+  "stroke",
+  "stroke-opacity",
+  "stroke-width",
+  "stroke-linecap",
+  "stroke-linejoin"
+];
 
 class NotiElemPattern extends ProcessPattern {
   bool isGroup = false;
@@ -305,6 +316,133 @@ getSvgMap(Map<String, dynamic> map) {
   ValueNotifier<ProcessPattern> noti = map["_childNoti"];
   Function pf = model.appActions.getPattern("SvgPaint")!;
   noti.value = pf(map);
+}
+
+getSvgXML(Map<String, dynamic> map) {
+  String data = map["_data"];
+  var xdoc = XmlDocument.parse(data);
+  List<Shape> shapes = [];
+  Map<String, dynamic> scls = {};
+  String? inStyle = map["_style"];
+
+  if (inStyle != null) {
+    getStyleCls(inStyle, scls);
+  }
+  var svg = xdoc.rootElement;
+  if ((scls[".default"] == null) && (svg.attributes.isNotEmpty)) {
+    String styleStr = "";
+    for (var attr in svg.attributes) {
+      if (styleCode.contains(attr.localName)) {
+        styleStr += attr.localName + ':' + attr.value + ";";
+      }
+    }
+    if (styleStr.isNotEmpty) {
+      scls[".default"] = getStyle(styleStr);
+    }
+  }
+  if (scls[".default"] == null) {
+    var styles = svg.findAllElements("style");
+    if (styles.isNotEmpty) {
+      for (var node in styles) {
+        getStyleCls(node.text, scls, overwrite: false);
+      }
+    }
+  }
+  var gElem = svg.findAllElements('g');
+  if (gElem.length <= 1) {
+    var pElem = svg.findAllElements("path");
+    addShapes(pElem, shapes, shapes.length, scls, map);
+  } else {
+    for (var ge in gElem) {
+      if ((scls[".default"] == null) && (ge.attributes.isNotEmpty)) {
+        String styleStr = "";
+        for (var attr in ge.attributes) {
+          if (styleCode.contains(attr.localName)) {
+            styleStr += attr.localName + ':' + attr.value + ";";
+          }
+        }
+        if (styleStr.isNotEmpty) {
+          scls[".local"] = getStyle(styleStr);
+        }
+      }
+      var pElem = ge.findElements("path");
+      String? sId = ge.getAttribute("id");
+      addShapes(pElem, shapes, shapes.length, scls, map, sId: sId);
+    }
+  }
+  Map<String, dynamic> _mv = map["_mv"];
+  _mv["_selPaint"] =
+      (scls[".selected"] != null) ? scls[".selected"]["fill"] : null;
+  _mv["_ansPaint"] = (scls[".answer"] != null) ? scls[".answer"]["fill"] : null;
+  _mv["_background"] = colorMap[map["_backgroundColor"]];
+  if (map["_selLabelColor"] != null) {
+    _mv["_selLabelColor"] = colorMap[map["_selLabelColor"]];
+  }
+  map["_shapes"] = shapes;
+  ValueNotifier<ProcessPattern> noti = map["_childNoti"];
+  Function pf = model.appActions.getPattern("SvgPaint")!;
+  noti.value = pf(map);
+}
+
+addShapes(Iterable<XmlElement> pElem, List<Shape> shapes, int i,
+    Map<String, dynamic> scls, Map<String, dynamic> map,
+    {String? sId}) {
+  String? key = map["_matchKey"];
+  String styleStr = "";
+  for (var pe in pElem) {
+    String? label;
+    late String strPath;
+    String? cls;
+    Map<String, dynamic>? style = scls[".default"] ?? scls[".local"];
+    for (var attr in pe.attributes) {
+      switch (attr.localName) {
+        case "d":
+          strPath = attr.value;
+          break;
+        case "class":
+          cls = '.' + attr.value;
+          break;
+        case "title":
+          label = attr.value;
+          break;
+        case "name":
+          label = attr.value;
+          break;
+        case "id":
+          label ??= attr.value;
+          break;
+        case "style":
+          style ??= getStyle(attr.value);
+          break;
+        default:
+          if ((style == null) && (styleCode.contains(attr.localName))) {
+            styleStr += attr.localName + ':' + attr.value + ";";
+          }
+          break;
+      }
+    }
+    Map<String, dynamic>? m = (styleStr.isNotEmpty)
+        ? getStyle(styleStr)
+        : ((style != null) ? style : ((cls != null) ? scls[cls] : null));
+    Paint? fillPaint = (m != null) ? m["fill"] : null;
+    Paint? strokePaint = (m != null) ? m["stroke"] : null;
+    if ((fillPaint == null) && (strokePaint == null)) {
+      fillPaint ??= Paint()
+        ..color = Colors.white
+        ..style = PaintingStyle.fill;
+      strokePaint ??= Paint()
+        ..color = Colors.black
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.0;
+    }
+    label ??= sId ?? "";
+    ShapeText st = ShapeText(label, 24 * fontScale, "Lato", Colors.white70);
+    shapes.add(Shape(strPath, i, st, fillPaint, strokePaint, sId: sId));
+    if ((key != null) && (label == key)) {
+      map["_ansIndex"] = i;
+    }
+    i++;
+  }
 }
 
 ProcessPattern getMenuBubble(Map<String, dynamic> map) {

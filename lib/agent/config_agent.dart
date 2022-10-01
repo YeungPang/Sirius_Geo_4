@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../resources/basic_resources.dart';
 import '../model/locator.dart';
 import '../builder/pattern.dart';
 import 'dart:math';
@@ -133,7 +134,9 @@ class ConfigAgent {
     }
     int inx = ls.length - 1;
     String? s1 = (ls.length > 1) ? ls[inx].trim() : null;
-    var si2 = (s1 == null) ? null : ((s1[0] == '_') ? (vars[s1] ?? s1) : s1);
+    var si2 = ((s1 == null) || (s1.isEmpty))
+        ? null
+        : ((s1[0] == '_') ? (vars[s1] ?? s1) : s1);
     if (si2 is String) {
       si2 = resolveStr(si2);
     }
@@ -783,4 +786,135 @@ String checkModelText(String text) {
     }
   }
   return text;
+}
+
+getStyleCls(String css, Map<String, dynamic> scls, {bool overwrite = true}) {
+  List<String> sText = css.trim().split('}');
+  for (String st in sText) {
+    String s = st.trim();
+    if (s.isNotEmpty) {
+      List<String> sl = s.split('{');
+      String s0 = sl[0].trim();
+      if ((overwrite) || (scls[s0] == null)) {
+        scls[s0] = getStyle(sl[1].trim());
+      }
+    }
+  }
+}
+
+Map<String, dynamic> getStyle(String s) {
+  Map<String, dynamic> style = {};
+  Color? fillColor;
+  double fillOpacity = 1.0;
+  Color? strokeColor;
+  double strokeOpacity = 1.0;
+  double strokeWith = 1.0;
+  StrokeCap? strokeCap;
+  StrokeJoin? strokeJoin;
+  double? strokeMiterLimit;
+
+  List<String> stl = s.split(';');
+  for (String st in stl) {
+    List<String> cs = st.split(':');
+    switch (cs[0].trim().toLowerCase()) {
+      case 'fill':
+        fillColor = colorConvert(cs[1].trim());
+        break;
+      case "fill-opacity":
+      case "opacity":
+        fillOpacity = double.parse(cs[1].trim());
+        break;
+      case "stroke":
+        strokeColor = colorConvert(cs[1].trim());
+        break;
+      case "stroke-opacity":
+        strokeOpacity = double.parse(cs[1].trim());
+        break;
+      case "stroke-width":
+        String cs1 = cs[1].trim();
+        if (cs1.toLowerCase().contains("px")) {
+          cs1 = cs1.substring(0, cs1.length - 2);
+        }
+        strokeWith = double.parse(cs1);
+        break;
+      case "stroke-miterlimit":
+        strokeMiterLimit = double.parse(cs[1].trim());
+        break;
+      case "stroke-linecap":
+        switch (cs[1].trim()) {
+          case "round":
+            strokeCap = StrokeCap.round;
+            break;
+          case "square":
+            strokeCap = StrokeCap.square;
+            break;
+          case "butt":
+            strokeCap = StrokeCap.butt;
+            break;
+          default:
+            break;
+        }
+        break;
+      case "stroke-linejoin":
+        switch (cs[1].trim()) {
+          case "round":
+            strokeJoin = StrokeJoin.round;
+            break;
+          case "bevel":
+            strokeJoin = StrokeJoin.bevel;
+            break;
+          case "miter":
+            strokeJoin = StrokeJoin.miter;
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+  }
+  if (fillColor != null) {
+    fillColor = fillColor.withOpacity(fillOpacity);
+    style["fill"] = Paint()
+      ..color = fillColor
+      ..style = PaintingStyle.fill;
+  }
+  if (strokeColor != null) {
+    strokeColor = strokeColor.withOpacity(strokeOpacity);
+    Paint p = Paint()
+      ..color = strokeColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWith;
+    if (strokeMiterLimit != null) {
+      p.strokeMiterLimit = strokeMiterLimit;
+    }
+    if (strokeJoin != null) {
+      p.strokeJoin = strokeJoin;
+    }
+    if (strokeCap != null) {
+      p.strokeCap = strokeCap;
+    }
+    style["stroke"] = p;
+  }
+  return style;
+}
+
+Color? colorConvert(String color) {
+  if (color[0] == '#') {
+    color = color.replaceAll("#", "");
+    dynamic converted;
+    if (color.length < 6) {
+      for (int i = color.length; i < 6; i++) {
+        color += "F";
+      }
+    }
+    if (color.length == 6) {
+      converted = Color(int.parse("0xFF" + color));
+    } else if (color.length == 8) {
+      converted = Color(int.parse("0x" + color));
+    }
+    return converted;
+  }
+  return colorMap[color];
 }

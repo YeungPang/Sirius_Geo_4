@@ -68,7 +68,13 @@ class SvgPaintMvc extends Mvc {
       proInd = pf(imap);
       mvmap = {};
       map["_mv"] = mvmap;
-      initSvgPainter(map);
+      String fileName = map["_fileName"];
+      if (fileName.contains(".json")) {
+        initSvgPainter(map);
+        map["_func"] = "getSvgMap";
+      } else {
+        map["_func"] = "getSvgXML";
+      }
 
       mvmap["_state"] = map["_state"];
       svgPaintNoti = ValueNotifier<Offset>(Offset.zero);
@@ -97,7 +103,6 @@ class SvgPaintMvc extends Mvc {
       map["_colElem"] = pf(imap);
       mvcpf = model.appActions.getPattern("MvcColumn")!;
       view = mvcpf(map);
-      map["_func"] = "getSvgMap";
       loadData(map);
     } else {
       mvmap["_ansLabel"] = null;

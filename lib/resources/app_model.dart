@@ -481,6 +481,7 @@ ProcessPattern getSvgPaintPattern(Map<String, dynamic> pmap) {
     "_painterWidth",
     "_shapeColor",
     "_matchKey",
+    "_selId",
     "_shapes",
     "_mv"
   ];
@@ -779,6 +780,7 @@ clearCache() {
 
 const Map<String, Function> appFunc = {
   "getSvgMap": getSvgMap,
+  "getSvgXML": getSvgXML,
   "onSearch": onSearch,
   "onShare": onShare,
   "clearCache": clearCache,

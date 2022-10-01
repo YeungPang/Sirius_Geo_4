@@ -155,6 +155,7 @@ class AgentActions extends AppActions {
         vars[name] = data;
         return true;
       case "isNull":
+      case "Ø":
         return (input == null) || (input == nil);
       case "buildDialog":
         if (input == null) {

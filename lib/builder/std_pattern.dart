@@ -244,6 +244,26 @@ class TextPattern extends ProcessPattern {
     if (_style is String) {
       _style = textStyle[_style];
     }
+    dynamic _textAlign = map["_textAlign"];
+    if (_textAlign is String) {
+      switch (_textAlign) {
+        case "center":
+          _textAlign = TextAlign.center;
+          break;
+        case "justify":
+          _textAlign = TextAlign.justify;
+          break;
+        case "end":
+          _textAlign = TextAlign.end;
+          break;
+        case "right":
+          _textAlign = TextAlign.right;
+          break;
+        default:
+          _textAlign = null;
+          break;
+      }
+    }
     return Text(
       map["_text"],
       locale: map["_locale"],
@@ -253,7 +273,7 @@ class TextPattern extends ProcessPattern {
       softWrap: map["_softWrap"],
       strutStyle: map["_strutStyle"],
       style: _style,
-      textAlign: map["_textAlign"],
+      textAlign: _textAlign,
       textDirection: map["_textDirection"],
       textHeightBehavior: map["_textHeightBehavior"],
       textScaleFactor: map["_textScaleFactor"],

@@ -14,7 +14,9 @@ final double btnWidth = 0.3733 * model.scaleWidth;
 const Map<String, Color> colorMap = {
   "almost": Color(0xFFFF9E50),
   "black": Colors.black,
+  "blue": Colors.blue,
   "blueGrey": Colors.blueGrey,
+  "brown": Colors.brown,
   "btnBlue": Color(0xFF1785C1),
   "btnBlueGradEnd": Color(0xFF3BAEED),
   "correct": Color(0xFF4DC591),
@@ -27,9 +29,11 @@ const Map<String, Color> colorMap = {
   "grey": Colors.grey,
   "grey700": Color(0xFF616161),
   "greyText": Color(0xFFBDBDBD),
+  "orange": Colors.orange,
   "red": Colors.red,
   "white": Colors.white,
   "white38": Colors.white38,
+  "yellow": Colors.yellow,
 };
 
 final List<dynamic> pinkColorList = [

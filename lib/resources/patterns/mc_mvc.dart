@@ -93,12 +93,6 @@ class McMvc extends Mvc {
     if (answer is String) {
       if (answer.contains("_ans")) {
         ans = getRandom(options.length, excl)!;
-      } else if (answer.contains('[')) {
-        ansList = configAgent!.getElement(map["_Answer"], map);
-        range = [];
-        for (int k = 0; k < options.length; k++) {
-          range.add(k);
-        }
       } else {
         RegExp re = RegExp(r"[(),]");
         List<String> sl = answer.trim().split(re);
@@ -110,9 +104,20 @@ class McMvc extends Mvc {
       ans = answer;
     } else if (answer is List<dynamic>) {
       ansList = answer;
+      bool notInt = ansList[0] is! int;
       range = [];
+      List<int> aList = [];
+      int? r = map["_range"];
       for (int k = 0; k < options.length; k++) {
+        if (((notInt) && (ansList.contains(options[k]))) ||
+            (ansList.contains(k))) {
+          aList.add(k);
+        }
         range.add(k);
+      }
+      ansList = aList;
+      if (r != null) {
+        range = getRandomList(options.length, r, aList, [])!;
       }
     }
     if (ansList.isEmpty) {
@@ -186,10 +191,10 @@ class McMvc extends Mvc {
         } else {
           r = "correct";
           for (int k in selList) {
-            if (ansList.contains(k)) {
-              buildBadgedElem(k, "correct");
+            if (ansList.contains(range[k])) {
+              buildBadgedElem(range[k], "correct");
             } else {
-              buildBadgedElem(k, "incorrect");
+              buildBadgedElem(range[k], "incorrect");
               r = "incorrect";
             }
           }
@@ -209,9 +214,9 @@ class McMvc extends Mvc {
             children[k] = pp;
           }
           List<dynamic> c = children;
-          for (int k = 0; k < options.length; k++) {
-            if (ansList.contains(options[k])) {
-              buildBadgedElem(k, "answer");
+          for (int k = 0; k < range.length; k++) {
+            if (ansList.contains(range[k])) {
+              buildBadgedElem(range[k], "answer");
               children = gvNoti!.value;
             }
           }

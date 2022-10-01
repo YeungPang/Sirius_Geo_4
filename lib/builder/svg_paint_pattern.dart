@@ -55,7 +55,8 @@ class ShapeText {
 }
 
 class Shape {
-  Shape(strPath, this._inx, this._shapeText, this._paint, this._borderPaint)
+  Shape(strPath, this._inx, this._shapeText, this._paint, this._borderPaint,
+      {this.sId})
       : _path = parseSvgPathData(strPath);
 
   /// transforms a [_path] into [_transformedPath] using given [matrix]
@@ -64,10 +65,11 @@ class Shape {
 
   final Path _path;
   Path? _transformedPath;
-  final Paint _paint;
-  final Paint _borderPaint;
+  Paint? _paint;
+  Paint? _borderPaint;
   final ShapeText _shapeText;
   final int _inx;
+  String? sId;
 }
 
 class SvgPainter extends CustomPainter {
@@ -91,6 +93,7 @@ class SvgPainter extends CustomPainter {
     String? ansLabel = _mv["_ansLabel"];
     double offsetWidth = map["_offsetWidth"] ?? 0.0;
     double offsetHeight = map["_offsetHeight"] ?? 0.0;
+    String? sId = map["_selId"];
     // double offsetWidth = 0.0;
     // double offsetHeight = 0.0;
 
@@ -115,20 +118,25 @@ class SvgPainter extends CustomPainter {
     bool hasSelection = false;
     for (var shape in shapes) {
       final path = shape._transformedPath!;
-      final selected = path.contains(_notifier.value);
-      Paint paint = (shape._shapeText._label == ansLabel)
+      final selected = path.contains(_notifier.value) &&
+          ((sId == null) || (sId == shape.sId));
+      Paint? paint = (shape._shapeText._label == ansLabel)
           ? _mv["_ansPaint"]
           : ((selPaint != null) && selected)
               ? selPaint
               : shape._paint;
-      canvas.drawPath(path, paint);
+      if (paint != null) {
+        canvas.drawPath(path, paint);
+      }
       if (selected) {
         _mv["_selIndex"] = shape._inx;
         _mv["_selLabel"] = shape._shapeText._label;
         hasSelection = true;
       }
 
-      canvas.drawPath(path, shape._borderPaint);
+      if (shape._borderPaint != null) {
+        canvas.drawPath(path, shape._borderPaint!);
+      }
 
       if (selected && showSelLabel) {
         List<BoxShadow>? ls = kElevationToShadow[1];
