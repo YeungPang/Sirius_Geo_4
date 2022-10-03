@@ -483,6 +483,7 @@ ProcessPattern getSvgPaintPattern(Map<String, dynamic> pmap) {
     "_matchKey",
     "_selId",
     "_shapes",
+    "_scale",
     "_mv"
   ];
   for (String s in nl) {

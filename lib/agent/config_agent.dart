@@ -361,6 +361,14 @@ List<dynamic>? getDataList(Map<String, dynamic> m, var ielem) {
       for (int i = inx; i < elem.length; i++) {
         var einx = elem[i];
         if (einx is String) {
+          String iinx = einx.trim();
+          if (iinx[0] == 'ℛ') {
+            iinx = iinx.substring(2, iinx.length - 1);
+          }
+          int? ii = int.tryParse(iinx);
+          einx = ii ?? iinx;
+        }
+        if (einx is String) {
           List<int> il = resolveIntList(einx.trim());
           int ri = getRandom(il.length, excl)!;
           excl.add(ri);

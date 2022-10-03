@@ -4,7 +4,7 @@ import '../agent/version_agent.dart';
 import '../builder/pattern.dart';
 
 class MainModel {
-  final String mainModelName = "assets/models/geo.json";
+  final String mainModelName = "assets/models/geo-d.json";
 
   double screenHeight = 812.0;
   double screenWidth = 375.0;

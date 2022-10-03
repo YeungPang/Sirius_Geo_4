@@ -197,6 +197,10 @@ class SvgPaintPattern extends ProcessPattern {
   SvgPaintPattern(Map<String, dynamic> map) : super(map);
   @override
   Widget getWidget({String? name}) {
+    double? s = map["_scale"];
+    if (s != null) {
+      return Transform.scale(scale: s, child: SvgPaint(map));
+    }
     return SvgPaint(map);
   }
 }
