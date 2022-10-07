@@ -118,7 +118,11 @@ class ConfigAgent {
         if ((si is int) && (map != null)) {
           List<dynamic> ds2 = [];
           for (List<dynamic> ld in ds1) {
-            ds2.add(ld[si]);
+            var rs = ld[si];
+            if ((rs is String) && (rs[0] == '[')) {
+              rs = getListContent(rs, map, vars, rowList, header);
+            }
+            ds2.add(rs);
           }
           return ds2;
         }
@@ -147,14 +151,31 @@ class ConfigAgent {
         hl = (h is String) ? h.split(';') : h;
         header.addAll(hl);
       }
-      List<dynamic> ld = map["elemList"][si];
+      var vld = map["elemList"][si];
+      List<dynamic>? ld;
+      if (vld is List<dynamic>) {
+        ld = vld;
+      } else if (vld is String) {
+        if (vld[0] == '[') {
+          vld = vld.substring(1, vld.length - 1);
+          ld = getListData(vld);
+        } else if (vld.contains(';')) {
+          ld = vld.split(';');
+        } else {
+          ld = [vld];
+        }
+      }
       if (rowList != null) {
         rowList.add(si);
       }
       if ((ls.length > 1) && (si2 is int)) {
-        return ld[si2];
+        var rs = ld![si2];
+        if ((rs is String) && (rs[0] == '[')) {
+          rs = getListContent(rs, map, vars, rowList, header);
+        }
+        return rs;
       }
-      return ld;
+      return ld!;
     }
     if (ls.length > 1) {
       List<dynamic> ds1 = [si, si2];
@@ -568,10 +589,12 @@ List<dynamic>? mapList(List<int> inxList, List<dynamic> list) {
   return mapList;
 }
 
-List<dynamic>? resolveList(List<dynamic> list, Map<String, dynamic> vars) {
+List<dynamic>? resolveList(List<dynamic> list, Map<String, dynamic> vars,
+    {ConfigAgent? configAgent}) {
   List<dynamic> rList = [];
   for (var e in list) {
     var v = ((e is String) && (e[0] == '_')) ? vars[e] : e;
+    v = (v is String) ? v.trim() : v;
     if ((v is String) && (v.contains('‥'))) {
       List<String> ls = v.split('‥');
       if (ls.length != 2) {
@@ -592,6 +615,21 @@ List<dynamic>? resolveList(List<dynamic> list, Map<String, dynamic> vars) {
         }
       }
     } else {
+      if ((v is String) &&
+          ((v[0] == 'ℛ') || (v[0] == '[')) &&
+          (configAgent != null)) {
+        v = (v[0] == 'ℛ') ? configAgent.getElement(v, vars) : v;
+        if (v is String) {
+          v = v.trim();
+          if (v[0] == '[') {
+            String s = v.substring(1, v.length - 1);
+            v = getListData(s);
+          }
+        }
+        if (v is List<dynamic>) {
+          v = resolveList(v, vars, configAgent: configAgent);
+        }
+      }
       rList.add(v);
     }
   }
@@ -925,4 +963,58 @@ Color? colorConvert(String color) {
     return converted;
   }
   return colorMap[color];
+}
+
+Map<String, dynamic> getMapContent(String s) {
+  Map<String, dynamic> m = {};
+  String str = checkModelText(s);
+  int ninx = 0;
+  while (ninx < str.length) {
+    int inx = str.indexOf(':');
+    String key = str.substring(0, inx).trim();
+    str = str.substring(++inx).trim();
+    late String value;
+    if (str[0] == 'ℛ') {
+      ninx = str.indexOf(')');
+    } else if (str[0] == '[') {
+      ninx = str.indexOf(']');
+    }
+    ninx = str.indexOf(',', ninx);
+    if (ninx < 0) {
+      ninx = str.length;
+    }
+    value = str.substring(0, ninx++);
+    if (ninx < str.length) {
+      str = str.substring(ninx).trim();
+      ninx = 0;
+    }
+    m[key] = resolveStr(value);
+  }
+  return m;
+}
+
+List<dynamic> getListData(String s) {
+  List<dynamic> l = [];
+  String str = s;
+  int ninx = 0;
+  while (ninx < str.length) {
+    late String value;
+    if (str[0] == 'ℛ') {
+      ninx = str.indexOf(')');
+    } else if (str[0] == '[') {
+      ninx = str.indexOf(']');
+    }
+    ninx = str.indexOf(',', ninx);
+    if (ninx < 0) {
+      ninx = str.length;
+    }
+    value = str.substring(0, ninx++);
+    if (ninx < str.length) {
+      str = str.substring(ninx).trim();
+      ninx = 0;
+    }
+    var v = resolveStr(value);
+    l.add(v);
+  }
+  return l;
 }

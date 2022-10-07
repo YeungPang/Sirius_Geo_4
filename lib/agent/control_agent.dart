@@ -477,21 +477,10 @@ class ControlAgent extends Agent {
             if (s is String) {
               if (s[0] == '[') {
                 s = s.substring(1, s.length - 1);
-                List<String> ls = s.split(',');
-                List<dynamic> ld = [];
-                for (int i = 0; i < ls.length; i++) {
-                  ld.add(resolveStr(ls[i]));
-                }
-                vars[k] = ld;
+                vars[k] = getListData(s);
               } else if (s[0] == '{') {
                 s = s.substring(1, s.length - 1);
-                List<String> ls = s.split(',');
-                Map<String, dynamic> ms = {};
-                for (String es in ls) {
-                  List<String> les = es.split(':');
-                  ms[les[0]] = resolveStr(les[1]);
-                }
-                vars[k] = ms;
+                vars[k] = getMapContent(s);
               } else {
                 vars[k] = s;
               }

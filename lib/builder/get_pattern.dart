@@ -990,6 +990,14 @@ ProcessPattern getObxPattern(Map<String, dynamic> pmap) {
   return ObxPattern(map);
 }
 
+ProcessPattern getObxOpacityPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {
+    "_child": pmap["_child"],
+    "_rxName": pmap["_rxName"],
+  };
+  return ObxOpacityPattern(map);
+}
+
 ProcessPattern getRichTextPattern(Map<String, dynamic> pmap) {
   Map<String, dynamic> map = {
     "_textSpan": pmap["_textSpan"],
@@ -1160,6 +1168,7 @@ const Map<String, Function> getPrimePattern = {
   "ListTile": getListTilePattern,
   "ListView": getListViewPattern,
   "Obx": getObxPattern,
+  "ObxOpacity": getObxOpacityPattern,
   "ObxProcess": getObxProcessPattern,
   "Opacity": getOpacityPattern,
   "OverflowBox": getOverflowBoxPatternn,

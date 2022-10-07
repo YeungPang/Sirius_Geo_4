@@ -101,23 +101,28 @@ class MvcAgent extends Agent {
         if (hintShowed) {
           break;
         }
-        List<dynamic>? hintList = currMv!["_hintList"];
-        if (hintList == null) {
-          ConfigAgent configAgent = currMv!["_configAgent"];
-          hintList = configAgent.getElement(currMv!["_hints"], currMv!,
-              map: model.map["hints"]);
-          currMv!["_hintList"] = hintList;
+        dynamic cHints = currMv!["_hints"];
+        if (cHints == null) {
+          break;
         }
-        int inx = currMvc!.getHintIndex();
-        String hintStr = hintList![inx];
-        hints = hintStr.split(";");
+        ConfigAgent configAgent = currMv!["_configAgent"];
+        var hintList = configAgent.getElement(currMv!["_hints"], currMv!);
+        if (hintList is String) {
+          hintList = getListData(hintList);
+        }
+        List<dynamic>? hList = resolveList(hintList, currMv!);
+        hints = hList!.map((e) => e as String).toList();
         currHint = 0;
         setHint(event.name);
         break;
       case "prevHint":
       case "nextHint":
       case "cancelHint":
+      case "teachingMode":
         setHint(event.name);
+        if (event.name == "teachingMode") {
+          model.appActions.doFunction("route", 'learnScaffold', null);
+        }
         break;
       case "quitDialog":
         quitDialog ??= getQuitDialog();
@@ -289,12 +294,12 @@ class MvcAgent extends Agent {
     currMv!["_subTitle"] = null;
     currMv!["_scoreMark"] = null;
     currMv!["_mapping"] = null;
+    currMv!["_hints"] = null;
     hintShowed = false;
     currHint = 0;
     if (it == 0) {
       List<int> il = [];
       currMv!["_prog"] = il;
-      currMv!["_hintList"] = null;
     }
     List<dynamic> itemRef = currMv!["_itemRef"];
     List<dynamic> item = itemRef[it];
@@ -307,6 +312,18 @@ class MvcAgent extends Agent {
     String? ref = currMv!["_ref"];
     ConfigAgent configAgent =
         (ref != null) ? ConfigAgent(defName: ref) : ConfigAgent();
+    if (it > 0) {
+      double h = resxController.getRxValue("hintOp");
+      if (currMv!["_hints"] == null) {
+        if (h == 1.0) {
+          resxController.setRxValue("hintOp", 0.5);
+        }
+      } else {
+        if (h == 0.5) {
+          resxController.setRxValue("hintOp", 1.0);
+        }
+      }
+    }
     String? mapping = currMv!["_mapping"];
     if (mapping != null) {
       List<dynamic> header = [];
@@ -704,7 +721,7 @@ class MvcAgent extends Agent {
             double h = 10 * sizeScale;
             for (int i = 1; i < ansList.length; i++) {
               h += 20.0 * sizeScale;
-              tmap["_text"] = ansList[i];
+              tmap["_text"] = ansList[i].toString();
               al.add(tpf(tmap));
             }
             rheight += h;
@@ -1177,17 +1194,21 @@ class MvcAgent extends Agent {
     ProcessPattern pp = prepareProgRow();
     Function pf;
     Map<String, dynamic> imap;
+    Map<String, dynamic> eventMap = {};
+    ProcessEvent pe = ProcessEvent("mvc");
+    pe.map = eventMap;
+    List<dynamic> l = ["showHint"];
+    imap = {"_child": hint, "_onTap": pe, "_tapAction": l};
+    pf = getPrimePattern["TapItem"]!;
+    imap = {"_child": hint, "_onTap": pe, "_tapAction": l};
+    imap = {"_child": pf(imap), "_rxName": "hintOp"};
     if (currMv!["_hints"] == null) {
-      imap = {"_child": hint, "_opacity": 0.5};
-      pf = getPrimePattern["Opacity"]!;
+      resxController.setRxValue("hintOp", 0.5);
     } else {
-      Map<String, dynamic> eventMap = {};
-      ProcessEvent pe = ProcessEvent("mvc");
-      pe.map = eventMap;
-      List<dynamic> l = ["showHint"];
-      imap = {"_child": hint, "_onTap": pe, "_tapAction": l};
-      pf = getPrimePattern["TapItem"]!;
+      resxController.setRxValue("hintOp", 1.0);
     }
+    pf = getPrimePattern["ObxOpacity"]!;
+    pp = prepareProgRow();
     List<dynamic> br = [pp, pf(imap)];
     imap = {
       "_mainAxisAlignment": MainAxisAlignment.spaceBetween,
@@ -1435,6 +1456,7 @@ class MvcAgent extends Agent {
   setHint(String mode) {
     switch (mode) {
       case "cancelHint":
+      case "teachingMode":
         hintShowed = false;
         //replaceLast(null);
         Get.back();
@@ -1475,7 +1497,7 @@ class MvcAgent extends Agent {
       "_nextHint": text["nextHint"],
       "_tryTeachMode": text["tryTeachMode"],
       "_onCancel": "cancelHint",
-      "_onTryTeachMode": "cancelHint",
+      "_onTryTeachMode": "teachingMode",
       "_onPrev": "prevHint",
       "_onNext": "nextHint",
     };

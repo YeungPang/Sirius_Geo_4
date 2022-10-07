@@ -223,7 +223,7 @@
                 "ContG0003;Continent Quiz;⊤(continents);0.75;3;questions;26;2",
                 "CounG0001;Identify Country;⊤(countries);0.75;4;questions;27;6",
                 "CounG0002;Identify Flag;flags;0.75;5;questions;[7‥13];[7‥13];7‥13",
-                "CounG0003;Country Quiz;⊤(countries);0.75;6;questions;22;20;16",
+                "CounG0003;Country Quiz;⊤(countries);0.75;6;questions;31;16;30;28;29;22;20",
                 "WorIG0001;World Intro;atmosphere;0.75;7;questions",
                 "hemiG0001;Hemisphere;climate_zones;0.75;8;questions",
                 "SolaG0001;Solar System;solar_system;0.75;9;questions",
@@ -239,7 +239,7 @@
                 "CounG0004;Select Country Flag;flags;0.75;19;questions;14;14;14",
                 "ContG0005;Select Answers;⊤(continents);0.6;20;questions;15",
                 "ContG0006;Identify Continent;⊤(continents);0.6;21;questions;3;3;3",
-                "ContG0007;Continent;⊤(continents);0.6;22;questions;19;17;18;4",
+                "ContG0007;Continent;⊤(continents);0.6;22;questions;4;19;17;18",
                 "CounG0004;Country Pick;⊤(countries);0.6;23;questions;21;21;21",
                 "ArtiA0001;Article Test;article;;;articleWeb;0"
             ]
@@ -278,10 +278,10 @@
         "questions": {
             "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx",
             "elemList": [
-                "ContQ0001;MC;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ([contHints:[0,1],2‥6])",
+                "ContQ0001;MC;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ(_ans,7)",
                 "ContQ0002;Order;contData;Sort the continents by surface area from largest to smallest;;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];;[Africa, Antarctica, Asia, Australia, Europe, North America, South America];;ℛ(Order:0)",
                 "ContQ0003;Text;contData;What is the largest continent by surface area?;;;;The largest continent is Asia.;ℛ(2,1)",
-                "ContQ0004;Text;contData;What is this continent?;;ℛ(_ans,2);;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);;ℛ([0‥6],1)",
+                "ContQ0004;Text;contData;What is this continent?;;ℛ(_ans,2);;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);ℛ(_ans,6);ℛ([0‥6],1)",
                 "ContQ0005;Text;;Name the 7 continents.;;;;[Asia,Africa,North America,South America,Antarctica,Europe,Australia];[Africa,Antarctica,Asia,Australia,Europe,North America,South America]",
                 "CounQ0006;MC;countryData;What is this country?;;;6;;ℛ(_ans,3);;ℛ([15, 32, 43, 48, 109, 110, 122, 211, 241],3)",
                 "CounQ0007;Text;;What is the population of Switzerland in millions?;;;;8 millions;8",
@@ -294,7 +294,7 @@
                 "CounQ0014;MC;countryData;Which country flag is this?;;ℛ(6,2);6;#ℛ(6,1)#;ℛ(6,1);;ℛ([0‥6],1)",
                 "CounQ0015;MC;countryData;Which is the flag of #ℛ(_ans,1)#?;;;4;;ℛ(_ans,2);;ℛ([0‥6],2)",
                 "ContQ0016;MC;;The Rate of Natural Increase (RNI) is based on which factors?;(Select all that apply);;;;[0,3,5];;[Births,Emmigration,Immigration,Deaths,Illegal Immigration,Total Population]",
-                "CounQ0017;Text;countryData;Name one non-African English speaking countries?;;;1;;ℛ([0,5,6],1);ℛ([5,6],4);ℛ([0,5,6],1)",
+                "CounQ0017;Text;countryData;Name one non-African English speaking countries?;;;1;;ℛ([0,5,6],1);ℛ([5,6],4);ℛ([0,5,6],1);[Two in North America, One in Europe]",
                 "ContQ0018;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;;;ℛ(Sentence:0)",
                 "ContQ0019;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;[immigration,births,emmigration,deaths,illegal immigrants,total population];;ℛ(Sentence:0)",
                 "ContQ0020;Slider;contData;What is the size of #ℛ(_ans,1)# by surface area?;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(ContinentSize:0)",
@@ -305,7 +305,11 @@
                 "CounQ0025;WebView;;;;;;;;;;;ℛ(articleWeb:1)",
                 "CounQ0026;WebView;;;;;;;;;;;ℛ(articleWeb:2)",
                 "CounQ0027;SvgMap;TectonicPlateData;Select #ℛ(_ans,1)#.;;;;;ℛ(_ans,1);;ℛ([0‥14],1);;ℛ(CountSelection:1)",
-                "CounQ0028;MC;countryData;What is the second largest country by area?;;;4;The largest country is Canada;[Canada,France];;[Canada,France,Germany,Italy,Switzerland,United Kingdom,United States]"
+                "CounQ0028;MC;countryData;What is the second largest country by area?;;;4;The largest country is Canada;[Canada,France];;[Canada,France,Germany,Italy,Switzerland,United Kingdom,United States]",
+                "CounQ0029;Text;countryData;Name one non-African English speaking countries?;;;1;;[Canada, USA, UK];[ℛ(5,4), ℛ(6,4)];[Canada, USA, UK]",
+                "CounQ0030;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, UK];{UK: ℛ(5,4), USA: [United States, :United States of America]};[Canada, USA, UK];[Two in North America, One in Europe]",
+                "CounQ0031;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, ℛ(5,1)];[ℛ(0,4),[United States, United States of America], ℛ(5,4)];[Canada, USA, ℛ(5,1)]",
+                "CounQ0032;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, ℛ(5,1)];ℛ([0,6,5],4);[Canada, USA, ℛ(5,1)]"
             ]
         },
         "articleWeb": {
@@ -361,21 +365,21 @@
             ]
         },
         "contData": {
-            "header": "CDID;Name;Image;surfaceSize;surfacePercent;landPercent",
+            "header": "CDID;Name;Image;surfaceSize;surfacePercent;landPercent;similar;hint",
             "elemList": [
-                "Cont00001;Africa;assets/images/Africa.png;30.37;5.95;20.31",
-                "Cont00002;Antarctica;assets/images/Antarctica.png;14.2;2.78;9.49",
-                "Cont00003;Asia;assets/images/Asia.png;44.58;8.74;29.80",
-                "Cont00004;Australia;assets/images/Australia.png;7.69;1.51;5.14",
-                "Cont00005;Europe;assets/images/Europe.png;10.18;2.00;6.81",
-                "Cont00006;North America;assets/images/NorthAmerica.png;24.71;4.84;16.52",
-                "Cont00007;South America;assets/images/SouthAmerica.png;17.84;3.50;11.93"
+                "Cont00001;Africa;assets/images/Africa.png;30.37;5.95;20.31;[the africa, the-africa];[Wheather is mostly hot.,Native people have black skin.,This continent is Africa.]",
+                "Cont00002;Antarctica;assets/images/Antarctica.png;14.2;2.78;9.49;[the Antarctica, the-Antarctica];[Wheather can be very cold.,Hardly any people live there.,This continent is Antarctica.]",
+                "Cont00003;Asia;assets/images/Asia.png;44.58;8.74;29.80;[the Asia, the-Asia];[The largest continent.,Most people live there.,This continent is Asia.]",
+                "Cont00004;Australia;assets/images/Australia.png;7.69;1.51;5.14;[the Australia, the-Australia];[The smallest continent.,You can find kangaroos there.,This continent is Australia.]",
+                "Cont00005;Europe;assets/images/Europe.png;10.18;2.00;6.81;[the Europe, the-Europe];[There are hardly any desert.,Most people have white skin.,This continent is Europe.]",
+                "Cont00006;North America;assets/images/NorthAmerica.png;24.71;4.84;16.52;[the North America, the-North America];[There are only two main countries in this continent.,Most people speak English.,This continent is North America.]",
+                "Cont00007;South America;assets/images/SouthAmerica.png;17.84;3.50;11.93;[the South America, the-South America];[The continent has many rain forests.,Most people speak spanish.,This continent is South America.]"
             ]
         },
         "countryData": {
-            "header": "CDID;Name;Flag;rank;similar",
+            "header": "CDID;Name;Flag;rank;similar;hint",
             "elemList": [
-                "Conu00001;Canada;assets/flags/Canada.svg;2",
+                "Conu00001;Canada;assets/flags/Canada.svg;2;[];[Two in North America, One in Europe]",
                 "Conu00002;France;assets/flags/France.svg;47",
                 "Conu00003;Germany;assets/flags/Germany.svg;62",
                 "Conu00004;Italy;assets/flags/Italy.svg;70",
@@ -418,13 +422,13 @@
     ],
     "hints": {
         "elemList": [
-            "Wheather is mostly hot.;Native people have black skin.;This continent is Africa.",
-            "Wheather can be very cold.;Hardly any people live there.;This continent is Antarctica.",
-            "The largest continent.;Most people live there.;This continent is Asia.",
-            "The smallest continent.;You can find kangaroos there.;This continent is Australia.",
-            "There are hardly any desert.;Most people have white skin.;This continent is Europe.",
-            "There are only two main countries in this continent.;Most people speak English.;This continent is North America.",
-            "The continent has many rain forests.;Most people speak spanish.;This continent is South America."
+            "[Wheather is mostly hot.,Native people have black skin.,This continent is Africa.]",
+            "[the Antarctica, the-Antarctica];[Wheather can be very cold.,Hardly any people live there.,This continent is Antarctica.]",
+            "[The largest continent.,Most people live there.,This continent is Asia.]",
+            "[The smallest continent.,You can find kangaroos there.,This continent is Australia.]",
+            "[There are hardly any desert.,Most people have white skin.,This continent is Europe.]",
+            "[There are only two main countries in this continent.,Most people speak English.,This continent is North America.]",
+            "[The continent has many rain forests.,Most people speak spanish.,This continent is South America.]"
         ]
     },
     "contHints": {

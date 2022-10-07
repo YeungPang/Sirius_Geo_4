@@ -94,11 +94,16 @@ class McMvc extends Mvc {
       if (answer.contains("_ans")) {
         ans = getRandom(options.length, excl)!;
       } else {
-        RegExp re = RegExp(r"[(),]");
-        List<String> sl = answer.trim().split(re);
-        ans = (sl.length > 1)
-            ? (int.tryParse(sl[1].trim()) ?? 0)
-            : (int.tryParse(sl[0].trim()) ?? 0);
+        if (answer[0] == 'ℛ') {
+          var v = configAgent!.getElement(answer, map, rowList: rowList);
+          ans = options.indexOf(v);
+        } else {
+          RegExp re = RegExp(r"[(),]");
+          List<String> sl = answer.trim().split(re);
+          ans = (sl.length > 1)
+              ? (int.tryParse(sl[1].trim()) ?? 0)
+              : (int.tryParse(sl[0].trim()) ?? 0);
+        }
       }
     } else if (answer is int) {
       ans = answer;

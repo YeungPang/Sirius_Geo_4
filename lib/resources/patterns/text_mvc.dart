@@ -43,6 +43,9 @@ class TextMvc extends Mvc {
   //Map<String, dynamic> equi = model.map["equivalence"];
   List<int> rowList = [];
   int ans = 0;
+  int ansLen = 0;
+  List<int> mAnsList = [0];
+  List<dynamic>? nAnsList;
 
   @override
   double getBgHeight() {
@@ -59,20 +62,6 @@ class TextMvc extends Mvc {
 /*     if (answer[0] == 'ℛ') {
       answer = configAgent!.getElement(map["_Answer"], map);
     } */
-    if ((!retrying) && (map["_Accepted_Answers"] != null)) {
-      acceptedList = [];
-      dynamic rList = configAgent!.getElement(map["_Accepted_Answers"], map);
-      if (rList is List<dynamic>) {
-        acceptedList!.addAll(rList);
-      } else {
-        acceptedList!.add(rList);
-      }
-      // RegExp re = RegExp(r"[\[\],]");
-      // for (String s in rList) {
-      //   List<String> sl = s.trim().split(re);
-      //   acceptedList!.add(sl);
-      // }
-    }
     if (answer.contains("_ans")) {
       if (!retrying) {
         options = configAgent!
@@ -81,8 +70,10 @@ class TextMvc extends Mvc {
         excl.add(ans);
         map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
         ansList = [options![ans]];
-        len = map["_range"] ?? ansList.length;
+        ansLen = ansList.length;
+        len = map["_range"] ?? ansLen;
         if (acceptedList != null) {
+          checkList = null;
           List<dynamic> al = acceptedList![ans];
           for (String a in al) {
             if (a.isNotEmpty) {
@@ -95,19 +86,80 @@ class TextMvc extends Mvc {
     } else {
       refresh = false;
       var al = configAgent!.getElement(map["_Answer"], map);
-      ansList = (al is List<dynamic>) ? al : [al];
-      len = map["_range"] ?? ansList.length;
-      if (acceptedList != null) {
-        for (var al in acceptedList!) {
-          if (al is List<dynamic>) {
-            for (String a in al) {
-              if (a.isNotEmpty) {
-                ansList.add(a.trim());
+      ansList = (al is List<dynamic>)
+          ? resolveList(al, map, configAgent: configAgent)!
+          : [al];
+      ansLen = ansList.length;
+      len = map["_range"] ?? ansLen;
+    }
+    if ((!retrying) && (map["_Accepted_Answers"] != null)) {
+      acceptedList = [];
+      if (len > 1) {
+        var vml = configAgent!.getElement(map["_Accepted_Answers"], map);
+        Map<String, dynamic>? am;
+        List<dynamic>? lm;
+        if (vml is List<dynamic>) {
+          lm = resolveList(vml, map, configAgent: configAgent);
+        } else {
+          am = vml;
+        }
+        nAnsList = [];
+        int i = 0;
+        for (String s in ansList) {
+          s = s.trim();
+          nAnsList!.add(s);
+          if (am != null) {
+            String? v = am[s];
+            if (v != null) {
+              if (v[0] == '[') {
+                List<dynamic> rList =
+                    configAgent!.getListContent(v, null, map, null, null);
+                nAnsList!.addAll(rList);
+              } else if (v[0] == 'ℛ') {
+                dynamic rList = configAgent!.getElement(v, map);
+                if (rList is List<dynamic>) {
+                  nAnsList!.addAll(rList);
+                } else {
+                  nAnsList!.add(rList);
+                }
+              } else {
+                nAnsList!.add(v);
               }
             }
           } else {
-            ansList.add(al.toString().trim());
+            List<dynamic> ld = lm![i++];
+            if (ld.isNotEmpty) {
+              nAnsList!.addAll(ld);
+            }
           }
+          mAnsList.add(nAnsList!.length);
+        }
+      } else {
+        dynamic rList = configAgent!.getElement(map["_Accepted_Answers"], map);
+        rList = (rList is List<dynamic>)
+            ? resolveList(rList, map, configAgent: configAgent)
+            : rList;
+        if (rList is List<dynamic>) {
+          for (var r in rList) {
+            if (r is List<dynamic>) {
+              acceptedList!.addAll(r);
+            } else {
+              acceptedList!.add(r);
+            }
+          }
+        } else {
+          acceptedList!.add(rList);
+        }
+      }
+      for (var al in acceptedList!) {
+        if (al is List<dynamic>) {
+          for (String a in al) {
+            if (a.isNotEmpty) {
+              ansList.add(a.trim());
+            }
+          }
+        } else {
+          ansList.add(al.toString().trim());
         }
       }
     }
@@ -356,8 +408,9 @@ class TextMvc extends Mvc {
         map["_state"] = "confirmed";
         if (checkList == null) {
           checkList = [];
-          for (int i = 0; i < ansList.length; i++) {
-            checkList!.add(ansList[i].toString().trim().toLowerCase());
+          List<dynamic> al = (nAnsList == null) ? ansList : nAnsList!;
+          for (int i = 0; i < al.length; i++) {
+            checkList!.add(al[i].toString().trim().toLowerCase());
           }
         }
         if (len == 1) {
@@ -372,6 +425,7 @@ class TextMvc extends Mvc {
         List<int> dl = [];
         List<dynamic> c = [];
         c.addAll(children!);
+        int alen = 0;
         if (answers.length == len) {
           for (int i = 0; i < len; i++) {
             String ansText = answers[i].toString().toLowerCase();
@@ -383,14 +437,27 @@ class TextMvc extends Mvc {
               if (dl.contains(inx)) {
                 r = "incorrect";
               } else {
+                alen++;
                 r = "correct";
-                dl.add(inx);
+                if (nAnsList == null) {
+                  dl.add(inx);
+                } else {
+                  int si = 0;
+                  while (mAnsList[si + 1] <= inx) {
+                    si++;
+                  }
+                  int sn = mAnsList[si + 1];
+                  si = mAnsList[si];
+                  for (int i = si; i < sn; i++) {
+                    dl.add(i);
+                  }
+                }
               }
             }
             buildBadgedElem(i, r, c);
           }
         }
-        if (dl.length == len) {
+        if (alen == len) {
           return "correct";
         }
         return "incorrect";
@@ -422,13 +489,14 @@ class TextMvc extends Mvc {
 
   @override
   dynamic getAnswer() {
-    if (len == 1) {
-      if (map["_Answer_Text"] != null) {
-        return configAgent!.checkText("_Answer_Text", map);
-      }
-      return ansList[0];
+    if (map["_Answer_Text"] != null) {
+      return configAgent!.checkText("_Answer_Text", map);
     }
-    return ansList;
+    List<dynamic> aList = [];
+    for (int i = 0; i < ansLen; i++) {
+      aList.add(ansList[i]);
+    }
+    return aList;
   }
 
   @override
