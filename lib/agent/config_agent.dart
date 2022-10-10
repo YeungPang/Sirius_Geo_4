@@ -292,11 +292,12 @@ class ConfigAgent {
       String text = tl[i];
 
       int inx = text.indexOf("#");
-      if (inx >= 0) {
+      while (inx >= 0) {
         int inx1 = text.indexOf("#", inx + 1);
         String v = text.substring(inx + 1, inx1);
-        String elem = getElement(v, map);
+        String elem = getElement(v, map).toString();
         text = text.replaceFirst("#" + v + "#", elem);
+        inx = text.indexOf("#");
       }
       tl[i] = checkModelText(text);
     }

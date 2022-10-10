@@ -223,7 +223,7 @@
                 "ContG0003;Continent Quiz;⊤(continents);0.75;3;questions;26;2",
                 "CounG0001;Identify Country;⊤(countries);0.75;4;questions;27;6",
                 "CounG0002;Identify Flag;flags;0.75;5;questions;[7‥13];[7‥13];7‥13",
-                "CounG0003;Country Quiz;⊤(countries);0.75;6;questions;31;16;30;28;29;22;20",
+                "CounG0003;Country Quiz;⊤(countries);0.75;6;questions;16;31;30;28;29;22;20",
                 "WorIG0001;World Intro;atmosphere;0.75;7;questions",
                 "hemiG0001;Hemisphere;climate_zones;0.75;8;questions",
                 "SolaG0001;Solar System;solar_system;0.75;9;questions",
