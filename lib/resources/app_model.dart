@@ -119,6 +119,9 @@ ProcessPattern getItemElemPattern(Map<String, dynamic> pmap) {
     }
   }
   var item = map["_item"];
+  if ((item != null) && (item is! ProcessPattern)) {
+    item = item.toString();
+  }
   int? index = map["_index"];
   Map<String, dynamic>? eventMap = map["_eventMap"];
   if (eventMap != null) {
@@ -195,9 +198,9 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
   iMap["_child"] = pf(iMap);
   pp = cpf(iMap);
   children.add(pp);
-  String? instr = map["_Instruction"];
+  String? instr = configAgent.checkText("_Instruction", map);
   if (instr != null) {
-    iMap["_text"] = instr;
+    instr = iMap["_text"] = instr;
     iMap["_textStyle"] = resTxtStyle;
     iMap["_child"] = pf(iMap);
     pp = cpf(iMap);

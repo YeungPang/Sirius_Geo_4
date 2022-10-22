@@ -75,7 +75,8 @@ class TextMvc extends Mvc {
         if (acceptedList != null) {
           checkList = null;
           List<dynamic> al = acceptedList![ans];
-          for (String a in al) {
+          for (var va in al) {
+            String a = va.toString();
             if (a.isNotEmpty) {
               ansList.add(a.trim());
             }
@@ -105,8 +106,8 @@ class TextMvc extends Mvc {
         }
         nAnsList = [];
         int i = 0;
-        for (String s in ansList) {
-          s = s.trim();
+        for (var sv in ansList) {
+          String s = sv.toString().trim();
           nAnsList!.add(s);
           if (am != null) {
             String? v = am[s];
@@ -153,7 +154,8 @@ class TextMvc extends Mvc {
       }
       for (var al in acceptedList!) {
         if (al is List<dynamic>) {
-          for (String a in al) {
+          for (var va in al) {
+            String a = va.toString();
             if (a.isNotEmpty) {
               ansList.add(a.trim());
             }

@@ -61,11 +61,14 @@ class SentenceMvc extends Mvc {
     configAgent ??= map["_configAgent"];
     if (ansList.isEmpty) {
       ansList = configAgent!.getElement(map["_Answer"], map);
+      if ((ansList.isNotEmpty) && (ansList[0] is! String)) {
+        ansList = ansList.map((e) => e.toString()).toList();
+      }
       len = ansList.length;
       options = configAgent!.getElement(map["_AnswerOptions"], map) ?? [];
       col = [];
       imap = {
-        "_text": map["_Descr"],
+        "_text": configAgent!.checkText("_Descr", map),
         "_textStyle": dragButnTxtStyle,
       };
       col.add(tpf(imap));
@@ -102,7 +105,7 @@ class SentenceMvc extends Mvc {
         "_children": col
       };
       pp = pf(imap);
-      imap = {"_height": 0.20 * model.scaleHeight, "_child": pp};
+      imap = {"_height": 0.25 * model.scaleHeight, "_child": pp};
       pf = getPrimePattern["SizedBox"]!;
       col = [];
       col.add(pf(imap));
@@ -233,7 +236,7 @@ class SentenceMvc extends Mvc {
     children.addAll(dragChildList);
     gvNoti = resxController.addToResxMap("gv", children) as Rx<List<dynamic>>;
 
-    double mainAS = 0.01847 * model.scaleHeight;
+    double mainAS = 0.02 * model.scaleHeight;
     childAspectRatio = ewidth / eheight;
     imap = {
       "_crossAxisCount": 2,
@@ -248,7 +251,7 @@ class SentenceMvc extends Mvc {
     pf = getPrimePattern["Obx"]!;
     imap = {
       "_width": 0.8267 * model.scaleWidth,
-      "_height": eheight * children.length / 2 +
+      "_height": eheight * children.length / 2.0 +
           mainAS * (children.length / 2.0 + 1.5),
       "_alignment": Alignment.center,
       "_decoration": shadowRCDecoration,
@@ -565,7 +568,7 @@ class SentenceMvc extends Mvc {
       if (sl[i] is! TextPattern) {
         if (sl[i] == tp) {
           wc.add(ap);
-          answers[pos] = options[inx];
+          answers[pos] = options[inx].toString();
           int ix = children.indexOf(dragChildList[inx]);
           if (ix < 0) {
             ix = children.indexOf(draggingList[inx]);

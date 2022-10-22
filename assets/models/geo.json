@@ -239,7 +239,7 @@
                 "CounG0004;Select Country Flag;flags;0.75;19;questions;14;14;14",
                 "ContG0005;Select Answers;⊤(continents);0.6;20;questions;15",
                 "ContG0006;Identify Continent;⊤(continents);0.6;21;questions;3;3;3",
-                "ContG0007;Continent;⊤(continents);0.6;22;questions;4;19;17;18",
+                "ContG0007;Continent;⊤(continents);0.6;22;questions;19;17;18;4",
                 "CounG0004;Country Pick;⊤(countries);0.6;23;questions;21;21;21",
                 "ArtiA0001;Article Test;article;;;articleWeb;0"
             ]
@@ -470,7 +470,7 @@
                 "_automaticallyImplyLeading: false, _child: mainBottomRow}) ⋀ ↲(scaffoldPat)"
             ],
             "mainBottomRow": [
-                "⋓({_icHome: Φ(IconText, {_bar: true, _icon: 'home', _text: 'Home', _onTap: {_func: 'home'}}),",
+                "⋓({_icHome: Φ(IconText, {_bar: true, _icon: 'home', _text: 'Home', _onTap: {_func: 'fsmEvent', _map: {_event: 'home'}, _tapAction: 'menufsm'}}),",
                 "_icSet: Φ(IconText, {_bar: true, _icon: 'settings', _text: 'Settings', _onTap: actions({_event: 'settings'})}),",
                 "_icShop: Φ(IconText, {_bar: true, _icon: 'shop', _text: 'Shop', _onTap: {_func: route, _tapAction: 'shopScaffold'}})}) ⋀ ",
                 "↲(Φ(Container, {_child: Φ(Row, (patMap(rowColHeader, (center, spaceAround, max, Ø)) ⋃ ",
@@ -831,7 +831,7 @@
             "closeDialog": "↲(popRoute())",
             "menufsm": [
                 "_event, _title | (popRoute()) ⋀ (((_event = 'search') ⋀ ↲(onSearch({}))) ⋁ (((_event = 'settings') ⋁ (_event = 'support')) ⋀ changeTheme() ⋀ ",
-                "↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
+                "↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
             ],
             "supportfsm": [
                 "_event | (popRoute()) ⋀ ((_event = shareApp) ⋀ ↲(onShare({_text: ⊤(sharedText), _subject: ⊤(sharedSubject)}))) ⋁ ",

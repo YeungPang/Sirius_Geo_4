@@ -704,13 +704,7 @@ class MvcAgent extends Agent {
       case "ShowAnswer":
         var anstxt = currMvc!.getAnswer();
         if (anstxt != null) {
-          if (anstxt is String) {
-            Map<String, dynamic> tmap = {
-              "_text": anstxt,
-              "_textStyle": choiceButnTxtStyle,
-            };
-            imap["_child"] = tpf(tmap);
-          } else {
+          if (anstxt is List<dynamic>) {
             List<dynamic> ansList = anstxt;
             Map<String, dynamic> tmap = {
               "_text": ansList[0],
@@ -734,6 +728,12 @@ class MvcAgent extends Agent {
             };
             Function sf = getPrimePattern["Column"]!;
             imap["_child"] = sf(tmap);
+          } else {
+            Map<String, dynamic> tmap = {
+              "_text": anstxt.toString(),
+              "_textStyle": choiceButnTxtStyle,
+            };
+            imap["_child"] = tpf(tmap);
           }
         } else {
           Map<String, dynamic> tmap = {"_height": 16.0 * sizeScale};

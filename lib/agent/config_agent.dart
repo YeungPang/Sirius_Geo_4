@@ -39,7 +39,8 @@ class ConfigAgent {
     if (iv is! String) {
       return iv;
     }
-    String s = checkModelText(iv);
+    String s = vars[iv] ?? iv;
+    s = checkModelText(s);
     String src = s.trim();
     if (src[0] != 'ℛ') {
       return resolveStr(src);
@@ -120,7 +121,7 @@ class ConfigAgent {
           for (List<dynamic> ld in ds1) {
             var rs = ld[si];
             if ((rs is String) && (rs[0] == '[')) {
-              rs = getListContent(rs, map, vars, rowList, header);
+              rs = getListContent(rs, map, vars, rowList, header, noRef: true);
             }
             ds2.add(rs);
           }
@@ -171,7 +172,7 @@ class ConfigAgent {
       if ((ls.length > 1) && (si2 is int)) {
         var rs = ld![si2];
         if ((rs is String) && (rs[0] == '[')) {
-          rs = getListContent(rs, map, vars, rowList, header);
+          rs = getListContent(rs, map, vars, rowList, header, noRef: true);
         }
         return rs;
       }
@@ -185,7 +186,8 @@ class ConfigAgent {
   }
 
   List<dynamic> getListContent(String s, Map<String, dynamic>? map,
-      Map<String, dynamic> vars, List<int>? rowList, List<dynamic>? header) {
+      Map<String, dynamic> vars, List<int>? rowList, List<dynamic>? header,
+      {bool noRef = false}) {
     //RegExp re = RegExp(r"[\[\],]");
     String src = (s[0] == '[') ? s.substring(1, s.length - 1) : s;
     List<String> lstack = [];
@@ -256,8 +258,10 @@ class ConfigAgent {
               ds1.add(v);
             }
           } else {
-            v = getElement(resolveStr(ds), vars,
-                rowList: rowList, header: header, map: map);
+            v = (noRef)
+                ? resolveStr(ds)
+                : getElement(resolveStr(ds), vars,
+                    rowList: rowList, header: header, map: map);
             ds1.add(v);
           }
         }

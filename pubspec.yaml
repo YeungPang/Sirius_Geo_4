@@ -92,6 +92,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/coat_of_arms/
+    - assets/images/countryShapes/
+    - assets/images/EarthLayers/
+    - assets/images/flags/
+    - assets/images/SolarSystem/
+    - assets/images/tectonic_plates/
     - assets/models/
     - assets/icons/
     - assets/flags/
