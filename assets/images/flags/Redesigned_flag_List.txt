@@ -1,0 +1,48 @@
+
+1. Alan island
+2. Anguilla
+3. Aruba
+4. Australia
+5. Bosnia
+6. Brazil
+7. British Indian Ocean Territory
+8. British virgin Island
+9. Burundi
+10. Cape Verde
+11. Cock Island
+12. Egypt
+13. European Union
+14. Fiji
+15.French Polinesia
+16. French Southern
+17. Georgia
+18. Greece
+19. Guam
+20. Iceland
+21. Jamaica
+22. Jersey
+23. Kiribati
+24. Montserrat
+25. Namibia
+26. Nepal
+27. New Zealand
+28. Nicaragua
+29. Niue
+30. Northern Mariana Islands
+31. Pircairn Islands
+32. Saint Helena
+33. Saint_Kitts
+34. Sint Marteen
+35. South Africa
+36. South Korea
+37. Tanzania
+38. Turkmenistan
+39. Turks and Caicos
+40. Tuvalu
+41. United Kingdom
+42. United States
+43. Uzbekistan
+44. Vatican City
+45. Venezuela
+46. Virgin Island
+47. Zimbabwe
