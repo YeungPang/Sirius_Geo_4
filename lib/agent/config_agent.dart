@@ -8,6 +8,7 @@ import 'package:string_validator/string_validator.dart';
 
 final Map<String, dynamic> facts = model.map["patterns"]["facts"];
 final Map<String, dynamic> clauses = model.map["patterns"]["clauses"];
+final Map<String, dynamic> uProfile = model.map["userProfile"];
 
 class ConfigAgent {
   String? defName;
@@ -39,8 +40,8 @@ class ConfigAgent {
     if (iv is! String) {
       return iv;
     }
-    String s = vars[iv] ?? iv;
-    s = checkModelText(s);
+    var as = vars[iv] ?? iv;
+    String s = checkModelText(as.toString());
     String src = s.trim();
     if (src[0] != 'ℛ') {
       return resolveStr(src);
@@ -122,6 +123,7 @@ class ConfigAgent {
             var rs = ld[si];
             if ((rs is String) && (rs[0] == '[')) {
               rs = getListContent(rs, map, vars, rowList, header, noRef: true);
+              //rs = getListData(rs);
             }
             ds2.add(rs);
           }
@@ -171,8 +173,9 @@ class ConfigAgent {
       }
       if ((ls.length > 1) && (si2 is int)) {
         var rs = ld![si2];
-        if ((rs is String) && (rs[0] == '[')) {
+        if ((rs is String) && (rs.isNotEmpty) && (rs[0] == '[')) {
           rs = getListContent(rs, map, vars, rowList, header, noRef: true);
+          //rs = getListData(rs);
         }
         return rs;
       }
@@ -201,7 +204,7 @@ class ConfigAgent {
       }
       s1 = src.substring(inx, einx);
       lstack.add(s1);
-      src = src.replaceFirst(s1, 'ç');
+      src = src.replaceFirst(s1, 'ç,');
       inx = src.indexOf('(');
     }
     inx = src.indexOf('[');
@@ -212,9 +215,12 @@ class ConfigAgent {
       if (inx < 0) {
         inx = 0;
       }
+      if ((inx < (src.length - 1)) && (src[inx] == ',')) {
+        inx++;
+      }
       s1 = src.substring(inx, einx);
       lstack.add(s1);
-      src = src.replaceFirst(s1, 'ç');
+      src = src.replaceFirst(s1, 'ç,');
       inx = src.indexOf('[');
     }
     List<String> ls1 = src.split(',');
@@ -251,18 +257,22 @@ class ConfigAgent {
           if (ds == 'ç') {
             ds = lstack[0];
             lstack.removeAt(0);
-            v = getRefContent(ds, map, vars, rowList, header);
+            v = noRef ? ds : getRefContent(ds, map, vars, rowList, header);
             if (v is List<dynamic>) {
               ds1.addAll(v);
             } else {
               ds1.add(v);
             }
           } else {
+            var rs = resolveStr(ds);
             v = (noRef)
-                ? resolveStr(ds)
-                : getElement(resolveStr(ds), vars,
+                ? rs
+                : getElement(rs, vars,
                     rowList: rowList, header: header, map: map);
             ds1.add(v);
+            if ((rs is int) && (rowList != null)) {
+              rowList.add(rs);
+            }
           }
         }
       }
@@ -646,7 +656,7 @@ dynamic getCompleted(dynamic pid) {
     return false;
   }
 
-  List<dynamic> prog = model.map["userProfile"]["progress"];
+  List<dynamic> prog = uProfile["progress"];
   if (prog.isEmpty) {
     if (pid is List<int>) {
       return 0;
@@ -654,64 +664,48 @@ dynamic getCompleted(dynamic pid) {
       return false;
     }
   }
+  List<dynamic> gProg = uProfile["groupProgress"] ?? [];
   if (pid is List<int>) {
     int ic = 0;
     for (int pi in pid) {
-      if (_checkCompleted(pi, prog)) {
+      if (_checkCompleted(pi, prog, gProg)) {
         ic++;
       }
     }
     return ic;
   } else {
-    return _checkCompleted(pid, prog);
+    return _checkCompleted(pid, prog, gProg);
   }
 }
 
-bool _checkCompleted(int pi, List<dynamic> prog) {
-  int g = pi ~/ 54;
-  int i = getProgress(pi);
-  for (int p in prog) {
-    int pg = p % 256;
-    if (g == pg) {
-      i &= p;
-      if (i > 0) {
-        return true;
-      }
-    }
+bool _checkCompleted(int pi, List<dynamic> prog, List<dynamic> gProg) {
+  int g = pi ~/ 64;
+  int inx = gProg.indexOf(g);
+  if (inx >= 0) {
+    int p = 1 << (pi % 64);
+    int pg = prog[inx];
+    p &= pg;
+    return (p != 0);
   }
   return false;
 }
 
-int getProgress(int pi) {
-  int g = pi ~/ 54;
-  int i = pi % 54;
-  i = 1 << i;
-  i <<= 8;
-  return g + i;
-}
-
 setProgress(int pi) {
-  List<dynamic> prog = model.map["userProfile"]["progress"];
-  int g = pi ~/ 54;
-  int i = getProgress(pi);
-  bool add = true;
-  if (prog.isNotEmpty) {
-    int j = 0;
-    for (int p in prog) {
-      int pg = p % 256;
-      if (g == pg) {
-        add = false;
-        p |= i;
-        prog[j] = p;
-        break;
-      }
-      j++;
-    }
+  List<dynamic> prog = uProfile["progress"];
+  int g = pi ~/ 64;
+  List<dynamic> gProg = uProfile["groupProgress"] ?? [];
+  int inx = gProg.indexOf(g);
+  int pg = (inx < 0) ? 0 : prog[inx];
+  int p64 = pi % 64;
+  int p = 1 << p64;
+  pg |= p;
+  if (inx < 0) {
+    gProg.add(g);
+    prog.add(pg);
+  } else {
+    prog[inx] = pg;
   }
-  if (add) {
-    prog.add(i);
-  }
-
+  uProfile["groupProgress"] = gProg;
   resxController.setRxValue("progNoti", pi);
   model.versionAgent.saveProfile();
 }

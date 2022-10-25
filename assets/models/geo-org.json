@@ -1,0 +1,863 @@
+{
+    "title": "Sirius Prototype",
+    "versionTimestamp": 1636410287,
+    "maxConfigLives": 5,
+    "liveGenTime": 30,
+    "main": "categories",
+    "sub": "subCategories",
+    "learn": "learnCat",
+    "text": {
+        "+1point": "+ 1 point",
+        "aCancel": "YES, CANCEL",
+        "accuracy": "ACCURACY WITHIN #A%#%.",
+        "almost": "ALMOST",
+        "altSub": "Alternatively, you could switch to a monthly plan at $2.99/month.",
+        "annually": "Annually",
+        "answer": "ANSWER",
+        "Answer": "Answer",
+        "aSubscribe": "Get 2 months for free when you subscribe for a year!",
+        "aSubscribePrice": "$ 29.90",
+        "aSwitch": "Switch to Annual Plan",
+        "aOffer": "Get 2 months for free when you subscribe for a year!",
+        "canCancel": ". You can cancel your subscription at any time.",
+        "cancel": "CANCEL",
+        "cancelSubs": "CANCEL SUBSCRIPTION?",
+        "cancelQuest": "Are you sure you want to cancel your subscription?",
+        "colon": ":",
+        "confirm": "CONFIRM",
+        "congrat": "CONGRATUATIONS",
+        "continue": "CONTINUE",
+        "corr": "CORRECT",
+        "corrText": "CORRECT!",
+        "editText": "Select element to edit.",
+        "error": "Report Error",
+        "errMessage": "Please describe the error.",
+        "FAQ": "FAQ",
+        "feedback": "Give Feedback",
+        "forQuiz": "FOR THIS QUIZ!",
+        "gameDone": "DONE",
+        "genSetting": "General Settings",
+        "highScore": "YOU GOT A NEW HIGH SCORE",
+        "hintText": "Hint #n# of #t#",
+        "incorr": "Incorrect",
+        "invalidInput": "Input value is invalid for ",
+        "journey": "Journey",
+        "keep": "NO, KEEP IT",
+        "knowYourWorld": "Get to know your world!",
+        "language": "Language",
+        "learning": "Your Learning",
+        "learningJourney": "Learning Journey",
+        "lives": "Lives",
+        "livesSub": "SUBSCRIBE FOR UNLIMITED LIVES",
+        "liveOut": "OUT OF LIVES",
+        "looseLife": "YOU LOST A LIFE.",
+        "looseProgress": "All progress will be lost.",
+        "lowLives": "LOW ON LIVES",
+        "maybe": "MAY BE YOU NEED A BIT MORE",
+        "mCancel": "YES, CANCEL",
+        "message": "Message",
+        "mOffer": "You're currently getting 2 months for free with your annual plan.  You will loose this discount if you switch to a monthly plan.",
+        "month": "month",
+        "monthly": "Monthly",
+        "mSubscribe": "Get unlimited lives and unlock a world of geography knowledge for the price of a latte!",
+        "mSubscribePrice": "$ 2.99",
+        "mSwitch": "Switch to Monthly Plan",
+        "next": "NEXT",
+        "nextHint": "Next Hint",
+        "nextLife": "Next life in ",
+        "notFinish": "You may not be able to finish this game if you get more than #n# questions wrong.",
+        "notQuite": "NOT QUITE.",
+        "password": "Password",
+        "playAgain": "You can explore articles and content but not play any games until you have lives again",
+        "practice": "PRACTICE ON THIS ONE.",
+        "prevHint": "Previous Hint",
+        "problem": "Where did the error occur?",
+        "pwNotMatch": "Passwords do not match!",
+        "questions": "Questions?",
+        "quit": "QUIT",
+        "quitText": "Are you sure you want to quit?",
+        "quizComplete": "YOU COMPLETED THE QUIZ!",
+        "rate": "Rate App",
+        "removeAds": "Remove Ads",
+        "renew": "Your subscription will automatically be renewed on ",
+        "repeatGame": "TRY AGAIN",
+        "requiredField": "This field is required!",
+        "resubscribe": "You can subscribe again at any time. You can still use the app but have limited lives.",
+        "rni": "The Rate of Natural Increase (RNI) is based on which factors?",
+        "search": "Search",
+        "send": "SEND",
+        "settingSubtitle": "Get everything sorted.",
+        "setLanguage": "SET LANGUAGE",
+        "share": "Share your archievement!",
+        "shareApp": "Share App",
+        "sharedScreenText": "Shared from Sirius Geo App",
+        "sharedSubject": "Sirius Geo App",
+        "sharedText": "https//play.google.com/store/apps/details?id=....\nhttps://itunes.apple.com/us/app/sutiawbapp/id.....",
+        "shopping": "Get everything you need!",
+        "showAnswer": "SHOW ANSWER",
+        "subject": "Subject",
+        "submit": "SUBMIT",
+        "support": "Contact Support",
+        "supportSubtitle": "Get the help you need.",
+        "subscribe": "Subscribe!",
+        "subscribed": "SUBSCRIBED",
+        "subscriptiona": "Your subscription: Annually",
+        "subscriptionm": "Your subscription: Monthly",
+        "successSub": "You have successfully subscribed!",
+        "successUnsub": "Your successfully unsubscribed.",
+        "subscription": "Subscription Enquiry",
+        "switchm": "SWITH TO MONTHLY PLAN",
+        "testText": "It's just a test!!!",
+        "tojourney": "TO LEARNING JOURNEY",
+        "thisField": "this field",
+        "topicSelection": "Topic Selection",
+        "toShop": "GO TO SHOP",
+        "totalQ": "Total Questions",
+        "tryAgain": "TRY AGAIN",
+        "typeAnswer": "Type Your Answer",
+        "tryTeachMode": "TRY TEACHING MODE",
+        "unlimited": "Unlimited Lives",
+        "unsubscribed": "UNSUBSCRIBED",
+        "usubscribed": "Your are subscribed!",
+        "watchAd": "WATCH AD",
+        "watchAnAd": "Watch an ad to get an extra life!",
+        "wellDone": "WELL DONE!",
+        "wontLoose": "Try again. You won't loose a life.",
+        "year": "year",
+        "yourSel": "Your Selection",
+        "yourScore": "Your Score"
+    },
+    "lookup": {
+        "United States": [
+            "usa",
+            "us",
+            ""
+        ],
+        "United Kingdom": [
+            "uk",
+            "gb",
+            ""
+        ],
+        "continents": "assets/images/continents.png",
+        "countries": "assets/svg_images/countries.svg",
+        "css": ".default{fill:grey;stroke:grey700;stroke-width:1.0;}.selected{fill:btnBlue;}.answer{fill:correct;}",
+        "greyArrow": "assets/images/greyarrow.png",
+        "greenArrow": "assets/images/greenarrow.png",
+        "hash": "#",
+        "imgSrc": "https://siriustechnology.net/assets/flags/PNG(3-2)",
+        "learn": "assets/images/LearningJourney.png",
+        "semicolon": ";",
+        "shop": "assets/images/Shop.png",
+        "single_quote": "'",
+        "support": "assets/images/Support.png",
+        "tectcss": ".selected{fill:btnBlue;opacity:.5;}.answer{fill:correct;opacity:.5;}"
+    },
+    "config": {
+        "categories": {
+            "dataStart": "GR1",
+            "pattern": "mainScaffold",
+            "header": "CID;name;ref;GR1;GR2;GR3;GR4;GR5",
+            "elemList": [
+                "SubjC001;Subject;subCategories;0;1;2",
+                "WorlC001;World;groups;2;3;1;4",
+                "ContiC001;Continents;groups;0",
+                "CountC001;Countries;groups;1",
+                "WaterC001;Water;groups;5;6;7",
+                "MountC001;Mountains;groups;8;9;10",
+                "IslanC001;Islands;groups;11",
+                "CitieC001;Cities;groups;12;13"
+            ]
+        },
+        "subCategories": {
+            "dataStart": "GR1",
+            "pattern": "subScaffold",
+            "header": "CID;name;icon;ref;GR1;GR2;GR3;GR4;GR5",
+            "elemList": [
+                "WorlC001;World;world;groups;2;3;1;4",
+                "ContiC001;Continents;⊤(continents);groups;0",
+                "CountC001;Countries;⊤(countries);groups;1"
+            ]
+        },
+        "groups": {
+            "dataStart": "T1",
+            "pattern": "groupScaffold",
+            "header": "GRID;name;icon;progId;ref;T1;T2;T3;T4;T5",
+            "elemList": [
+                "ContGR001;Continents;⊤(continents);[63,62,3,20,21,22,24,25];types;0;1;2;3",
+                "CounGR001;All the World Countries;⊤(countries);[4,5,6,19,23];types;4;5;6;7",
+                "WorIGR001;World Intro;atmosphere;[7];types",
+                "hemiGR001;Hemisphere;climate_zones;[8];types",
+                "SolaGR001;Solar System;solar_system;[9];types",
+                "OceaGR001;Oceans;oceans;[10];types",
+                "RiveGR001;Rivers;rivers;[11];types",
+                "LakEGR001;Lakes In Europe;lakes;[12];types",
+                "MouRGR001;Mountain Ranges;glacier;[13];types",
+                "MounGR001;Mountains;mountains;[14];types",
+                "VolcGR001;Volcanoes;volcanoes;[15];types",
+                "IslaGR001;Islands;islands;[16];types",
+                "CapiGR001;Capitals;capitals;[17];types",
+                "CitiGR001;Cities;cities;[18];types"
+            ]
+        },
+        "types": {
+            "dataStart": "G1",
+            "header": "TID;name;ref;G1;G2;G3;G4;G5;G6;G7;G8;G9;G10",
+            "elemList": [
+                "ContiT001;Level 1;items;0;1;2",
+                "ContiT002;Level 2;items;20;21;19",
+                "ContiT003;Learn;tutorials;0",
+                "ContiT004;Article;articles;0",
+                "CountT005;Level 1;items;3;4",
+                "CountT006;Level 2;items;23;22;18;5",
+                "CountT007;Learn;tutorials;1",
+                "CountT008;Article;articles;1"
+            ]
+        },
+        "items": {
+            "dataStart": "Q1",
+            "pattern": "mvcScaffold",
+            "header": "GID;name;icon;PassScore;progId;ref;Q1;Q2;Q3;Q4;Q5;Q6;Q7;Q8;Q9;Q10",
+            "elemList": [
+                "ContG0001;Identify Continent;⊤(continents);0.6;63;questions;0;0;24;0;25",
+                "ContG0002;Continent Size;⊤(continents);0.75;62;questions;1",
+                "ContG0003;Continent Quiz;⊤(continents);0.75;3;questions;26;2",
+                "CounG0001;Identify Country;⊤(countries);0.75;4;questions;27;6",
+                "CounG0002;Identify Flag;flags;0.75;5;questions;[7‥13];[7‥13];7‥13",
+                "CounG0003;Country Quiz;⊤(countries);0.75;6;questions;16;31;30;28;29;22;20",
+                "WorIG0001;World Intro;atmosphere;0.75;7;questions",
+                "hemiG0001;Hemisphere;climate_zones;0.75;8;questions",
+                "SolaG0001;Solar System;solar_system;0.75;9;questions",
+                "OceaG0001;Oceans;oceans;0.75;10;questions",
+                "RiveG0001;Rivers;rivers;0.75;11;questions",
+                "LakEG0001;Lakes In Europe;lakes;0.75;12;questions",
+                "MouRG0001;Mountain Ranges;glacier;0.75;13;questions",
+                "MounG0001;Mountains;mountains;0.75;14;questions",
+                "VolcG0001;Volcanoes;volcanoes;0.75;15;questions",
+                "IslaG0001;Islands;islands;0.75;16;questions",
+                "CapiG0001;Capitals;capitals;0.75;17;questions",
+                "CitiG0001;Cities;cities;0.75;18;questions",
+                "CounG0004;Select Country Flag;flags;0.75;19;questions;14;14;14",
+                "ContG0005;Select Answers;⊤(continents);0.6;20;questions;15",
+                "ContG0006;Identify Continent;⊤(continents);0.6;21;questions;3;3;3",
+                "ContG0007;Continent;⊤(continents);0.6;22;questions;19;17;18;4",
+                "CounG0004;Country Pick;⊤(countries);0.6;23;questions;21;21;21",
+                "ArtiA0001;Article Test;article;;;articleWeb;0"
+            ]
+        },
+        "tutorials": {
+            "dataStart": "TU1",
+            "pattern": "mvcScaffold",
+            "header": "TUID;name;icon;progId;ref;TU1;TU2;TU3;TU4;TU5;TU6;TU7;TU8;TU9;TU10;",
+            "elemList": [
+                "ConTU0001;Tutorial;tutorial;24;questions",
+                "CouTU0002;Tutorial;tutorial;25;questions"
+            ]
+        },
+        "articles": {
+            "dataStart": "A1",
+            "pattern": "mvcScaffold",
+            "header": "AID;name;icon;ref;A1;A2;A3;A4;A5;A6;A7;A8;A9;A10;",
+            "elemList": [
+                "ContA0001;Article;article;questions",
+                "CounA0002;Article;article;questions"
+            ]
+        },
+        "learnCat": {
+            "dataStart": "GR1",
+            "header": "CID;name;ref;compPercent;GR1;GR2;GR3;GR4;GR5",
+            "elemList": [
+                "ContiC001;Continents;groups;10.0;0",
+                "CountC001;Continents and Countries;groups;40.0;0;1",
+                "WorlC001;World;groups;50.0;2;3;4",
+                "WaterC001;Water;groups;50.0;5;6;7",
+                "MountC001;Mountains;groups;50.0;7;8;9;10",
+                "IslanC001;Islands;groups;50.0;11",
+                "CitieC001;Cities;groups;50.0;12;13"
+            ]
+        },
+        "questions": {
+            "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx",
+            "elemList": [
+                "ContQ0001;MC;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ(_ans,7)",
+                "ContQ0002;Order;contData;Sort the continents by surface area from largest to smallest;;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];;[Africa, Antarctica, Asia, Australia, Europe, North America, South America];;ℛ(Order:0)",
+                "ContQ0003;Text;contData;What is the largest continent by surface area?;;;;The largest continent is Asia.;ℛ(2,1)",
+                "ContQ0004;Text;contData;What is this continent?;;ℛ(_ans,2);;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);ℛ(_ans,6);ℛ([0‥6],1)",
+                "ContQ0005;Text;;Name the 7 continents.;;;;[Asia,Africa,North America,South America,Antarctica,Europe,Australia];[Africa,Antarctica,Asia,Australia,Europe,North America,South America]",
+                "CounQ0006;MC;countryData;What is this country?;;;6;;ℛ(_ans,3);;ℛ([15, 32, 43, 48, 109, 110, 122, 211, 241],3)",
+                "CounQ0007;Text;;What is the population of Switzerland in millions?;;;;8 millions;8",
+                "CounQ0008;MC;countryData;Which country flag is this?;;ℛ(0,2);6;#ℛ(0,1)#;ℛ(0,1);;ℛ([0‥6],1)",
+                "CounQ0009;MC;countryData;Which country flag is this?;;ℛ(1,2);6;#ℛ(1,1)#;ℛ(1,1);;ℛ([0‥6],1)",
+                "CounQ0010;MC;countryData;Which country flag is this?;;ℛ(2,2);6;#ℛ(2,1)#;ℛ(2,1);;ℛ([0‥6],1)",
+                "CounQ0011;MC;countryData;Which country flag is this?;;ℛ(3,2);6;#ℛ(3,1)#;ℛ(3,1);;ℛ([0‥6],1)",
+                "CounQ0012;MC;countryData;Which country flag is this?;;ℛ(4,2);6;#ℛ(4,1)#;ℛ(4,1);;ℛ([0‥6],1)",
+                "CounQ0013;MC;countryData;Which country flag is this?;;ℛ(5,2);6;#ℛ(5,1)#;ℛ(5,1);;ℛ([0‥6],1)",
+                "CounQ0014;MC;countryData;Which country flag is this?;;ℛ(6,2);6;#ℛ(6,1)#;ℛ(6,1);;ℛ([0‥6],1)",
+                "CounQ0015;MC;countryData;Which is the flag of #ℛ(_ans,1)#?;;;4;;ℛ(_ans,2);;ℛ([0‥6],2)",
+                "ContQ0016;MC;;The Rate of Natural Increase (RNI) is based on which factors?;(Select all that apply);;;;[0,3,5];;[Births,Emmigration,Immigration,Deaths,Illegal Immigration,Total Population]",
+                "CounQ0017;Text;countryData;Name one non-African English speaking countries?;;;1;;ℛ([0,5,6],1);ℛ([5,6],4);ℛ([0,5,6],1);[Two in North America, One in Europe]",
+                "ContQ0018;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;;;ℛ(Sentence:0)",
+                "ContQ0019;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;[immigration,births,emmigration,deaths,illegal immigrants,total population];;ℛ(Sentence:0)",
+                "ContQ0020;Slider;contData;What is the size of #ℛ(_ans,1)# by surface area?;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(ContinentSize:0)",
+                "CounQ0021;Slider;countryData;What rank is #ℛ(_ans,1)# in surface area size order?;;;;;ℛ(_ans,3);;ℛ([0‥6],1);;ℛ(CountryRank:0)",
+                "CounQ0022;SvgMap;countryData;Select #ℛ(_ans,1)#.;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(CountSelection:0)",
+                "CounQ0023;MC;;What is the population of Switzerland in millions?;;;2;Eight millions;0;;[8,2]",
+                "CounQ0024;MC;countryData;What is the second largest country by area?;;;6;The largest country is #ℛ(0,1)#;ℛ(0,1);;ℛ([0, 1, 2, 3, 4, 5, 6],1)",
+                "CounQ0025;WebView;;;;;;;;;;;ℛ(articleWeb:1)",
+                "CounQ0026;WebView;;;;;;;;;;;ℛ(articleWeb:2)",
+                "CounQ0027;SvgMap;TectonicPlateData;Select #ℛ(_ans,1)#.;;;;;ℛ(_ans,1);;ℛ([0‥14],1);;ℛ(CountSelection:1)",
+                "CounQ0028;MC;countryData;What is the second largest country by area?;;;4;The largest country is Canada;[Canada,France];;[Canada,France,Germany,Italy,Switzerland,United Kingdom,United States]",
+                "CounQ0029;Text;countryData;Name one non-African English speaking countries?;;;1;;[Canada, USA, UK];[ℛ(5,4), ℛ(6,4)];[Canada, USA, UK]",
+                "CounQ0030;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, UK];{UK: ℛ(5,4), USA: [United States, :United States of America]};[Canada, USA, UK];[Two in North America, One in Europe]",
+                "CounQ0031;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, ℛ(5,1)];[ℛ(0,4),[United States, United States of America], ℛ(5,4)];[Canada, USA, ℛ(5,1)]",
+                "CounQ0032;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, ℛ(5,1)];ℛ([0,6,5],4);[Canada, USA, ℛ(5,1)]"
+            ]
+        },
+        "articleWeb": {
+            "header": "AID;Q_Pattern_Name;url;scriptEnable;state;html",
+            "elemList": [
+                "ArtiW0001;WebView;https://www.youtube.com/;true;GameDone",
+                "ArtiW0002;WebView;;true;pass;assets/html/test.html",
+                "ArtiW0003;WebView;;true;pass;ℛ(html:0)"
+            ]
+        },
+        "Order": {
+            "header": "Info1;Info2",
+            "elemList": [
+                "Largest;Smallest"
+            ]
+        },
+        "Sentence": {
+            "header": "Descr;Sentence",
+            "elemList": [
+                "The Rate of Natural Increase (RNI) is calculated:;Using#0#minus#1#divided by#2#"
+            ]
+        },
+        "ContinentSize": {
+            "header": "scale1;scale2;scale3;text1;text2;text3;suffix1;suffix2;suffix3;start1;start2;start3;end1;end2;end3;ratio12;ratio13;almostPer;corrPer",
+            "elemList": [
+                "ℛ(_ans,3);ℛ(_ans,4);ℛ(_ans,5);Absolute size;% of Earth Surface Area;% of Earth Land Surface Area; Million km²;%;%;0.0;0.0;0.0;50.0;100.0;100.0;0.19604;0.66858;10.0;5.0"
+            ]
+        },
+        "ContSize": {
+            "header": "scale;text;suffix;start;end;almostPer;corrPer",
+            "elemList": [
+                "ℛ(_ans,3);Absolute size; Million km²;0.0;50.0;10.0;5.0"
+            ]
+        },
+        "CountryRank": {
+            "header": "scale1;scale2;scale1Top;scale1Bottom;scale2Top;scale2Bottom;div;largest;smallest;ansType;almostPer",
+            "elemList": [
+                "Percentile;Rank;100;0;1;194;4;Largest;Lowest;Rank;10.0"
+            ]
+        },
+        "CountrySelection": {
+            "header": "ansColor;selColor;backgroundColor;shapeColor;borderColor;borderStroke;offsetWidth;offsetHeight;painterHeight;painterWidth;fileName",
+            "elemList": [
+                "correct;btnBlue;white;grey;grey700;1.0;20.0;20.0;1000.0;1100.0;assets/svg_images/world_map.json"
+            ]
+        },
+        "CountSelection": {
+            "header": "style;backgroundColor;offsetWidth;offsetHeight;painterHeight;painterWidth;scale;selId;fileName",
+            "elemList": [
+                "⊤(css);white;20.0;20.0;1000.0;1100.0;;;assets/svg_images/world_map.svg",
+                "⊤(tectcss);white;20.0;20.0;500.0;2000.0;1.2;Plates;assets/svg_images/MajorPlatesMap.svg",
+                "⊤(tectcss);white;505.0;150.0;500.0;2000.0;2.0;Plates;assets/svg_images/MajorPlatesMap.svg"
+            ]
+        },
+        "contData": {
+            "header": "CDID;Name;Image;surfaceSize;surfacePercent;landPercent;similar;hint",
+            "elemList": [
+                "Cont00001;Africa;assets/images/Africa.png;30.37;5.95;20.31;[the africa, the-africa];[Wheather is mostly hot.,Native people have black skin.,This continent is Africa.]",
+                "Cont00002;Antarctica;assets/images/Antarctica.png;14.2;2.78;9.49;[the Antarctica, the-Antarctica];[Wheather can be very cold.,Hardly any people live there.,This continent is Antarctica.]",
+                "Cont00003;Asia;assets/images/Asia.png;44.58;8.74;29.80;[the Asia, the-Asia];[The largest continent.,Most people live there.,This continent is Asia.]",
+                "Cont00004;Australia;assets/images/Australia.png;7.69;1.51;5.14;[the Australia, the-Australia];[The smallest continent.,You can find kangaroos there.,This continent is Australia.]",
+                "Cont00005;Europe;assets/images/Europe.png;10.18;2.00;6.81;[the Europe, the-Europe];[There are hardly any desert.,Most people have white skin.,This continent is Europe.]",
+                "Cont00006;North America;assets/images/NorthAmerica.png;24.71;4.84;16.52;[the North America, the-North America];[There are only two main countries in this continent.,Most people speak English.,This continent is North America.]",
+                "Cont00007;South America;assets/images/SouthAmerica.png;17.84;3.50;11.93;[the South America, the-South America];[The continent has many rain forests.,Most people speak spanish.,This continent is South America.]"
+            ]
+        },
+        "countryData": {
+            "header": "CDID;Name;Flag;rank;similar;hint",
+            "elemList": [
+                "Conu00001;Canada;assets/flags/Canada.svg;2;[];[Two in North America, One in Europe]",
+                "Conu00002;France;assets/flags/France.svg;47",
+                "Conu00003;Germany;assets/flags/Germany.svg;62",
+                "Conu00004;Italy;assets/flags/Italy.svg;70",
+                "Conu00005;Switzerland;⊤(imgSrc)/Switzerland.png;131",
+                "Conu00006;United Kingdom;assets/flags/United_Kingdom.svg;77;[great britian, gb, uk]",
+                "Conu00007;United States;assets/flags/United_States.svg;3;[united states of america, us, usa]"
+            ]
+        },
+        "TectonicPlateData": {
+            "header": "CDID;Name",
+            "elemList": [
+                "TectPlate001;African_Plate",
+                "TectPlate002;Antarctic_Plate",
+                "TectPlate003;Eurasian_Plate",
+                "TectPlate004;Australian_Plate",
+                "TectPlate005;North American_Plate",
+                "TectPlate006;Pacific_Plate",
+                "TectPlate007;South American_Plate",
+                "TectPlate008;Indian_Plate",
+                "TectPlate009;Arabian Plate",
+                "TectPlate010;Caribbean_Plate",
+                "TectPlate011;Cocos_Plate",
+                "TectPlate012;Nazca_Plate",
+                "TectPlate013;Philippine_Plate",
+                "TectPlate014;Scotia_Plate",
+                "TectPlate015;Juan_de_Fuca_Plate"
+            ]
+        }
+    },
+    "search": [
+        "Articles⇒items:23;",
+        "Continents⇒groups:0;Country⇒groups:1;Countries⇒groups:1;Identify Continent⇒items:0;"
+    ],
+    "menuList": [
+        "home;Home",
+        "settings;Settings",
+        "shop;Shop",
+        "search;Search;startSearch",
+        "support;Support"
+    ],
+    "hints": {
+        "elemList": [
+            "[Wheather is mostly hot.,Native people have black skin.,This continent is Africa.]",
+            "[the Antarctica, the-Antarctica];[Wheather can be very cold.,Hardly any people live there.,This continent is Antarctica.]",
+            "[The largest continent.,Most people live there.,This continent is Asia.]",
+            "[The smallest continent.,You can find kangaroos there.,This continent is Australia.]",
+            "[There are hardly any desert.,Most people have white skin.,This continent is Europe.]",
+            "[There are only two main countries in this continent.,Most people speak English.,This continent is North America.]",
+            "[The continent has many rain forests.,Most people speak spanish.,This continent is South America.]"
+        ]
+    },
+    "contHints": {
+        "elemList": [
+            "Wheather is mostly hot.;Native people have black skin.;This continent is Africa.",
+            "Wheather can be very cold.;Hardly any people live there.;This continent is Antarctica."
+        ]
+    },
+    "html": {
+        "elemList": [
+            [
+                "<!DOCTYPE html><html><body>",
+                "<h1>My Second Heading</h1><p>My second paragraph.</p>",
+                "</body></html>"
+            ]
+        ]
+    },
+    "patterns": {
+        "facts": {
+            "patHeader": [
+                "hratio",
+                "wratio",
+                "color",
+                "radius",
+                "alignment",
+                "size"
+            ],
+            "rowColHeader": [
+                "crossAxisAlignment",
+                "mainAxisAlignment",
+                "mainAxisSize",
+                "verticalDirection"
+            ]
+        },
+        "clauses": {
+            "mainView": "setConfig(config, patterns) ⋀ initApp() ⋀ ↲(mainScaffold)",
+            "mainScaffold": [
+                "⋓({_text: ℛ(model, title), _homeAction: 'main'}) ⋀  ⋓({_body: mainBody({_key: key()}), _title: mainAppBar, ",
+                "_automaticallyImplyLeading: false, _child: mainBottomRow}) ⋀ ↲(scaffoldPat)"
+            ],
+            "mainBottomRow": [
+                "⋓({_icHome: Φ(IconText, {_bar: true, _icon: 'home', _text: 'Home', _onTap: {_func: 'fsmEvent', _map: {_event: 'home'}, _tapAction: 'menufsm'}}),",
+                "_icSet: Φ(IconText, {_bar: true, _icon: 'settings', _text: 'Settings', _onTap: actions({_event: 'settings'})}),",
+                "_icShop: Φ(IconText, {_bar: true, _icon: 'shop', _text: 'Shop', _onTap: {_func: route, _tapAction: 'shopScaffold'}})}) ⋀ ",
+                "↲(Φ(Container, {_child: Φ(Row, (patMap(rowColHeader, (center, spaceAround, max, Ø)) ⋃ ",
+                "{_children: [_icHome, _icSet, _icShop, Φ(SearchButton)]}))}))"
+            ],
+            "scaffoldPat": [
+                "_title, _child, _body, _key, _flexibleSpace, _leading, _automaticallyImplyLeading | ",
+                "mapPat(patHeader, (0.055, Ø, #FFFFFF, Ø, Ø, Ø)) ⋀ (_toolbarHeight ≔ ℛ(appBarHeight))",
+                "↲(Φ(Scaffold, {_bottomNavigationBar: Φ(Container), _appBar: Φ(AppBar), _body: _body}))"
+            ],
+            "mainAppBar": [
+                "_text, _flexibleSpace | (_child ≔ Φ(Text, {_text: _text, _textStyle: ℛ(textStyle, TopicTxtStyle)})) ⋀ ",
+                "(_child ≔ Φ(Center)) ⋀ (_tText ≔ Φ(Expanded)) ⋀ (_ic ≔ hamburgerMenu) ⋀  ",
+                "(_flexibleSpace ≔ Φ(Container, {_decoration: ℛ(appRes, blueGradBD)})) ⋀ (_children ≔ [_tText, _ic]) ⋀ ↲(Φ(Row))"
+            ],
+            "hamburgerMenu": [
+                "↲(Φ(IconButton, {_onTap: {_func: showDialog, _tapAction: Φ(MenuBubble, {_menuList: ℛ(model, menuList)})}, ",
+                "_icon: 'menu_hamburger', _iconColor: ℛ(color, 'white')}))"
+            ],
+            "mainBody": [
+                "_key | mapPat(rowColHeader, (center, spaceBetween, max, Ø)) ⋀ (_itemRefMap ≔ ℛ(model, main)) ⋀ ",
+                "(_itemRef ≔ _itemRefMap[elemList]) ⋀ ",
+                "ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ (_children ≔ [topicContainer, baseNavi]) ⋀ ↲(Φ(ListView))"
+            ],
+            "subScaffold": [
+                "_itemRef, _itemRefMap, _title | τ('subScaffold') ⋀ mapPat(rowColHeader, (center, spaceBetween, max, Ø)) ⋀ ",
+                "(_children ≔ [topicContainer, subNavi]) ⋀ (_text ≔ _title) ⋀ ⋓({_body: Φ(ListView), _title: genAppBar, ",
+                "_automaticallyImplyLeading: false, _child: mainBottomRow}) ⋀ ↲(scaffoldPat)"
+            ],
+            "topicContainer": [
+                "⋓({_decoration: ℛ(appRes, blueGradBD), _height: ℛ(hratio, Ø, 0.2463), _width: ℛ(swratio, Ø, 1.0), ",
+                "_topicSelection: ⊤(topicSelection), _smallTitle: ⊤(knowYourWorld)}) ⋀ (_topic ≔ Φ(Topic)) ⋀ ",
+                "(_alignment ≔ decode(alignment, topCenter)) ⋀ (_children ≔ [_topic, topicDialog({_dchild: journeyButton, _height: ℛ(hratio, Ø, 0.0985)})]) ⋀ ",
+                "↲(Φ(Container, {_height: ℛ(hratio, Ø, 0.3202), _alignment: _alignment, _child: Φ(Stack), _width: _width}))"
+            ],
+            "topicDialog": [
+                "_dchild, _height | (_child ≔ Φ(Container, {_child: _dchild, _alignment: decode(alignment, center)})) ⋀ ",
+                "(_borderRadius ≔ decode(borderRadius, {radius: 24, type: circular})) ⋀ ",
+                "⋓({_child: Φ(ClipRRect), _decoration: ℛ(appRes, diaDecoration), _height: _height, ",
+                "_width: ℛ(swratio, Ø, 0.9947)}) ⋀ ↲(Φ(Align, {_child: Φ(Container), _alignment: decode(align, bottomCenter)}))"
+            ],
+            "journeyButton": [
+                "(_e1 ≔ Φ(Text, {_text: ⊤(tojourney), _textStyle: ℛ(textStyle, ControlButtonTextStyle)})) ⋀ ",
+                "(_e2 ≔ Φ(Icon, {_icon: rightArrowFull, _iconColor: ℛ(color, white), _iconSize: ℛ(sizeScale, Ø, 35.0)})) ⋀ ",
+                "(_children ≔ [_e1, _e2]) ⋀ mapPat(rowColHeader, (center, spaceAround, Ø, Ø)) ⋀ ",
+                "⋓({_child: Φ(Row), _height: ℛ(hratio, Ø, 0.0468), _width: ℛ(wratio, Ø, 0.64), ",
+                "_beginColor: ℛ(color, correct), _endColor: ℛ(color, correctGradEnd)}) ⋀ ↲(Φ(TapItem, {_child: Φ(ColorButton), ",
+                "_onTap: {_func: route, _tapAction: 'learnScaffold'}})) "
+            ],
+            "baseNavi": [
+                "_itemRef, _itemRefMap | (_ta ≔ _itemRefMap['pattern']) ⋀ ⋓({_padding: ℛ(appRes, catBoxPadding), _childPattern: 'elemRow', ",
+                "_childMap: {_itemRefMap: _itemRefMap, _tapAction: _ta[0], _sub: ℛ(model, sub)}}) ⋀ ⋓({_child: Φ(TapListItem), ",
+                "_alignment: decode(alignment, topCenter), _width: ℛ(swratio, Ø, 1.0)}) ⋀ ↲(Φ(Container))"
+            ],
+            "elemRow": [
+                "_item, _index, _itemRefMap, _sub | (_header ≔ _itemRefMap[header]) ⋀ (_textStyle ≔ ℛ(textStyle, SliderTextStyle)) ⋀ ",
+                "(_ts ≔ ℛ(textStyle, SliderBoldTextStyle)) ⋀ mapPat(_header, _item) ⋀ (_text ≔ _name) ⋀ (((_sub = _ref) ⋀ ",
+                "(_cardColor ≔ ℛ(Color, 'btnBlue')) ⋀ (_textStyle ≔ ℛ(textStyleColor, 'white', _textStyle)) ⋀ ",
+                "(_ts ≔ ℛ(textStyleColor, 'white', _ts))) ⋁ (true)) ⋀ ⋓({_child: Φ(Text), _height: ℛ(hratio, Ø, 0.0468), _width: ℛ(swratio, Ø, 0.96)}) ⋀ ",
+                "⋓({_bm: Φ(SizedBox), _itemRef: dataList(_itemRefMap, _item), _elemItemList: ℛ(getCache, 'elemItemList')}) ⋀ ",
+                "(_children ≔ [_bm, _elemItemList]) ⋀  ⋓({_child: Φ(Column), _elevation: ℛ(hratio, Ø, 0.01), ",
+                "_cardRadius: ℛ(hratio, Ø, 0.015)}) ⋀ ⋓({_child: Φ(Card), _height: ℛ(hratio, Ø, 0.24)}) ⋀ ↲(Φ(Container))"
+            ],
+            "elemItemList": [
+                "_itemRef, _index, _ref, _ts | (_ta ≔ _ref['pattern']) ⋀ ⋓({_childPattern: 'catCol', _direction: decode(axis, horizontal), ",
+                "_childMap: ({_itemRefMap: _ref, _tapAction: _ta[0], _ts: _ts})}) ⋀ ",
+                "(_child ≔ Φ(TapListItem)) ⋀ mapPat(patHeader, (0.172, Ø, Ø, Ø, centerLeft, Ø)) ⋀ ↲(Φ(Container))"
+            ],
+            "catCol": [
+                "_item, _index, _itemRefMap, _onTap, _progId, _ts | (_header ≔ _itemRefMap[header]) ⋀ mapPat(_header, _item) ⋀ ",
+                "(_children ≔ catView) ⋀ mapPat(rowColHeader, (center, start, Ø, Ø)) ⋀ (_child ≔ Φ(Column)) ⋀ ",
+                "mapPat(patHeader, (0.172, Ø, Ø, Ø, Ø, Ø)) ⋀ (_itemRef ≔ dataList(_itemRefMap, _item)) ⋀ ",
+                "(_onTap ≔ createEvent(route, {_itemRef: _itemRef, _itemRefMap: _ref, _title: _name, _progId: _progId, _PassScore: _PassScore})) ⋀",
+                "(_width ≔ ℛ(hratio, Ø, 0.172)) ⋀ ↲(Φ(Container))"
+            ],
+            "catView": [
+                "_item, _index, _name, _icon, _progId, _ts | (_sb ≔ Φ(SizedBox, {_height: 5.0})) ⋀ ",
+                "⋓({_iconColor: ℛ(color, '#1785C1'), _iconSize: ℛ(sizeScale, Ø, 45.0)}) ⋀ ⋓({_child: Φ(Icon), _width: ℛ(hratio, Ø, 0.128353), ",
+                "_decoration: ℛ(appRes, shadowDecoration)}) ⋀ mapPat(patHeader, (0.123, Ø, Ø, Ø, Ø, Ø)) ⋀ ",
+                "(_ic ≔ Φ(NotiElem)) ⋀ (_tw ≔ Φ(Text, {_text: _name, _textStyle: _ts, _textAlign: center})) ⋀ ↲([_ic, _sb, _tw])"
+            ],
+            "subNavi": [
+                "_itemRef, _itemRefMap | ⋓({_padding: ℛ(appRes, vertBoxPadding), _ts: ℛ(textStyle, SliderBoldTextStyle), _ta: _itemRefMap['pattern'], ",
+                "_index: 0, _ti: #(_itemRef), _children: [], _alignment: 'spaceBetween', _spacing: ℛ(size20), _runSpacing: ℛ(size20)}) ⋀ itItem ⋀ ⋓({_child: Φ(Wrap), ",
+                "_alignment: decode(alignment, topCenter), _width: ℛ(swratio, Ø, 1.0)}) ⋀ ↲(Φ(Container))"
+            ],
+            "itItem": [
+                "_itemRef, _index, _itemRefMap, _ti, _ts, _children, _ta | (_item ≔ _itemRef[_index]) ⋀ (_child ≔ catCol) ⋀ ",
+                "_c ≔ Φ(TapItem, {_child: _child, _tapAction: _ta[0], _onTap: _onTap}) ⋀ (_children ≪ _c) ⋀ (_index ≔ (_index + 1)) ⋀ ",
+                "((_index < _ti) ⋀ ↲(itItem)) ⋁ ↲(true)"
+            ],
+            "groupScaffold": [
+                "_itemRef, _itemRefMap, _title | (_title ≔ livesAppBar) ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ",
+                "(_onTap ≔ {_func: popRoute}) ⋀ (_leading ≔ Φ(IconButton)) ⋀ ",
+                "(_body ≔ baseNavi) ⋀ ↲(scaffoldPat)"
+            ],
+            "mvcScaffold": [
+                "_itemRef, _itemRefMap, _title, _progId, _PassScore | (_body ≔ mvcLayout) ⋀ (_title ≔ livesAppBar) ⋀ ",
+                "⋓({_onTap: {_func: showDialog, _tapAction: mvc([quitDialog])}}) ⋀  (_leading ≔ Φ(IconButton)) ⋀ ",
+                "(_child ≔ ƒ(mvc, [progRow])) ⋀ ↲(Φ(ScreenShot, {_child: scaffoldPat, _screenName: 'GameCompleteScreen'}))"
+            ],
+            "livesAppBar": [
+                "_title, _flexibleSpace, _icon, _iconColor | (_valueKey ≔ '_text') ⋀ (_valueName ≔ 'lives') ⋀ (_textStyle ≔ ℛ(textStyle, TopicTxtStyle)) ⋀ ",
+                "(_child ≔ Φ(Text)) ⋀ (_child ≔ Φ(Obx)) ⋀ (_child ≔ Φ(Center)) ⋀ (_width ≔ ℛ(sizeScale, Ø, 40.0)) ⋀ (_lives ≔ Φ(SizedBox)) ⋀ ",
+                "(_text ≔ _title) ⋀ (_child ≔ Φ(Text)) ⋀ (_child ≔ Φ(Center)) ⋀ (_tText ≔ Φ(Expanded)) ⋀ ",
+                "(_icon ≔ 'lives') ⋀ (_iconColor ≔ ℛ(color, 'white')) ⋀ (_ic ≔ Φ(Icon)) ⋀ ",
+                "(_flexibleSpace ≔ Φ(Container, {_decoration: ℛ(appRes, blueGradBD)})) ⋀ ",
+                "(_icon ≔ 'back') ⋀ (_children ≔ [_tText, _ic, _lives]) ⋀ ↲(Φ(Row))"
+            ],
+            "mvcLayout": [
+                "_itemRef, _itemRefMap, _progId, _PassScore | ",
+                "(_child ≔ mvc(newMvc, {_itemRef: _itemRef, _itemRefMap: _itemRefMap, _progId: _progId, _PassScore: _PassScore})) ⋀ ",
+                "mapPat(patHeader, (0.97333, Ø, Ø, Ø, topCenter, Ø)) ⋀ ↲(Φ(Container))"
+            ],
+            "learnScaffold": [
+                "(_text ≔ ⊤(learningJourney)) ⋀ ⋓({_title: genAppBar, _child: mainBottomRow, _body: learnBody}) ⋀ ",
+                "(_onTap ≔ {_func: popRoute}) ⋀ ↲(scaffoldPat)"
+            ],
+            "genAppBar": [
+                "_flexibleSpace, _text, _leading | (_child ≔ Φ(Text, {_text: _text, _textStyle: ℛ(textStyle, TopicTxtStyle)})) ⋀ ",
+                "(_child ≔ Φ(Center)) ⋀ (_tText ≔ Φ(Expanded)) ⋀ (_ic ≔ hamburgerMenu) ⋀ ",
+                "(_leading ≔ Φ(IconButton, {_icon: 'back', _iconColor: ℛ(color, 'white'), _onTap: {_func: popRoute}})) ⋀ ",
+                "(_flexibleSpace ≔ Φ(Container, {_decoration: ℛ(appRes, blueGradBD)})) ⋀ (_children ≔ [_tText, _ic]) ⋀ ↲(Φ(Row))"
+            ],
+            "learnBody": [
+                "mapPat(rowColHeader, (center, spaceBetween, max, Ø)) ⋀ (_itemRefMap ≔ ℛ(model, learn)) ⋀ ",
+                "(_itemRef ≔ _itemRefMap[elemList]) ⋀ ",
+                "⋓({_width: ℛ(wratio, Ø, 0.05), _height: ℛ(hratio, Ø, 0.1), _child: Φ(ImageAsset, {_name: ℛ(lookup, greyArrow)})}) ⋀ ",
+                "ℛ(setCache, greyImg, Φ(SizedBox)) ⋀ _child ≔ Φ(ImageAsset, {_name: ℛ(lookup, greenArrow)}) ⋀ ",
+                "ℛ(setCache, greenImg, Φ(SizedBox)) ⋀ ℛ(setCache, 'elemItemList', 'learnItemList') ⋀ ",
+                "(_baseNavi ≔  Φ(Container, {_padding: decode(padding, {top: ℛ(hratio, Ø, 0.18)}), _child: baseNavi})) ⋀ ",
+                "(_alignment ≔ decode(alignment, topCenter)) ⋀ (_children ≔ [learnContainer, _baseNavi]) ⋀ ",
+                "(_child ≔ Φ(Container, {_alignment: _alignment, _child: Φ(Stack), _width: ℛ(swratio, Ø, 1.0)})) ⋀ ",
+                "↲(Φ(SingleChildScrollView))"
+            ],
+            "learnContainer": [
+                "↲(Φ(Topic, {_decoration: ℛ(appRes, blueGradBD), _height: ℛ(hratio, Ø, 0.2463), ",
+                "_width: ℛ(swratio, Ø, 1.0), _topicSelection: ⊤(learning), _subtitle: ⊤(journey), _img: ℛ(lookup, learn)}))"
+            ],
+            "learnItemList": [
+                "_item, _itemRef, _itemRefMap, _index, _ref, _ts | (_grProgId ≔ []) ⋀ (_lmap ≔ {_itemRef: _itemRef, _ref: _ref, ",
+                "_grProgId: _grProgId, _index: _index, _ts: _ts}) ⋀ (_greenEvent ≔ createEvent('greenContainer', _lmap)) ⋀ ",
+                "(_greyEvent ≔ createEvent('greyContainer', _lmap)) ⋀ mapPat(_itemRefMap[header], _item) ⋀ (_child ≔ Φ(GroupProgNoti)) ⋀ ",
+                "mapPat(patHeader, (0.175, 1.0, Ø, Ø, center, Ø)) ⋀ ↲(Φ(Container))"
+            ],
+            "learnCatContainer": [
+                "_itemRef, _index, _ref, _grProgId, _childPattern, _ts | (_ta ≔ _ref['pattern']) ⋀ ⋓({_direction: decode(axis, horizontal), ",
+                "_colWidth: (#(_itemRef) * ℛ(hratio, Ø, 0.2)), _childMap: ({_itemRefMap: _ref, _grProgId: _grProgId, _tapAction: _ta[0], _ts: _ts})}) ⋀ ",
+                "(_child ≔ Φ(TapListItem))⋀ mapPat(patHeader, (0.175, _colWidth, Ø, Ø, center, Ø)) ⋀ ↲(Φ(Container))"
+            ],
+            "greenContainer": [
+                "_itemRef, _index, _ref, _grProgId, _ts | (_childPattern ≔ 'learnCatCol') ⋀ ",
+                "((_index = 0) ⋀ ↲(learnCatContainer)) ⋁ ((_alignment ≔ decode(align, {horiz: 0.0, vert: -3.8})) ⋀ ",
+                "(_child ≔ ℛ(getCache, greenImg)) ⋀ (_o ≔ Φ(OverflowBox)) ⋀ ",
+                "(_c ≔ Φ(Align, {_child: learnCatContainer, _alignment: decode(align, {horiz: 0.0, vert: 0.0})})) ⋀ ",
+                "(_children  ≔ [_o, _c]) ⋀ ↲(Φ(Stack)))"
+            ],
+            "greyContainer": [
+                "_itemRef, _index, _ref, _grProgId, _ts | (_childPattern ≔ 'dCatCol') ⋀ ",
+                "(_alignment ≔ decode(align, {horiz: 0.0, vert: -3.8})) ⋀ (_child ≔ ℛ(getCache, greyImg)) ⋀ (_o ≔ Φ(OverflowBox)) ⋀ ",
+                "(_c ≔ Φ(Align, {_child: learnCatContainer, _alignment: decode(align, {horiz: 0.0, vert: 0.0})})) ⋀ ",
+                "(_children  ≔ [_o, _c]) ⋀ ↲(Φ(Stack))"
+            ],
+            "learnCatCol": "_item, _index, _itemRefMap, _onTap, _grProgId, _ts | (_r ≔ catCol) ⋀ (_grProgId ≪ _progId) ⋀ ↲(_r)",
+            "dCatCol": [
+                "_item, _index, _itemRefMap, _onTap, _grProgId, _ts | (_header ≔ _itemRefMap[header]) ⋀ mapPat(_header, _item) ⋀ ",
+                "(_children ≔ catView) ⋀ mapPat(rowColHeader, (center, start, Ø, Ø)) ⋀ (_child ≔ Φ(Column)) ⋀ ",
+                "mapPat(patHeader, (0.1539, Ø, Ø, Ø, Ø, Ø)) ⋀ (_itemRef ≔ dataList(_itemRefMap, _item)) ⋀ ",
+                "(_width ≔ ℛ(hratio, Ø, 0.155)) ⋀ (_grProgId ≪ _progId) ⋀ ↲(Φ(Opacity, {_child: Φ(Container), _opacity: 0.5}))"
+            ],
+            "supportScaffold": "_event | (_text ≔ 'Support') ⋀ ⋓({_title: genAppBar, _child: mainBottomRow, _body: supportBody}) ⋀ ↲(scaffoldPat)",
+            "supportBody": [
+                "_event | (_alignment ≔ decode(alignment, topCenter)) ⋀ (_children ≔ [supportContainer, supportCards]) ⋀ ",
+                "(_child ≔ Φ(Container, {_alignment: _alignment, _child: Φ(Stack), _width: ℛ(swratio, Ø, 1.0), _height: ℛ(shratio, Ø, 0.825)})) ⋀ ",
+                "↲(Φ(SingleChildScrollView))"
+            ],
+            "supportContainer": [
+                "↲(Φ(Topic, {_decoration: ℛ(appRes, blueGradBD), _height: ℛ(hratio, Ø, 0.2463), ",
+                "_width: ℛ(swratio, Ø, 1.0), _topicSelection: 'Support', _smallTitle: ⊤(supportSubtitle), _img: ℛ(lookup, support)}))"
+            ],
+            "supportCards": [
+                "_event | ((_event = subscription) ⋀ ↲(Φ(Container, {_child: Φ(Text, {_text: 'Not implemented'})}))) ⋁ (_formData ≔ {}) ⋀ supportFields ⋀ ",
+                "(_title ≔ Φ(Text, {_text: ⊤(_event), _textStyle: ℛ(textStyle, BlueTitleStyle)})) ⋀ mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
+                "⋓({_child: Φ(Padding, {_child: Φ(Form), _padding: ℛ(appRes, boxPadding)}), _elevation: ℛ(hratio, Ø, 0.01), ",
+                "_cardRadius: ℛ(hratio, Ø, 0.05)}) ⋀ ⋓({_child: Φ(Card), _width: ℛ(swratio, Ø, 1.0), _height: ℛ(hratio, Ø, 0.675)}) ⋀ ",
+                "↲(Φ(Align, {_child: Φ(Container), _alignment: decode(align, bottomCenter)}))"
+            ],
+            "supportFields": [
+                "_event, _formFields | (((_event = error) ⋀ (_sj  ≔ {_name: 'problem', _label: ⊤(problem), _isReq: true}) ⋀ ",
+                "(_m ≔ {_name: 'errMessage', _label: ⊤(errMessage), _isReq: true, _maxLines: 4})) ⋁ ",
+                "((_sj  ≔ {_name: 'subject', _label: ⊤(subject), _isReq: true}) ⋀ ",
+                "(_m ≔ {_name: 'message', _label: ⊤(message), _isReq: true, _maxLines: 4}))) ⋀ ",
+                "(_e ≔ {_name: 'Email', _inputType: 'email', _isReq: true}) ⋀ ↲(_formFields ≔ [_sj, _m, _e])",
+                ""
+            ],
+            "lcard": [
+                "_children | mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
+                "⋓({_child: Φ(Padding, {_child: Φ(Column), _padding: ℛ(appRes, boxPadding)}), _elevation: ℛ(hratio, Ø, 0.01), ",
+                "_cardRadius: ℛ(hratio, Ø, 0.05)}) ⋀ ↲(Φ(Card))"
+            ],
+            "gSetting": [
+                "mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ ",
+                "⋓({_g: Φ(Text, {_text: ⊤(genSetting), _textStyle: ℛ(textStyle, TitleTextStyle)}), ",
+                "_l: Φ(Text, {_text: (⊤(language) + ⊤(colon) + ' ' + ℛ(model, userProfile, lang)), _textStyle: ℛ(textStyle, NormalTextStyle)}), ",
+                "_lb: Φ(ItemElem, {_item: ⊤(setLanguage), _decoration: ℛ(appRes, selemDecoration), _height: ℛ(hratio, Ø, 0.03), ",
+                "_width: ℛ(wratio, Ø, 0.25), _alignment: decode(alignment, center), _textStyle: ℛ(textStyle, SmallTextStyle)}), ",
+                "_r: Φ(Text, {_text: ⊤(removeAds), _textStyle: ℛ(textStyle, NormalTextStyle)}), ",
+                "_rb: Φ(ItemElem, {_item: ⊤(toShop), _decoration: ℛ(appRes, selemDecoration), _height: ℛ(hratio, Ø, 0.03), ",
+                "_width: ℛ(wratio, Ø, 0.25), _alignment: decode(alignment, center), _textStyle: ℛ(textStyle, SmallTextStyle)}), ",
+                "_d: Φ(Divider, {_color: ℛ(color, 'grey700')})}) ⋀ (_children ≔ [_l, _lb]) ⋀ (_tl ≔ Φ(Row)) ⋀ ",
+                "(_children ≔ [_r, _rb]) ⋀ (_tr ≔ Φ(Row)) ⋀ ↲([_g, _d, _tl, _d, _tr])"
+            ],
+            "removeAd": [
+                "⋓({_r: Φ(Text, {_text: ⊤(removeAds), _textStyle: ℛ(textStyle, NormalTextStyle)}), ",
+                "_rb: Φ(ItemElem, {_item: ⊤(toShop), _decoration: ℛ(appRes, selemDecoration), _height: ℛ(hratio, Ø, 0.03)})}) ⋀ ",
+                "↲([_r, _rb])"
+            ],
+            "aSetting": [
+                "_event | mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (_textStyle ≔ ℛ(textStyle, NormalTextStyle)) ⋀ ",
+                "(_tap ≔ 'fsmEvent') ⋀ (_tapAction ≔ 'supportfsm') ⋀ ⋓({_p: Φ(Text, {_text: 'App', _textStyle: ℛ(textStyle, TitleTextStyle)}), ",
+                "_a: Φ(Text, {_text: ⊤(shareApp), _textStyle: _textStyle}), ",
+                "_ai: Φ(Icon, {_icon: 'share', _iconColor: ℛ(color, 'btnBlue')}), _d: Φ(Divider, {_color: ℛ(color, 'grey700'), _thickness: 1.5})}) ⋀ ",
+                "(_text ≔ 'FAQ') ⋀ (_tapEvent ≔ 'FAQ') ⋀ (_f ≔ textButton) ⋀ (_text ≔ ⊤(error)) ⋀ (_tapEvent ≔ 'error') ⋀ (_e ≔ textButton) ⋀ ",
+                "(_text ≔ ⊤(support)) ⋀ (_tapEvent ≔ 'support') ⋀ (_c ≔ textButton) ⋀ (_text ≔ ⊤(feedback)) ⋀ (_tapEvent ≔ 'feedback') ⋀ (_g ≔ textButton) ⋀ ",
+                "(_text ≔ ⊤('subscription')) ⋀ (_tapEvent ≔ 'subscription') ⋀ (_s ≔ textButton) ⋀ (_children ≔ [_a, _ai]) ⋀ ",
+                "(_ta ≔ Φ(TapItem, {_child: Φ(Row), _onTap: {_func: _tap, _map: {_event: 'shareApp'}, _tapAction: ç(_tapAction)}})) ⋀ (((_event = 'settings') ⋀ (_children ≔ removeAd) ⋀ ",
+                "(_tr ≔ Φ(TapItem, {_onTap: {_func: _tap, _map: {_event: 'shop'}, _tapAction: 'menufsm'}, _child: Φ(Row)})) ⋀ (_text ≔ 'Clear Cache') ⋀ (_tapEvent ≔ 'cCache') ⋀ ",
+                "(_cc ≔ textButton) ⋀ ↲([_tr, _d, _cc, _d, _f, _d, _e, _d, _g, _d, _c, _d, _s, _d, _ta])) ⋁ ↲([_f, _d, _e, _d, _g, _d, _c, _d, _s, _d, _ta]))"
+            ],
+            "textButton": [
+                "_text, _textStyle, _tap, _tapEvent, _tapAction | (_child ≔ Φ(Text)) ⋀ (_width ≔ ℛ(wratio, Ø, 0.6)) ⋀ ",
+                "↲(Φ(TapItem, {_child: Φ(SizedBox), _onTap: {_func: _tap, _map: {_event: _tapEvent}, _tapAction: ç(_tapAction)}}))"
+            ],
+            "shopScaffold": "(_text ≔ 'Shop') ⋀ ⋓({_title: genAppBar, _child: mainBottomRow, _body: shopBody}) ⋀ ↲(scaffoldPat)",
+            "shopBody": [
+                "mapPat(rowColHeader, (center, spaceBetween, max, Ø)) ⋀ (_sb ≔ Φ(SizedBox, {_height: ℛ(hratio, Ø, 0.005)})) ⋀ (_userType ≔ ℛ(model, userProfile, userType)) ⋀ ",
+                "(_fwid ≔ ℛ(sizeScale, Ø, 340.0)) ⋀ (((_userType = 'User') ⋀ (_children ≔ [shopContainer, _sb, watchAdDialog, _sb, subscription, _sb, shopQuestions, _sb])) ⋁ ",
+                "(_children ≔ [shopContainer, _sb, userSubscription, _sb, switchSubscription,  _sb, shopQuestions, _sb])) ⋀ ℛ(setResxValue, 'mvcStack') ⋀ ",
+                "ℛ(setResxValue, 'mvcStack', [Φ(ListView)]) ⋀ ↲(Φ(Obx, {_valueName: 'mvcStack', _child: Φ(Stack)}))"
+            ],
+            "shopContainer": [
+                "_userType | (_topic ≔ Φ(Topic, {_decoration: ℛ(appRes, blueGradBD), _height: ℛ(hratio, Ø, 0.2463), ",
+                "_width: ℛ(swratio, Ø, 1.0), _topicSelection: 'Shop', _smallTitle: ⊤(shopping), _img: ℛ(lookup, shop)})) ⋀ ",
+                "(_alignment ≔ decode(alignment, topCenter)) ⋀ (_children ≔ [_topic, topicDialog({_dchild: shopLives, _height: ℛ(hratio, Ø, 0.0785)})]) ⋀ ",
+                "↲(Φ(Container, {_height: ℛ(hratio, Ø, 0.2702), _alignment: _alignment, _child: Φ(Stack), _width: _width}))"
+            ],
+            "shopLives": [
+                "_userType | (_textStyle ≔ 'BlueTitleStyle') ⋀ (((_userType = 'User') ⋀ (_text ≔ ⊤('lives')) ⋀ (_lt ≔ Φ(Text)) ⋀ (_valueKey ≔ '_text') ⋀ ",
+                "(_valueName ≔ 'lives') ⋀ (_child ≔ Φ(Text)) ⋀ (_child ≔ Φ(Obx))) ⋁ ((_text ≔ ⊤('unlimited')) ⋀ (_lt ≔ Φ(Text)) ⋀ (_text ≔ '∞') ⋀ ",
+                "(_textStyle ≔ 'BlueTitleStyle') ⋀ (_child ≔ Φ(Text)))) ⋀ (_child ≔ Φ(Center)) ⋀ (_width ≔ ℛ(sizeScale, Ø, 40.0)) ⋀ (_lives ≔ Φ(SizedBox)) ⋀ ",
+                "(_icon ≔ 'lives') ⋀ (_iconColor ≔ 'btnBlue') ⋀ (_ic ≔ Φ(Icon)) ⋀ (_children ≔ [_ic, _lives]) ⋀ ",
+                "mapPat(rowColHeader, (center, spaceBetween, max, Ø)) ⋀ (_lb ≔ Φ(SizedBox, {_width: ℛ(sizeScale, Ø, 70.0), _child: Φ(Row)})) ⋀ ",
+                "(_children ≔ [_lt, _lb]) ⋀ mapPat(rowColHeader, (center, spaceEvenly, max, Ø)) ⋀ ↲(Φ(Row))"
+            ],
+            "watchAdDialog": [
+                "(_t ≔ Φ(Text, {_text: ⊤('watchAnAd'), _textStyle: 'BoldNormalTextStyle'})) ⋀ (_children ≔ [_t, Φ(WatchAd)]) ⋀ ",
+                "mapPat(rowColHeader, (center, spaceEvenly, max, Ø)) ⋀ ↲(topicDialog({_dchild: Φ(Column), _height: ℛ(hratio, Ø, 0.1485)}))"
+            ],
+            "subscription": [
+                "_fwid | (_t ≔ Φ(Text, {_text: ⊤('subscribe'), _textStyle: 'BoldNormalTextStyle'})) ⋀ (_textStyle ≔  'MediumNormalTextStyle') ⋀ ",
+                "(_text ≔ ⊤('monthly')) ⋀ (_mt ≔ Φ(Text)) ⋀ (_text ≔ ⊤('annually')) ⋀ (_at ≔ Φ(Text)) ⋀ (_textStyle ≔  'NormalSTextStyle') ⋀ ",
+                "(_text ≔ ⊤('mSubscribe')) ⋀ (_mst ≔ Φ(Text)) ⋀ (_text ≔ ⊤('aSubscribe')) ⋀ (_ast ≔ Φ(Text)) ⋀ (_wid ≔ ℛ(sizeScale, Ø, 200.0)) ⋀ ",
+                "mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
+                "(_children ≔ [_mt, _mst]) ⋀ (_mw ≔ Φ(Container, {_child: Φ(Column), _height: ℛ(sizeScale, Ø, 80.0), _width: _wid})) ⋀ ",
+                "(_children ≔ [_at, _ast]) ⋀ ⋓({_aw: Φ(Container, {_child: Φ(Column), _height: ℛ(sizeScale, Ø, 60.0), _width: _wid}), _event: 'mSubscribePrice', ",
+                "_wid: ℛ(sizeScale, Ø, 80.0), _time: getRenewDay({_nextMonth: true})}) ⋀ (_mb ≔ Φ(TapItemElem, {_event: _event, _width: _wid, ",
+                "_spec: subscribedDial})) ⋀ (_time ≔ getRenewDay({})) ⋀ (_event ≔ 'aSubscribePrice') ⋀ (_ab ≔ Φ(TapItemElem, ",
+                "{_event: _event, _width: _wid, _spec: subscribedDial})) ⋀ (_sb ≔ Φ(SizedBox, {_width: ℛ(sizeScale, Ø, 20.0)})) ⋀ ",
+                "(_d ≔ Φ(Divider, {_color: ℛ(color, 'greyText'), _thickness: 1.5})) ⋀ mapPat(rowColHeader, (center, spaceEvenly, max, Ø)) ⋀ ",
+                "(_children ≔ [_mw,_sb, _mb]) ⋀ (_mr ≔ Φ(Row)) ⋀ (_children ≔ [_aw, _sb, _ab]) ⋀ (_ar ≔ Φ(Row)) ⋀ ",
+                "(_children ≔ [_t, _mr, _d, _ar]) ⋀ (_c ≔ Φ(Container, {_child: Φ(Column), ",
+                "_height: ℛ(sizeScale, Ø, 180.0), _width: _fwid})) ⋀ ↲(topicDialog({_dchild: _c, _height: ℛ(sizeScale, Ø, 200.0)}))"
+            ],
+            "subscribedDial": [
+                "_time, _event | τ(_event + ' ' + _time) ⋀ (((_event = 'unsubscribed') ⋀ (_text ≔ ⊤('successUnsub')) ⋀ ",
+                "(_sm ≔ {}) ⋀ (_rt ≔ Φ(Text, {_text: ⊤('resubscribe'), _textStyle: 'CorrTxtStyle', _textAlign: decode(textAlign, center)}))) ⋁ ",
+                "((_text ≔ ⊤('successSub')) ⋀ (_sm ≔ {_btnType: 'blue'}) ⋀(_rt ≔ Φ(Text, {_text: (⊤('renew') + _time + ⊤('canCancel')), ",
+                "_textStyle: 'CorrTxtStyle', _textAlign: decode(textAlign, center)})))) ⋀ ",
+                "(_textStyle ≔ 'BoldCorrTextStyle') ⋀ (_height ≔ ℛ(sizeScale, Ø, 80.0)) ⋀ (_t ≔ Φ(Text)) ⋀ (_width ≔ ℛ(sizeScale, Ø, 300.0)) ⋀ ",
+                "mapPat(rowColHeader, (center, spaceBetween, max, Ø)) ⋀ (_children ≔ [_t, _rt]) ⋀ (_child ≔ Φ(Column)) ⋀ ",
+                "(_onTap ≔ {_func: process, _tapAction: 'subscription', _map: {_event: _event, _height: ℛ(sizeScale, Ø, 100.0), _child: Φ(Container), ",
+                "_time: _time, _onTap: {_func: 'popRoute'}}}) ⋀ ↲(_sm ⋃ {_onTap: _onTap})"
+            ],
+            "shopQuestions": [
+                "_fwid | (_t ≔ Φ(Text, {_text: ⊤('questions'), _textStyle: 'BoldNormalTextStyle'})) ⋀ (_textStyle ≔ 'MediumNormalTextStyle') ⋀ ",
+                "(_sb ≔ Φ(SizedBox, {_width: ℛ(sizeScale, Ø, 10.0)})) ⋀ (_text ≔ 'FAQs') ⋀ (_children ≔ [_sb, Φ(Text)]) ⋀ (_mt ≔ Φ(Row)) ⋀ ",
+                "(_text ≔ ⊤('support')) ⋀ (_children ≔ [_sb,  Φ(Text)]) ⋀ (_at ≔ Φ(TapItem, {_child: Φ(Row), ",
+                "_onTap: {_func: 'fsmEvent', _map: {_event: 'support'}, _tapAction: 'supportfsm'}})) ⋀ mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
+                "(_d ≔ Φ(Divider, {_color: ℛ(color, 'greyText'), _thickness: 1.5})) ⋀ (_children ≔ [_mt, _d, _at]) ⋀ ",
+                "(_cc ≔ Φ(Container, {_child: Φ(Column), _height: ℛ(sizeScale, Ø, 60.0), _width: _fwid})) ⋀ ",
+                "mapPat(rowColHeader, (center, spaceEvenly, max, Ø)) ⋀ (_children ≔ [_t, _cc]) ⋀ (_c ≔ Φ(Container, {_child: Φ(Column), ",
+                "_height: ℛ(sizeScale, Ø, 80.0), _width: _fwid})) ⋀ ↲(topicDialog({_dchild: _c, _height: ℛ(sizeScale, Ø, 100.0)}))"
+            ],
+            "userSubscription": [
+                "_userType, _fwid | (_t ≔ Φ(Text, {_text: ⊤('usubscribed'), _textStyle: 'BoldNormalTextStyle'})) ⋀ (_textStyle ≔  'MediumNormalTextStyle') ⋀ ",
+                "(((_userType = 'mSubscriber') ⋀ (_text ≔ ⊤('subscriptionm')) ⋀ (_event ≔ 'mCancel')) ⋁ ((_text ≔ ⊤('subscriptiona')) ⋀ ",
+                "(_event ≔ 'aCancel'))) ⋀ (_s ≔ Φ(Text)) ⋀ (_text ≔ (⊤('renew') + ℛ(model, userProfile, 'renew') + '.')) ⋀ ",
+                "(_children ≔ [_s, Φ(SizedBox, {_height: ℛ(sizeScale, Ø, 10.0)}), Φ(Text)]) ⋀ ",
+                "mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ (_cc ≔ Φ(Container, {_child: Φ(Column), _height: ℛ(sizeScale, Ø, 70.0), _width: ℛ(sizeScale, Ø, 300.0)})) ⋀ ",
+                "(_ab ≔ Φ(BorderButton, {_event: 'cancel', _btnType: 'incorrect', _spec: {_onTap: cancelSubscription}})) ⋀ ",
+                "mapPat(rowColHeader, (center, spaceEvenly, max, Ø)) ⋀ (_children ≔ [_t, _cc, _ab]) ⋀ (_c ≔ Φ(Container, {_child: Φ(Column), ",
+                "_height: ℛ(sizeScale, Ø, 160.0), _width: _fwid})) ⋀ ↲(topicDialog({_dchild: _c, _height: ℛ(sizeScale, Ø, 180.0)}))"
+            ],
+            "cancelSubscription": [
+                "_event | (_child ≔ Φ(Text, {_text: ⊤('cancelQuest'), _textStyle: 'BoldInCorrTextStyle', _textAlign: decode(textAlign, center)})) ⋀ (_height ≔ ℛ(sizeScale, Ø, 40.0)) ⋀ ",
+                "(_width ≔ ℛ(sizeScale, Ø, 300.0)) ⋀ (_c1 ≔ Φ(Container)) ⋀ (_map ≔ {_event: _event, _height: ℛ(sizeScale, Ø, 50.0), _child: _c1, ",
+                "_btn2: {_event: 'keep', _spec: {_btnType: 'blue', _onTap: {_func: 'popRoute'}}}, _btn1: ({_event: _event, ",
+                "_spec: subscribedDial({_event: 'unsubscribed'})})}) ⋀ ",
+                "(((_event = 'mCancel') ⋀ ↲({_func: process, _tapAction: 'subscription', _map: _map})) ⋁ ((_child ≔ Φ(Text, {_text: ⊤('altSub'), _textStyle: 'ChoiceButnTxtStyle', ",
+                "_textAlign: decode(textAlign, center)})) ⋀ (_time ≔ getRenewDay({_nextMonth: true})) ⋀ (_c2 ≔ Φ(Container)) ⋀ (_event ≔ 'mSubscribePrice') ⋀ ",
+                "↲({_func: process, _tapAction: 'subscription', _map: (_map ⋃ {_height: _height, _sChild: _c2, _sEvent: 'switchm', _sHeight: ℛ(sizeScale, Ø, 50.0), _spec: subscribedDial})})))"
+            ],
+            "switchSubscription": [
+                "_userType, _fwid | (((_userType = 'mSubscriber') ⋀ ⋓({_t: ⊤('aSwitch'), _amt: ⊤('annually'), _amst: ⊤('aOffer'), _event: 'aSubscribePrice', ",
+                "_height: ℛ(sizeScale, Ø, 60.0), _time: getRenewDay({})})) ⋁ ⋓({_t: ⊤('mSwitch'), _amt: ⊤('monthly'), _amst: ⊤('mOffer'), _event: 'mSubscribePrice', ",
+                "_height: ℛ(sizeScale, Ø, 120.0), _time: getRenewDay({_nextMonth: true})})) ⋀ (_t ≔ Φ(Text, {_text: _t, _textStyle: 'BoldNormalTextStyle'})) ⋀ ",
+                "(_textStyle ≔  'MediumNormalTextStyle') ⋀ (_text ≔ _amt) ⋀ (_amt ≔ Φ(Text)) ⋀ (_textStyle ≔  'NormalSTextStyle') ⋀ (_text ≔ _amst) ⋀ (_amst ≔ Φ(Text)) ⋀ ",
+                "mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ (_children ≔ [_amt, _amst]) ⋀ (_sw ≔ ℛ(sizeScale, Ø, 20.0)) ⋀ ",
+                "(_w ≔ Φ(Container, {_child: Φ(Column), _height: _height, _width: ℛ(sizeScale, Ø, 200.0)})) ⋀ (_b ≔ Φ(TapItemElem, ",
+                "{_event: _event, _width: ℛ(sizeScale, Ø, 80.0), _spec: subscribedDial})) ⋀ (_sb ≔ Φ(SizedBox, {_width: _sw})) ⋀ ",
+                "mapPat(rowColHeader, (center, spaceEvenly, max, Ø)) ⋀ (_height ≔ (_height + 2 * _sw)) ⋀ (_children ≔ [_w,_sb, _b]) ⋀ ",
+                "(_r ≔ Φ(Row)) (_children ≔ [_t, _r]) ⋀ mapPat(rowColHeader, (center, spaceEvenly, max, Ø)) ⋀ ",
+                "(_c ≔ Φ(Container, {_child: Φ(Column), _height: _height, _width: _fwid})) ⋀ ↲(topicDialog({_dchild: _c, _height: (_height + _sw)}))"
+            ],
+            "fsmPat": [
+                "_state, _event | ((_event = 'confirm') ⋀ ((_state = 'selected') ⋁ (_state = 'completed')) ⋀ ↲('CheckAns')) ⋁ ",
+                "((_event = 'next') ⋀ (_state = 'confirmed') ⋀ ↲('NextGame')) ⋁ ",
+                "((_event = 'tryAgain') ⋀ (_state = 'confirmed') ⋀ ↲('TryAgain')) ⋁ ",
+                "((_event = 'showAnswer') ⋀ (_state = 'confirmed') ⋀ ↲('ShowAnswer')) ⋁ ",
+                "((_event = 'gameDone') ⋀ ↲('GameDone')) ⋁ ((_event = 'repeatGame') ⋀ ↲('RepeatGame')) ⋁ ",
+                "((_event = 'cancel') ⋀ ↲('Cancel')) ⋁ ((_event = 'continue') ⋀ ↲('Continue')) ⋁ ↲(Ø)"
+            ],
+            "MCfsm": "_state, _event | ((_event = 'select') ⋀ ((_state = 'start') ⋁ (_state = 'selected')) ⋀ ↲('Selection')) ⋁ ↲(fsmPat)",
+            "Textfsm": [
+                "_state, _event | ((_event = 'edited') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Editing')) ⋁ ",
+                "((_event = 'empty') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Empty')) ⋁ ",
+                "((_event = 'select') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Selection')) ⋁ ↲(fsmPat)"
+            ],
+            "Orderfsm": [
+                "_state, _event | ((_event = 'select') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Selection')) ⋁ ",
+                "((_event = 'dropSel') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('DropSel')) ⋁ ↲(fsmPat)"
+            ],
+            "Sentencefsm": [
+                "_state, _event | ((_event = 'edited') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Editing')) ⋁ ",
+                "((_event = 'empty') ⋀ ((_state = 'incomplete') ⋁ (_state = 'completed')) ⋀ ↲('Empty')) ⋁ ",
+                "↲(Orderfsm) ⋁ ↲(fsmPat)"
+            ],
+            "Sliderfsm": "_state, _event | ((_event = 'confirm') ⋀ ↲('CheckAns')) ⋁ ↲(fsmPat)",
+            "SvgMapfsm": "_state, _event | ↲(Sliderfsm)",
+            "WebViewfsm": "_state, _event | ((_event = 'next') ⋀ ↲(_state)) ⋁ ↲(fsmPat)",
+            "titleDialog": [
+                "_event, _title | (_h ≔ Φ(Text, {_text: _title, _textStyle: ℛ(textStyle, TitleTextStyle)})) ⋀ ",
+                "(_e ≔ Φ(IconButton, {_onTap: {_func: fsmEvent, _tapAction: 'closeDialog'}, _iconColor: 'grey700', _icon: 'cancel', _iconSize: 16.0})) ⋀ ",
+                "(_mainAxisAlignment ≔ decode(mainAxisAlignment, spaceBetween)) ⋀ (_children ≔ [_h, _e]) ⋀ (_h ≔ Φ(Row)) ⋀ ",
+                "mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (_children ≔ aSetting) ⋀ (_height ≔ ℛ(hratio, Ø, (0.035 * #(_children) + 0.05))) ⋀ ",
+                "(_children ≔ [_h, lcard]) ⋀ ⋓({_child: Φ(Column), _width: ℛ(hratio, Ø, 0.9)}) ⋀ ↲(Φ(Container))"
+            ],
+            "closeDialog": "↲(popRoute())",
+            "menufsm": [
+                "_event, _title | (popRoute()) ⋀ (((_event = 'search') ⋀ ↲(onSearch({}))) ⋁ (((_event = 'settings') ⋁ (_event = 'support')) ⋀ changeTheme() ⋀ ",
+                "↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
+            ],
+            "supportfsm": [
+                "_event | (popRoute()) ⋀ ((_event = shareApp) ⋀ ↲(onShare({_text: ⊤(sharedText), _subject: ⊤(sharedSubject)}))) ⋁ ",
+                "((_event = cCache) ⋀ ↲(clearCache())) ⋁ (↲(route('supportScaffold')))"
+            ],
+            "actions": [
+                "_event, _vars | ((_event = 'settings') ⋀ ↲({_func: fsmEvent, _map: {_event: 'settings', _title: 'Settings'}, _tapAction: 'menufsm'})) ⋁ ",
+                "((_event = 'shop') ⋀ ↲({_func: route, _tapAction: 'shopScaffold'}))"
+            ],
+            "testBox": "(_text ≔ testText) ⋀ (_child ≔ Φ(Text)) ⋀ ƒ(mapPat, (patHeader, (Ø, Ø, #FFFFFF, Ø, topCenter, Ø))) ⋀ ↲(Φ(Container))"
+        }
+    },
+    "userProfile": {
+        "appVersion": "",
+        "userToken": "",
+        "reset": true,
+        "lang": "English (UK)",
+        "locale": "de",
+        "configLives": 5,
+        "lives": 5,
+        "liveTimestamp": 0,
+        "progress": [],
+        "versions": "0.0",
+        "userType": "User",
+        "timestamp": 1636410287,
+        "lastsync": 1627510285,
+        "renew": ""
+    }
+}

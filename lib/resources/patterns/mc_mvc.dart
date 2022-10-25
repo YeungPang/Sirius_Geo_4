@@ -112,7 +112,12 @@ class McMvc extends Mvc {
       bool notInt = ansList[0] is! int;
       range = [];
       List<int> aList = [];
-      int? r = map["_range"];
+      dynamic ra = map["_range"];
+      if (ra is String) {
+        ra = configAgent!.getElement("_range", map);
+      }
+      int? r = ra;
+      //map["_range"];
       for (int k = 0; k < options.length; k++) {
         if (((notInt) && (ansList.contains(options[k]))) ||
             (ansList.contains(k))) {
@@ -128,7 +133,12 @@ class McMvc extends Mvc {
     if (ansList.isEmpty) {
       List<int> incl = [ans];
       map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
-      range = getRandomList(options.length, map["_range"], incl, [])!;
+      dynamic ra = map["_range"];
+      if (ra is String) {
+        ra = configAgent!.getElement("_range", map);
+      }
+      int r = ra;
+      range = getRandomList(options.length, r, incl, [])!;
       excl.add(ans);
     }
     map["_ansInx"] = ans;

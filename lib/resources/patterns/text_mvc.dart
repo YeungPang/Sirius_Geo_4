@@ -69,10 +69,19 @@ class TextMvc extends Mvc {
         ans = getRandom(options!.length, excl)!;
         excl.add(ans);
         map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
-        ansList = [options![ans]];
+        var oa = options![ans];
+        if ((oa is String) && (oa.isNotEmpty) && (oa[0] == '[')) {
+          ansList = getListData(oa);
+        } else {
+          ansList = (oa is List<dynamic>) ? oa : [oa];
+        }
         ansLen = ansList.length;
-        len = map["_range"] ?? ansLen;
-        if (acceptedList != null) {
+        dynamic ra = map["_range"];
+        if (ra is String) {
+          ra = configAgent!.getElement("_range", map);
+        }
+        len = ra ?? ansLen;
+        if ((acceptedList != null) && (acceptedList!.isNotEmpty)) {
           checkList = null;
           List<dynamic> al = acceptedList![ans];
           for (var va in al) {
@@ -91,7 +100,11 @@ class TextMvc extends Mvc {
           ? resolveList(al, map, configAgent: configAgent)!
           : [al];
       ansLen = ansList.length;
-      len = map["_range"] ?? ansLen;
+      dynamic ra = map["_range"];
+      if (ra is String) {
+        ra = configAgent!.getElement("_range", map);
+      }
+      len = ra ?? ansLen;
     }
     if ((!retrying) && (map["_Accepted_Answers"] != null)) {
       acceptedList = [];
@@ -166,117 +179,116 @@ class TextMvc extends Mvc {
       }
     }
     retrying = false;
-    if (inTextPP == null) {
-      if (map["_Q_Image"] == null) {
-        bgHeight = 0.8 * bgHeight;
-      }
-      multi = len > 1;
-      map["_textEditingController"] = tc;
-      ProcessEvent cpe = ProcessEvent("fsm");
-      cpe.map = {
-        "_event": "edited",
-      };
-      ProcessEvent ipe = ProcessEvent("fsm");
-      ipe.map = {
-        "_event": "empty",
-      };
+    //if (inTextPP == null) {
+    if (map["_Q_Image"] == null) {
+      bgHeight = 0.8 * bgHeight;
+    }
+    multi = len > 1;
+    map["_textEditingController"] = tc;
+    ProcessEvent cpe = ProcessEvent("fsm");
+    cpe.map = {
+      "_event": "edited",
+    };
+    ProcessEvent ipe = ProcessEvent("fsm");
+    ipe.map = {
+      "_event": "empty",
+    };
+    imap = {
+      "_hintText": model.map["text"]["typeAnswer"],
+      "_clear": multi,
+      "_width": 0.666667 * model.scaleWidth,
+      "_alignment": Alignment.center,
+      "_inputBorder": textFieldBorder,
+      "_textStyle": choiceButnTxtStyle,
+      "_hintStyle": choiceButnTxtStyle,
+      "_complete": cpe,
+      "_incomplete": ipe,
+      "_retainFocus": multi,
+      "_textEditingController": tc
+    };
+    Function pf = getPrimePattern["InTextField"]!;
+    ProcessPattern pp = pf(imap);
+    imap["_child"] = pp;
+    inTextPP = cpf(imap);
+    double w = 0.826667 * model.scaleWidth;
+    imap = {
+      "_width": w,
+      "_height": 0.1600985 * model.scaleHeight,
+      "_alignment": Alignment.center,
+      "_decoration": shadowRCDecoration
+    };
+    if (!multi) {
+      imap["_child"] = inTextPP;
+    }
+    pp = cpf(imap);
+
+    if (multi) {
+      textNoti = resxController.addToResxMap("textNoti", inTextPP)
+          as Rx<ProcessPattern>;
+      imap = {"_valueName": "textNoti", "_child": pp};
+      pf = getPrimePattern["Obx"]!;
+      pp = pf(imap);
+      eheight = 0.07143 * model.scaleHeight;
+      ewidth = 0.345 * model.scaleWidth;
       imap = {
-        "_hintText": model.map["text"]["typeAnswer"],
-        "_clear": multi,
-        "_width": 0.666667 * model.scaleWidth,
-        "_alignment": Alignment.center,
-        "_inputBorder": textFieldBorder,
-        "_textStyle": choiceButnTxtStyle,
-        "_hintStyle": choiceButnTxtStyle,
-        "_complete": cpe,
-        "_incomplete": ipe,
-        "_retainFocus": multi,
-        "_textEditingController": tc
+        "_height": eheight,
+        "_width": ewidth,
+        "_boxConstraints": BoxConstraints(maxWidth: ewidth),
       };
-      Function pf = getPrimePattern["InTextField"]!;
-      ProcessPattern pp = pf(imap);
-      imap["_child"] = pp;
-      inTextPP = cpf(imap);
-      double w = 0.826667 * model.scaleWidth;
+      ProcessPattern cpp = cpf(imap);
+      imap = {
+        "_radius": size10,
+        "_dottedColor": colorMap["btnBlue"],
+        "_strokeWidth": 2.0,
+        "_child": cpp
+      };
+      pf = getPrimePattern["DottedBorder"]!;
+      cpp = pf(imap);
+      elemList = [];
+      for (int j = 0; j < len; j++) {
+        elemList!.add(cpp);
+      }
+      children = [];
+      children!.addAll(elemList!);
+      gvNoti = resxController.addToResxMap("gv", children) as Rx<List<dynamic>>;
+      double mainAS = 0.01847 * model.scaleHeight;
+      childAspectRatio = ewidth / eheight;
+      imap = {
+        "_crossAxisCount": 2,
+        "_childAspectRatio": childAspectRatio,
+        "_mainAxisSpacing": mainAS,
+        "_crossAxisSpacing": 0.04 * model.scaleWidth,
+        "_padding": EdgeInsets.all(size10),
+      };
+      pf = getPrimePattern["GridView"]!;
+      ProcessPattern gv = pf(imap);
+      lmap = {"_valueName": "gv", "_child": gv};
+      pf = getPrimePattern["Obx"]!;
+      int l = (len + 1) ~/ 2;
       imap = {
         "_width": w,
-        "_height": 0.1600985 * model.scaleHeight,
+        "_height": (eheight + mainAS) * l + mainAS * 1.5,
         "_alignment": Alignment.center,
-        "_decoration": shadowRCDecoration
+        "_decoration": shadowRCDecoration,
+        "_child": pf(lmap)
       };
-      if (!multi) {
-        imap["_child"] = inTextPP;
-      }
-      pp = cpf(imap);
-
-      if (multi) {
-        textNoti = resxController.addToResxMap("textNoti", inTextPP)
-            as Rx<ProcessPattern>;
-        imap = {"_valueName": "textNoti", "_child": pp};
-        pf = getPrimePattern["Obx"]!;
-        pp = pf(imap);
-        eheight = 0.07143 * model.scaleHeight;
-        ewidth = 0.345 * model.scaleWidth;
-        imap = {
-          "_height": eheight,
-          "_width": ewidth,
-          "_boxConstraints": BoxConstraints(maxWidth: ewidth),
-        };
-        ProcessPattern cpp = cpf(imap);
-        imap = {
-          "_radius": size10,
-          "_dottedColor": colorMap["btnBlue"],
-          "_strokeWidth": 2.0,
-          "_child": cpp
-        };
-        pf = getPrimePattern["DottedBorder"]!;
-        cpp = pf(imap);
-        elemList = [];
-        for (int j = 0; j < len; j++) {
-          elemList!.add(cpp);
-        }
-        children = [];
-        children!.addAll(elemList!);
-        gvNoti =
-            resxController.addToResxMap("gv", children) as Rx<List<dynamic>>;
-        double mainAS = 0.01847 * model.scaleHeight;
-        childAspectRatio = ewidth / eheight;
-        imap = {
-          "_crossAxisCount": 2,
-          "_childAspectRatio": childAspectRatio,
-          "_mainAxisSpacing": mainAS,
-          "_crossAxisSpacing": 0.04 * model.scaleWidth,
-          "_padding": EdgeInsets.all(size10),
-        };
-        pf = getPrimePattern["GridView"]!;
-        ProcessPattern gv = pf(imap);
-        lmap = {"_valueName": "gv", "_child": gv};
-        pf = getPrimePattern["Obx"]!;
-        int l = (len + 1) ~/ 2;
-        imap = {
-          "_width": w,
-          "_height": (eheight + mainAS) * l + mainAS * 1.5,
-          "_alignment": Alignment.center,
-          "_decoration": shadowRCDecoration,
-          "_child": pf(lmap)
-        };
-        pf = getPrimePattern["Container"]!;
-        lmap = {
-          "_height": 0.04 * model.scaleHeight,
-        };
-        Function sp = getPrimePattern["SizedBox"]!;
-        List<ProcessPattern> col = [pp, sp(lmap), pf(imap)];
-        pf = getPrimePattern["Column"]!;
-        imap = {"_children": col};
-        map["_colElem"] = pf(imap);
-        mvcpf ??= model.appActions.getPattern("MvcColumn")!;
-        view = mvcpf!(map);
-      } else {
-        map["_colElem"] = pp;
-        mvcpf ??= model.appActions.getPattern("MvcColumn");
-        view = mvcpf!(map);
-      }
+      pf = getPrimePattern["Container"]!;
+      lmap = {
+        "_height": 0.04 * model.scaleHeight,
+      };
+      Function sp = getPrimePattern["SizedBox"]!;
+      List<ProcessPattern> col = [pp, sp(lmap), pf(imap)];
+      pf = getPrimePattern["Column"]!;
+      imap = {"_children": col};
+      map["_colElem"] = pf(imap);
+      mvcpf ??= model.appActions.getPattern("MvcColumn")!;
+      view = mvcpf!(map);
     } else {
+      map["_colElem"] = pp;
+      mvcpf ??= model.appActions.getPattern("MvcColumn");
+      view = mvcpf!(map);
+    }
+/*     } else {
       if (multi) {
         children = [];
         children!.addAll(elemList!);
@@ -287,7 +299,7 @@ class TextMvc extends Mvc {
         view = mvcpf!(map);
       }
       tc.clear();
-    }
+    } */
   }
 
   @override

@@ -59,12 +59,14 @@ class OrderMvc extends Mvc {
       len = ansList.length;
       options = configAgent!.getElement(map["_AnswerOptions"], map);
       col = [];
+      var inf = configAgent!.getElement("_Info1", map);
       imap = {
-        "_text": map["_Info1"],
+        "_text": inf.toString(),
         "_textStyle": smallTextStyle,
       };
       ProcessPattern pp = tpf(imap);
-      imap["_text"] = map["_Info2"];
+      inf = configAgent!.getElement("_Info2", map);
+      imap["_text"] = inf.toString();
       bottomtext = tpf(imap);
       imap = {
         "_height": size20,
@@ -257,7 +259,9 @@ class OrderMvc extends Mvc {
         gvNoti!.value = c;
         break;
       case "DropSel":
+        int sI = selIndex;
         swap(emap!["_index"]!, emap["_dropIndex"]!);
+        selIndex = sI;
         break;
       case "CheckAns":
         bool cor = true;
@@ -326,7 +330,8 @@ class OrderMvc extends Mvc {
       answers[ia] = "";
     }
     completed = true;
-    for (String s in answers) {
+    for (var vs in answers) {
+      String s = vs.toString();
       if (s.isEmpty) {
         completed = false;
         break;

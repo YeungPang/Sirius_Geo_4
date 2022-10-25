@@ -165,7 +165,7 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
   ProcessPattern pp;
   Map<String, dynamic> iMap;
   String? imgs = configAgent.getElement(map["_Q_Image"], map);
-  if (imgs != null) {
+  if ((imgs != null) && (imgs.isNotEmpty)) {
     if (imgs.contains("svg")) {
       pf = getPrimePattern["SVGAsset"]!;
     } else {

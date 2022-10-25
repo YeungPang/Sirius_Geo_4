@@ -43,7 +43,7 @@ class _WebViewExplState extends State<WebViewExpl> {
       onWebViewCreated: (WebViewPlusController controller) {
         _controller.complete(controller);
         _mv["_wvController"] = controller;
-        if (url != null) {
+        if ((url != null) && (url.isNotEmpty)) {
           controller.loadUrl(url);
         } else if (html is String) {
           controller.loadString(html);
