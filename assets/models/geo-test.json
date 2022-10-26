@@ -1,8 +1,8 @@
 {
     "title": "Sirius Prototype",
     "version": "1.7.2",
-    "time_stamp": "26-Oct-2022 14:35:54 UTC",
-    "versionTimestamp": 202226101435,
+    "time_stamp": "25-Oct-2022 15:07:59 UTC",
+    "versionTimestamp": 202225101507,
     "maxConfigLives": 5,
     "liveGenTime": 30,
     "main": "categories",
@@ -96,7 +96,7 @@
             "dataStart": "Question",
             "header": "ID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx",
             "elemList": [
-                "TextFullyRefTestQuestions0001;Text;textVariableCodingTestData;#ℛ(_ans,2)#;#ℛ(_ans,3)#;ℛ(_ans,1);;#ℛ(_ans,5)#;ℛ(_ans,4);ℛ(_ans,6);ℛ([0‥9],4)"
+                "TextFullyRefTestQuestions0001;Text;testData;#ℛ(_ans,4)#;#ℛ(_ans,5)#;ℛ(_ans,3);;#ℛ(_ans,7)#;ℛ(_ans,6);ℛ(_ans,8);ℛ([50‥59],6)"
             ]
         },
         "hSliderQuestions copy": {
@@ -270,21 +270,6 @@
                 "svgMappingID00001;correct;btnBlue;white;grey;grey700;1;20;20;1000;1100;assets/svg_images/MajorPlatesMap.svg"
             ]
         },
-        "textVariableCodingTestData": {
-            "header": "ID;image;Q;ins;a;a_txt;aa",
-            "elemList": [
-                "TextFullyRefData001;assets/flags/Switzerland.svg;Text: A;Text (Plain Text: Letters);A;This is A.;[a,aa,aaa,a a, a aa, aa a]",
-                "TextFullyRefData002;;Image Text: A;Image Text (Plain Text: Letters);A;This is A.;[a,aa,aaa,a a, a aa, aa a]",
-                "TextFullyRefData003;assets/flags/Switzerland.svg;Text: A⊤(comma) B;Multiple Text (Plain Text: Letters);[A,B];This is A⊤(comma)B.;[[aa,aaa,a a, a aa, aa a],[bb,bbb,b b, b bb, bb b]]",
-                "TextFullyRefData004;;Image Text: A⊤(comma) B⊤(comma) C;Multiple Image Text (Plain Text: Letters);[A,B,C];This is A⊤(comma)B⊤(comma)C.;[[a,aa,aaa,a a, a aa, aa a],[bb,bbb,b b, b bb, bb b],[cc,ccc,c c, c cc, cc c]]",
-                "TextFullyRefData005;assets/flags/Switzerland.svg;Text: 1;Text (Plain Text: Numbers);1;This is 1.;[11,1 1,111,1 11,11 1]",
-                "TextFullyRefData006;;Image Text: 1;Image Text (Plain Text: Numbers);1;This is 1.;[11,1 1,111,1 11,11 1]",
-                "TextFullyRefData007;assets/flags/Switzerland.svg;Text: 1⊤(comma)2;Multiple Text (Plain Text: Numbers);[1,2];This is 1⊤(comma)2.;[[11,111,1 1, 1 11, 11 1],[22,222,2 2, 2 22, 22 2]]",
-                "TextFullyRefData008;;Image Text: 1⊤(comma)2⊤(comma)3⊤(comma);Multiple Image Text (Plain Text: Numbers);[1,2,3];This is 1⊤(comma)2⊤(comma)3.;[[11,111,1 1, 1 11, 11 1],[22,222,2 2, 2 22, 22 2],[33,333,3 3, 3 33, 333 3]]",
-                "TextFullyRefData009;assets/flags/Switzerland.svg;Text: 1⊤(comma)A⊤(comma)2⊤(comma)B;Multiple Text (Plain Text: Letters & Numbers);[1,A,2,B];This is 1⊤(comma)A⊤(comma)2⊤(comma)B;[[11,111,1 1, 1 11, 11 1],[aa,aaa,a a, a aa, aa a],[22,222,2 2, 2 22, 22 2],[bb,bbb,b b, b bb, bb b]]",
-                "TextFullyRefData010;;Image Text: 1⊤(comma)A⊤(comma)2⊤(comma)B⊤(comma)3;Multiple Image Text (Plain Text: Letters & Numbers);[1,A,2,B,3];This is 1⊤(comma)A⊤(comma)2⊤(comma)B⊤(comma)3;[[11,111,1 1, 1 11, 11 1],[aa,aaa,a a, a aa, aa a],[22,222,2 2, 2 22, 22 2],[bb,bbb,b b, b bb, bb b],[33,333,3 3, 3 33, 33 3]]"
-            ]
-        },
         "testDataSentence": {
             "header": "ID;A;AT;image;aa;ao;D;S",
             "elemList": [
@@ -346,7 +331,17 @@
                 "TestFullyRefData0012;MC: 1⊤(comma)A⊤(comma)2⊤(comma)B;Multiple MC (Plain Text: Letters  Numbers);6",
                 "TestFullyRefData0013;Image MC: C3;Image MC (Plain Text: Letters  Numbers);6",
                 "TestFullyRefData0014;Image MC: 4⊤(comma)D⊤(comma)5⊤(comma)E;Multiple Image MC (Plain Text: Letters  Numbers);6",
-                "TestFullyRefData0015;Multiple Images: A;Multiple Images Referenced;4"
+                "TestFullyRefData0015;Multiple Images: A;Multiple Images Referenced;4",
+                "TextFullyRefData001;;;assets/images/flags/Brazil_Final.svg;Text: A;Text (Plain Text: Letters);A;This is A.;[a,aa,aaa,a a, a aa, aa a]",
+                "TextFullyRefData002;;;;Image Text: A;Image Text (Plain Text: Letters);A;This is A.;[a,aa,aaa,a a, a aa, aa a]",
+                "TextFullyRefData003;;;assets/images/flags/Brazil_Final.svg;Text: A⊤(comma) B;Multiple Text (Plain Text: Letters);[A,B];This is A⊤(comma)B.;[[aa,aaa,a a, a aa, aa a],[bb,bbb,b b, b bb, bb b]]",
+                "TextFullyRefData004;;;;Image Text: A⊤(comma) B⊤(comma) C;Multiple Image Text (Plain Text: Letters);[A,B,C];This is A⊤(comma)B⊤(comma)C.;[[a,aa,aaa,a a, a aa, aa a],[bb,bbb,b b, b bb, bb b],[cc,ccc,c c, c cc, cc c]]",
+                "TextFullyRefData005;;;assets/images/flags/Brazil_Final.svg;Text: 1;Text (Plain Text: Numbers);1;This is 1.;[11,1 1,111,1 11,11 1]",
+                "TextFullyRefData006;;;;Image Text: 1;Image Text (Plain Text: Numbers);1;This is 1.;[11,1 1,111,1 11,11 1]",
+                "TextFullyRefData007;;;assets/images/flags/Brazil_Final.svg;Text: 1⊤(comma)2;Multiple Text (Plain Text: Numbers);[1,2];This is 1⊤(comma)2.;[[11,111,1 1, 1 11, 11 1],[22,222,2 2, 2 22, 22 2]]",
+                "TextFullyRefData008;;;;Image Text: 1⊤(comma)2⊤(comma)3⊤(comma);Multiple Image Text (Plain Text: Numbers);[1,2,3];This is 1⊤(comma)2⊤(comma)3.;[[11,111,1 1, 1 11, 11 1],[22,222,2 2, 2 22, 22 2],[33,333,3 3, 3 33, 333 3]]",
+                "TextFullyRefData009;;;assets/images/flags/Brazil_Final.svg;Text: 1⊤(comma)A⊤(comma)2⊤(comma)B;Multiple Text (Plain Text: Letters & Numbers);[1,A,2,B];This is 1⊤(comma)A⊤(comma)2⊤(comma)B;[[11,111,1 1, 1 11, 11 1],[aa,aaa,a a, a aa, aa a],[22,222,2 2, 2 22, 22 2],[bb,bbb,b b, b bb, bb b]]",
+                "TextFullyRefData010;;;;Image Text: 1⊤(comma)A⊤(comma)2⊤(comma)B⊤(comma)3;Multiple Image Text (Plain Text: Letters & Numbers);[1,A,2,B,3];This is 1⊤(comma)A⊤(comma)2⊤(comma)B⊤(comma)3;[[11,111,1 1, 1 11, 11 1],[aa,aaa,a a, a aa, aa a],[22,222,2 2, 2 22, 22 2],[bb,bbb,b b, b bb, bb b],[33,333,3 3, 3 33, 33 3]]"
             ]
         }
     },

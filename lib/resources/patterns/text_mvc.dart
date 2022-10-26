@@ -81,7 +81,7 @@ class TextMvc extends Mvc {
           ra = configAgent!.getElement("_range", map);
         }
         len = ra ?? ansLen;
-        if ((acceptedList != null) && (acceptedList!.isNotEmpty)) {
+/*         if ((acceptedList != null) && (acceptedList!.isNotEmpty)) {
           checkList = null;
           List<dynamic> al = acceptedList![ans];
           for (var va in al) {
@@ -90,7 +90,7 @@ class TextMvc extends Mvc {
               ansList.add(a.trim());
             }
           }
-        }
+        } */
         checkList = null;
       }
     } else {
@@ -149,6 +149,7 @@ class TextMvc extends Mvc {
           mAnsList.add(nAnsList!.length);
         }
       } else {
+        nAnsList = null;
         dynamic rList = configAgent!.getElement(map["_Accepted_Answers"], map);
         rList = (rList is List<dynamic>)
             ? resolveList(rList, map, configAgent: configAgent)
