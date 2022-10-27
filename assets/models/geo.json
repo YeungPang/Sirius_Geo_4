@@ -115,20 +115,20 @@
             "elemList": [
                 "SentenceCompletionRef0001;Sentence;testDataSentence;Complete the sentence:;Sentence MC (Referenced—letters);;;This is #ℛ(0,2)#;ℛ(0,1);;ℛ(0,5);#ℛ(0,6)#;R1 Sentence#0#with#1#gaps#2#to fill#3#in.",
                 "SentenceCompletionRef0002;Sentence;testDataSentence;Complete the sentence:;Sentence MC (Referenced—letters with gaps);;;This is #ℛ(1,2)#;ℛ(1,1);;ℛ(1,5);#ℛ(1,6)#;R2 Sentence#0#with#1#gaps#2#to fill#3#in.",
-                "SentenceCompletionRef0003;Sentence;testDataSentence;Complete the sentence:;Sentence MC (Referenced—numbers);;;This is #ℛ(2,2)#;ℛ(2,1);;ℛ(2,5);#ℛ(2,6)#;#ℛ(2,7)#",
-                "SentenceCompletionRef0004;Sentence;testDataSentence;Complete the sentence:;Sentence MC (Referenced—numbers with gaps);;;This is #ℛ(3,2)#;ℛ(3,1);;ℛ(3,5);#ℛ(3,6)#;#ℛ(3,7)#",
-                "SentenceCompletionRef0005;Sentence;testDataSentence;Complete the sentence:;Sentence MC Image (Referenced—letters);ℛ(0,3);;This is #ℛ(0,2)#;ℛ(0,1);;ℛ(0,5);#ℛ(0,6)#;#ℛ(0,7)#",
-                "SentenceCompletionRef0006;Sentence;testDataSentence;Complete the sentence:;Sentence MC Image (Referenced—letters with gaps);ℛ(0,3);;This is #ℛ(1,2)#;ℛ(1,1);;ℛ(1,5);#ℛ(1,6)#;#ℛ(1,7)#",
-                "SentenceCompletionRef0007;Sentence;testDataSentence;Complete the sentence:;Sentence MC Image (Referenced—numbers);ℛ(0,3);;This is #ℛ(2,2)#;ℛ(2,1);;ℛ(2,5);#ℛ(2,6)#;#ℛ(2,7)#",
-                "SentenceCompletionRef0008;Sentence;testDataSentence;Complete the sentence:;Sentence MC Image (Referenced—numbers with gaps);ℛ(0,3);;This is #ℛ(3,2)#;ℛ(3,1);;ℛ(3,5);#ℛ(3,6)#;#ℛ(3,7)#",
+                "SentenceCompletionRef0003;Sentence;testDataSentence;Complete the sentence:;Sentence MC (Referenced—numbers);;;This is #ℛ(2,2)#;ℛ(2,1);;ℛ(2,5);#ℛ(2,6)#;ℛ(2,7)",
+                "SentenceCompletionRef0004;Sentence;testDataSentence;Complete the sentence:;Sentence MC (Referenced—numbers with gaps);;;This is #ℛ(3,2)#;ℛ(3,1);;ℛ(3,5);#ℛ(3,6)#;ℛ(3,7)",
+                "SentenceCompletionRef0005;Sentence;testDataSentence;Complete the sentence:;Sentence MC Image (Referenced—letters);ℛ(0,3);;This is #ℛ(0,2)#;ℛ(0,1);;ℛ(0,5);#ℛ(0,6)#;ℛ(0,7)",
+                "SentenceCompletionRef0006;Sentence;testDataSentence;Complete the sentence:;Sentence MC Image (Referenced—letters with gaps);ℛ(0,3);;This is #ℛ(1,2)#;ℛ(1,1);;ℛ(1,5);#ℛ(1,6)#;ℛ(1,7)",
+                "SentenceCompletionRef0007;Sentence;testDataSentence;Complete the sentence:;Sentence MC Image (Referenced—numbers);ℛ(0,3);;This is #ℛ(2,2)#;ℛ(2,1);;ℛ(2,5);#ℛ(2,6)#;ℛ(2,7)",
+                "SentenceCompletionRef0008;Sentence;testDataSentence;Complete the sentence:;Sentence MC Image (Referenced—numbers with gaps);ℛ(0,3);;This is #ℛ(3,2)#;ℛ(3,1);;ℛ(3,5);#ℛ(3,6)#;ℛ(3,7)",
                 "SentenceCompletionRef0009;Sentence;testDataSentence;Complete the sentence:;Sentence Text (Referenced—letters);;;This is #ℛ(0,2)#;ℛ(0,1);ℛ(0,4);;#ℛ(0,6)#;R9 Sentence#0#with#1#gaps#2#to fill#3#in.",
                 "SentenceCompletionRef0010;Sentence;testDataSentence;Complete the sentence:;Sentence Text (Referenced—letters with gaps);;;This is #ℛ(1,2)#;ℛ(1,1);ℛ(1,4);;#ℛ(1,6)#;R10 Sentence#0#with#1#gaps#2#to fill#3#in.",
-                "SentenceCompletionRef0011;Sentence;testDataSentence;Complete the sentence:;Sentence Text (Referenced—numbers);;;This is #ℛ(2,2)#;ℛ(2,1);ℛ(2,4);;#ℛ(2,6)#;#ℛ(2,7)#",
-                "SentenceCompletionRef0012;Sentence;testDataSentence;Complete the sentence:;Sentence Text (Referenced—numbers with gaps);;;This is #ℛ(3,2)#;ℛ(3,1);ℛ(3,4);;#ℛ(3,6)#;#ℛ(3,7)#",
-                "SentenceCompletionRef0013;Sentence;testDataSentence;Complete the sentence:;Sentence Text Image (Referenced—letters);ℛ(0,3);;This is #ℛ(0,2)#;ℛ(0,1);ℛ(0,4);;#ℛ(0,6)#;#ℛ(0,7)#",
-                "SentenceCompletionRef0014;Sentence;testDataSentence;Complete the sentence:;Sentence Text Image (Referenced—letters with gaps);ℛ(0,3);;This is #ℛ(1,2)#;ℛ(1,1);ℛ(1,4);;#ℛ(1,6)#;#ℛ(1,7)#",
-                "SentenceCompletionRef0015;Sentence;testDataSentence;Complete the sentence:;Sentence Text Image (Referenced—numbers);ℛ(0,3);;This is #ℛ(2,2)#;ℛ(2,1);ℛ(2,4);;#ℛ(2,6)#;#ℛ(2,7)#",
-                "SentenceCompletionRef0016;Sentence;testDataSentence;Complete the sentence:;Sentence Text Image (Referenced—numbers with gaps);ℛ(0,3);;This is #ℛ(3,2)#;ℛ(3,1);ℛ(3,4);;#ℛ(3,6)#;#ℛ(3,7)#"
+                "SentenceCompletionRef0011;Sentence;testDataSentence;Complete the sentence:;Sentence Text (Referenced—numbers);;;This is #ℛ(2,2)#;ℛ(2,1);ℛ(2,4);;#ℛ(2,6)#;ℛ(2,7)",
+                "SentenceCompletionRef0012;Sentence;testDataSentence;Complete the sentence:;Sentence Text (Referenced—numbers with gaps);;;This is #ℛ(3,2)#;ℛ(3,1);ℛ(3,4);;#ℛ(3,6)#;ℛ(3,7)",
+                "SentenceCompletionRef0013;Sentence;testDataSentence;Complete the sentence:;Sentence Text Image (Referenced—letters);ℛ(0,3);;This is #ℛ(0,2)#;ℛ(0,1);ℛ(0,4);;#ℛ(0,6)#;ℛ(0,7)",
+                "SentenceCompletionRef0014;Sentence;testDataSentence;Complete the sentence:;Sentence Text Image (Referenced—letters with gaps);ℛ(0,3);;This is #ℛ(1,2)#;ℛ(1,1);ℛ(1,4);;#ℛ(1,6)#;ℛ(1,7)",
+                "SentenceCompletionRef0015;Sentence;testDataSentence;Complete the sentence:;Sentence Text Image (Referenced—numbers);ℛ(0,3);;This is #ℛ(2,2)#;ℛ(2,1);ℛ(2,4);;#ℛ(2,6)#;ℛ(2,7)",
+                "SentenceCompletionRef0016;Sentence;testDataSentence;Complete the sentence:;Sentence Text Image (Referenced—numbers with gaps);ℛ(0,3);;This is #ℛ(3,2)#;ℛ(3,1);ℛ(3,4);;#ℛ(3,6)#;ℛ(3,7)"
             ]
         },
         "testsentenceCompletion": {

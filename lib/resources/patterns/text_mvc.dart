@@ -299,8 +299,8 @@ class TextMvc extends Mvc {
         mvcpf ??= model.appActions.getPattern("MvcColumn");
         view = mvcpf!(map);
       }
-      tc.clear();
     } */
+    tc.clear();
   }
 
   @override

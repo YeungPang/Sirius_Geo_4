@@ -74,7 +74,9 @@ class SentenceMvc extends Mvc {
       col.add(tpf(imap));
       eheight = 0.061576 * model.scaleHeight; // 0.04926
       ewidth = 0.345 * model.scaleWidth;
-      ctext = map["_Sentence"];
+      //ctext = map["_Sentence"];
+      ctext = configAgent!.getElement(map["_Sentence"], map);
+      //ctext = configAgent!.checkText("_Sentence", map);
       imap = {
         "_height": eheight,
         "_width": ewidth,
