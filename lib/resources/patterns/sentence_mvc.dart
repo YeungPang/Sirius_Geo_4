@@ -66,6 +66,11 @@ class SentenceMvc extends Mvc {
       }
       len = ansList.length;
       options = configAgent!.getElement(map["_AnswerOptions"], map) ?? [];
+      if (options.isNotEmpty) {
+        int olen = options.length;
+        List<int> oList = getRandomList(olen, olen, null, null)!;
+        options = mapList(oList, options)!;
+      }
       col = [];
       imap = {
         "_text": configAgent!.checkText("_Descr", map),

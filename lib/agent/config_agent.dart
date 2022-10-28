@@ -265,10 +265,8 @@ class ConfigAgent {
             }
           } else {
             var rs = resolveStr(ds);
-            v = (noRef)
-                ? rs
-                : getElement(rs, vars,
-                    rowList: rowList, header: header, map: map);
+
+            v = (noRef) ? rs : getElement(rs, vars, header: header, map: map);
             ds1.add(v);
             if ((rs is int) && (rowList != null)) {
               rowList.add(rs);

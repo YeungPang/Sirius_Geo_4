@@ -64,6 +64,7 @@ class TextMvc extends Mvc {
     } */
     if (answer.contains("_ans")) {
       if (!retrying) {
+        rowList = [];
         options = configAgent!
             .getElement(map["_AnswerOptions"], map, rowList: rowList);
         ans = getRandom(options!.length, excl)!;

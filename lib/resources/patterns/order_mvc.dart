@@ -58,6 +58,9 @@ class OrderMvc extends Mvc {
       ansList = configAgent!.getElement(map["_Answer"], map);
       len = ansList.length;
       options = configAgent!.getElement(map["_AnswerOptions"], map);
+      int olen = options.length;
+      List<int> oList = getRandomList(olen, olen, null, null)!;
+      options = mapList(oList, options)!;
       col = [];
       var inf = configAgent!.getElement("_Info1", map);
       imap = {
