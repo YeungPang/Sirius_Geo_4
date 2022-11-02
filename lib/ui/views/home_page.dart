@@ -18,27 +18,28 @@ class HomePage extends StatelessWidget {
       return _getWidget(context);
     }
     model.init(context);
-    splashW = Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/SCircles.png"),
-              fit: BoxFit.cover,
-            ),
-            gradient: blueGradient),
-        height: model.screenHeight,
-        width: model.screenWidth,
-        alignment: Alignment.center,
+    splashW = SingleChildScrollView(
         child: Container(
-          height: 0.7 * model.screenHeight,
-          width: 0.7 * model.screenWidth,
-          child: Column(
-            children: [
-              Image.asset("assets/images/LogoGlobe.png"),
-              Image.asset("assets/images/SiriusGeoText.png"),
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          ),
-        ));
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/SCircles.png"),
+                  fit: BoxFit.cover,
+                ),
+                gradient: blueGradient),
+            height: model.screenHeight,
+            width: model.screenWidth,
+            alignment: Alignment.center,
+            child: SizedBox(
+              height: 0.7 * model.screenHeight,
+              width: 0.7 * model.screenWidth,
+              child: Column(
+                children: [
+                  Image.asset("assets/images/LogoGlobe.png"),
+                  Image.asset("assets/images/SiriusGeoText.png"),
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              ),
+            )));
     return _getWidget(context);
   }
 

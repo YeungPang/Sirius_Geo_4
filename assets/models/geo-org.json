@@ -184,7 +184,7 @@
             "header": "GRID;name;icon;progId;ref;T1;T2;T3;T4;T5",
             "elemList": [
                 "ContGR001;Continents;⊤(continents);[63,62,3,20,21,22,24,25];types;0;1;2;3",
-                "CounGR001;All the World Countries;⊤(countries);[4,5,6,19,23];types;4;5;6;7",
+                "CounGR001;All the World Countries and there are many;⊤(countries);[4,5,6,19,23];types;4;5;6;7",
                 "WorIGR001;World Intro;atmosphere;[7];types",
                 "hemiGR001;Hemisphere;climate_zones;[8];types",
                 "SolaGR001;Solar System;solar_system;[9];types",
@@ -292,7 +292,7 @@
                 "CounQ0012;MC;countryData;Which country flag is this?;;ℛ(4,2);6;#ℛ(4,1)#;ℛ(4,1);;ℛ([0‥6],1)",
                 "CounQ0013;MC;countryData;Which country flag is this?;;ℛ(5,2);6;#ℛ(5,1)#;ℛ(5,1);;ℛ([0‥6],1)",
                 "CounQ0014;MC;countryData;Which country flag is this?;;ℛ(6,2);6;#ℛ(6,1)#;ℛ(6,1);;ℛ([0‥6],1)",
-                "CounQ0015;MC;countryData;Which is the flag of #ℛ(_ans,1)#?;;;4;;ℛ(_ans,2);;ℛ([0‥6],2)",
+                "CounQ0015;MC;countryData;Which is the flag of #ℛ(_ans,1)#?;;;6;;ℛ(_ans,2);;ℛ([0‥6],2)",
                 "ContQ0016;MC;;The Rate of Natural Increase (RNI) is based on which factors?;(Select all that apply);;;;[0,3,5];;[Births,Emmigration,Immigration,Deaths,Illegal Immigration,Total Population]",
                 "CounQ0017;Text;countryData;Name one non-African English speaking countries?;;;1;;ℛ([0,5,6],1);ℛ([5,6],4);ℛ([0,5,6],1);[Two in North America, One in Europe]",
                 "ContQ0018;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;;;ℛ(Sentence:0)",
@@ -379,7 +379,7 @@
         "countryData": {
             "header": "CDID;Name;Flag;rank;similar;hint",
             "elemList": [
-                "Conu00001;Canada;assets/flags/Canada.svg;2;[];[Two in North America, One in Europe]",
+                "Conu00001;Canada;assets/flags/Canada.png;2;[];[Two in North America, One in Europe]",
                 "Conu00002;France;assets/flags/France.svg;47",
                 "Conu00003;Germany;assets/flags/Germany.svg;62",
                 "Conu00004;Italy;assets/flags/Italy.svg;70",
@@ -532,17 +532,17 @@
                 "(_ts ≔ ℛ(textStyleColor, 'white', _ts))) ⋁ (true)) ⋀ ⋓({_child: Φ(Text), _height: ℛ(hratio, Ø, 0.0468), _width: ℛ(swratio, Ø, 0.96)}) ⋀ ",
                 "⋓({_bm: Φ(SizedBox), _itemRef: dataList(_itemRefMap, _item), _elemItemList: ℛ(getCache, 'elemItemList')}) ⋀ ",
                 "(_children ≔ [_bm, _elemItemList]) ⋀  ⋓({_child: Φ(Column), _elevation: ℛ(hratio, Ø, 0.01), ",
-                "_cardRadius: ℛ(hratio, Ø, 0.015)}) ⋀ ⋓({_child: Φ(Card), _height: ℛ(hratio, Ø, 0.24)}) ⋀ ↲(Φ(Container))"
+                "_cardRadius: ℛ(hratio, Ø, 0.015)}) ⋀ ⋓({_child: Φ(Card), _height: ℛ(hratio, Ø, 0.255)}) ⋀ ↲(Φ(Container))"
             ],
             "elemItemList": [
                 "_itemRef, _index, _ref, _ts | (_ta ≔ _ref['pattern']) ⋀ ⋓({_childPattern: 'catCol', _direction: decode(axis, horizontal), ",
                 "_childMap: ({_itemRefMap: _ref, _tapAction: _ta[0], _ts: _ts})}) ⋀ ",
-                "(_child ≔ Φ(TapListItem)) ⋀ mapPat(patHeader, (0.172, Ø, Ø, Ø, centerLeft, Ø)) ⋀ ↲(Φ(Container))"
+                "(_child ≔ Φ(TapListItem)) ⋀ mapPat(patHeader, (0.192, Ø, Ø, Ø, centerLeft, Ø)) ⋀ ↲(Φ(Container))"
             ],
             "catCol": [
                 "_item, _index, _itemRefMap, _onTap, _progId, _ts | (_header ≔ _itemRefMap[header]) ⋀ mapPat(_header, _item) ⋀ ",
                 "(_children ≔ catView) ⋀ mapPat(rowColHeader, (center, start, Ø, Ø)) ⋀ (_child ≔ Φ(Column)) ⋀ ",
-                "mapPat(patHeader, (0.172, Ø, Ø, Ø, Ø, Ø)) ⋀ (_itemRef ≔ dataList(_itemRefMap, _item)) ⋀ ",
+                "mapPat(patHeader, (0.192, Ø, Ø, Ø, Ø, Ø)) ⋀ (_itemRef ≔ dataList(_itemRefMap, _item)) ⋀ ",
                 "(_onTap ≔ createEvent(route, {_itemRef: _itemRef, _itemRefMap: _ref, _title: _name, _progId: _progId, _PassScore: _PassScore})) ⋀",
                 "(_width ≔ ℛ(hratio, Ø, 0.172)) ⋀ ↲(Φ(Container))"
             ],

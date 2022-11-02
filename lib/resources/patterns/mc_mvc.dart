@@ -145,7 +145,9 @@ class McMvc extends Mvc {
     // String question = configAgent.checkText("_Question", map);
     // map["_question"] = question;
     String o = options[0].toString();
-    isImg = o.contains(".png") || o.contains(".svg");
+    List<String> co = o.split(".");
+    int to = co.length - 1;
+    isImg = (to > 0) ? imgSuff.contains(co[to].toLowerCase()) : false;
     eheight = isImg ? 0.12 * model.scaleHeight : 0.07143 * model.scaleHeight;
     ewidth = 0.345 * model.scaleWidth;
     BoxDecoration decoration = isImg ? shadowRCDecoration : elemDecoration;

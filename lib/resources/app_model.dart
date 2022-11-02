@@ -130,7 +130,10 @@ ProcessPattern getItemElemPattern(Map<String, dynamic> pmap) {
   }
   if (item is String) {
     Function pf;
-    if (item.contains("png") || item.contains("svg")) {
+    List<String> co = item.split(".");
+    int to = co.length - 1;
+    bool isImg = (to > 0) ? imgSuff.contains(co[to].toLowerCase()) : false;
+    if (isImg) {
       map["_name"] = item;
       if (item.contains("svg")) {
         pf = getPrimePattern["SVGAsset"]!;
@@ -164,7 +167,12 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
   Function cpf = getPrimePattern["Container"]!;
   ProcessPattern pp;
   Map<String, dynamic> iMap;
-  String? imgs = configAgent.getElement(map["_Q_Image"], map);
+  dynamic qImg = configAgent.getElement(map["_Q_Image"], map);
+  if (qImg is List<dynamic>) {
+    int ri = getRandom(qImg.length, [])!;
+    qImg = qImg[ri];
+  }
+  String? imgs = qImg;
   if ((imgs != null) && (imgs.isNotEmpty)) {
     if (imgs.contains("svg")) {
       pf = getPrimePattern["SVGAsset"]!;

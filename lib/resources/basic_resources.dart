@@ -10,6 +10,7 @@ final size20 = model.size20;
 final sizeScale = model.sizeScale;
 final double btnHeight = 0.0468 * model.scaleHeight;
 final double btnWidth = 0.3733 * model.scaleWidth;
+final imgSuff = ["svg", "png", "gif", "jpeg", "jpg", "tif", "tiff"];
 
 const Map<String, Color> colorMap = {
   "almost": Color(0xFFFF9E50),
