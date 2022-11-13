@@ -40,6 +40,11 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
         duration: const Duration(milliseconds: 300), vsync: this);
     height = model.scaleHeight;
     width = model.scaleWidth;
+    _reset();
+    super.initState();
+  }
+
+  _reset() {
     map = widget.map;
     _scale[0]["text"] = map["_text1"];
     _scale[1]["text"] = map["_text2"];
@@ -50,8 +55,10 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     _scale[0]["end"] = map["_end1"];
     _scale[1]["end"] = map["_end2"];
     _scale[2]["end"] = map["_end3"];
-    _ratio12 = map["_ratio12"];
-    _ratio13 = map["_ratio13"];
+    num n = map["_ratio12"];
+    _ratio12 = n.toDouble();
+    n = map["_ratio13"];
+    _ratio13 = n.toDouble();
     _scale[0]["s"] = map["_suffix1"];
     _scale[1]["s"] = map["_suffix2"];
     _scale[2]["s"] = map["_suffix3"];
@@ -59,11 +66,6 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     _scale[0]["r"] = (_scale[0]["end"] - _scale[0]["start"]) / 100.0;
     _scale[1]["r"] = (_scale[1]["end"] - _scale[1]["start"]) / 100.0;
     _scale[2]["r"] = (_scale[2]["end"] - _scale[2]["start"]) / 100.0;
-    _reset();
-    super.initState();
-  }
-
-  _reset() {
     _mv = map["_mv"];
     _absoluteValue = 0.0;
     _isSwitched = false;
@@ -76,10 +78,14 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     RxDouble _confirmNoti = resxController.getRx("confirm");
     _confirmNoti.value = 0.5;
     _mv["_state"] = "start";
+    _res = 0;
   }
 
   @override
   Widget build(BuildContext context) {
+    if (map != widget.map) {
+      _reset();
+    }
     return ValueListenableBuilder<int>(
       valueListenable: map["_sliderNoti"],
       builder: (BuildContext context, int value, Widget? child) => Stack(
@@ -328,7 +334,8 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
           : (rs == "o")
               ? colorMap["almost"]
               : colorMap["incorrect"];
-      double ans = _mv["_ans" + (i + 1).toString()];
+      num n = _mv["_ans" + (i + 1).toString()];
+      double ans = n.toDouble();
       diff = ans - _scale[i]["value"] - _scale[i]["start"];
     }
     return [

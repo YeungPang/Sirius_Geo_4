@@ -36,11 +36,18 @@ class _SliderWidgetState extends State<SliderWidget>
 
   @override
   void initState() {
+    _reset();
+    super.initState();
+  }
+
+  _reset() {
     map = widget.map;
     _mv = map["_mv"];
     _text = map["_text"];
-    _start = map["_start"];
-    _end = map["_end"];
+    num n = map["_start"];
+    _start = n.toDouble();
+    n = map["_end"];
+    _end = n.toDouble();
     width = model.scaleWidth;
     height = model.scaleHeight;
     _ys = model.map["text"]["yourSel"];
@@ -49,11 +56,13 @@ class _SliderWidgetState extends State<SliderWidget>
     _absoluteValue = 0.0;
     _scaleValue = 0.0;
     _ratio = (_end - _start) / 100.0;
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (map != widget.map) {
+      _reset();
+    }
     return ValueListenableBuilder<int>(
       valueListenable: map["_sliderNoti"],
       builder: (BuildContext context, int value, Widget? child) => Stack(

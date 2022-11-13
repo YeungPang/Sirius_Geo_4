@@ -239,7 +239,7 @@
                 "CounG0004;Select Country Flag;flags;0.75;19;questions;14;14;14",
                 "ContG0005;Select Answers;⊤(continents);0.6;20;questions;15",
                 "ContG0006;Identify Continent;⊤(continents);0.6;21;questions;3;3;3",
-                "ContG0007;Continent;⊤(continents);0.6;22;questions;18;19;17;4",
+                "ContG0007;Continent;⊤(continents);0.6;22;questions;19;19;18;17;4",
                 "CounG0004;Country Pick;⊤(countries);0.6;23;questions;21;21;21",
                 "ArtiA0001;Article Test;article;;;articleWeb;0"
             ]
@@ -297,7 +297,7 @@
                 "CounQ0017;Text;countryData;Name one non-African English speaking countries?;;;1;;ℛ([0,5,6],1);ℛ([5,6],4);ℛ([0,5,6],1);[Two in North America, One in Europe]",
                 "ContQ0018;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;;;ℛ(Sentence:0)",
                 "ContQ0019;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;[immigration,births,emmigration,deaths,illegal immigrants,total population];;ℛ(Sentence:0)",
-                "ContQ0020;Slider;contData;What is the size of #ℛ(_ans,1)# by surface area?;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(ContinentSize:0)",
+                "ContQ0020;Slider;contData;What is the size of #ℛ(_ans,1)# by surface area?;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(ContSize:0)",
                 "CounQ0021;Slider;countryData;What rank is #ℛ(_ans,1)# in surface area size order?;;;;;ℛ(_ans,3);;ℛ([0‥6],1);;ℛ(CountryRank:0)",
                 "CounQ0022;SvgMap;countryData;Select #ℛ(_ans,1)#.;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(CountSelection:0)",
                 "CounQ0023;MC;;What is the population of Switzerland in millions?;;;2;Eight millions;0;;[8,2]",

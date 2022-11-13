@@ -22,6 +22,7 @@ class SliderMvc extends Mvc {
   bool refresh = true;
   List<int> rowList = [];
   String _scale1 = "_scale1";
+  late Map<String, dynamic> smap;
 
   @override
   double getBgHeight() {
@@ -31,19 +32,19 @@ class SliderMvc extends Mvc {
   @override
   init() {
     configAgent ??= map["_configAgent"];
-    options =
-        configAgent!.getElement(map["_AnswerOptions"], map, rowList: rowList);
-    if (options.isEmpty) {
-      return;
-    }
     if (refresh) {
       excl = [];
     }
     isVert = (map["_scale3"] == null) && (map["_scale"] == null);
     sliderNoti = ValueNotifier<int>(0);
     map["_sliderNoti"] = sliderNoti;
-    String answer = map["_Answer"];
+    String answer = map["_Answer"].toString();
     if (answer.contains("_ans")) {
+      options =
+          configAgent!.getElement(map["_AnswerOptions"], map, rowList: rowList);
+      if (options.isEmpty) {
+        return;
+      }
       ans = getRandom(options.length, excl)!;
       excl.add(ans);
     }
@@ -70,7 +71,8 @@ class SliderMvc extends Mvc {
         mvmap["_state"] = "start";
       }
       pf = model.appActions.getPattern("VertSlider")!;
-      ProcessPattern pp = pf(map);
+      smap = getSMap(map);
+      ProcessPattern pp = pf(smap);
       imap = {
         "_margin": catIconPadding,
         "_height": mvmap["_height"],
@@ -111,7 +113,8 @@ class SliderMvc extends Mvc {
         _scale1 = "_scale";
         pf = model.appActions.getPattern("Slider")!;
       }
-      map["_colElem"] = pf(map);
+      smap = getSMap(map);
+      map["_colElem"] = pf(smap);
     }
     pf = model.appActions.getPattern("MvcColumn")!;
     view = pf(map);
@@ -131,24 +134,26 @@ class SliderMvc extends Mvc {
         map["_state"] = "confirmed";
         String subTitle = model.map["text"]["accuracy"];
         if (isVert) {
-          int top1 = map["_scale1Top"];
-          int bottom1 = map["_scale1Bottom"];
-          int top2 = map["_scale2Top"];
-          int bottom2 = map["_scale2Bottom"];
+          int top1 = smap["_scale1Top"];
+          int bottom1 = smap["_scale1Bottom"];
+          int top2 = smap["_scale2Top"];
+          int bottom2 = smap["_scale2Bottom"];
           int des = 0;
           int per = 0;
-          String ansType = map["_ansType"];
+          String ansType = smap["_ansType"];
           int ans1;
           int ans2;
-          if (ansType == map["_scale1"]) {
-            ans1 = configAgent!.getElement(map["_Answer"], map);
+          if (ansType == smap["_scale1"]) {
+            ans1 = smap["_Answer"];
+            //configAgent!.getElement(smap["_Answer"], map);
             ans2 = ((ans1 - top1) * (bottom2 - top2) / (bottom1 - top1) + top2)
                 .toInt();
             int in1 = mvmap["_in1"]!;
             des = ans1 - in1;
             per = (des * 100 ~/ (bottom1 - top1)).abs();
           } else {
-            ans2 = configAgent!.getElement(map["_Answer"], map);
+            ans2 = smap["_Answer"];
+            //configAgent!.getElement(smap["_Answer"], map);
             ans1 = ((ans2 - top2) * (bottom1 - top1) / (bottom2 - top2) + top1)
                 .toInt();
             int in2 = mvmap["_in2"]!;
@@ -161,11 +166,11 @@ class SliderMvc extends Mvc {
             mvmap["_resStatus"] = "g";
             sliderNoti.value = 1;
             r = "correct";
-            buildSliderResult(map);
+            buildSliderResult(smap);
             map["_addRes"] = mvmap["_res"];
           } else {
             map["_subTitle"] = subTitle.replaceFirst("#A%#", per.toString());
-            if (per <= map["_almostPer"]) {
+            if (per <= smap["_almostPer"]) {
               mvmap["_resStatus"] = "o";
               sliderNoti.value = 2;
               r = "almost";
@@ -176,21 +181,23 @@ class SliderMvc extends Mvc {
             }
           }
         } else {
-          double ans1 = configAgent!.getElement(map[_scale1], map);
+          num n = smap[_scale1];
+          double ans1 = n.toDouble();
           mvmap["_ans1"] = ans1;
           if (_scale1 == "_scale1") {
-            mvmap["_ans2"] = configAgent!.getElement(map["_scale2"], map);
-            mvmap["_ans3"] = configAgent!.getElement(map["_scale3"], map);
+            mvmap["_ans2"] = smap["_scale2"];
+            mvmap["_ans3"] = smap["_scale3"];
           }
           double per = ((ans1 - mvmap["_in1"]) / ans1 * 100.00).abs();
-          double corrPer = map["_corrPer"];
+          n = smap["_corrPer"];
+          double corrPer = n.toDouble();
           map["_subTitle"] =
               subTitle.replaceFirst("#A%#", per.toStringAsFixed(2));
           if (per <= corrPer) {
             r = "correct";
             mvmap["_resStatus"] = "g";
             sliderNoti.value = 1;
-          } else if (per <= map["_almostPer"]) {
+          } else if (per <= smap["_almostPer"]) {
             r = "almost";
             mvmap["_resStatus"] = "o";
             sliderNoti.value = 2;
@@ -204,7 +211,7 @@ class SliderMvc extends Mvc {
       case "ShowAnswer":
         sliderNoti.value = 1;
         if (isVert) {
-          buildSliderResult(map);
+          buildSliderResult(smap);
         }
         map["_addRes"] = mvmap["_res"];
 
@@ -236,5 +243,22 @@ class SliderMvc extends Mvc {
   @override
   int getHintIndex() {
     return ans;
+  }
+
+  Map<String, dynamic> getSMap(Map<String, dynamic> _map) {
+    Map<String, dynamic> _smap = {};
+    _map.forEach((key, value) {
+      if ((value is String) &&
+          ((value.contains('ℛ')) || (value.contains('#')))) {
+        if (value.contains('#')) {
+          _smap[key] = configAgent!.checkText(key, _map);
+        } else {
+          _smap[key] = configAgent!.getElement(key, _map);
+        }
+      } else {
+        _smap[key] = value;
+      }
+    });
+    return _smap;
   }
 }
