@@ -53,3 +53,29 @@ String getRenewDay(Map<String, dynamic> map) {
   //model.map["userProfile"]["renew"] = day;
   return day;
 }
+
+String numString(num n, {int dec = 2}) {
+  String? c = model.map["lookup"]["NumSep"];
+  String ns = "";
+  String nns = "";
+  if (n is int) {
+    ns = n.toString();
+    if ((n < 1000) || (c == null)) {
+      return ns;
+    }
+    nns = c + ns.substring(ns.length - 3);
+  } else if (n is double) {
+    ns = n.toStringAsFixed(dec);
+    if ((n < 1000.0) || (c == null)) {
+      return ns;
+    }
+    int d = (dec == 0) ? 3 : 4;
+    nns = c + ns.substring(ns.length - d - dec);
+  }
+  ns = ns.substring(0, ns.length - 3);
+  while (ns.length > 3) {
+    nns = c! + ns.substring(ns.length - 3) + nns;
+  }
+  nns = ns + nns;
+  return nns;
+}

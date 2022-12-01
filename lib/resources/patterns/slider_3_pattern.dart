@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sirius_geo_4/util/util.dart';
 import '../../builder/special_pattern.dart';
 import '../../resources/basic_resources.dart';
 import '../../builder/pattern.dart';
@@ -31,6 +32,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
   String _ys = "";
   late Map<String, dynamic> _mv;
   late Map<String, dynamic> map;
+  List<int> _dec = [2, 2, 2];
 
   //bool reset = false;
 
@@ -46,6 +48,10 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
 
   _reset() {
     map = widget.map;
+    _dec[0] = map["_scale1Dec"] ?? 2;
+    _dec[1] = map["_scale2Dec"] ?? 2;
+    _dec[2] = map["_scale3Dec"] ?? 2;
+
     _scale[0]["text"] = map["_text1"];
     _scale[1]["text"] = map["_text2"];
     _scale[2]["text"] = map["_text3"];
@@ -72,9 +78,12 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
     _scale[0]["value"] = 0.0;
     _scale[1]["value"] = 0.0;
     _scale[2]["value"] = 0.0;
-    _scale[0]["t"] = _scale[0]["start"].toString() + _scale[0]["s"];
-    _scale[1]["t"] = _scale[1]["start"].toString() + _scale[1]["s"];
-    _scale[2]["t"] = _scale[2]["start"].toString() + _scale[2]["s"];
+    _scale[0]["t"] =
+        numString(_scale[0]["start"], dec: _dec[0]) + ' ' + _scale[0]["s"];
+    _scale[1]["t"] =
+        numString(_scale[1]["start"], dec: _dec[1]) + ' ' + _scale[1]["s"];
+    _scale[2]["t"] =
+        numString(_scale[2]["start"], dec: _dec[2]) + ' ' + _scale[2]["s"];
     RxDouble _confirmNoti = resxController.getRx("confirm");
     _confirmNoti.value = 0.5;
     _mv["_state"] = "start";
@@ -260,12 +269,15 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
                         _scale[2]["value"] = _scale[0]["value"] * _ratio13;
                       }
                       double sv = _scale[1]["value"] + _scale[1]["start"];
-                      _scale[1]["t"] = sv.toStringAsFixed(2) + _scale[1]["s"];
+                      _scale[1]["t"] =
+                          numString(sv, dec: _dec[1]) + ' ' + _scale[1]["s"];
                       sv = _scale[0]["value"] + _scale[0]["start"];
                       _mv["_in1"] = sv;
-                      _scale[0]["t"] = sv.toStringAsFixed(2) + _scale[0]["s"];
+                      _scale[0]["t"] =
+                          numString(sv, dec: _dec[0]) + " " + _scale[0]["s"];
                       sv = _scale[2]["value"] + _scale[2]["start"];
-                      _scale[2]["t"] = sv.toStringAsFixed(2) + _scale[2]["s"];
+                      _scale[2]["t"] =
+                          numString(sv, dec: _dec[2]) + ' ' + _scale[2]["s"];
                     });
                   },
                 ),
@@ -276,15 +288,23 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
                     children: [
                       Text(
                         _isSwitched
-                            ? _scale[1]["start"].toString() + _scale[1]["s"]
-                            : _scale[0]["start"].toString() + _scale[0]["s"],
+                            ? numString(_scale[1]["start"], dec: _dec[1]) +
+                                ' ' +
+                                _scale[1]["s"]
+                            : numString(_scale[0]["start"], dec: _dec[0]) +
+                                ' ' +
+                                _scale[0]["s"],
                         style: sliderSmallTextStyle,
                       ),
                       const Spacer(),
                       Text(
                         _isSwitched
-                            ? _scale[1]["end"].toString() + _scale[1]["s"]
-                            : _scale[0]["end"].toString() + _scale[0]["s"],
+                            ? numString(_scale[1]["end"], dec: _dec[1]) +
+                                ' ' +
+                                _scale[1]["s"]
+                            : numString(_scale[0]["end"], dec: _dec[0]) +
+                                ' ' +
+                                _scale[0]["s"],
                         style: sliderSmallTextStyle,
                       ),
                     ],
@@ -371,7 +391,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
                     style: sliderSmallTextStyle,
                   ),
                   Text(
-                    diff.toStringAsFixed(2) + _scale[i]["s"],
+                    numString(diff, dec: _dec[i]) + _scale[i]["s"],
                     style: sliderSmallTextStyle.copyWith(color: c),
                   )
                 ],
@@ -387,12 +407,16 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
           child: Row(
             children: [
               Text(
-                _scale[i]["start"].toString() + _scale[i]["s"],
+                numString(_scale[i]["start"], dec: _dec[i]) +
+                    ' ' +
+                    _scale[i]["s"],
                 style: sliderSmallTextStyle,
               ),
               const Spacer(),
               Text(
-                _scale[i]["end"].toString() + _scale[i]["s"],
+                numString(_scale[i]["end"], dec: _dec[i]) +
+                    ' ' +
+                    _scale[i]["s"],
                 style: sliderSmallTextStyle,
               ),
             ],

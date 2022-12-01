@@ -36,7 +36,8 @@ class McMvc extends Mvc {
 
   @override
   double getBgHeight() {
-    return bgHeight;
+    double? r = map["_bgHeight"];
+    return (r == null) ? bgHeight : r * model.scaleHeight;
   }
 
   @override
@@ -47,6 +48,11 @@ class McMvc extends Mvc {
     configAgent ??= map["_configAgent"];
     options =
         configAgent!.getElement(map["_AnswerOptions"], map, rowList: rowList);
+    List<dynamic>? addOptions =
+        configAgent!.getElement(map["_AddOptions"], map);
+    if ((addOptions != null) && (addOptions.isNotEmpty)) {
+      options.addAll(addOptions);
+    }
     if (options.isEmpty) {
       return;
     }
@@ -132,7 +138,8 @@ class McMvc extends Mvc {
     }
     if (ansList.isEmpty) {
       List<int> incl = [ans];
-      map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;
+      map["_ans"] =
+          (rowList.isNotEmpty) && (rowList.length > ans) ? rowList[ans] : ans;
       dynamic ra = map["_range"];
       if (ra is String) {
         ra = configAgent!.getElement("_range", map);

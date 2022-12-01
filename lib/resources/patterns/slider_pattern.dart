@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sirius_geo_4/util/util.dart';
 import '../../builder/special_pattern.dart';
 import '../../resources/basic_resources.dart';
 import '../../builder/pattern.dart';
@@ -32,6 +33,7 @@ class _SliderWidgetState extends State<SliderWidget>
   late double _absoluteValue;
   late double _scaleValue;
   late double _ratio;
+  int dec = 2;
   int _res = 0;
 
   @override
@@ -52,10 +54,14 @@ class _SliderWidgetState extends State<SliderWidget>
     height = model.scaleHeight;
     _ys = model.map["text"]["yourSel"];
     _suff = map["_suffix"];
-    _scalet = _start.toString() + _suff;
+    dec = map["_scaleDec"] ?? dec;
+    _scalet = numString(_start, dec: dec) + ' ' + _suff;
     _absoluteValue = 0.0;
     _scaleValue = 0.0;
     _ratio = (_end - _start) / 100.0;
+    RxDouble _confirmNoti = resxController.getRx("confirm");
+    _confirmNoti.value = 0.5;
+    _mv["_state"] = "start";
   }
 
   @override
@@ -163,7 +169,7 @@ class _SliderWidgetState extends State<SliderWidget>
                       _absoluteValue = lowerValue;
                       _scaleValue = lowerValue * _ratio;
                       double sv = _scaleValue + _start;
-                      _scalet = sv.toStringAsFixed(2) + _suff;
+                      _scalet = numString(sv, dec: dec) + ' ' + _suff;
                       _mv["_in1"] = sv;
                     });
                   },
@@ -174,12 +180,12 @@ class _SliderWidgetState extends State<SliderWidget>
                   child: Row(
                     children: [
                       Text(
-                        _start.toString() + _suff,
+                        numString(_start, dec: dec) + ' ' + _suff,
                         style: sliderSmallTextStyle,
                       ),
                       const Spacer(),
                       Text(
-                        _end.toString() + _suff,
+                        numString(_end, dec: dec) + ' ' + _suff,
                         style: sliderSmallTextStyle,
                       ),
                     ],
@@ -256,7 +262,7 @@ class _SliderWidgetState extends State<SliderWidget>
                     style: sliderSmallTextStyle,
                   ),
                   Text(
-                    diff.toStringAsFixed(2) + _suff,
+                    numString(diff, dec: dec) + ' ' + _suff,
                     style: sliderSmallTextStyle.copyWith(color: c),
                   )
                 ],
@@ -272,12 +278,12 @@ class _SliderWidgetState extends State<SliderWidget>
           child: Row(
             children: [
               Text(
-                _start.toString() + _suff,
+                numString(_start, dec: dec) + ' ' + _suff,
                 style: sliderSmallTextStyle,
               ),
               const Spacer(),
               Text(
-                _end.toString() + _suff,
+                numString(_end, dec: dec) + ' ' + _suff,
                 style: sliderSmallTextStyle,
               ),
             ],
@@ -363,7 +369,7 @@ class _SliderWidgetState extends State<SliderWidget>
     TextStyle ts = sliderTextStyle.copyWith(color: c);
     List<Widget> wl = [
       Text(
-        _mv["_ans1"].toString() + _suff,
+        numString(_mv["_ans1"], dec: dec) + ' ' + _suff,
         style: ts,
       ),
     ];

@@ -128,6 +128,8 @@
         "yourScore": "Your Score"
     },
     "lookup": {
+        "NumSep": ",",
+        "comma": ",",
         "United States": [
             "usa",
             "us",
@@ -222,7 +224,7 @@
                 "ContG0002;Continent Size;⊤(continents);0.75;62;questions;1",
                 "ContG0003;Continent Quiz;⊤(continents);0.75;3;questions;26;2",
                 "CounG0001;Identify Country;⊤(countries);0.75;4;questions;27;6",
-                "CounG0002;Identify Flag;flags;0.75;5;questions;[7‥13];[7‥13];7‥13",
+                "CounG0002;Identify Flag;flags;0.75;5;questions;[7‥13,32];[7‥13,32]",
                 "CounG0003;Country Quiz;⊤(countries);0.75;6;questions;16;31;30;28;29;22;20",
                 "WorIG0001;World Intro;atmosphere;0.75;7;questions",
                 "hemiG0001;Hemisphere;climate_zones;0.75;8;questions",
@@ -239,7 +241,7 @@
                 "CounG0004;Select Country Flag;flags;0.75;19;questions;14;14;14",
                 "ContG0005;Select Answers;⊤(continents);0.6;20;questions;15",
                 "ContG0006;Identify Continent;⊤(continents);0.6;21;questions;3;3;3",
-                "ContG0007;Continent;⊤(continents);0.6;22;questions;19;19;18;17;4",
+                "ContG0007;Continent;⊤(continents);0.6;22;questions;17;18;19;19;4",
                 "CounG0004;Country Pick;⊤(countries);0.6;23;questions;21;21;21",
                 "ArtiA0001;Article Test;article;;;articleWeb;0"
             ]
@@ -276,7 +278,7 @@
             ]
         },
         "questions": {
-            "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx",
+            "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx;AddOptions;bgHeight",
             "elemList": [
                 "ContQ0001;MC;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ(_ans,7)",
                 "ContQ0002;Order;contData;Sort the continents by surface area from largest to smallest;;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];;[Africa, Antarctica, Asia, Australia, Europe, North America, South America];;ℛ(Order:0)",
@@ -285,18 +287,18 @@
                 "ContQ0005;Text;;Name the 7 continents.;;;;[Asia,Africa,North America,South America,Antarctica,Europe,Australia];[Africa,Antarctica,Asia,Australia,Europe,North America,South America]",
                 "CounQ0006;MC;countryData;What is this country?;;;6;;ℛ(_ans,3);;ℛ([15, 32, 43, 48, 109, 110, 122, 211, 241],3)",
                 "CounQ0007;Text;;What is the population of Switzerland in millions?;;;;8 millions;8",
-                "CounQ0008;MC;countryData;Which country flag is this?;;ℛ(0,2);6;#ℛ(0,1)#;ℛ(0,1);;ℛ([0‥6],1)",
-                "CounQ0009;MC;countryData;Which country flag is this?;;ℛ(1,2);6;#ℛ(1,1)#;ℛ(1,1);;ℛ([0‥6],1)",
-                "CounQ0010;MC;countryData;Which country flag is this?;;ℛ(2,2);6;#ℛ(2,1)#;ℛ(2,1);;ℛ([0‥6],1)",
-                "CounQ0011;MC;countryData;Which country flag is this?;;ℛ(3,2);6;#ℛ(3,1)#;ℛ(3,1);;ℛ([0‥6],1)",
-                "CounQ0012;MC;countryData;Which country flag is this?;;ℛ(4,2);6;#ℛ(4,1)#;ℛ(4,1);;ℛ([0‥6],1)",
-                "CounQ0013;MC;countryData;Which country flag is this?;;ℛ(5,2);6;#ℛ(5,1)#;ℛ(5,1);;ℛ([0‥6],1)",
-                "CounQ0014;MC;countryData;Which country flag is this?;;ℛ(6,2);6;#ℛ(6,1)#;ℛ(6,1);;ℛ([0‥6],1)",
-                "CounQ0015;MC;countryData;Which is the flag of #ℛ(_ans,1)#?;;;6;;ℛ(_ans,2);;ℛ([0‥6],2)",
+                "CounQ0008;MC;countryData;Which country flag is this?;;ℛ(0,2);6;#ℛ(0,1)#;ℛ(0,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0..3])",
+                "CounQ0009;MC;countryData;Which country flag is this?;;ℛ(1,2);6;#ℛ(1,1)#;ℛ(1,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0..3])",
+                "CounQ0010;MC;countryData;Which country flag is this?;;ℛ(2,2);6;#ℛ(2,1)#;ℛ(2,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0..3])",
+                "CounQ0011;MC;countryData;Which country flag is this?;;ℛ(3,2);6;#ℛ(3,1)#;ℛ(3,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0..3])",
+                "CounQ0012;MC;countryData;Which country flag is this?;;ℛ(4,2);6;#ℛ(4,1)#;ℛ(4,1);;ℛ([0‥7],1)",
+                "CounQ0013;MC;countryData;Which country flag is this?;;ℛ(5,2);6;#ℛ(5,1)#;ℛ(5,1);;ℛ([0‥7],1)",
+                "CounQ0014;MC;countryData;Which country flag is this?;;ℛ(6,2);6;#ℛ(6,1)#;ℛ(6,1);;ℛ([0‥7],1)",
+                "CounQ0015;MC;countryData;Which is the flag of #ℛ(_ans,1)#?;;;6;#ℛ(_ans,2)#;ℛ(_ans,2);;ℛ([0‥6],2)",
                 "ContQ0016;MC;;The Rate of Natural Increase (RNI) is based on which factors?;(Select all that apply);;;;[0,3,5];;[Births,Emmigration,Immigration,Deaths,Illegal Immigration,Total Population]",
                 "CounQ0017;Text;countryData;Name one non-African English speaking countries?;;;1;;ℛ([0,5,6],1);ℛ([5,6],4);ℛ([0,5,6],1);[Two in North America, One in Europe]",
-                "ContQ0018;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;;;ℛ(Sentence:0)",
-                "ContQ0019;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];;[immigration,births,emmigration,deaths,illegal immigrants,total population];;ℛ(Sentence:0)",
+                "ContQ0018;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];[aaa,[xxx,yyy,zzz],ccc];;;ℛ(Sentence:0)",
+                "ContQ0019;Sentence;;Complete the sentence:;;;6;;[births,deaths,total population];;[immigration,births,emmigration,deaths,illegal immigrants,total population,nothing 1, nothing 2, nothing 3, nothing4];;ℛ(Sentence:0)",
                 "ContQ0020;Slider;contData;What is the size of #ℛ(_ans,1)# by surface area?;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(ContSize:0)",
                 "CounQ0021;Slider;countryData;What rank is #ℛ(_ans,1)# in surface area size order?;;;;;ℛ(_ans,3);;ℛ([0‥6],1);;ℛ(CountryRank:0)",
                 "CounQ0022;SvgMap;countryData;Select #ℛ(_ans,1)#.;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(CountSelection:0)",
@@ -309,7 +311,8 @@
                 "CounQ0029;Text;countryData;Name one non-African English speaking countries?;;;1;;[Canada, USA, UK];[ℛ(5,4), ℛ(6,4)];[Canada, USA, UK]",
                 "CounQ0030;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, UK];{UK: ℛ(5,4), USA: [United States, :United States of America]};[Canada, USA, UK];[Two in North America, One in Europe]",
                 "CounQ0031;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, ℛ(5,1)];[ℛ(0,4),[United States, United States of America], ℛ(5,4)];[Canada, USA, ℛ(5,1)]",
-                "CounQ0032;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, ℛ(5,1)];ℛ([0,6,5],4);[Canada, USA, ℛ(5,1)]"
+                "CounQ0032;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, ℛ(5,1)];ℛ([0,6,5],4);[Canada, USA, ℛ(5,1)]",
+                "CounQ0033;MC;countryData;Which country flag is this?;;ℛ(7,2);7;#ℛ(7,1)#;ℛ(7,1);;ℛ([0‥7],1)"
             ]
         },
         "articleWeb": {
@@ -339,9 +342,9 @@
             ]
         },
         "ContSize": {
-            "header": "scale;text;suffix;start;end;almostPer;corrPer",
+            "header": "scale;text;suffix;start;end;almostPer;corrPer;scaleDec",
             "elemList": [
-                "ℛ(_ans,3);Absolute size; Million km²;0.0;50.0;10.0;5.0"
+                "ℛ(_ans,3);Absolute size;Thousand km²;0.0;50000.0;10.0;5.0;0"
             ]
         },
         "CountryRank": {
@@ -385,7 +388,13 @@
                 "Conu00004;Italy;assets/flags/Italy.svg;70",
                 "Conu00005;Switzerland;⊤(imgSrc)/Switzerland.png;131",
                 "Conu00006;United Kingdom;assets/flags/United_Kingdom.svg;77;[great britian, gb, uk]",
-                "Conu00007;United States;assets/flags/United_States.svg;3;[united states of america, us, usa]"
+                "Conu00007;United States;assets/flags/United_States.svg;3;[united states of america, us, usa]",
+                "Conu00008;Russia;assets/flags/Russia_Final.svg;1"
+            ]
+        },
+        "commaAns": {
+            "elemList": [
+                "10 years;100 years;10⊤(comma)000 years;1⊤(comma)000⊤(comma)000 years"
             ]
         },
         "TectonicPlateData": {

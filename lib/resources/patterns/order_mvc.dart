@@ -45,7 +45,8 @@ class OrderMvc extends Mvc {
 
   @override
   double getBgHeight() {
-    return bgHeight;
+    double? r = map["_bgHeight"];
+    return (r == null) ? bgHeight : r * model.scaleHeight;
   }
 
   @override

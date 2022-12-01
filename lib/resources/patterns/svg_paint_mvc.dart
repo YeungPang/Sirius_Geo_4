@@ -27,7 +27,8 @@ class SvgPaintMvc extends Mvc {
 
   @override
   double getBgHeight() {
-    return bgHeight;
+    double? r = map["_bgHeight"];
+    return (r == null) ? bgHeight : r * model.scaleHeight;
   }
 
   @override
@@ -35,6 +36,11 @@ class SvgPaintMvc extends Mvc {
     configAgent ??= map["_configAgent"];
     options =
         configAgent!.getElement(map["_AnswerOptions"], map, rowList: rowList);
+    List<dynamic>? addOptions =
+        configAgent!.getElement(map["_AddOptions"], map);
+    if ((addOptions != null) && (addOptions.isNotEmpty)) {
+      options.addAll(addOptions);
+    }
     if (options.isEmpty) {
       return;
     }

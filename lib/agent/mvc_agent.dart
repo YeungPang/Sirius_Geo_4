@@ -729,11 +729,31 @@ class MvcAgent extends Agent {
             Function sf = getPrimePattern["Column"]!;
             imap["_child"] = sf(tmap);
           } else {
-            Map<String, dynamic> tmap = {
-              "_text": anstxt.toString(),
-              "_textStyle": choiceButnTxtStyle,
-            };
-            imap["_child"] = tpf(tmap);
+            String atxt = anstxt.toString();
+            List<String> co = atxt.split(".");
+            int to = co.length - 1;
+            bool isImg =
+                (to > 0) ? imgSuff.contains(co[to].toLowerCase()) : false;
+            if (isImg) {
+              double eheight = 0.12 * model.scaleHeight;
+              double ewidth = 0.345 * model.scaleWidth;
+              BoxDecoration decoration = shadowRCDecoration;
+              Map<String, dynamic> childMap = {
+                "_height": eheight,
+                "_width": ewidth,
+                "_alignment": Alignment.center,
+                //"_decoration": decoration,
+                "_item": atxt
+              };
+              Function iepf = model.appActions.getPattern("ItemElem")!;
+              imap["_child"] = iepf(childMap);
+            } else {
+              Map<String, dynamic> tmap = {
+                "_text": atxt,
+                "_textStyle": choiceButnTxtStyle,
+              };
+              imap["_child"] = tpf(tmap);
+            }
           }
         } else {
           Map<String, dynamic> tmap = {"_height": 16.0 * sizeScale};

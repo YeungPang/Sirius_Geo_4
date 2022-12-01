@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sirius_geo_4/util/util.dart';
 import '../../builder/special_pattern.dart';
 import '../../builder/std_pattern.dart';
 import '../basic_resources.dart';
@@ -60,7 +61,7 @@ class VertSlider extends StatelessWidget {
     for (int i = 0; i <= div; i++) {
       int v = top + interval * i;
       l.add(Text(
-        v.toString(),
+        numString(v),
         style: sliderBoldTextStyle,
       ));
     }
@@ -258,7 +259,7 @@ class VertSlider extends StatelessWidget {
     int v = (bottom - top) * value ~/ max + top;
     Map<String, dynamic> _mv = map["_mv"];
     _mv["_in1"] = v;
-    return v.toString();
+    return numString(v);
   }
 
   String scale2Converter(double value, Map<String, dynamic> smap) {
@@ -267,7 +268,7 @@ class VertSlider extends StatelessWidget {
     int v = (bottom - top) * value ~/ 200.0 + top;
     Map<String, dynamic> _mv = map["_mv"];
     _mv["_in2"] = v;
-    return v.toString();
+    return numString(v);
   }
 
   Widget _buildColorMeters(double g, double o, double r, double h) {
@@ -381,7 +382,7 @@ buildSliderResult(Map<String, dynamic> map) {
       style: ts,
     ),
     Text(
-      _mv["_ans1"].toString(),
+      numString(_mv["_ans1"]),
       style: ts1,
     ),
   ];
@@ -404,7 +405,7 @@ buildSliderResult(Map<String, dynamic> map) {
       style: ts,
     ),
     Text(
-      _mv["_ans2"].toString(),
+      numString(_mv["_ans2"]),
       style: ts1,
     ),
   ];

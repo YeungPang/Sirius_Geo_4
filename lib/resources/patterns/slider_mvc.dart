@@ -26,7 +26,8 @@ class SliderMvc extends Mvc {
 
   @override
   double getBgHeight() {
-    return bgHeight;
+    double? r = map["_bgHeight"];
+    return (r == null) ? bgHeight : r * model.scaleHeight;
   }
 
   @override
@@ -42,6 +43,11 @@ class SliderMvc extends Mvc {
     if (answer.contains("_ans")) {
       options =
           configAgent!.getElement(map["_AnswerOptions"], map, rowList: rowList);
+      List<dynamic>? addOptions =
+          configAgent!.getElement(map["_AddOptions"], map);
+      if ((addOptions != null) && (addOptions.isNotEmpty)) {
+        options.addAll(addOptions);
+      }
       if (options.isEmpty) {
         return;
       }
@@ -215,6 +221,9 @@ class SliderMvc extends Mvc {
         }
         map["_addRes"] = mvmap["_res"];
 
+        break;
+      case "TryAgain":
+        mvmap["_state"] = "start";
         break;
       default:
         break;

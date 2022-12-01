@@ -186,6 +186,7 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
       "_boxFit": BoxFit.cover,
     };
     iMap["_child"] = pf(iMap);
+    iMap["_decoration"] = shadowDecoration2;
     // iMap["_borderRadius"] = BorderRadius.circular(size10);
     // pf = getPrimePattern["ClipRRect"];
     // iMap["_child"] = pf(iMap);
@@ -421,6 +422,9 @@ ProcessPattern getThreeSliderPattern(Map<String, dynamic> pmap) {
     "_ratio12",
     "_ratio13",
     "_sliderNoti",
+    "_scale1Dec",
+    "_scale2Dec",
+    "_scale3Dec",
     "_mv"
   ];
   for (String s in nl) {
@@ -440,6 +444,7 @@ ProcessPattern getSliderPattern(Map<String, dynamic> pmap) {
     "_start",
     "_end",
     "_sliderNoti",
+    "_scaleDec",
     "_mv"
   ];
   for (String s in nl) {

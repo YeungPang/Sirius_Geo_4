@@ -149,6 +149,14 @@ final BoxDecoration shadowDecoration = BoxDecoration(
   borderRadius: BorderRadius.circular(size10),
 );
 
+final BoxDecoration shadowDecoration2 = BoxDecoration(
+  color: Colors.white,
+  boxShadow: const [
+    BoxShadow(color: Color(0xFFE0E0E0), blurRadius: 4.0, spreadRadius: 2.0)
+  ],
+  borderRadius: BorderRadius.circular(size10),
+);
+
 final BoxDecoration diaDecoration = BoxDecoration(
   color: Colors.white,
   boxShadow: [bs],

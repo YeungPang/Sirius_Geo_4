@@ -49,7 +49,8 @@ class TextMvc extends Mvc {
 
   @override
   double getBgHeight() {
-    return bgHeight;
+    double? r = map["_bgHeight"];
+    return (r == null) ? bgHeight : r * model.scaleHeight;
   }
 
   @override
@@ -67,6 +68,14 @@ class TextMvc extends Mvc {
         rowList = [];
         options = configAgent!
             .getElement(map["_AnswerOptions"], map, rowList: rowList);
+        List<dynamic>? addOptions =
+            configAgent!.getElement(map["_AddOptions"], map, rowList: rowList);
+        if ((addOptions != null) &&
+            (addOptions.isNotEmpty) &&
+            (options != null)) {
+          options!.addAll(addOptions);
+        }
+
         ans = getRandom(options!.length, excl)!;
         excl.add(ans);
         map["_ans"] = rowList.isNotEmpty ? rowList[ans] : ans;

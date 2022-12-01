@@ -47,10 +47,12 @@ class SentenceMvc extends Mvc {
   bool completed = false;
   String ctext = "";
   ProcessEvent? pe;
+  List<dynamic>? acceptedAns;
 
   @override
   double getBgHeight() {
-    return bgHeight;
+    double? r = map["_bgHeight"];
+    return (r == null) ? bgHeight : r * model.scaleHeight;
   }
 
   @override
@@ -65,18 +67,54 @@ class SentenceMvc extends Mvc {
         ansList = ansList.map((e) => e.toString()).toList();
       }
       len = ansList.length;
+      acceptedAns = configAgent!.getElement(map["_Accepted_Answers"], map);
+      if (acceptedAns != null) {
+        for (int j = 0; j < acceptedAns!.length; j++) {
+          dynamic s = acceptedAns![j];
+          if (s is String) {
+            if (s[0] == '[') {
+              List<dynamic> l = getListData(s.substring(1, s.length - 1));
+              acceptedAns![j] = l;
+            }
+          }
+        }
+      }
       options = configAgent!.getElement(map["_AnswerOptions"], map) ?? [];
+      List<dynamic>? addOptions =
+          configAgent!.getElement(map["_AddOptions"], map);
+      if ((addOptions != null) && (addOptions.isNotEmpty)) {
+        options.addAll(addOptions);
+      }
       if (options.isNotEmpty) {
         int olen = options.length;
-        List<int> oList = getRandomList(olen, olen, null, null)!;
+        int range = map["_range"] ?? olen;
+        List<int> incList = [];
+        for (String s in ansList) {
+          int inx = options.indexOf(s);
+          if (inx < 0) {
+            dynamic iS = int.tryParse(s) ?? double.tryParse(s);
+            iS ??= (s == 'true')
+                ? true
+                : (s == 'false')
+                    ? false
+                    : s;
+          }
+          inx = options.indexOf(s);
+          if (inx >= 0) {
+            incList.add(inx);
+          }
+        }
+        List<int> oList = getRandomList(olen, range, incList, null)!;
         options = mapList(oList, options)!;
       }
       col = [];
-      imap = {
-        "_text": configAgent!.checkText("_Descr", map),
-        "_textStyle": dragButnTxtStyle,
-      };
-      col.add(tpf(imap));
+      if (map["_Descr"] != null) {
+        imap = {
+          "_text": configAgent!.checkText("_Descr", map),
+          "_textStyle": dragButnTxtStyle,
+        };
+        col.add(tpf(imap));
+      }
       eheight = 0.061576 * model.scaleHeight; // 0.04926
       ewidth = 0.345 * model.scaleWidth;
       //ctext = map["_Sentence"];
@@ -527,7 +565,21 @@ class SentenceMvc extends Mvc {
         map["_state"] = "confirmed";
         for (int i = 0; i < ansList.length; i++) {
           String r = "correct";
-          if (answers[i].toLowerCase() != ansList[i].toString().toLowerCase()) {
+          String answer = answers[i].toLowerCase();
+          bool incorr = answer != ansList[i].toString().toLowerCase();
+          if ((incorr) && (acceptedAns != null)) {
+            dynamic aans = acceptedAns![i];
+            if (aans is String) {
+              incorr = answer != aans.toLowerCase();
+            } else if (aans is List<dynamic>) {
+              int j = 0;
+              while (incorr && (j < aans.length)) {
+                incorr = answer != aans[j].toString().toLowerCase();
+                j++;
+              }
+            }
+          }
+          if (incorr) {
             r = "incorrect";
             cor = false;
           }

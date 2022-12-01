@@ -422,7 +422,8 @@ class ControlAgent extends Agent {
       ipat = (ipat is String)
           ? (ipat.isEmpty)
               ? nil
-              : ((ipat[0] == '_') ? vars[ipat] ?? ipat : checkModelText(ipat))
+              //: ((ipat[0] == '_') ? vars[ipat] ?? ipat : checkModelText(ipat))
+              : ((ipat[0] == '_') ? vars[ipat] ?? ipat : ipat)
           : ipat;
       String k = '_' + patHeader[i];
       if ((ipat != nil) && (ipat != exist)) {
@@ -482,7 +483,7 @@ class ControlAgent extends Agent {
                 s = s.substring(1, s.length - 1);
                 vars[k] = getMapContent(s);
               } else {
-                vars[k] = s;
+                vars[k] = checkModelText(s);
               }
             } else {
               vars[k] = s;
