@@ -676,3 +676,34 @@ class LayoutPattern extends ProcessPattern {
     });
   }
 }
+
+class ExpandTextPattern extends ProcessPattern {
+  ExpandTextPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String? name}) {
+    ProcessPattern tp = TextPattern(map);
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: tp.getWidget(),
+            )
+          ],
+          crossAxisAlignment:
+              map["_rowCrossAxisAlignment"] ?? CrossAxisAlignment.center,
+          mainAxisAlignment:
+              map["_rowMainAxisAlignment"] ?? MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          verticalDirection: VerticalDirection.down,
+        )
+      ],
+      crossAxisAlignment:
+          map["_colCrossAxisAlignment"] ?? CrossAxisAlignment.center,
+      mainAxisAlignment:
+          map["_colMainAxisAlignment"] ?? MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
+      verticalDirection: VerticalDirection.down,
+    );
+  }
+}

@@ -1134,6 +1134,54 @@ ProcessPattern getScreenShotPattern(Map<String, dynamic> pmap) {
   return ScreenShotPattern(map);
 }
 
+ProcessPattern getCupertinoSwitchPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {};
+  List<String> nl = [
+    "_switch",
+    "_trackColor",
+    "_activeColor",
+    "_onTap",
+    "_tapAction",
+  ];
+  for (String s in nl) {
+    dynamic d = pmap[s];
+    if (d != null) {
+      map[s] = d;
+    }
+  }
+  return CupertinoSwitchPattern(map);
+}
+
+ProcessPattern getExpandTextPattern(Map<String, dynamic> pmap) {
+  Map<String, dynamic> map = {};
+  List<String> nl = [
+    "_text",
+    "_locale",
+    "_maxLines",
+    "_textOverflow",
+    "_semanticsLabel",
+    "_softWrap",
+    "_strutStyle",
+    "_textStyle",
+    "_textAlign",
+    "_textDirection",
+    "_textHeightBehavior",
+    "_textScaleFactor",
+    "_textWidthBasis",
+    "_rowCrossAxisAlignment",
+    "_rowMainAxisAlignment",
+    "_colCrossAxisAlignment",
+    "_colMainAxisAlignment"
+  ];
+  for (String s in nl) {
+    dynamic d = pmap[s];
+    if (d != null) {
+      map[s] = d;
+    }
+  }
+  return ExpandTextPattern(map);
+}
+
 const Map<String, Function> getPrimePattern = {
   "Align": getAlignPattern,
   "AppBar": getAppBarPattern,
@@ -1145,6 +1193,7 @@ const Map<String, Function> getPrimePattern = {
   "ColorButton": getColorButtonPattern,
   "Column": getColumnPattern,
   "Container": getContainerPattern,
+  "CupertinoSwitch": getCupertinoSwitchPattern,
   "Divider": getDividerPattern,
   "DottedBorder": getDottedBorderPattern,
   "Draggable": getDraggablePattern,
@@ -1153,6 +1202,7 @@ const Map<String, Function> getPrimePattern = {
   "Form": getFormPattern,
   "ProgressText": getProgressTextPattern,
   "Expanded": getExpandedPattern,
+  "ExpandText": getExpandTextPattern,
   "FittedBox": getFittedBoxPattern,
   "Flexible": getFlexiblePattern,
   "GridView": getGridViewPattern,

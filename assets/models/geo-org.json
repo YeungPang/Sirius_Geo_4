@@ -280,7 +280,7 @@
         "questions": {
             "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx;AddOptions;bgHeight",
             "elemList": [
-                "ContQ0001;MC;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ(_ans,7)",
+                "ContQ0001;MC;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#. So we need a lot more information.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ(_ans,7)",
                 "ContQ0002;Order;contData;Sort the continents by surface area from largest to smallest;;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];;[Africa, Antarctica, Asia, Australia, Europe, North America, South America];;ℛ(Order:0)",
                 "ContQ0003;Text;contData;What is the largest continent by surface area?;;;;The largest continent is Asia.;ℛ(2,1)",
                 "ContQ0004;Text;contData;What is this continent?;;ℛ(_ans,2);;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);ℛ(_ans,6);ℛ([0‥6],1)",
@@ -336,7 +336,7 @@
             ]
         },
         "ContinentSize": {
-            "header": "scale1;scale2;scale3;text1;text2;text3;suffix1;suffix2;suffix3;start1;start2;start3;end1;end2;end3;ratio12;ratio13;almostPer;corrPer",
+            "header": "scale1;scale2;scale3;text1;text2;text3;suffix1;suffix2;suffix3;start1;start2;start3;end1;end2;end3;ratio12;ratio13;almostPer;corrPer;scale1Dec;scale2Dec;scale3Dec",
             "elemList": [
                 "ℛ(_ans,3);ℛ(_ans,4);ℛ(_ans,5);Absolute size;% of Earth Surface Area;% of Earth Land Surface Area; Million km²;%;%;0.0;0.0;0.0;50.0;100.0;100.0;0.19604;0.66858;10.0;5.0"
             ]

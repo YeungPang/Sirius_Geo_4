@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:get/get.dart';
@@ -336,7 +337,9 @@ _onTap(BuildContext? context, Map<String, dynamic> map) {
         return;
       }
     }
-    model.context = (key == null) ? context : key.currentContext;
+    if ((context != null) || (key != null)) {
+      model.context = (key == null) ? context : key.currentContext;
+    }
     model.appActions.doFunction(func, m, _map);
   }
 }
@@ -1006,5 +1009,31 @@ class ScreenShotPattern extends ProcessPattern {
     resxController.setCache(map["_screenName"]!, _screenshotController);
     Widget? w = getPatternWidget(map["_child"]);
     return Screenshot(child: w!, controller: _screenshotController);
+  }
+}
+
+class CupertinoSwitchPattern extends ProcessPattern {
+  CupertinoSwitchPattern(Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String? name}) {
+    bool s = map["_switch"];
+    dynamic tColor = map["_trackColor"];
+    if (tColor is String) {
+      tColor = colorMap[tColor];
+    }
+    tColor ??= Colors.grey;
+    dynamic aColor = map["_activeColor"];
+    if (aColor is String) {
+      aColor = colorMap[aColor];
+    }
+    aColor ??= Colors.blue;
+    return CupertinoSwitch(
+        trackColor: tColor,
+        activeColor: aColor,
+        value: s,
+        onChanged: (newValue) {
+          map["_switch"] = newValue;
+          _onTap(null, map);
+        });
   }
 }

@@ -35,7 +35,7 @@ class VersionAgent {
     } else {
       map["userProfile"]["timestamp"] = map["versionTimestamp"];
     }
-    String ustr = await _testUserSyncUp();
+    String ustr = "{}"; //await _testUserSyncUp();
     if (ustr != "{}") {
       Map<String, dynamic> umap = json.decode(ustr);
       Map<String, dynamic> up = map["userProfile"];

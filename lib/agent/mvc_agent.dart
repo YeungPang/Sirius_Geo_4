@@ -708,7 +708,7 @@ class MvcAgent extends Agent {
             List<dynamic> ansList = anstxt;
             Map<String, dynamic> tmap = {
               "_text": ansList[0],
-              "_textStyle": choiceButnTxtStyle,
+              "_textStyle": choiceButnTxtStyle
             };
             List<dynamic> al = [];
             al.add(tpf(tmap));
@@ -737,7 +737,7 @@ class MvcAgent extends Agent {
             if (isImg) {
               double eheight = 0.12 * model.scaleHeight;
               double ewidth = 0.345 * model.scaleWidth;
-              BoxDecoration decoration = shadowRCDecoration;
+              //BoxDecoration decoration = shadowRCDecoration;
               Map<String, dynamic> childMap = {
                 "_height": eheight,
                 "_width": ewidth,
@@ -751,8 +751,23 @@ class MvcAgent extends Agent {
               Map<String, dynamic> tmap = {
                 "_text": atxt,
                 "_textStyle": choiceButnTxtStyle,
+                "_textAlign": TextAlign.center,
+                "_rowMainAxisAlignment": MainAxisAlignment.center
               };
-              imap["_child"] = tpf(tmap);
+              Function sf = getPrimePattern["ExpandText"]!;
+/*               Map<String, dynamic> emap = {"_child": tpf(tmap)};
+              Function sf = getPrimePattern["Expanded"]!;
+              Map<String, dynamic> cmap = {
+                "_children": [sf(emap)],
+                "_mainAxisAlignment": MainAxisAlignment.center
+              }; */
+              rtch += 17.0 * sizeScale;
+              imap["_height"] = rtch;
+              rheight += 17.0 * sizeScale;
+              // sf = getPrimePattern["Row"]!;
+              // cmap["_children"] = [sf(cmap)];
+              // sf = getPrimePattern["Column"]!;
+              imap["_child"] = sf(tmap);
             }
           }
         } else {
