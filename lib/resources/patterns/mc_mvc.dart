@@ -33,6 +33,8 @@ class McMvc extends Mvc {
   List<dynamic> ansList = [];
   List<dynamic> selList = [];
   List<int> rowList = [];
+  dynamic aoption;
+  dynamic ooption;
 
   @override
   double getBgHeight() {
@@ -48,11 +50,15 @@ class McMvc extends Mvc {
     configAgent ??= map["_configAgent"];
     options =
         configAgent!.getElement(map["_AnswerOptions"], map, rowList: rowList);
-    List<dynamic>? addOptions =
-        configAgent!.getElement(map["_AddOptions"], map);
-    if ((addOptions != null) && (addOptions.isNotEmpty)) {
-      options.addAll(addOptions);
-    }
+    aoption = map["_AddOptions"];
+/*    if ((aoption != null) &&
+        !((aoption is String) && aoption.contains('_ans'))) {
+      List<dynamic> addOptions =
+          configAgent!.getElement(map["_AddOptions"], map);
+      if (addOptions.isNotEmpty) {
+        options.addAll(addOptions);
+      }
+    } */
     if (options.isEmpty) {
       return;
     }
@@ -96,6 +102,9 @@ class McMvc extends Mvc {
     selList = [];
     //excl = [];
     var answer = map["_Answer"];
+    if (ooption != null) {
+      options = ooption;
+    }
     if (answer is String) {
       if (answer.contains("_ans")) {
         ans = getRandom(options.length, excl)!;
@@ -137,16 +146,26 @@ class McMvc extends Mvc {
       }
     }
     if (ansList.isEmpty) {
-      List<int> incl = [ans];
+      excl.add(ans);
       map["_ans"] =
           (rowList.isNotEmpty) && (rowList.length > ans) ? rowList[ans] : ans;
+      if (aoption != null) {
+        ooption = options;
+        options = configAgent!.getElement(map["_AddOptions"], map);
+        var v = configAgent!.getElement(answer, map, rowList: rowList);
+        ans = options.indexOf(v);
+        if (ans < 0) {
+          options.insert(0, v);
+          ans = 0;
+        }
+      }
       dynamic ra = map["_range"];
       if (ra is String) {
         ra = configAgent!.getElement("_range", map);
       }
       int r = ra;
+      List<int> incl = [ans];
       range = getRandomList(options.length, r, incl, [])!;
-      excl.add(ans);
     }
     map["_ansInx"] = ans;
     // String question = configAgent.checkText("_Question", map);

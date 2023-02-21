@@ -225,7 +225,7 @@
                 "ContG0003;Continent Quiz;⊤(continents);0.75;3;questions;26;2",
                 "CounG0001;Identify Country;⊤(countries);0.75;4;questions;27;6",
                 "CounG0002;Identify Flag;flags;0.75;5;questions;[7‥13,32];[7‥13,32]",
-                "CounG0003;Country Quiz;⊤(countries);0.75;6;questions;16;31;30;28;29;22;20",
+                "CounG0003;Country Quiz;⊤(countries);0.75;6;questions;33;33;33;16;31;30;28;29;22;20",
                 "WorIG0001;World Intro;atmosphere;0.75;7;questions",
                 "hemiG0001;Hemisphere;climate_zones;0.75;8;questions",
                 "SolaG0001;Solar System;solar_system;0.75;9;questions",
@@ -312,7 +312,8 @@
                 "CounQ0030;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, UK];{UK: ℛ(5,4), USA: [United States, :United States of America]};[Canada, USA, UK];[Two in North America, One in Europe]",
                 "CounQ0031;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, ℛ(5,1)];[ℛ(0,4),[United States, United States of America], ℛ(5,4)];[Canada, USA, ℛ(5,1)]",
                 "CounQ0032;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, ℛ(5,1)];ℛ([0,6,5],4);[Canada, USA, ℛ(5,1)]",
-                "CounQ0033;MC;countryData;Which country flag is this?;;ℛ(7,2);7;#ℛ(7,1)#;ℛ(7,1);;ℛ([0‥7],1)"
+                "CounQ0033;MC;countryData;Which country flag is this?;;ℛ(7,2);7;#ℛ(7,1)#;ℛ(7,1);;ℛ([0‥7],1)",
+                "CounQ0034;MC;countryData;Which continent does #ℛ(_ans,1)# belong to?;;;4;#ℛ(_ans,6)#;ℛ(_ans,6);;ℛ([0‥7],6);;;;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]"
             ]
         },
         "articleWeb": {
@@ -380,16 +381,16 @@
             ]
         },
         "countryData": {
-            "header": "CDID;Name;Flag;rank;similar;hint",
+            "header": "CDID;Name;Flag;rank;similar;hint;Continent;ContOptions",
             "elemList": [
-                "Conu00001;Canada;assets/flags/Canada.png;2;[];[Two in North America, One in Europe]",
-                "Conu00002;France;assets/flags/France.svg;47",
-                "Conu00003;Germany;assets/flags/Germany.svg;62",
-                "Conu00004;Italy;assets/flags/Italy.svg;70",
-                "Conu00005;Switzerland;⊤(imgSrc)/Switzerland.png;131",
-                "Conu00006;United Kingdom;assets/flags/United_Kingdom.svg;77;[great britian, gb, uk]",
-                "Conu00007;United States;assets/flags/United_States.svg;3;[united states of america, us, usa]",
-                "Conu00008;Russia;assets/flags/Russia_Final.svg;1"
+                "Conu00001;Canada;assets/flags/Canada.png;2;[];[Two in North America, One in Europe];North America;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
+                "Conu00002;France;assets/flags/France.svg;47;;;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
+                "Conu00003;Germany;assets/flags/Germany.svg;62;;;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
+                "Conu00004;Italy;assets/flags/Italy.svg;70;;;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
+                "Conu00005;Switzerland;assets/flags/Switzerland.png;131;;;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
+                "Conu00006;United Kingdom;assets/flags/United_Kingdom.svg;77;[great britian, gb, uk];;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
+                "Conu00007;United States;assets/flags/United_States.svg;3;[united states of america, us, usa];;North America;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
+                "Conu00008;Russia;assets/flags/Russia_Final.svg;1;;;Asia;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]"
             ]
         },
         "commaAns": {
