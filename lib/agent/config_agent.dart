@@ -394,21 +394,41 @@ List<dynamic>? getDataList(Map<String, dynamic> m, var ielem) {
       List<int> excl = [];
       for (int i = inx; i < elem.length; i++) {
         var einx = elem[i];
+        bool isRef = false;
         if (einx is String) {
           String iinx = einx.trim();
           if (iinx[0] == 'ℛ') {
             iinx = iinx.substring(2, iinx.length - 1);
+            isRef = true;
           }
           int? ii = int.tryParse(iinx);
           einx = ii ?? iinx;
         }
         if (einx is String) {
-          List<int> il = resolveIntList(einx.trim());
-          int ri = getRandom(il.length, excl)!;
-          excl.add(ri);
-          ri = il[ri];
-          var v = el[ri];
-          dl.add(v);
+          if ((isRef) && (einx.contains(':'))) {
+            List<String> ls = einx.split(':');
+            String ref = ls[0].trim();
+            Map<String, dynamic>? map = facts[ref] ?? model.map[ref];
+            if (map != null) {
+              List<dynamic> r = map["elemList"];
+              var h = map["header"];
+              int? i = int.tryParse(ls[1].trim());
+              if ((i != null) && (i < r.length)) {
+                List<dynamic> header = (h is String) ? h.split(";") : h;
+                List<dynamic> input = [header, r[i]];
+                Map<String, dynamic> m = {};
+                model.appActions.doFunction("mapPat", input, m);
+                dl.add(m);
+              }
+            }
+          } else {
+            List<int> il = resolveIntList(einx.trim());
+            int ri = getRandom(il.length, excl)!;
+            excl.add(ri);
+            ri = il[ri];
+            var v = el[ri];
+            dl.add(v);
+          }
         } else if (einx is int) {
           var v = el[einx];
           dl.add(v);

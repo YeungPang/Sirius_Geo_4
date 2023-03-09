@@ -302,12 +302,22 @@ class MvcAgent extends Agent {
       currMv!["_prog"] = il;
     }
     List<dynamic> itemRef = currMv!["_itemRef"];
-    List<dynamic> item = itemRef[it];
+    dynamic item = itemRef[it];
     Map<String, dynamic> itemRefMap = currMv!["_itemRefMap"];
     var mheader = itemRefMap["header"];
     List<dynamic> header = (mheader is String) ? mheader.split(";") : mheader;
-    List<dynamic> input = [header, item];
-    model.appActions.doFunction("mapPat", input, currMv);
+    if (item is List<dynamic>) {
+      List<dynamic> input = [header, item];
+      model.appActions.doFunction("mapPat", input, currMv);
+    } else if (item is Map<String, dynamic>) {
+      for (String s in header) {
+        String _s = '_' + s;
+        if (currMv![_s] != null) {
+          currMv![_s] = null;
+        }
+      }
+      currMv!.addAll(item);
+    }
     String mvcName = currMv!["_Q_Pattern_Name"];
     String? ref = currMv!["_ref"];
     ConfigAgent configAgent =
@@ -329,7 +339,7 @@ class MvcAgent extends Agent {
       List<dynamic> header = [];
       List<dynamic> data =
           configAgent.getElement(mapping, currMv!, header: header);
-      input = [header, data];
+      List<dynamic> input = [header, data];
       model.appActions.doFunction("mapPat", input, currMv);
 /*       Map<String, dynamic> inMap = facts["mapping"][mapping];
       if (inMap != null) {

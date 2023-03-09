@@ -204,7 +204,8 @@ ProcessPattern getImageAssetPattern(Map<String, dynamic> pmap) {
     "_repeat",
     "_centerSlice",
     "_matchTextDirection",
-    "_filterQuality"
+    "_filterQuality",
+    "_file"
   ];
   for (String s in nl) {
     dynamic d = pmap[s];

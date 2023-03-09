@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -286,10 +287,27 @@ class ImageAssetPattern extends ProcessPattern {
   ImageAssetPattern(Map<String, dynamic> map) : super(map);
   @override
   Widget getWidget({String? name}) {
+    File? f = map["_file"];
+    if (f != null) {
+      return Image.file(
+        f,
+        width: map["_width"],
+        height: map["_height"],
+      );
+    }
     String _name = map["_name"];
     if (_name.contains("http")) {
       return Image(
         image: CachedNetworkImageProvider(_name),
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) {
+            return child;
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
         frameBuilder: map["_frameBuilder"],
         errorBuilder: map["_errorBuilder"],
         semanticLabel: map["_semanticLabel"],

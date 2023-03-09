@@ -220,7 +220,7 @@
             "pattern": "mvcScaffold",
             "header": "GID;name;icon;PassScore;progId;ref;Q1;Q2;Q3;Q4;Q5;Q6;Q7;Q8;Q9;Q10",
             "elemList": [
-                "ContG0001;Identify Continent;⊤(continents);0.6;63;questions;0;0;24;0;25",
+                "ContG0001;Identify Continent;⊤(continents);0.6;63;questions;0;ℛ(questions1:0);ℛ(questions:24);0;25",
                 "ContG0002;Continent Size;⊤(continents);0.75;62;questions;1",
                 "ContG0003;Continent Quiz;⊤(continents);0.75;3;questions;26;2",
                 "CounG0001;Identify Country;⊤(countries);0.75;4;questions;27;6",
@@ -275,6 +275,12 @@
                 "MountC001;Mountains;groups;50.0;7;8;9;10",
                 "IslanC001;Islands;groups;50.0;11",
                 "CitieC001;Cities;groups;50.0;12;13"
+            ]
+        },
+        "questions1": {
+            "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx;AddOptions;bgHeight",
+            "elemList": [
+                "ContQ0001;MC;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#. So we need a lot more information.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ(_ans,7)"
             ]
         },
         "questions": {
@@ -844,7 +850,7 @@
                 "↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
             ],
             "supportfsm": [
-                "_event | (popRoute()) ⋀ ((_event = shareApp) ⋀ ↲(onShare({_text: ⊤(sharedText), _subject: ⊤(sharedSubject)}))) ⋁ ",
+                "_event | (popRoute()) ⋀ τ(_event) ⋀ ((_event = shareApp) ⋀ ↲(onShare({_text: ⊤(sharedText), _subject: ⊤(sharedSubject)}))) ⋁ ",
                 "((_event = cCache) ⋀ ↲(clearCache())) ⋁ (↲(route('supportScaffold')))"
             ],
             "actions": [
