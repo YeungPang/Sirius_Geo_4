@@ -352,6 +352,11 @@ class MvcAgent extends Agent {
  */
     }
     currMv!["_configAgent"] = configAgent;
+    List<String> mvcOpt = mvcName.split("-");
+    if (mvcOpt.length > 1) {
+      mvcName = mvcOpt[0];
+      currMv!["_mvcOpt"] = mvcOpt;
+    }
     Function? mvcF = appMvc[mvcName];
     if (mvcF != null) {
       currMvc = mvcF(currMv);

@@ -211,9 +211,13 @@ class GroupProgNotiPattern extends ProcessPattern {
       List<dynamic> cl = resxController.getCache("compList");
       cl.add(clp);
       List<dynamic> ilid = lid[inx - 1];
-      for (List<dynamic> sid in ilid) {
-        List<int> iid = sid.map((s) => s as int).toList();
-        progId.addAll(iid);
+      for (var sid in ilid) {
+        if (sid is List<dynamic>) {
+          List<int> iid = sid.map((s) => s as int).toList();
+          progId.addAll(iid);
+        } else {
+          progId.add(sid);
+        }
       }
       total = progId.length;
 

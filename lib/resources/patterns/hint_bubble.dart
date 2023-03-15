@@ -122,7 +122,7 @@ Widget getPrevNext(Map<String, dynamic> map) {
           Align(
               alignment: const Alignment(0.6, 0.0),
               child: last
-                  ? GestureDetector(
+                  ? /* GestureDetector(
                       onTap: () {
                         model.appActions
                             .doFunction("mvc", [map["_onTryTeachMode"]], map);
@@ -146,7 +146,8 @@ Widget getPrevNext(Map<String, dynamic> map) {
                           ),
                         ),
                       ),
-                    )
+                    ) */
+                  SizedBox(width: size10)
                   : GestureDetector(
                       onTap: () {
                         model.appActions

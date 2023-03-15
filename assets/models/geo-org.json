@@ -143,6 +143,7 @@
         "continents": "assets/images/continents.png",
         "countries": "assets/svg_images/countries.svg",
         "css": ".default{fill:grey;stroke:grey700;stroke-width:1.0;}.selected{fill:btnBlue;}.answer{fill:correct;}",
+        "FAQ": "https://siriustechnology.net/faq/?app=true",
         "greyArrow": "assets/images/greyarrow.png",
         "greenArrow": "assets/images/greenarrow.png",
         "hash": "#",
@@ -268,7 +269,8 @@
             "dataStart": "GR1",
             "header": "CID;name;ref;compPercent;GR1;GR2;GR3;GR4;GR5",
             "elemList": [
-                "ContiC001;Continents;groups;10.0;0",
+                "ContiT001;Continents;items;40.0;0;1",
+                "ContiC001;Continents;groups;30.0;0",
                 "CountC001;Continents and Countries;groups;40.0;0;1",
                 "WorlC001;World;groups;50.0;2;3;4",
                 "WaterC001;Water;groups;50.0;5;6;7",
@@ -425,10 +427,12 @@
             ]
         }
     },
-    "search": [
-        "Articles⇒items:23;",
-        "Continents⇒groups:0;Country⇒groups:1;Countries⇒groups:1;Identify Continent⇒items:0;"
-    ],
+    "search": {
+        "Articles": "items:23",
+        "Continents": "groups:0",
+        "Country": "groups:1;groups:2",
+        "Identify Continent": "items:0"
+    },
     "menuList": [
         "home;Home",
         "settings;Settings",
@@ -565,7 +569,7 @@
             "catView": [
                 "_item, _index, _name, _icon, _progId, _ts | (_sb ≔ Φ(SizedBox, {_height: 5.0})) ⋀ ",
                 "⋓({_iconColor: ℛ(color, '#1785C1'), _iconSize: ℛ(sizeScale, Ø, 45.0)}) ⋀ ⋓({_child: Φ(Icon), _width: ℛ(hratio, Ø, 0.128353), ",
-                "_decoration: ℛ(appRes, shadowDecoration)}) ⋀ mapPat(patHeader, (0.123, Ø, Ø, Ø, Ø, Ø)) ⋀ ",
+                "_decoration: ℛ(appRes, shadowDecoration)}) ⋀ mapPat(patHeader, (0.106, Ø, Ø, Ø, Ø, Ø)) ⋀ ",
                 "(_ic ≔ Φ(NotiElem)) ⋀ (_tw ≔ Φ(Text, {_text: _name, _textStyle: _ts, _textAlign: center})) ⋀ ↲([_ic, _sb, _tw])"
             ],
             "subNavi": [
@@ -657,7 +661,10 @@
                 "mapPat(patHeader, (0.1539, Ø, Ø, Ø, Ø, Ø)) ⋀ (_itemRef ≔ dataList(_itemRefMap, _item)) ⋀ ",
                 "(_width ≔ ℛ(hratio, Ø, 0.155)) ⋀ (_grProgId ≪ _progId) ⋀ ↲(Φ(Opacity, {_child: Φ(Container), _opacity: 0.5}))"
             ],
-            "supportScaffold": "_event | (_text ≔ 'Support') ⋀ ⋓({_title: genAppBar, _child: mainBottomRow, _body: supportBody}) ⋀ ↲(scaffoldPat)",
+            "supportScaffold": [
+                "_event | (_text ≔ 'Support') ⋀ (((_event = 'FAQ') ⋀ (_body ≔ Φ(WebView, {_url: ℛ(lookup, 'FAQ'), _scriptMode: 'unrestricted'}))) ⋁ ",
+                "(_body ≔ supportBody)) ⋀ ⋓({_title: genAppBar, _child: mainBottomRow}) ⋀ ↲(scaffoldPat)"
+            ],
             "supportBody": [
                 "_event | (_alignment ≔ decode(alignment, topCenter)) ⋀ (_children ≔ [supportContainer, supportCards]) ⋀ ",
                 "(_child ≔ Φ(Container, {_alignment: _alignment, _child: Φ(Stack), _width: ℛ(swratio, Ø, 1.0), _height: ℛ(shratio, Ø, 0.825)})) ⋀ ",

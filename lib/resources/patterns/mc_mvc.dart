@@ -35,6 +35,7 @@ class McMvc extends Mvc {
   List<int> rowList = [];
   dynamic aoption;
   dynamic ooption;
+  List<String>? mvcOpt;
 
   @override
   double getBgHeight() {
@@ -47,6 +48,7 @@ class McMvc extends Mvc {
     if (map["_Q_Image"] == null) {
       bgHeight = 0.8 * bgHeight;
     }
+    mvcOpt = map["_mvcOpt"];
     configAgent ??= map["_configAgent"];
     options =
         configAgent!.getElement(map["_AnswerOptions"], map, rowList: rowList);
@@ -67,10 +69,11 @@ class McMvc extends Mvc {
     gvNoti = resxController.addToResxMap("gv", children) as Rx<List<dynamic>>;
 
     double mainAS = 0.01847 * model.scaleHeight;
-    childAspectRatio =
-        (range.length > 1) ? ewidth / eheight : 2 * ewidth / eheight;
+    bool c1 =
+        (range.length == 1) || ((mvcOpt != null) && mvcOpt!.contains("L"));
+    childAspectRatio = c1 ? 2 * ewidth / eheight : ewidth / eheight;
     imap = {
-      "_crossAxisCount": (range.length > 1) ? 2 : 1,
+      "_crossAxisCount": c1 ? 1 : 2,
       //"_crossAxisCount": 2,
       "_childAspectRatio": childAspectRatio,
       "_mainAxisSpacing": mainAS,
@@ -81,10 +84,11 @@ class McMvc extends Mvc {
     ProcessPattern gv = pf(imap);
     lmap = {"_valueName": "gv", "_child": gv};
     pf = getPrimePattern["Obx"]!;
+    int rl = c1 ? range.length : ((range.length + 1) ~/ 2);
+    double r2 = c1 ? (range.length + 2.0) : (range.length / 2.0 + 1.5);
     imap = {
       "_width": 0.8267 * model.scaleWidth,
-      "_height": eheight * ((range.length + 1) ~/ 2) +
-          mainAS * (range.length / 2.0 + 1.5),
+      "_height": eheight * rl + mainAS * r2,
       "_alignment": Alignment.center,
       "_decoration": shadowRCDecoration,
       "_child": pf(lmap)
@@ -100,6 +104,7 @@ class McMvc extends Mvc {
     elemList = [];
     children = [];
     selList = [];
+    ansList = [];
     //excl = [];
     var answer = map["_Answer"];
     if (ooption != null) {
@@ -142,21 +147,41 @@ class McMvc extends Mvc {
       }
       ansList = aList;
       if (r != null) {
-        range = getRandomList(options.length, r, aList, [])!;
+        if ((mvcOpt == null) || (!mvcOpt!.contains("NR"))) {
+          range = getRandomList(options.length, r, aList, [])!;
+        } else {
+          range = [];
+          for (int i = 0; i < options.length; i++) {
+            range.add(i);
+          }
+        }
       }
     }
     if (ansList.isEmpty) {
       excl.add(ans);
       map["_ans"] =
           (rowList.isNotEmpty) && (rowList.length > ans) ? rowList[ans] : ans;
+      List<int> incl = [];
       if (aoption != null) {
         ooption = options;
         options = configAgent!.getElement(map["_AddOptions"], map);
         var v = configAgent!.getElement(answer, map, rowList: rowList);
-        ans = options.indexOf(v);
-        if (ans < 0) {
-          options.insert(0, v);
-          ans = 0;
+        if (v is List<dynamic>) {
+          for (var av in v) {
+            ans = options.indexOf(av);
+            if (ans < 0) {
+              options.insert(0, av);
+              ans = 0;
+            }
+            ansList.add(ans);
+            incl.add(ans);
+          }
+        } else {
+          ans = options.indexOf(v);
+          if (ans < 0) {
+            options.insert(0, v);
+            ans = 0;
+          }
         }
       }
       dynamic ra = map["_range"];
@@ -164,8 +189,17 @@ class McMvc extends Mvc {
         ra = configAgent!.getElement("_range", map);
       }
       int r = ra;
-      List<int> incl = [ans];
-      range = getRandomList(options.length, r, incl, [])!;
+      if ((mvcOpt == null) || (!mvcOpt!.contains("NR"))) {
+        if (incl.isEmpty) {
+          incl.add(ans);
+        }
+        range = getRandomList(options.length, r, incl, [])!;
+      } else {
+        range = [];
+        for (int i = 0; i < options.length; i++) {
+          range.add(i);
+        }
+      }
     }
     map["_ansInx"] = ans;
     // String question = configAgent.checkText("_Question", map);

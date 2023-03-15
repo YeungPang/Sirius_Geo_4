@@ -25,9 +25,17 @@ class _WebViewExplState extends State<WebViewExpl> {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> _mv = widget.map["_mv"];
+    Map<String, dynamic>? _mv = widget.map["_mv"];
     String? url = widget.map["_url"];
     dynamic html = widget.map["_html"];
+    dynamic _scriptMode = widget.map["_scriptMode"] ?? JavascriptMode.disabled;
+    if (_scriptMode is String) {
+      if (_scriptMode.toLowerCase() == "unrestricted") {
+        _scriptMode = JavascriptMode.unrestricted;
+      } else {
+        _scriptMode = JavascriptMode.disabled;
+      }
+    }
 
     return SafeArea(
         child: WebViewPlus(
@@ -39,10 +47,14 @@ class _WebViewExplState extends State<WebViewExpl> {
         ),
       //initialUrl: widget.map["_url"],
       //gestureRecognizers: gestureSet,
-      javascriptMode: widget.map["_scriptMode"] ?? JavascriptMode.disabled,
+      javascriptMode: _scriptMode,
       onWebViewCreated: (WebViewPlusController controller) {
         _controller.complete(controller);
-        _mv["_wvController"] = controller;
+        if (_mv == null) {
+          _mv = {};
+          widget.map["_mv"] = _mv;
+        }
+        _mv!["_wvController"] = controller;
         if ((url != null) && (url.isNotEmpty)) {
           controller.loadUrl(url);
         } else if (html is String) {
