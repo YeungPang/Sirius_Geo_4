@@ -146,9 +146,13 @@ class SentenceMvc extends Mvc {
       col.add(pf(imap));
       pf = getPrimePattern["Column"]!;
       imap = {
+        "_mainAxisSize": MainAxisSize.min,
         "_mainAxisAlignment": MainAxisAlignment.spaceBetween,
         "_children": col
       };
+      pp = pf(imap);
+      pf = getPrimePattern["ScrollLayout"]!;
+      imap = {"_child": pp};
       pp = pf(imap);
       imap = {"_height": 0.25 * model.scaleHeight, "_child": pp};
       pf = getPrimePattern["SizedBox"]!;

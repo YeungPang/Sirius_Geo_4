@@ -161,7 +161,10 @@ class MvcAgent extends Agent {
         break;
       case "fsm":
         agent = agent ?? model.appActions.getAgent("pattern");
-        String mvcName = currMv!["_Q_Pattern_Name"] + "fsm";
+        List<String>? mvcOpt = currMv!["_mvcOpt"];
+        String mvcName = (mvcOpt != null)
+            ? (mvcOpt[0] + "fsm")
+            : (currMv!["_Q_Pattern_Name"] + "fsm");
         if (clauses[mvcName] == null) {
           mvcName = "fsmPat";
         }

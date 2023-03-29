@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sirius_geo_4/util/util.dart';
 import './pattern.dart';
 import '../model/locator.dart';
 import '../resources/basic_resources.dart';
@@ -88,22 +89,10 @@ class ItemSearch extends SearchDelegate<String> {
   }
 
   Widget _buildList(BuildContext context, bool closeIt) {
-    itemList ??= map["_itemList"];
-    if (itemList == null) {
-      itemList = [];
-      refList = [];
-      var itemStr = model.map["search"];
-      String iStr = (itemStr is List<dynamic>) ? itemStr.join() : itemStr;
-      List<dynamic> searchList = iStr.split(";");
-      for (String element in searchList) {
-        if (element.isNotEmpty) {
-          List<String> sl = element.toString().split("⇒");
-          itemList!.add(sl[0]);
-          refList!.add(sl[1]);
-        }
-      }
-      //map["_searchElemList"] = model.map["match"]["element"];
-    }
+    Map<String, dynamic> itemMap = model.map["search"];
+    itemList = itemMap.keys.toList();
+    refList = [];
+    //map["_searchElemList"] = model.map["match"]["element"];
     final suggestions = itemList!.where((element) {
       return element.toString().toLowerCase().contains(query.toLowerCase());
     });
@@ -114,9 +103,9 @@ class ItemSearch extends SearchDelegate<String> {
             title: Text(suggestions.elementAt(index)),
             onTap: () {
               query = suggestions.elementAt(index);
-              int inx = itemList!.indexOf(query);
+              String str = itemMap[query];
               //if (closeIt) {
-              close(context, refList![inx]);
+              close(context, str);
               //}
             },
           );
@@ -163,32 +152,11 @@ onSearch(Map<String, dynamic> map) async {
 }
 
 void handleResult(BuildContext context, String r) {
-  model.context = context;
-  List<String> sl = r.split(":");
-  Map<String, dynamic> config = model.map["config"];
-  Map<String, dynamic> elem = config[sl[0]];
-  int? inx = int.tryParse(sl[1]);
-  if (inx != null) {
-    String iStr = elem["elemList"][inx];
-    String iHeader = elem["header"];
-    List<dynamic> input = [iHeader, iStr];
-    Map<String, dynamic> imap = {};
-    model.appActions.doFunction("mapPat", input, imap);
-
-    input = [elem, iStr];
-    List<dynamic> itemRef =
-        model.appActions.doFunction("dataList", input, null);
-    Map<String, dynamic> itemRefMap = config[imap["_ref"]];
-
-    Map<String, dynamic> vars = {
-      "_itemRef": itemRef,
-      "_itemRefMap": itemRefMap,
-      "_title": imap["_name"],
-      "_progId": imap["_progId"],
-      "_PassScore": imap["_PassScore"]
-    };
-    model.appActions.doFunction("route", elem["pattern"], vars);
-  }
+  List<String> sl = r.split(";");
+  Map<String, dynamic> _map = {
+    "_processEvent": ProcessEvent("processSearch", map: {"_res": sl})
+  };
+  processValue(_map, null);
 }
 
 class SearchButtonPattern extends ProcessPattern {

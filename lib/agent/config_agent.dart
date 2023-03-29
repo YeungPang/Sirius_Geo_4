@@ -5,6 +5,7 @@ import '../builder/pattern.dart';
 import 'dart:math';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:string_validator/string_validator.dart';
+import 'package:http/http.dart' as http;
 
 final Map<String, dynamic> facts = model.map["patterns"]["facts"];
 final Map<String, dynamic> clauses = model.map["patterns"]["clauses"];
@@ -133,7 +134,13 @@ class ConfigAgent {
       }
       return ds1;
     }
-    ls = src.split(re);
+    int ib = src.indexOf('[');
+    if (ib > 0) {
+      int ic = src.indexOf(',');
+      ls = [src.substring(0, ic), src.substring(ib)];
+    } else {
+      ls = src.split(re);
+    }
     String s0 = ls[0].trim();
     si = (s0[0] == '_') ? vars[s0] ?? s0 : s0;
     if (si is String) {
@@ -171,13 +178,30 @@ class ConfigAgent {
       if (rowList != null) {
         rowList.add(si);
       }
-      if ((ls.length > 1) && (si2 is int)) {
-        var rs = ld![si2];
-        if ((rs is String) && (rs.isNotEmpty) && (rs[0] == '[')) {
-          rs = getListContent(rs, map, vars, rowList, header, noRef: true);
-          //rs = getListData(rs);
+      if (ls.length > 1) {
+        if (si2 is int) {
+          var rs = ld![si2];
+          if ((rs is String) && (rs.isNotEmpty) && (rs[0] == '[')) {
+            rs = getListContent(rs, map, vars, rowList, header, noRef: true);
+            //rs = getListData(rs);
+          }
+          return rs;
+        } else {
+          String s = si2;
+          s = s.substring(1, s.length - 1);
+          List<dynamic> lrs = getListData(s);
+          List<dynamic> rsl = [];
+          for (int i in lrs) {
+            var rs = ld![i];
+            if ((rs is String) && (rs.isNotEmpty) && (rs[0] == '[')) {
+              rs = getListContent(rs, map, vars, rowList, header, noRef: true);
+              rsl.addAll(rs);
+            } else {
+              rsl.add(rs);
+            }
+          }
+          return rsl;
         }
-        return rs;
       }
       return ld!;
     }
@@ -735,10 +759,19 @@ Future<String> loadString(String fileName) async {
 loadData(Map<String, dynamic> map) async {
   String fileName = map["_fileName"];
   Function func = model.appActions.getFunction(map["_func"])!;
-  loadString(fileName).then((value) {
-    map["_data"] = value;
-    func(map);
-  });
+  if (fileName.contains("http")) {
+    http.get(Uri.parse(fileName)).then((http.Response response) {
+      if (response.statusCode == 200) {
+        map["_data"] = response.body;
+        func(map);
+      }
+    });
+  } else {
+    loadString(fileName).then((value) {
+      map["_data"] = value;
+      func(map);
+    });
+  }
 }
 
 bool handleList(List<dynamic> input, Map<String, dynamic> map) {
@@ -1030,8 +1063,17 @@ List<dynamic> getListData(String s) {
       str = str.substring(ninx).trim();
       ninx = 0;
     }
-    var v = resolveStr(value);
-    l.add(v);
+    if (value.contains('‥')) {
+      List<String> ks = value.split('‥');
+      var ib = resolveStr(ks[0]);
+      var ie = resolveStr(ks[1]);
+      for (int i = ib; i <= ie; i++) {
+        l.add(i);
+      }
+    } else {
+      var v = resolveStr(value);
+      l.add(v);
+    }
   }
   return l;
 }

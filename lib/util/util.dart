@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_advanced_networkimage_2/provider.dart';
+import '../builder/pattern.dart';
 import '../model/locator.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:jiffy/jiffy.dart';
@@ -78,4 +79,19 @@ String numString(num n, {int dec = 2}) {
   }
   nns = ns + nns;
   return nns;
+}
+
+processValue(Map<String, dynamic> map, dynamic value) {
+  dynamic _pe = map["_processEvent"] ?? map["_onTap"];
+  ProcessEvent? pe = (_pe is String) ? ProcessEvent(_pe) : _pe;
+  if (pe == null) {
+    return;
+  }
+  Agent a = model.appActions.getAgent("pattern");
+  pe.map ??= map["_inMap"];
+  if (value != null) {
+    pe.map ??= {};
+    pe.map!["_value"] = value;
+  }
+  a.process(pe);
 }

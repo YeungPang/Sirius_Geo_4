@@ -106,6 +106,7 @@
         "successSub": "You have successfully subscribed!",
         "successUnsub": "Your successfully unsubscribed.",
         "subscription": "Subscription Enquiry",
+        "svgContinents": "https://geo.siriustechnology.net/storage/gamedata/images/continents/4658.SVGContinents.svg",
         "switchm": "SWITH TO MONTHLY PLAN",
         "testText": "It's just a test!!!",
         "tojourney": "TO LEARNING JOURNEY",
@@ -314,7 +315,7 @@
                 "CounQ0024;MC;countryData;What is the second largest country by area?;;;6;The largest country is #ℛ(0,1)#;ℛ(0,1);;ℛ([0, 1, 2, 3, 4, 5, 6],1)",
                 "CounQ0025;WebView;;;;;;;;;;;ℛ(articleWeb:1)",
                 "CounQ0026;WebView;;;;;;;;;;;ℛ(articleWeb:2)",
-                "CounQ0027;SvgMap;TectonicPlateData;Select #ℛ(_ans,1)#.;;;;;ℛ(_ans,1);;ℛ([0‥14],1);;ℛ(CountSelection:1)",
+                "CounQ0027;SvgMap;TectonicPlateData;Select #ℛ(_ans,1)#.;;;;;ℛ(_ans,1);;ℛ([0‥14],1);;ℛ(CountSelection:4)",
                 "CounQ0028;MC;countryData;What is the second largest country by area?;;;4;The largest country is Canada;[Canada,France];;[Canada,France,Germany,Italy,Switzerland,United Kingdom,United States]",
                 "CounQ0029;Text;countryData;Name one non-African English speaking countries?;;;1;;[Canada, USA, UK];[ℛ(5,4), ℛ(6,4)];[Canada, USA, UK]",
                 "CounQ0030;Text;countryData;Name two non-African English speaking countries?;;;2;;[Canada, USA, UK];{UK: ℛ(5,4), USA: [United States, :United States of America]};[Canada, USA, UK];[Two in North America, One in Europe]",
@@ -373,7 +374,9 @@
             "elemList": [
                 "⊤(css);white;20.0;20.0;1000.0;1100.0;;;assets/svg_images/world_map.svg",
                 "⊤(tectcss);white;20.0;20.0;500.0;2000.0;1.2;Plates;assets/svg_images/MajorPlatesMap.svg",
-                "⊤(tectcss);white;505.0;150.0;500.0;2000.0;2.0;Plates;assets/svg_images/MajorPlatesMap.svg"
+                "⊤(tectcss);white;505.0;150.0;500.0;2000.0;2.0;Plates;assets/svg_images/MajorPlatesMap.svg",
+                "⊤(tectcss);white;0.0;0.0;1500.0;2100.0;;;assets/svg_images/4658.SVGContinents.svg",
+                "⊤(tectcss);white;0.0;0.0;1500.0;2100.0;;;⊤(svgContinents)"
             ]
         },
         "contData": {
@@ -859,6 +862,9 @@
             "supportfsm": [
                 "_event | (popRoute()) ⋀ τ(_event) ⋀ ((_event = shareApp) ⋀ ↲(onShare({_text: ⊤(sharedText), _subject: ⊤(sharedSubject)}))) ⋁ ",
                 "((_event = cCache) ⋀ ↲(clearCache())) ⋁ (↲(route('supportScaffold')))"
+            ],
+            "processSearch": [
+                "_itemList | (_itemRef ∈ _itemList) ⋀ "
             ],
             "actions": [
                 "_event, _vars | ((_event = 'settings') ⋀ ↲({_func: fsmEvent, _map: {_event: 'settings', _title: 'Settings'}, _tapAction: 'menufsm'})) ⋁ ",
