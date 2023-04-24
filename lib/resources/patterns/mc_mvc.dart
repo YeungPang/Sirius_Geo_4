@@ -213,7 +213,8 @@ class McMvc extends Mvc {
     BoxDecoration decoration = isImg ? shadowRCDecoration : elemDecoration;
     Map<String, dynamic> childMap = {
       "_height": eheight,
-      "_width": ewidth,
+      "_width":
+          ((mvcOpt != null) && mvcOpt!.contains("L")) ? 2.0 * ewidth : ewidth,
       "_alignment": Alignment.center,
       "_decoration": decoration,
       "_textStyle": choiceButnTxtStyle,
@@ -331,7 +332,8 @@ class McMvc extends Mvc {
       String its = options[i].toString();
       Map<String, dynamic> childMap = {
         "_height": eheight,
-        "_width": ewidth,
+        "_width":
+            ((mvcOpt != null) && mvcOpt!.contains("L")) ? 2.0 * ewidth : ewidth,
         "_alignment": Alignment.center,
         "_decoration": decoration,
         "_textStyle": selButnTxtStyle,
@@ -415,7 +417,8 @@ class McMvc extends Mvc {
   buildBadgedElem(int i, String type) {
     Map<String, dynamic> childMap = {
       "_height": eheight,
-      "_width": ewidth,
+      "_width":
+          ((mvcOpt != null) && mvcOpt!.contains("L")) ? 2.0 * ewidth : ewidth,
       "_item": options[i].toString(),
       "_index": i,
       "_childInx": range.indexOf(i)

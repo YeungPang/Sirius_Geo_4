@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:get/get.dart';
 import './pattern.dart';
 import './std_pattern.dart';
@@ -177,6 +177,9 @@ class InTextField extends StatelessWidget {
       maxLines: map["_maxLines"] ?? 1,
       expands: map["_expands"] ?? false,
       onSubmitted: map["_onSubmitted"],
+      // onTap: () {
+      //   FocusScope.of(context).requestFocus(FocusNode());
+      // },
       keyboardType: map["_keyboardType"],
       decoration: InputDecoration(
         border: map["_inputBorder"],
@@ -358,11 +361,14 @@ class BadgePattern extends ProcessPattern {
   Widget getWidget({String? name}) {
     Widget? w = getPatternWidget(map["_child"]);
     Widget? bw = getPatternWidget(map["_badgeContext"]);
-    return Badge(
+    return badges.Badge(
+      position: badges.BadgePosition.topEnd(end: 0),
       badgeContent: bw,
-      badgeColor: map["_badgeColor"] ?? Colors.white,
+      badgeStyle: badges.BadgeStyle(
+        badgeColor: map["_badgeColor"] ?? Colors.white,
+        padding: const EdgeInsets.all(0.0),
+      ),
       showBadge: map["_showBadge"] ?? true,
-      padding: const EdgeInsets.all(0.0),
       child: w,
     );
   }

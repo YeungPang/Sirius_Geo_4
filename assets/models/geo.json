@@ -3888,7 +3888,7 @@
 				"_automaticallyImplyLeading: false, _child: mainBottomRow}) ⋀ ↲(scaffoldPat)"
 			],
 			"mainBottomRow": [
-				"⋓({_icHome: Φ(IconText, {_bar: true, _icon: 'home', _text: 'Home', _onTap: {_func: 'home'}}),",
+				"⋓({_icHome: Φ(IconText, {_bar: true, _icon: 'home', _text: 'Home', _onTap: {_func: 'fsmEvent', _map: {_event: 'home'}, _tapAction: 'menufsm'}}),",
 				"_icSet: Φ(IconText, {_bar: true, _icon: 'settings', _text: 'Settings', _onTap: actions({_event: 'settings'})}),",
 				"_icShop: Φ(IconText, {_bar: true, _icon: 'shop', _text: 'Shop', _onTap: {_func: route, _tapAction: 'shopScaffold'}})}) ⋀ ",
 				"↲(Φ(Container, {_child: Φ(Row, (patMap(rowColHeader, (center, spaceAround, max, Ø)) ⋃ ",
@@ -3914,7 +3914,7 @@
 				"ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ (_children ≔ [topicContainer, baseNavi]) ⋀ ↲(Φ(ListView))"
 			],
 			"subScaffold": [
-				"_itemRef, _itemRefMap, _title | τ('subScaffold') ⋀ mapPat(rowColHeader, (center, spaceBetween, max, Ø)) ⋀ ",
+				"_itemRef, _itemRefMap, _title | mapPat(rowColHeader, (center, spaceBetween, max, Ø)) ⋀ ",
 				"(_children ≔ [topicContainer, subNavi]) ⋀ (_text ≔ _title) ⋀ ⋓({_body: Φ(ListView), _title: genAppBar, ",
 				"_automaticallyImplyLeading: false, _child: mainBottomRow}) ⋀ ↲(scaffoldPat)"
 			],
@@ -3950,24 +3950,24 @@
 				"(_ts ≔ ℛ(textStyleColor, 'white', _ts))) ⋁ (true)) ⋀ ⋓({_child: Φ(Text), _height: ℛ(hratio, Ø, 0.0468), _width: ℛ(swratio, Ø, 0.96)}) ⋀ ",
 				"⋓({_bm: Φ(SizedBox), _itemRef: dataList(_itemRefMap, _item), _elemItemList: ℛ(getCache, 'elemItemList')}) ⋀ ",
 				"(_children ≔ [_bm, _elemItemList]) ⋀  ⋓({_child: Φ(Column), _elevation: ℛ(hratio, Ø, 0.01), ",
-				"_cardRadius: ℛ(hratio, Ø, 0.015)}) ⋀ ⋓({_child: Φ(Card), _height: ℛ(hratio, Ø, 0.24)}) ⋀ ↲(Φ(Container))"
+				"_cardRadius: ℛ(hratio, Ø, 0.015)}) ⋀ ⋓({_child: Φ(Card), _height: ℛ(hratio, Ø, 0.255)}) ⋀ ↲(Φ(Container))"
 			],
 			"elemItemList": [
 				"_itemRef, _index, _ref, _ts | (_ta ≔ _ref['pattern']) ⋀ ⋓({_childPattern: 'catCol', _direction: decode(axis, horizontal), ",
 				"_childMap: ({_itemRefMap: _ref, _tapAction: _ta[0], _ts: _ts})}) ⋀ ",
-				"(_child ≔ Φ(TapListItem)) ⋀ mapPat(patHeader, (0.172, Ø, Ø, Ø, centerLeft, Ø)) ⋀ ↲(Φ(Container))"
+				"(_child ≔ Φ(TapListItem)) ⋀ mapPat(patHeader, (0.192, Ø, Ø, Ø, centerLeft, Ø)) ⋀ ↲(Φ(Container))"
 			],
 			"catCol": [
 				"_item, _index, _itemRefMap, _onTap, _progId, _ts | (_header ≔ _itemRefMap[header]) ⋀ mapPat(_header, _item) ⋀ ",
 				"(_children ≔ catView) ⋀ mapPat(rowColHeader, (center, start, Ø, Ø)) ⋀ (_child ≔ Φ(Column)) ⋀ ",
-				"mapPat(patHeader, (0.172, Ø, Ø, Ø, Ø, Ø)) ⋀ (_itemRef ≔ dataList(_itemRefMap, _item)) ⋀ ",
+				"mapPat(patHeader, (0.192, Ø, Ø, Ø, Ø, Ø)) ⋀ (_itemRef ≔ dataList(_itemRefMap, _item)) ⋀ ",
 				"(_onTap ≔ createEvent(route, {_itemRef: _itemRef, _itemRefMap: _ref, _title: _name, _progId: _progId, _PassScore: _PassScore})) ⋀",
 				"(_width ≔ ℛ(hratio, Ø, 0.172)) ⋀ ↲(Φ(Container))"
 			],
 			"catView": [
 				"_item, _index, _name, _icon, _progId, _ts | (_sb ≔ Φ(SizedBox, {_height: 5.0})) ⋀ ",
 				"⋓({_iconColor: ℛ(color, '#1785C1'), _iconSize: ℛ(sizeScale, Ø, 45.0)}) ⋀ ⋓({_child: Φ(Icon), _width: ℛ(hratio, Ø, 0.128353), ",
-				"_decoration: ℛ(appRes, shadowDecoration)}) ⋀ mapPat(patHeader, (0.123, Ø, Ø, Ø, Ø, Ø)) ⋀ ",
+				"_decoration: ℛ(appRes, shadowDecoration2)}) ⋀ mapPat(patHeader, (0.106, Ø, Ø, Ø, Ø, Ø)) ⋀ ",
 				"(_ic ≔ Φ(NotiElem)) ⋀ (_tw ≔ Φ(Text, {_text: _name, _textStyle: _ts, _textAlign: center})) ⋀ ↲([_ic, _sb, _tw])"
 			],
 			"subNavi": [
@@ -4073,9 +4073,10 @@
 				"_width: ℛ(swratio, Ø, 1.0), _topicSelection: 'Support', _smallTitle: ⊤(supportSubtitle), _img: ℛ(lookup, support)}))"
 			],
 			"supportCards": [
-				"_event | ((_event = subscription) ⋀ ↲(Φ(Container, {_child: Φ(Text, {_text: 'Not implemented'})}))) ⋁ (_formData ≔ {}) ⋀ supportFields ⋀ ",
-				"(_title ≔ Φ(Text, {_text: ⊤(_event), _textStyle: ℛ(textStyle, BlueTitleStyle)})) ⋀ mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
-				"⋓({_child: Φ(Padding, {_child: Φ(Form), _padding: ℛ(appRes, boxPadding)}), _elevation: ℛ(hratio, Ø, 0.01), ",
+				"_event | (((_event = subs) ⋀ _child ≔ ((Φ(Container, {_child: Φ(Text, {_text: 'Not implemented', _textStyle: ℛ(textStyle, BlueTitleStyle)})})))) ⋁ ",
+				"((_formData ≔ {}) ⋀ supportFields ⋀ (_title ≔ Φ(Text, {_text: ⊤(_event), _textStyle: ℛ(textStyle, BlueTitleStyle)})) ⋀ ",
+				"mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ (_child ≔ Φ(Form)))) ⋀ ",
+				"⋓({_child: Φ(Padding, {_child: _child, _padding: ℛ(appRes, boxPadding)}), _elevation: ℛ(hratio, Ø, 0.01), ",
 				"_cardRadius: ℛ(hratio, Ø, 0.05)}) ⋀ ⋓({_child: Φ(Card), _width: ℛ(swratio, Ø, 1.0), _height: ℛ(hratio, Ø, 0.675)}) ⋀ ",
 				"↲(Φ(Align, {_child: Φ(Container), _alignment: decode(align, bottomCenter)}))"
 			],
@@ -4116,7 +4117,7 @@
 				"_ai: Φ(Icon, {_icon: 'share', _iconColor: ℛ(color, 'btnBlue')}), _d: Φ(Divider, {_color: ℛ(color, 'grey700'), _thickness: 1.5})}) ⋀ ",
 				"(_text ≔ 'FAQ') ⋀ (_tapEvent ≔ 'FAQ') ⋀ (_f ≔ textButton) ⋀ (_text ≔ ⊤(error)) ⋀ (_tapEvent ≔ 'error') ⋀ (_e ≔ textButton) ⋀ ",
 				"(_text ≔ ⊤(support)) ⋀ (_tapEvent ≔ 'support') ⋀ (_c ≔ textButton) ⋀ (_text ≔ ⊤(feedback)) ⋀ (_tapEvent ≔ 'feedback') ⋀ (_g ≔ textButton) ⋀ ",
-				"(_text ≔ ⊤('subscription')) ⋀ (_tapEvent ≔ 'subscription') ⋀ (_s ≔ textButton) ⋀ (_children ≔ [_a, _ai]) ⋀ ",
+				"(_text ≔ ⊤('subscription')) ⋀ (_tapEvent ≔ 'subs') ⋀ (_s ≔ textButton) ⋀ (_children ≔ [_a, _ai]) ⋀ ",
 				"(_ta ≔ Φ(TapItem, {_child: Φ(Row), _onTap: {_func: _tap, _map: {_event: 'shareApp'}, _tapAction: ç(_tapAction)}})) ⋀ (((_event = 'settings') ⋀ (_children ≔ removeAd) ⋀ ",
 				"(_tr ≔ Φ(TapItem, {_onTap: {_func: _tap, _map: {_event: 'shop'}, _tapAction: 'menufsm'}, _child: Φ(Row)})) ⋀ (_text ≔ 'Clear Cache') ⋀ (_tapEvent ≔ 'cCache') ⋀ ",
 				"(_cc ≔ textButton) ⋀ ↲([_tr, _d, _cc, _d, _f, _d, _e, _d, _g, _d, _c, _d, _s, _d, _ta])) ⋁ ↲([_f, _d, _e, _d, _g, _d, _c, _d, _s, _d, _ta]))"
@@ -4252,11 +4253,21 @@
 			"closeDialog": "↲(popRoute())",
 			"menufsm": [
 				"_event, _title | (popRoute()) ⋀ (((_event = 'search') ⋀ ↲(onSearch({}))) ⋁ (((_event = 'settings') ⋁ (_event = 'support')) ⋀ changeTheme() ⋀ ",
-				"↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
+				"↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
 			],
 			"supportfsm": [
 				"_event | (popRoute()) ⋀ ((_event = shareApp) ⋀ ↲(onShare({_text: ⊤(sharedText), _subject: ⊤(sharedSubject)}))) ⋁ ",
 				"((_event = cCache) ⋀ ↲(clearCache())) ⋁ (↲(route('supportScaffold')))"
+			],
+			"processSearch": "_itemList | (↲(route('srchResScaffold')))",
+			"srchResScaffold": [
+				"_itemList | (_title ≔ livesAppBar) ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ (_onTap ≔ {_func: popRoute}) ⋀ (_leading ≔ Φ(IconButton)) ⋀ ",
+				"(_body ≔ searchNavi) ⋀ ↲(scaffoldPat)"
+			],
+			"searchNavi": [
+				"_itemList | (_ts ≔ ℛ(textStyle, SliderBoldTextStyle)) ⋀ (_children ≔ []) ⋀ ((_itemArr ∈ _itemList) ⋀ (_itemRefMap ≔ ℛ(model, 'config', _itemArr[0])) ⋀ ",
+				"(_inx ≔ _itemArr[1]) ⋀ (_tapAction ≔ _itemRefMap['pattern']) ⋀ (_itemRef ≔ _itemRefMap[elemList]) ⋀ (_item≔ _itemRef[_inx]) ⋀ τ('_tapAction') ⋀ ",
+				"(_child ≔ catCol) ⋀ (_children ≪ Φ(TapItem))) ⋀ (_child ≔ Φ(Wrap)) ⋀ (_padding ≔ ℛ(appRes, 'boxPadding')) ⋀ τ('searchNavi') ⋀ ↲(Φ(Container))"
 			],
 			"actions": [
 				"_event, _vars | ((_event = 'settings') ⋀ ↲({_func: fsmEvent, _map: {_event: 'settings', _title: 'Settings'}, _tapAction: 'menufsm'})) ⋁ ",

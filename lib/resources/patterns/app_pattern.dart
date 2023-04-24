@@ -99,13 +99,13 @@ class NotiElemPattern extends ProcessPattern {
               width: full ? wi : wi * i / total,
               height: hp,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(size10 * sizeScale)),
+                borderRadius:
+                    BorderRadius.only(bottomLeft: Radius.circular(size10)),
                 gradient: greenGradient,
               ));
 
       double h = map["_height"] * 0.85;
-      double s10 = size10 * sizeScale;
+      double s10 = size10;
       Widget pc = Positioned(
           top: h,
           left: 0.0,
@@ -118,7 +118,7 @@ class NotiElemPattern extends ProcessPattern {
                           bottomRight: Radius.circular(s10),
                           bottomLeft: Radius.circular(s10)),
                       border:
-                          Border.all(color: colorMap["correct"]!, width: 1)),
+                          Border.all(color: colorMap["correct"]!, width: 2)),
                 )
               : Container(
                   alignment: Alignment.centerLeft,
@@ -129,7 +129,7 @@ class NotiElemPattern extends ProcessPattern {
                           bottomRight: Radius.circular(s10),
                           bottomLeft: Radius.circular(s10)),
                       border:
-                          Border.all(color: colorMap["correct"]!, width: 1)),
+                          Border.all(color: colorMap["correct"]!, width: 2)),
                   child: pi,
                 ));
       ic = Align(

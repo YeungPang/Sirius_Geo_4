@@ -152,9 +152,14 @@ onSearch(Map<String, dynamic> map) async {
 }
 
 void handleResult(BuildContext context, String r) {
-  List<String> sl = r.split(";");
+  List<dynamic> sl = r.split(";").map((e) {
+    List<String> ls = e.split(":");
+    List<dynamic> ld = [ls[0], int.tryParse(ls[1])];
+    dynamic d = ld;
+    return d;
+  }).toList();
   Map<String, dynamic> _map = {
-    "_processEvent": ProcessEvent("processSearch", map: {"_res": sl})
+    "_processEvent": ProcessEvent("processSearch", map: {"_itemList": sl})
   };
   processValue(_map, null);
 }

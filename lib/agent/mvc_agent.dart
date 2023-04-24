@@ -948,6 +948,13 @@ class MvcAgent extends Agent {
     if (pp == null) {
       stackList.removeLast();
     } else {
+      if (currMv!["_checkType"] != null) {
+        var cp = stackList.last;
+        while ((cp.runtimeType != pp.runtimeType) && (stackList.length > 1)) {
+          stackList.removeLast();
+          cp = stackList.last;
+        }
+      }
       stackList.last = pp;
     }
     stackNoti!.value = stackList;

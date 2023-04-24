@@ -65,17 +65,19 @@ class SliderMvc extends Mvc {
     if (isVert) {
       double h = 0.591133 * model.scaleHeight;
       double w = 0.84 * model.scaleWidth;
-      if (mvmap.isEmpty) {
-        mvmap = {
-          "_state": map["_state"],
-          "_scaleNoti": ValueNotifier<double>(50.0),
-          "_height": h,
-          "_width": w
-        };
-        map["_mv"] = mvmap;
-      } else {
-        mvmap["_state"] = "start";
+      if (mvmap.isNotEmpty) {
+        map["_checkType"] = true;
       }
+      mvmap = {
+        "_state": map["_state"],
+        "_scaleNoti": ValueNotifier<double>(50.0),
+        "_height": h,
+        "_width": w
+      };
+      map["_mv"] = mvmap;
+      // } else {
+      //   mvmap["_state"] = "start";
+      // }
       pf = model.appActions.getPattern("VertSlider")!;
       smap = getSMap(map);
       ProcessPattern pp = pf(smap);

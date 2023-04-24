@@ -18,8 +18,19 @@ class SvgPaint extends StatelessWidget {
     bool moved = false;
     ValueNotifier<Offset> notifier = _mv["_svgPaintNoti"];
     return Listener(
-      //onPointerDown: (e) => notifier.value = e.localPosition,
-      onPointerMove: (e) => moved = true,
+      onPointerDown: (e) => _mv["_distance"] = e.localPosition.distance,
+      onPointerMove: (e) {
+        double dd = _mv["_distance"];
+        double dp = e.localPosition.distance;
+        double d = (dd > dp) ? (dd - dp) : (dp - dd);
+        if (d > 1.0) {
+          //debugPrint("moved" + moved.toString());
+          moved = true;
+        } else {
+          moved = false;
+        }
+        //debugPrint(d.toString());
+      },
       onPointerUp: (e) => moved ? moved = false : rebuild(_mv, notifier, e),
       child: CustomPaint(
         painter: SvgPainter(map, map["_shapes"], notifier, _mv),

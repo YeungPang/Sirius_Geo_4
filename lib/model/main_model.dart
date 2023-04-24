@@ -4,7 +4,7 @@ import '../agent/version_agent.dart';
 import '../builder/pattern.dart';
 
 class MainModel {
-  final String mainModelName = "assets/models/geo-2.json";
+  final String mainModelName = "assets/models/geo.json";
 
   double screenHeight = 812.0;
   double screenWidth = 375.0;
@@ -38,7 +38,7 @@ class MainModel {
   }
 
   Future<String> getJson(BuildContext context) async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    //await Future.delayed(const Duration(milliseconds: 500));
     return DefaultAssetBundle.of(context).loadString(mainModelName);
   }
 

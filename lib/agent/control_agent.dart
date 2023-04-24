@@ -62,6 +62,9 @@ class AgentActions extends AppActions {
           return getDataList(input[0], input[1]);
         }
         return null;
+      case "dataRef":
+        ConfigAgent configAgent = ConfigAgent();
+        return configAgent.getRefContent(input, null, vars!, null, null);
       case "route":
         String screen = (input is List<dynamic>) ? input[0] : input;
         Map<String, dynamic>? m =

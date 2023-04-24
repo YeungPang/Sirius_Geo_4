@@ -62,6 +62,7 @@ Map<String, dynamic> resources = {
   "blueGradBD": blueGradBD,
   "diaDecoration": diaDecoration,
   "shadowDecoration": shadowDecoration,
+  "shadowDecoration2": shadowDecoration2,
   "bgDecoration": bgDecoration,
   "rCDecoration": RCDecoration,
   "selemDecoration": selemDecoration,
