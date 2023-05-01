@@ -1,5 +1,6 @@
 {
     "title": "Sirius Prototype",
+    "version": "(0.1)",
     "versionTimestamp": 1636410287,
     "maxConfigLives": 5,
     "liveGenTime": 30,
@@ -162,7 +163,7 @@
             "pattern": "mainScaffold",
             "header": "CID;name;ref;GR1;GR2;GR3;GR4;GR5",
             "elemList": [
-                "SubjC001;Subject;subCategories;0;1;2",
+                "SubjC001;Subject;subCategories;0;1;2;3",
                 "WorlC001;World;groups;2;3;1;4",
                 "ContiC001;Continents;groups;0",
                 "CountC001;Countries;groups;1",
@@ -178,6 +179,7 @@
             "header": "CID;name;icon;ref;GR1;GR2;GR3;GR4;GR5",
             "elemList": [
                 "WorlC001;World;world;groups;2;3;1;4",
+                "ContG0001;Identify Continent;⊤(continents);items;0",
                 "ContiC001;Continents;⊤(continents);groups;0",
                 "CountC001;Countries;⊤(countries);groups;1"
             ]
@@ -187,7 +189,7 @@
             "pattern": "groupScaffold",
             "header": "GRID;name;icon;progId;ref;T1;T2;T3;T4;T5",
             "elemList": [
-                "ContGR001;Continents;⊤(continents);[63,62,3,20,21,22,24,25];types;0;1;2;3",
+                "ContGR001;Continents;⊤(continents);[63,62,3,20,21,22,24,25];types;ℛ(types:0);1;2;3",
                 "CounGR001;All the World Countries and there are many;⊤(countries);[4,5,6,19,23];types;4;5;6;7",
                 "WorIGR001;World Intro;atmosphere;[7];types",
                 "hemiGR001;Hemisphere;climate_zones;[8];types",
@@ -287,19 +289,19 @@
             ]
         },
         "questions": {
-            "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx;AddOptions;bgHeight",
+            "header": "QID;Q_Pattern_Name;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx;AddOptions;bgHeight;fit",
             "elemList": [
-                "ContQ0001;MC;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#. So we need a lot more information.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ(_ans,7)",
+                "ContQ0001;MC;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#. So we need a lot more information.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ(_ans,7);;;;;width",
                 "ContQ0002;Order;contData;Sort the continents by surface area from largest to smallest;;;;;[Asia, Africa, North America, South America, Antarctica, Europe, Australia];;[Africa, Antarctica, Asia, Australia, Europe, North America, South America];;ℛ(Order:0)",
                 "ContQ0003;Text;contData;What is the largest continent by surface area?;;;;The largest continent is Asia.;ℛ(2,1)",
                 "ContQ0004;Text;contData;What is this continent?;;ℛ(_ans,2);;This continent is #ℛ(_ans,1)#.;ℛ(_ans,1);ℛ(_ans,6);ℛ([0‥6],1)",
                 "ContQ0005;Text;;Name the 7 continents.;;;;[Asia,Africa,North America,South America,Antarctica,Europe,Australia];[Africa,Antarctica,Asia,Australia,Europe,North America,South America]",
                 "CounQ0006;MC;countryData;What is this country?;;;6;;ℛ(_ans,3);;ℛ([15, 32, 43, 48, 109, 110, 122, 211, 241],3)",
                 "CounQ0007;Text;;What is the population of Switzerland in millions?;;;;8 millions;8",
-                "CounQ0008;MC;countryData;Which country flag is this?;;ℛ(0,2);6;#ℛ(0,1)#;ℛ(0,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0..3])",
-                "CounQ0009;MC;countryData;Which country flag is this?;;ℛ(1,2);6;#ℛ(1,1)#;ℛ(1,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0..3])",
-                "CounQ0010;MC;countryData;Which country flag is this?;;ℛ(2,2);6;#ℛ(2,1)#;ℛ(2,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0..3])",
-                "CounQ0011;MC;countryData;Which country flag is this?;;ℛ(3,2);6;#ℛ(3,1)#;ℛ(3,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0..3])",
+                "CounQ0008;MC;countryData;Which country flag is this?;;ℛ(0,2);6;#ℛ(0,1)#;ℛ(0,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0‥5])",
+                "CounQ0009;MC;countryData;Which country flag is this?;;ℛ(1,2);6;#ℛ(1,1)#;ℛ(1,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0‥5])",
+                "CounQ0010;MC;countryData;Which country flag is this?;;ℛ(2,2);6;#ℛ(2,1)#;ℛ(2,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0‥5])",
+                "CounQ0011;MC;countryData;Which country flag is this?;;ℛ(3,2);6;#ℛ(3,1)#;ℛ(3,1);;[Canada,France,Germany,Italy];;;;ℛ(commaAns:0,[0‥5])",
                 "CounQ0012;MC;countryData;Which country flag is this?;;ℛ(4,2);6;#ℛ(4,1)#;ℛ(4,1);;ℛ([0‥7],1)",
                 "CounQ0013;MC;countryData;Which country flag is this?;;ℛ(5,2);6;#ℛ(5,1)#;ℛ(5,1);;ℛ([0‥7],1)",
                 "CounQ0014;MC;countryData;Which country flag is this?;;ℛ(6,2);6;#ℛ(6,1)#;ℛ(6,1);;ℛ([0‥7],1)",
@@ -309,7 +311,7 @@
                 "ContQ0018;Sentence;;Complete the sentence:;;;;;[births,deaths,total population];[aaa,[xxx,yyy,zzz],ccc];;;ℛ(Sentence:0)",
                 "ContQ0019;Sentence;;Complete the sentence:;;;6;;[births,deaths,total population];;[immigration,births,emmigration,deaths,illegal immigrants,total population,nothing 1, nothing 2, nothing 3, nothing4];;ℛ(Sentence:0)",
                 "ContQ0020;Slider;contData;What is the size of #ℛ(_ans,1)# by surface area?;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(ContSize:0)",
-                "CounQ0021;Slider;countryData;What rank is #ℛ(_ans,1)# in surface area size order?;;;;;ℛ(_ans,3);;ℛ([0‥6],1);;ℛ(CountryRank:0)",
+                "CounQ0021;Slider;countryData;What rank is #ℛ(_ans,1)# in surface area size order?;;;;;ℛ(_ans,3);;ℛ([0‥6],1);;ℛ(CountryRank:2)",
                 "CounQ0022;SvgMap;countryData;Select #ℛ(_ans,1)#.;;;;;ℛ(_ans,1);;ℛ([0‥6],1);;ℛ(CountSelection:0)",
                 "CounQ0023;MC;;What is the population of Switzerland in millions?;;;2;Eight millions;0;;[8,2]",
                 "CounQ0024;MC;countryData;What is the second largest country by area?;;;6;The largest country is #ℛ(0,1)#;ℛ(0,1);;ℛ([0, 1, 2, 3, 4, 5, 6],1)",
@@ -358,9 +360,11 @@
             ]
         },
         "CountryRank": {
-            "header": "scale1;scale2;scale1Top;scale1Bottom;scale2Top;scale2Bottom;div;largest;smallest;ansType;almostPer",
+            "header": "scale1;scale2;scale1Top;scale1Bottom;scale2Top;scale2Bottom;div;largest;smallest;ansType;almostPer;totalNotches",
             "elemList": [
-                "Percentile;Rank;100;0;1;194;4;Largest;Lowest;Rank;10.0"
+                "Percentile;Rank;100;0;1;194;4;Largest;Lowest;Rank;10.0",
+                "Rank;;1;194;;;4;Largest;Lowest;Rank;10.0",
+                "Percentile;;100;0;;;4;Largest;Lowest;Percentile;10.0;10"
             ]
         },
         "CountrySelection": {
@@ -398,7 +402,7 @@
                 "Conu00002;France;assets/flags/France.svg;47;;;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
                 "Conu00003;Germany;assets/flags/Germany.svg;62;;;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
                 "Conu00004;Italy;assets/flags/Italy.svg;70;;;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
-                "Conu00005;Switzerland;assets/flags/Switzerland.png;131;;;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
+                "Conu00005;Switzerland;assets/flags/Switzerland.svg;131;;;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
                 "Conu00006;United Kingdom;assets/flags/United_Kingdom.svg;77;[great britian, gb, uk];;Europe;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
                 "Conu00007;United States;assets/flags/United_States.svg;3;[united states of america, us, usa];;North America;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]",
                 "Conu00008;Russia;assets/flags/Russia_Final.svg;1;;;Asia;[Asia, Antarctica, Africa, Australia, Europe, North America, South America]"
@@ -406,7 +410,7 @@
         },
         "commaAns": {
             "elemList": [
-                "10 years;100 years;10⊤(comma)000 years;1⊤(comma)000⊤(comma)000 years"
+                "10 months;1 year;10 years;100 years;10⊤(comma)000 years;1⊤(comma)000⊤(comma)000 years"
             ]
         },
         "TectonicPlateData": {
@@ -441,7 +445,8 @@
         "settings;Settings",
         "shop;Shop",
         "search;Search;startSearch",
-        "support;Support"
+        "support;Support",
+        "about;About"
     ],
     "hints": {
         "elemList": [
@@ -471,6 +476,7 @@
     },
     "patterns": {
         "facts": {
+            "fwVersion": "0.1",
             "patHeader": [
                 "hratio",
                 "wratio",
@@ -783,8 +789,8 @@
             ],
             "shopQuestions": [
                 "_fwid | (_t ≔ Φ(Text, {_text: ⊤('questions'), _textStyle: 'BoldNormalTextStyle'})) ⋀ (_textStyle ≔ 'MediumNormalTextStyle') ⋀ ",
-                "(_sb ≔ Φ(SizedBox, {_width: ℛ(sizeScale, Ø, 10.0)})) ⋀ (_text ≔ 'FAQs') ⋀ (_children ≔ [_sb, Φ(Text)]) ⋀ (_mt ≔ Φ(Row)) ⋀ ",
-                "(_text ≔ ⊤('support')) ⋀ (_children ≔ [_sb,  Φ(Text)]) ⋀ (_at ≔ Φ(TapItem, {_child: Φ(Row), ",
+                "(_sb ≔ Φ(SizedBox, {_width: ℛ(sizeScale, Ø, 10.0)})) ⋀ ⋓({_text:'FAQs', _tapEvent: 'FAQ', _tap: 'fsmEvent', _tapAction: 'supportfsm'}) ⋀ ",
+                "(_children ≔ [_sb, textButton]) ⋀ (_mt ≔ Φ(Row)) ⋀ (_text ≔ ⊤('support')) ⋀ (_children ≔ [_sb,  Φ(Text)]) ⋀ (_at ≔ Φ(TapItem, {_child: Φ(Row), ",
                 "_onTap: {_func: 'fsmEvent', _map: {_event: 'support'}, _tapAction: 'supportfsm'}})) ⋀ mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
                 "(_d ≔ Φ(Divider, {_color: ℛ(color, 'greyText'), _thickness: 1.5})) ⋀ (_children ≔ [_mt, _d, _at]) ⋀ ",
                 "(_cc ≔ Φ(Container, {_child: Φ(Column), _height: ℛ(sizeScale, Ø, 60.0), _width: _fwid})) ⋀ ",
@@ -852,13 +858,19 @@
                 "_event, _title | (_h ≔ Φ(Text, {_text: _title, _textStyle: ℛ(textStyle, TitleTextStyle)})) ⋀ ",
                 "(_e ≔ Φ(IconButton, {_onTap: {_func: fsmEvent, _tapAction: 'closeDialog'}, _iconColor: 'grey700', _icon: 'cancel', _iconSize: 16.0})) ⋀ ",
                 "(_mainAxisAlignment ≔ decode(mainAxisAlignment, spaceBetween)) ⋀ (_children ≔ [_h, _e]) ⋀ (_h ≔ Φ(Row)) ⋀ ",
-                "mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (_children ≔ aSetting) ⋀ (_height ≔ ℛ(hratio, Ø, (0.035 * #(_children) + 0.05))) ⋀ ",
-                "(_children ≔ [_h, lcard]) ⋀ ⋓({_child: Φ(Column), _width: ℛ(hratio, Ø, 0.9)}) ⋀ ↲(Φ(Container))"
+                "mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (((_event = 'about') ⋀ (_children ≔ aboutInfo)) ⋁ (_children ≔ aSetting)) ⋀ ",
+                "(_height ≔ ℛ(hratio, Ø, (0.035 * #(_children) + 0.1))) ⋀ (_children ≔ [_h, lcard]) ⋀ ⋓({_child: Φ(Column), _width: ℛ(hratio, Ø, 0.9)}) ⋀ ",
+                "↲(Φ(Container))"
             ],
             "closeDialog": "↲(popRoute())",
+            "aboutInfo": [
+                "⋓({_textStyle: ℛ(textStyle, NormalTextStyle), _text: ('Version: ' + ℛ(model, version)), _d: Φ(Divider, {_color: ℛ(color, 'grey700'), _thickness: 1.5})}) ⋀ ",
+                "(_t1 ≔ Φ(Text)) ⋀ (_text ≔ ('FW Version: ' + fwVersion)) ⋀ (_t2 ≔ Φ(Text)) ⋀ (_text ≔ ('APK Version: ' + apkVersion)) ⋀ (_t3 ≔ Φ(Text)) ⋀ ↲([_t1, _d, _t2, _d, _t3])"
+            ],
             "menufsm": [
-                "_event, _title | (popRoute()) ⋀ (((_event = 'search') ⋀ ↲(onSearch({}))) ⋁ (((_event = 'settings') ⋁ (_event = 'support')) ⋀ changeTheme() ⋀ ",
-                "↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
+                "_event, _title | (popRoute()) ⋀ (((_event = 'search') ⋀ ↲(onSearch({}))) ⋁ (((_event = 'settings') ⋁ (_event = 'support') ⋁ (_event = 'about')) ⋀ ",
+                "changeTheme() ⋀ ↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ",
+                "ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
             ],
             "supportfsm": [
                 "_event | (popRoute()) ⋀ ((_event = shareApp) ⋀ ↲(onShare({_text: ⊤(sharedText), _subject: ⊤(sharedSubject)}))) ⋁ ",

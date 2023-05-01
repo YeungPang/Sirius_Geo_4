@@ -20,11 +20,11 @@ class VertSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     double h = map["_mv"]["_height"] * 0.8;
     String scale1 = map["_scale1"];
-    String scale2 = map["_scale2"];
+    String? scale2 = map["_scale2"];
     int top1 = map["_scale1Top"];
     int bottom1 = map["_scale1Bottom"];
-    int top2 = map["_scale2Top"];
-    int bottom2 = map["_scale2Bottom"];
+    int? top2 = map["_scale2Top"];
+    int? bottom2 = map["_scale2Bottom"];
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,12 +37,24 @@ class VertSlider extends StatelessWidget {
           height: h,
           width: map["_mv"]["_width"],
           child: Row(
-            children: [
-              _scaleWidget(scale1, h, true, top1, bottom1),
-              _getSliderView(h),
-              _scaleWidget(scale2, h, false, top2, bottom2),
-              _buildScaleContainer(scale1, scale2)
-            ],
+            children: (scale2 == null)
+                ? [
+                    SizedBox(
+                      width: map["_mv"]["_width"] / 30.0,
+                    ),
+                    _scaleWidget(scale1, h, true, top1, bottom1),
+                    _getSliderView(h),
+                    SizedBox(
+                      width: map["_mv"]["_width"] / 20.0,
+                    ),
+                    _buildScaleContainer(scale1, scale2)
+                  ]
+                : [
+                    _scaleWidget(scale1, h, true, top1, bottom1),
+                    _getSliderView(h),
+                    _scaleWidget(scale2, h, false, top2!, bottom2!),
+                    _buildScaleContainer(scale1, scale2)
+                  ],
           ),
         ),
         Text(
@@ -179,9 +191,11 @@ class VertSlider extends StatelessWidget {
 
   List<FlutterSliderHatchMarkLabel> _getMarkerList() {
     List<FlutterSliderHatchMarkLabel> l = [];
-    for (int i = 0; i <= 20; i++) {
+    int tn = map["_totalNotches"] ?? 20;
+    double dn = 100.0 / tn;
+    for (int i = 0; i <= tn; i++) {
       l.add(FlutterSliderHatchMarkLabel(
-          percent: i * 5.0,
+          percent: i * dn,
           label: Container(
             height: 5 * sizeScale,
             width: 5 * sizeScale,
@@ -198,7 +212,7 @@ class VertSlider extends StatelessWidget {
     return l;
   }
 
-  Widget _buildScaleContainer(String scale1, String scale2) {
+  Widget _buildScaleContainer(String scale1, String? scale2) {
     Map<String, dynamic> m1 = {
       "_converter": scale1Converter,
       "_notifier": map["_mv"]["_scaleNoti"],
@@ -217,38 +231,50 @@ class VertSlider extends StatelessWidget {
         v1
       ],
     );
-    Map<String, dynamic> m2 = {
-      "_converter": scale2Converter,
-      "_notifier": map["_mv"]["_scaleNoti"],
-      "_textStyle": sliderTextStyle
-    };
-    ValueText<double> v2 = ValueText<double>(m2);
-    Widget sCol2 = Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Text(
-          scale2,
-          style: sliderTextStyle,
-        ),
-        v2
-      ],
-    );
+    Widget? s1;
+    if (scale2 != null) {
+      Map<String, dynamic> m2 = {
+        "_converter": scale2Converter,
+        "_notifier": map["_mv"]["_scaleNoti"],
+        "_textStyle": sliderTextStyle
+      };
+      ValueText<double> v2 = ValueText<double>(m2);
+      Widget sCol2 = Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(
+            scale2,
+            style: sliderTextStyle,
+          ),
+          v2
+        ],
+      );
+      s1 = _buildVSliderScaleValue(sCol2);
+    }
     Widget s2 = _buildVSliderScaleValue(sCol1);
-    Widget s1 = _buildVSliderScaleValue(sCol2);
+
     Widget col = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.max,
-      children: [
-        Text(
-          model.map["text"]["yourSel"],
-          style: controlButtonTextStyle,
-        ),
-        s1,
-        s2
-      ],
+      children: (s1 == null)
+          ? [
+              Text(
+                model.map["text"]["yourSel"],
+                style: controlButtonTextStyle,
+              ),
+              s2
+            ]
+          : [
+              Text(
+                model.map["text"]["yourSel"],
+                style: controlButtonTextStyle,
+              ),
+              s1,
+              s2
+            ],
     );
     return _buildVSliderScaleContainer(col);
   }
@@ -399,26 +425,30 @@ buildSliderResult(Map<String, dynamic> map) {
         ))
   };
   Widget w1 = _buildSliderResValue(m1);
-  wl = [
-    Text(
-      map["_scale2"],
-      style: ts,
-    ),
-    Text(
-      numString(_mv["_ans2"]),
-      style: ts1,
-    ),
-  ];
-  m1["resCol"] = Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(left: 18.0 * sizeScale),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.max,
-        children: wl,
-      ));
-  Widget w2 = _buildSliderResValue(m1);
+  String? scale2 = map["_scale2"];
+  Widget? w2;
+  if (scale2 != null) {
+    wl = [
+      Text(
+        scale2,
+        style: ts,
+      ),
+      Text(
+        numString(_mv["_ans2"]),
+        style: ts1,
+      ),
+    ];
+    m1["resCol"] = Container(
+        alignment: Alignment.centerLeft,
+        margin: EdgeInsets.only(left: 18.0 * sizeScale),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.max,
+          children: wl,
+        ));
+    w2 = _buildSliderResValue(m1);
+  }
   Widget ansC = Container(
     width: 60.0 * sizeScale,
     height: 16.0 * sizeScale,
@@ -442,17 +472,29 @@ buildSliderResult(Map<String, dynamic> map) {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      alignment: Alignment.topLeft,
-                      children: [SizedBox(height: 60.0 * sizeScale), w2, ansW],
-                    ),
-                    Stack(alignment: Alignment.topLeft, children: [
-                      SizedBox(height: 60.0 * sizeScale),
-                      w1,
-                      ansW
-                    ])
-                  ]))));
+                  children: (w2 != null)
+                      ? [
+                          Stack(
+                            alignment: Alignment.topLeft,
+                            children: [
+                              SizedBox(height: 60.0 * sizeScale),
+                              w2,
+                              ansW
+                            ],
+                          ),
+                          Stack(alignment: Alignment.topLeft, children: [
+                            SizedBox(height: 60.0 * sizeScale),
+                            w1,
+                            ansW
+                          ])
+                        ]
+                      : [
+                          Stack(alignment: Alignment.topLeft, children: [
+                            SizedBox(height: 60.0 * sizeScale),
+                            w1,
+                            ansW
+                          ])
+                        ]))));
   _mv["_res"] = w;
 }
 

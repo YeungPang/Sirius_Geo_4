@@ -3866,6 +3866,7 @@
 	},
 	"patterns": {
 		"facts": {
+			"fwVersion": "0.1",
 			"patHeader": [
 				"hratio",
 				"wratio",
@@ -4178,8 +4179,8 @@
 			],
 			"shopQuestions": [
 				"_fwid | (_t ≔ Φ(Text, {_text: ⊤('questions'), _textStyle: 'BoldNormalTextStyle'})) ⋀ (_textStyle ≔ 'MediumNormalTextStyle') ⋀ ",
-				"(_sb ≔ Φ(SizedBox, {_width: ℛ(sizeScale, Ø, 10.0)})) ⋀ (_text ≔ 'FAQs') ⋀ (_children ≔ [_sb, Φ(Text)]) ⋀ (_mt ≔ Φ(Row)) ⋀ ",
-				"(_text ≔ ⊤('support')) ⋀ (_children ≔ [_sb,  Φ(Text)]) ⋀ (_at ≔ Φ(TapItem, {_child: Φ(Row), ",
+				"(_sb ≔ Φ(SizedBox, {_width: ℛ(sizeScale, Ø, 10.0)})) ⋀ ⋓({_text:'FAQs', _tapEvent: 'FAQ', _tap: 'fsmEvent', _tapAction: 'supportfsm'}) ⋀ ",
+				"(_children ≔ [_sb, textButton]) ⋀ (_mt ≔ Φ(Row)) ⋀ (_text ≔ ⊤('support')) ⋀ (_children ≔ [_sb,  Φ(Text)]) ⋀ (_at ≔ Φ(TapItem, {_child: Φ(Row), ",
 				"_onTap: {_func: 'fsmEvent', _map: {_event: 'support'}, _tapAction: 'supportfsm'}})) ⋀ mapPat(rowColHeader, (start, spaceEvenly, max, Ø)) ⋀ ",
 				"(_d ≔ Φ(Divider, {_color: ℛ(color, 'greyText'), _thickness: 1.5})) ⋀ (_children ≔ [_mt, _d, _at]) ⋀ ",
 				"(_cc ≔ Φ(Container, {_child: Φ(Column), _height: ℛ(sizeScale, Ø, 60.0), _width: _fwid})) ⋀ ",
@@ -4247,13 +4248,19 @@
 				"_event, _title | (_h ≔ Φ(Text, {_text: _title, _textStyle: ℛ(textStyle, TitleTextStyle)})) ⋀ ",
 				"(_e ≔ Φ(IconButton, {_onTap: {_func: fsmEvent, _tapAction: 'closeDialog'}, _iconColor: 'grey700', _icon: 'cancel', _iconSize: 16.0})) ⋀ ",
 				"(_mainAxisAlignment ≔ decode(mainAxisAlignment, spaceBetween)) ⋀ (_children ≔ [_h, _e]) ⋀ (_h ≔ Φ(Row)) ⋀ ",
-				"mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (_children ≔ aSetting) ⋀ (_height ≔ ℛ(hratio, Ø, (0.035 * #(_children) + 0.05))) ⋀ ",
-				"(_children ≔ [_h, lcard]) ⋀ ⋓({_child: Φ(Column), _width: ℛ(hratio, Ø, 0.9)}) ⋀ ↲(Φ(Container))"
+				"mapPat(rowColHeader, (start, spaceBetween, max, Ø)) ⋀ (((_event = 'about') ⋀ (_children ≔ aboutInfo)) ⋁ (_children ≔ aSetting)) ⋀ ",
+				"(_height ≔ ℛ(hratio, Ø, (0.035 * #(_children) + 0.1))) ⋀ (_children ≔ [_h, lcard]) ⋀ ⋓({_child: Φ(Column), _width: ℛ(hratio, Ø, 0.9)}) ⋀ ",
+				"↲(Φ(Container))"
 			],
 			"closeDialog": "↲(popRoute())",
+			"aboutInfo": [
+				"⋓({_textStyle: ℛ(textStyle, NormalTextStyle), _text: ('Version: ' + ℛ(model, version)), _d: Φ(Divider, {_color: ℛ(color, 'grey700'), _thickness: 1.5})}) ⋀ ",
+				"(_t1 ≔ Φ(Text)) ⋀ (_text ≔ ('FW Version: ' + fwVersion)) ⋀ (_t2 ≔ Φ(Text)) ⋀ (_text ≔ ('APK Version: ' + apkVersion)) ⋀ (_t3 ≔ Φ(Text)) ⋀ ↲([_t1, _d, _t2, _d, _t3])"
+			],
 			"menufsm": [
-				"_event, _title | (popRoute()) ⋀ (((_event = 'search') ⋀ ↲(onSearch({}))) ⋁ (((_event = 'settings') ⋁ (_event = 'support')) ⋀ changeTheme() ⋀ ",
-				"↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
+				"_event, _title | (popRoute()) ⋀ (((_event = 'search') ⋀ ↲(onSearch({}))) ⋁ (((_event = 'settings') ⋁ (_event = 'support') ⋁ (_event = 'about')) ⋀ ",
+				"changeTheme() ⋀ ↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ",
+				"ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
 			],
 			"supportfsm": [
 				"_event | (popRoute()) ⋀ ((_event = shareApp) ⋀ ↲(onShare({_text: ⊤(sharedText), _subject: ⊤(sharedSubject)}))) ⋁ ",

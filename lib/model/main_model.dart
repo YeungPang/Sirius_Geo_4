@@ -18,6 +18,8 @@ class MainModel {
   late double size10;
   late double size20;
 
+  final apkVersion = "0.1";
+
   late AppActions appActions;
 
   BuildContext? context;
@@ -46,6 +48,8 @@ class MainModel {
     String jsonStr = await getJson(context);
     stateData["map"] = await versionAgent.getMap(jsonStr);
     map = stateData["map"];
+    Map<String, dynamic> facts = map["patterns"]["facts"];
+    facts["apkVersion"] = apkVersion;
     return map;
   }
 

@@ -389,6 +389,7 @@ Map<String, dynamic> splitLines(Map<String, dynamic> map) {
 
 List<dynamic>? getDataList(Map<String, dynamic> m, var ielem) {
   List<dynamic> elem;
+  var mheader = m["header"];
   if (ielem is String) {
     List<String> il = ielem.split(";");
     elem = [];
@@ -401,9 +402,13 @@ List<dynamic>? getDataList(Map<String, dynamic> m, var ielem) {
       }
     }
   } else {
-    elem = ielem;
+    if (ielem is Map<String, dynamic>) {
+      elem = ielem.values.map((e) => e).toList();
+      mheader = ielem.keys.map((e) => e.substring(1)).toList();
+    } else {
+      elem = ielem;
+    }
   }
-  var mheader = m["header"];
   List<dynamic> header = (mheader is String) ? mheader.split(";") : mheader;
   var mr = m["dataStart"];
   int inx = header.indexOf("ref");

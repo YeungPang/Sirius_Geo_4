@@ -144,26 +144,30 @@ class SliderMvc extends Mvc {
         if (isVert) {
           int top1 = smap["_scale1Top"];
           int bottom1 = smap["_scale1Bottom"];
-          int top2 = smap["_scale2Top"];
-          int bottom2 = smap["_scale2Bottom"];
+          int? top2 = smap["_scale2Top"];
+          int? bottom2 = smap["_scale2Bottom"];
           int des = 0;
           int per = 0;
           String ansType = smap["_ansType"];
           int ans1;
-          int ans2;
+          int? ans2;
           if (ansType == smap["_scale1"]) {
             ans1 = smap["_Answer"];
             //configAgent!.getElement(smap["_Answer"], map);
-            ans2 = ((ans1 - top1) * (bottom2 - top2) / (bottom1 - top1) + top2)
-                .toInt();
+            if ((top2 != null) && (bottom2 != null)) {
+              ans2 =
+                  ((ans1 - top1) * (bottom2 - top2) / (bottom1 - top1) + top2)
+                      .toInt();
+            }
             int in1 = mvmap["_in1"]!;
             des = ans1 - in1;
             per = (des * 100 ~/ (bottom1 - top1)).abs();
           } else {
             ans2 = smap["_Answer"];
             //configAgent!.getElement(smap["_Answer"], map);
-            ans1 = ((ans2 - top2) * (bottom1 - top1) / (bottom2 - top2) + top1)
-                .toInt();
+            ans1 =
+                ((ans2! - top2!) * (bottom1 - top1) / (bottom2! - top2) + top1)
+                    .toInt();
             int in2 = mvmap["_in2"]!;
             des = ans2 - in2;
             per = (des * 100 ~/ (bottom2 - top2)).abs();

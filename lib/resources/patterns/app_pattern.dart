@@ -99,13 +99,17 @@ class NotiElemPattern extends ProcessPattern {
               width: full ? wi : wi * i / total,
               height: hp,
               decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.only(bottomLeft: Radius.circular(size10)),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(size10),
+                    bottomRight: full ? Radius.circular(size10) : Radius.zero),
                 gradient: greenGradient,
               ));
 
       double h = map["_height"] * 0.85;
       double s10 = size10;
+      BorderSide b2 = BorderSide(color: Colors.black, width: 2.0);
+      BorderSide b4 = BorderSide(color: colorMap["correct"]!, width: 4.0);
+      Border b = Border.all(color: colorMap["correct"]!, width: 2.0);
       Widget pc = Positioned(
           top: h,
           left: 0.0,
@@ -114,12 +118,11 @@ class NotiElemPattern extends ProcessPattern {
                   width: wi,
                   height: hp,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(s10),
-                          bottomLeft: Radius.circular(s10)),
-                      border:
-                          Border.all(color: colorMap["correct"]!, width: 2)),
-                )
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(s10),
+                        bottomLeft: Radius.circular(s10)),
+                    border: b,
+                  ))
               : Container(
                   alignment: Alignment.centerLeft,
                   width: wi,
@@ -128,8 +131,8 @@ class NotiElemPattern extends ProcessPattern {
                       borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(s10),
                           bottomLeft: Radius.circular(s10)),
-                      border:
-                          Border.all(color: colorMap["correct"]!, width: 2)),
+                      border: b),
+                  //Border.all(color: colorMap["correct"]!, width: 2.0)),
                   child: pi,
                 ));
       ic = Align(
@@ -169,19 +172,28 @@ class NotiElemPattern extends ProcessPattern {
         );
       }
     }
-    w = Container(
-        child: ic,
-        color: map["_color"],
-        alignment: map["_alignment"],
-        clipBehavior: map["_clipBehavior"] ?? Clip.none,
-        constraints: map["_boxConstraints"],
-        decoration: map["_decoration"],
-        foregroundDecoration: map["_foregroundDecoration"],
-        width: map["_width"],
-        height: map["_height"],
-        margin: map["_margin"],
-        padding: map["_padding"],
-        transform: map["_transform"]);
+    w = Card(
+      child: Container(
+          child: ic,
+          color: map["_color"],
+          alignment: map["_alignment"],
+          clipBehavior: map["_clipBehavior"] ?? Clip.none,
+          constraints: map["_boxConstraints"],
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(size10)),
+            border: Border.all(color: Colors.black12, width: 1.0),
+          ),
+          //foregroundDecoration: map["_foregroundDecoration"],
+          width: map["_width"],
+          height: map["_height"],
+          margin: map["_margin"],
+          padding: map["_padding"],
+          transform: map["_transform"]),
+      elevation: 4.0,
+      shadowColor: Colors.grey,
+      shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(size10)),
+    );
     return w!;
   }
 }

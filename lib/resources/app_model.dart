@@ -180,10 +180,27 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
       pf = getPrimePattern["ImageAsset"]!;
     }
     double height = 0.2685 * model.scaleHeight;
+    dynamic _bf = map["_fit"];
+    BoxFit bf = BoxFit.cover;
+    if (_bf != null) {
+      switch (_bf) {
+        case "width":
+          bf = BoxFit.fitWidth;
+          break;
+        case "height":
+          bf = BoxFit.fitHeight;
+          break;
+        case "fill":
+          bf = BoxFit.fill;
+          break;
+        default:
+          break;
+      }
+    }
     iMap = {
       "_name": imgs,
       "_height": height,
-      "_boxFit": BoxFit.cover,
+      "_boxFit": bf,
     };
     iMap["_child"] = pf(iMap);
     iMap["_decoration"] = shadowDecoration2;
@@ -470,7 +487,8 @@ ProcessPattern getVertSliderPattern(Map<String, dynamic> pmap) {
     "_scale2Bottom",
     "_sliderNoti",
     "_stackNoti",
-    "_mv"
+    "_mv",
+    "_totalNotches",
   ];
   for (String s in nl) {
     dynamic d = pmap[s];

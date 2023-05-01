@@ -417,8 +417,14 @@ class ControlAgent extends Agent {
     if (l.length != 2) {
       return false;
     }
-    List<dynamic> pl = (l[1] is String) ? l[1].split(';') : l[1];
-    List<dynamic> patHeader = (l[0] is String) ? l[0].split(';') : l[0];
+    dynamic l1 = l[1];
+    dynamic l0 = l[0];
+    if (l[1] is Map<String, dynamic>) {
+      l1 = l[1].values.map((e) => e).toList();
+      l0 = l[1].keys.map((String e) => e.substring(1)).toList();
+    }
+    List<dynamic> pl = (l[1] is String) ? l[1].split(';') : l1;
+    List<dynamic> patHeader = (l0 is String) ? l0.split(';') : l0;
     int len = (patHeader.length > pl.length) ? pl.length : patHeader.length;
     for (int i = 0; i < len; i++) {
       var ipat = pl[i];

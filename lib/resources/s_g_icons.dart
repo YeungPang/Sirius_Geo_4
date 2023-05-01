@@ -251,6 +251,7 @@ class IconPattern extends ProcessPattern {
 }
 
 const Map<String, IconData> myIcons = {
+  "about": Icons.info,
   "animals": SGGameIcons.animals,
   "atmosphere": SGGameIcons.atmosphere,
   "arrow_back": Icons.arrow_back,
