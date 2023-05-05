@@ -359,6 +359,8 @@ class MvcAgent extends Agent {
     if (mvcOpt.length > 1) {
       mvcName = mvcOpt[0];
       currMv!["_mvcOpt"] = mvcOpt;
+    } else {
+      currMv!["_mvcOpt"] = null;
     }
     Function? mvcF = appMvc[mvcName];
     if (mvcF != null) {
