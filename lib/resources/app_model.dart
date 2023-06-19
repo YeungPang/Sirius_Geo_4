@@ -160,6 +160,38 @@ ProcessPattern getItemElemPattern(Map<String, dynamic> pmap) {
   return cp;
 }
 
+ProcessPattern _getImage(String imgs, Map<String, dynamic> map, double height) {
+  Function pf;
+  if (imgs.contains("svg")) {
+    pf = getPrimePattern["SVGAsset"]!;
+  } else {
+    pf = getPrimePattern["ImageAsset"]!;
+  }
+  dynamic _bf = map["_fit"];
+  BoxFit bf = BoxFit.cover;
+  if (_bf != null) {
+    switch (_bf) {
+      case "width":
+        bf = BoxFit.fitWidth;
+        break;
+      case "height":
+        bf = BoxFit.fitHeight;
+        break;
+      case "fill":
+        bf = BoxFit.fill;
+        break;
+      default:
+        break;
+    }
+  }
+  Map<String, dynamic> iMap = {
+    "_name": imgs,
+    "_height": height,
+    "_boxFit": bf,
+  };
+  return pf(iMap);
+}
+
 ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
   ConfigAgent configAgent = map["_configAgent"];
   List<dynamic> children = [];
@@ -168,42 +200,42 @@ ProcessPattern getMvcColumnPattern(Map<String, dynamic> map) {
   ProcessPattern pp;
   Map<String, dynamic> iMap;
   dynamic qImg = configAgent.getElement(map["_Q_Image"], map);
+  double height = 0.2685 * model.scaleHeight;
   if (qImg is List<dynamic>) {
-    int ri = getRandom(qImg.length, [])!;
-    qImg = qImg[ri];
+    bool isStack = map["_image_stack"] ?? false;
+    if (isStack) {
+      List<ProcessPattern> ppList = [];
+      for (dynamic d in qImg) {
+        if (d is String) {
+          pp = _getImage(d, map, height);
+          ppList.add(pp);
+        }
+      }
+      iMap = {
+        "_children": ppList,
+      };
+      pf = getPrimePattern["Stack"]!;
+      pp = pf(iMap);
+      iMap = {
+        "_child": pp,
+        "_height": height,
+        "_decoration": shadowDecoration2,
+      };
+      pp = cpf(iMap);
+      children.add(pp);
+      qImg = null;
+    } else {
+      int ri = getRandom(qImg.length, [])!;
+      qImg = qImg[ri];
+    }
   }
   String? imgs = qImg;
   if ((imgs != null) && (imgs.isNotEmpty)) {
-    if (imgs.contains("svg")) {
-      pf = getPrimePattern["SVGAsset"]!;
-    } else {
-      pf = getPrimePattern["ImageAsset"]!;
-    }
-    double height = 0.2685 * model.scaleHeight;
-    dynamic _bf = map["_fit"];
-    BoxFit bf = BoxFit.cover;
-    if (_bf != null) {
-      switch (_bf) {
-        case "width":
-          bf = BoxFit.fitWidth;
-          break;
-        case "height":
-          bf = BoxFit.fitHeight;
-          break;
-        case "fill":
-          bf = BoxFit.fill;
-          break;
-        default:
-          break;
-      }
-    }
     iMap = {
-      "_name": imgs,
+      "_child": _getImage(imgs, map, height),
       "_height": height,
-      "_boxFit": bf,
+      "_decoration": shadowDecoration2,
     };
-    iMap["_child"] = pf(iMap);
-    iMap["_decoration"] = shadowDecoration2;
     // iMap["_borderRadius"] = BorderRadius.circular(size10);
     // pf = getPrimePattern["ClipRRect"];
     // iMap["_child"] = pf(iMap);
