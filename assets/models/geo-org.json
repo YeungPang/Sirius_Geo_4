@@ -877,9 +877,9 @@
                 "_event | (popRoute()) ⋀ ((_event = shareApp) ⋀ ↲(onShare({_text: ⊤(sharedText), _subject: ⊤(sharedSubject)}))) ⋁ ",
                 "((_event = cCache) ⋀ ↲(clearCache())) ⋁ (↲(route('supportScaffold')))"
             ],
-            "processSearch": "_itemList | (↲(route('srchResScaffold')))",
+            "processSearch": "_itemList, _title | (↲(route('srchResScaffold')))",
             "srchResScaffold": [
-                "_itemList | (_title ≔ livesAppBar) ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ (_onTap ≔ {_func: popRoute}) ⋀ (_leading ≔ Φ(IconButton)) ⋀ ",
+                "_itemList, _title | (_title ≔ livesAppBar) ⋀ ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ (_onTap ≔ {_func: popRoute}) ⋀ (_leading ≔ Φ(IconButton)) ⋀ ",
                 "(_body ≔ searchNavi) ⋀ ↲(scaffoldPat)"
             ],
             "searchNavi": [

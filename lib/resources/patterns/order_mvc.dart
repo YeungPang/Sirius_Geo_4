@@ -202,10 +202,15 @@ class OrderMvc extends Mvc {
     ProcessPattern gv = pf(imap);
     lmap = {"_valueName": "gv", "_child": gv};
     pf = getPrimePattern["Obx"]!;
+    double h =
+        eheight * children.length / 2 + mainAS * (children.length / 2.0 + 2.0);
+    double hl = 0.6 * model.scaleHeight;
+    if (h > hl) {
+      h = hl;
+    }
     imap = {
       "_width": width,
-      "_height": eheight * children.length / 2 +
-          mainAS * (children.length / 2.0 + 2.0),
+      "_height": h,
       "_alignment": Alignment.center,
       "_decoration": shadowRCDecoration,
       "_child": pf(lmap)

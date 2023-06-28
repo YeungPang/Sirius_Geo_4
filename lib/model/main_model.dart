@@ -18,7 +18,7 @@ class MainModel {
   late double size10;
   late double size20;
 
-  final apkVersion = "0.12";
+  final apkVersion = "0.13";
 
   late AppActions appActions;
 
