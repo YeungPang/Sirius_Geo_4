@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sirius_geo_4">
+    package="net.siriustechnology.geo">
    <application
-        android:label="sirius_geo_4"
+        android:label="Sirius Geography"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

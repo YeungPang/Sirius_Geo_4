@@ -56,6 +56,7 @@ class HomePage extends StatelessWidget {
 
           return snapshot.hasData
               ? _getBodyUi(model, snapshot.data!)
+
               // : const Center(
               //     child: CircularProgressIndicator(),
               //   );

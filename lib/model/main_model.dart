@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:core';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../agent/version_agent.dart';
 import '../builder/pattern.dart';
+import '../instance_manager.dart';
 
 class MainModel {
-  final String mainModelName = "assets/models/geo.json";
+  final String mainModelName = "models/geo.json";
 
   double screenHeight = 812.0;
   double screenWidth = 375.0;
@@ -40,12 +43,23 @@ class MainModel {
   }
 
   Future<String> getJson(BuildContext context) async {
-    //await Future.delayed(const Duration(milliseconds: 500));
-    return DefaultAssetBundle.of(context).loadString(mainModelName);
+    final httpAssetFuture = InstanceManager().assetRequest(mainModelName);
+    // NB: We can't use response.body below because it uses response charset (which we don't return) defaulting to latin1.
+    return httpAssetFuture
+        .timeout(const Duration(seconds: 5))
+        .then((response) => utf8.decode(response.bodyBytes))
+        .then((String jsonStr) => InstanceManager().decryptTransparentAsset(jsonStr));
   }
 
   Future<Map<String, dynamic>> getMap(BuildContext context) async {
-    String jsonStr = await getJson(context);
+    String jsonStr = "";
+    try {
+      jsonStr = await getJson(context);
+    } on TimeoutException catch (_) {
+      jsonStr = "";
+    } catch (ex) {
+      rethrow;
+    }
     stateData["map"] = await versionAgent.getMap(jsonStr);
     map = stateData["map"];
     Map<String, dynamic> facts = map["patterns"]["facts"];

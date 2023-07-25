@@ -4,6 +4,7 @@ import './/builder/pattern.dart';
 import './/model/main_model.dart';
 import './/ui/views/home_page.dart';
 import 'package:get/get.dart';
+import './/ui/views/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,10 +19,11 @@ class MyApp extends StatelessWidget {
     Get.put(ResxController());
     return GetMaterialApp(
       getPages: [
+        GetPage(name: "/login", page: () => LoginPage()),
         GetPage(name: "/home", page: () => HomePage()),
         GetPage(name: "/page", page: () => _getPage(model)),
       ],
-      initialRoute: "/home",
+      initialRoute: "/login",
       //onGenerateRoute: _routes(),
     );
   }
