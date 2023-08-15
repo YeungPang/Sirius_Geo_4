@@ -21,7 +21,7 @@ class MainModel {
   late double size10;
   late double size20;
 
-  final apkVersion = "0.13";
+  final apkVersion = "0.14";
 
   late AppActions appActions;
 
@@ -48,7 +48,8 @@ class MainModel {
     return httpAssetFuture
         .timeout(const Duration(seconds: 5))
         .then((response) => utf8.decode(response.bodyBytes))
-        .then((String jsonStr) => InstanceManager().decryptTransparentAsset(jsonStr));
+        .then((String jsonStr) =>
+            InstanceManager().decryptTransparentAsset(jsonStr));
   }
 
   Future<Map<String, dynamic>> getMap(BuildContext context) async {

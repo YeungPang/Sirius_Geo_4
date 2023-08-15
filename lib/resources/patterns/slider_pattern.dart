@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/util/util.dart';
+import '../../util/util.dart';
 import '../../builder/special_pattern.dart';
 import '../../resources/basic_resources.dart';
 import '../../builder/pattern.dart';

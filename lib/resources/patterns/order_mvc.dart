@@ -118,16 +118,19 @@ class OrderMvc extends Mvc {
     Map<String, dynamic> cmap = {
       "_decoration": dragDecoration,
       "_textStyle": mediumNormalTextStyle,
+      "_textAlign": TextAlign.center,
       "_childWhenDragging": holder,
     };
     Map<String, dynamic> gmap = {
       "_decoration": selDecoration,
       "_textStyle": selButnTxtStyle,
+      "_textAlign": TextAlign.center,
       "_childWhenDragging": holder,
     };
     Map<String, dynamic> amap = {
       "_decoration": btnDecoration,
       "_textStyle": choiceButnTxtStyle,
+      "_textAlign": TextAlign.center,
       "_childWhenDragging": holder,
     };
 

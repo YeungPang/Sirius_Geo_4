@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sirius_geo_4/util/util.dart';
+import '../../util/util.dart';
 import './pattern.dart';
 import '../model/locator.dart';
 import '../resources/basic_resources.dart';

@@ -232,16 +232,19 @@ class SentenceMvc extends Mvc {
     Map<String, dynamic> cmap = {
       "_decoration": dragDecoration,
       "_textStyle": mediumNormalTextStyle,
+      "_textAlign": TextAlign.center,
       "_childWhenDragging": holder,
     };
     Map<String, dynamic> gmap = {
       "_decoration": selDecoration,
       "_textStyle": selButnTxtStyle,
+      "_textAlign": TextAlign.center,
       "_childWhenDragging": holder,
     };
     Map<String, dynamic> amap = {
       "_decoration": btnDecoration,
       "_textStyle": choiceButnTxtStyle,
+      "_textAlign": TextAlign.center,
       "_childWhenDragging": holder,
     };
 
@@ -399,6 +402,7 @@ class SentenceMvc extends Mvc {
         imap = {
           "_decoration": elemDecoration,
           "_textStyle": choiceButnTxtStyle,
+          "_textAlign": TextAlign.center,
           "_index": i,
           "_item": tc!.text,
         };
@@ -444,6 +448,7 @@ class SentenceMvc extends Mvc {
             imap = {
               "_decoration": selDecoration,
               "_textStyle": selButnTxtStyle,
+              "_textAlign": TextAlign.center,
               "_index": inx,
               "_item": answers[inx],
             };
@@ -458,6 +463,7 @@ class SentenceMvc extends Mvc {
                 imap = {
                   "_decoration": elemDecoration,
                   "_textStyle": choiceButnTxtStyle,
+                  "_textAlign": TextAlign.center,
                   "_index": selIndex,
                   "_item": answers[selIndex],
                 };
@@ -492,6 +498,7 @@ class SentenceMvc extends Mvc {
               imap = {
                 "_decoration": elemDecoration,
                 "_textStyle": choiceButnTxtStyle,
+                "_textAlign": TextAlign.center,
                 "_index": selIndex,
                 "_item": answers[selIndex],
               };
