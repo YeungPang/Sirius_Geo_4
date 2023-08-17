@@ -6,6 +6,7 @@ import 'package:string_validator/string_validator.dart';
 import './pattern.dart';
 import 'package:get/get.dart';
 import '../model/locator.dart';
+import '../instance_manager.dart';
 
 String? _validate(String inType, bool isReq, String? value,
     {String? label, Map<String, dynamic>? map}) {
@@ -138,6 +139,9 @@ class _FormWidgetState extends State<FormWidget> {
   @override
   void initState() {
     map = widget.map;
+    if (map["_key"] == null) {
+      map["_key"] = GlobalKey<FormState>();
+    }
     _formKey = map["_key"];
     List<dynamic> flds = map["_formFields"]!;
     Map<String, dynamic> fm = map["_formData"]!;
@@ -235,8 +239,38 @@ Widget _getSendButton(Map<String, dynamic> map) {
         GlobalKey<FormState> k = map["_key"]!;
         if (k.currentState!.validate()) {
           k.currentState!.save();
-          tapAction(map);
+          Map<String, dynamic> formData = map["_formData"]!;
+          InstanceManager()
+              .reportEndpoint(map["_event"], formData)
+              .then((value) {
+            String msg = value
+                ? model.map["text"]["messageSent"]
+                : model.map["text"]["connectFailed"];
+            Get.dialog(_getSentDiag(msg), //
+                navigatorKey: GlobalKey());
+          });
         }
       },
       child: cb);
+}
+
+Widget _getSentDiag(String msg) {
+  return AlertDialog(
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          msg,
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: size10),
+        ElevatedButton(
+            onPressed: () {
+              Get.back();
+              Get.back();
+            },
+            child: const Text("Ok")),
+      ],
+    ),
+  );
 }

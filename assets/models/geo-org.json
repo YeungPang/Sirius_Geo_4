@@ -1,6 +1,6 @@
 {
     "title": "Sirius Prototype",
-    "version": "(0.12)",
+    "version": "(0.15)",
     "versionTimestamp": 1636410287,
     "maxConfigLives": 5,
     "liveGenTime": 30,
@@ -27,6 +27,7 @@
         "colon": ":",
         "confirm": "CONFIRM",
         "congrat": "CONGRATUATIONS",
+        "connectFailed": "Connection to host failed!  Please try again later.",
         "continue": "CONTINUE",
         "corr": "CORRECT",
         "corrText": "CORRECT!",
@@ -57,6 +58,7 @@
         "maybe": "MAY BE YOU NEED A BIT MORE",
         "mCancel": "YES, CANCEL",
         "message": "Message",
+        "messageSent": "Message sent.",
         "mOffer": "You're currently getting 2 months for free with your annual plan.  You will loose this discount if you switch to a monthly plan.",
         "month": "month",
         "monthly": "Monthly",

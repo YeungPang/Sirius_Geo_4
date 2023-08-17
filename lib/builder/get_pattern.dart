@@ -1123,6 +1123,7 @@ ProcessPattern getFormPattern(Map<String, dynamic> pmap) {
     "_formFields": pmap["_formFields"],
     "_formData": pmap["_formData"],
     "_title": pmap["_title"],
+    "_event": pmap["_event"],
   };
   return FormPattern(map);
 }
