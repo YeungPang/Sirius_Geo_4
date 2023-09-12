@@ -756,6 +756,15 @@ ProcessPattern getWatchAd(Map<String, dynamic>? pmap) {
     "_width": 1.2 * btnWidth,
   };
   pf = getPrimePattern["ColorButton"]!;
+  pp = pf(imap);
+  imap = {
+    "_child": pp,
+    "_onTap": {
+      "_func": 'mvc',
+      "_tapAction": ['watchAd']
+    },
+  };
+  pf = getPrimePattern["TapItem"]!;
   return pf(imap);
 }
 

@@ -5,8 +5,11 @@ import './/model/main_model.dart';
 import './/ui/views/home_page.dart';
 import 'package:get/get.dart';
 import './/ui/views/login_page.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MyApp.initGoogleMobileAds();
   runApp(const MyApp());
 }
 
@@ -42,5 +45,9 @@ class MyApp extends StatelessWidget {
       screen = p as Widget;
     }
     return screen;
+  }
+
+  static Future<InitializationStatus> initGoogleMobileAds() {
+    return MobileAds.instance.initialize();
   }
 }

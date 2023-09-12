@@ -307,7 +307,6 @@ final Map<String, TextStyle> textStyle = {
   "BoldCorrTextStyle": boldCorrTextStyle,
   "BoldInCorrTextStyle": boldInCorrTextStyle,
   "BoldNormalTextStyle": boldNormalTextStyle,
-  "CaptionTextStyle": captionTextStyle,
   "ChoiceButnTxtStyle": choiceButnTxtStyle,
   "ControlButtonTextStyle": controlButtonTextStyle,
   "CorrTxtStyle": corrTxtStyle,

@@ -194,6 +194,36 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
   }
 
   Widget _sliderCard() {
+    Map<String, dynamic> imap = {
+      "_height": 0.05 * model.scaleHeight,
+      "_width": 0.05 * model.scaleHeight,
+      "_alignment": Alignment.center,
+      "_btnBRadius": size10,
+      "_beginColor": colorMap["btnBlue"],
+      "_endColor": colorMap["btnBlueGradEnd"],
+      "_child": Text(
+        '+',
+        style: bannerTxtStyle,
+      )
+    };
+    Widget pb =
+        GestureDetector(onTap: () => _onTap("+"), child: ColorButton(imap));
+
+    imap = {
+      "_height": 0.05 * model.scaleHeight,
+      "_width": 0.05 * model.scaleHeight,
+      "_alignment": Alignment.center,
+      "_btnBRadius": size10,
+      "_beginColor": colorMap["btnBlue"],
+      "_endColor": colorMap["btnBlueGradEnd"],
+      "_child": Text(
+        '-',
+        style: bannerTxtStyle,
+      )
+    };
+    Widget mb =
+        GestureDetector(onTap: () => _onTap("-"), child: ColorButton(imap));
+
     return Container(
       height: height * 0.195,
       width: width * 0.9,
@@ -206,28 +236,58 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.only(left: width * 0.04, top: height * 0.02),
-                child: Text(
-                  _ys,
-                  style: sliderBoldTextStyle,
-                ),
+              Row(
+                children: [
+                  Container(
+                    margin:
+                        EdgeInsets.only(left: width * 0.04, top: height * 0.02),
+                    child: Text(
+                      _ys,
+                      style: sliderBoldTextStyle,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        right: width * 0.04, top: height * 0.02),
+                    child: Text(
+                      model.map["text"]["fineTune"] ?? "Fine Tune Answer",
+                      style: sliderBoldTextStyle,
+                    ),
+                  )
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: width * 0.04,
-                ),
-                child: Text(
-                  _isSwitched ? _scale[1]["t"] : _scale[0]["t"],
-                  style: sliderTextStyle,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: width * 0.04, top: height * 0.01),
-                child: Text(
-                  _isSwitched ? _scale[1]["text"] : _scale[0]["text"],
-                  style: sliderSmallTextStyle,
-                ),
+              Row(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: width * 0.04,
+                        ),
+                        child: Text(
+                          _isSwitched ? _scale[1]["t"] : _scale[0]["t"],
+                          style: sliderTextStyle,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                            left: width * 0.04, top: height * 0.01),
+                        child: Text(
+                          _isSwitched ? _scale[1]["text"] : _scale[0]["text"],
+                          style: sliderSmallTextStyle,
+                        ),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(right: width * 0.05),
+                      child:
+                          Row(children: [mb, const SizedBox(width: 20.0), pb])),
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
               Container(
                 margin: EdgeInsets.only(
@@ -256,28 +316,7 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
                     }
                     setState(() {
                       _absoluteValue = lowerValue;
-                      if (_isSwitched) {
-                        _scale[1]["value"] = lowerValue * _scale[1]["r"];
-                        _scale[0]["value"] = _scale[1]["value"] / _ratio12;
-                        if (_scale[0]["value"] > _scale[0]["end"]) {
-                          _scale[0]["value"] = _scale[0]["end"];
-                        }
-                        _scale[2]["value"] = _scale[0]["value"] * _ratio13;
-                      } else {
-                        _scale[0]["value"] = lowerValue * _scale[0]["r"];
-                        _scale[1]["value"] = _scale[0]["value"] * _ratio12;
-                        _scale[2]["value"] = _scale[0]["value"] * _ratio13;
-                      }
-                      double sv = _scale[1]["value"] + _scale[1]["start"];
-                      _scale[1]["t"] =
-                          numString(sv, dec: _dec[1]) + ' ' + _scale[1]["s"];
-                      sv = _scale[0]["value"] + _scale[0]["start"];
-                      _mv["_in1"] = sv;
-                      _scale[0]["t"] =
-                          numString(sv, dec: _dec[0]) + " " + _scale[0]["s"];
-                      sv = _scale[2]["value"] + _scale[2]["start"];
-                      _scale[2]["t"] =
-                          numString(sv, dec: _dec[2]) + ' ' + _scale[2]["s"];
+                      _setValue();
                     });
                   },
                 ),
@@ -314,6 +353,44 @@ class _ThreeSliderWidgetState extends State<ThreeSliderWidget>
         ),
       ),
     );
+  }
+
+  _setValue() {
+    if (_isSwitched) {
+      _scale[1]["value"] = _absoluteValue * _scale[1]["r"];
+      _scale[0]["value"] = _scale[1]["value"] / _ratio12;
+      if (_scale[0]["value"] > _scale[0]["end"]) {
+        _scale[0]["value"] = _scale[0]["end"];
+      }
+      _scale[2]["value"] = _scale[0]["value"] * _ratio13;
+    } else {
+      _scale[0]["value"] = _absoluteValue * _scale[0]["r"];
+      _scale[1]["value"] = _scale[0]["value"] * _ratio12;
+      _scale[2]["value"] = _scale[0]["value"] * _ratio13;
+    }
+    double sv = _scale[1]["value"] + _scale[1]["start"];
+    _scale[1]["t"] = numString(sv, dec: _dec[1]) + ' ' + _scale[1]["s"];
+    sv = _scale[0]["value"] + _scale[0]["start"];
+    _mv["_in1"] = sv;
+    _scale[0]["t"] = numString(sv, dec: _dec[0]) + " " + _scale[0]["s"];
+    sv = _scale[2]["value"] + _scale[2]["start"];
+    _scale[2]["t"] = numString(sv, dec: _dec[2]) + ' ' + _scale[2]["s"];
+  }
+
+  _onTap(String s) {
+    if (_mv["_state"] != "edited") {
+      RxDouble _confirmNoti = resxController.getRx("confirm");
+      _confirmNoti.value = 1.0;
+      _mv["_state"] = "edited";
+    }
+    setState(() {
+      if (s == "+") {
+        _absoluteValue += 1;
+      } else {
+        _absoluteValue -= 1;
+      }
+      _setValue();
+    });
   }
 
   Widget _selectionCard() {

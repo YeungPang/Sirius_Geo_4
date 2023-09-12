@@ -1,9 +1,12 @@
-import 'dart:async';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
+// import 'dart:async';
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../builder/pattern.dart';
-import 'package:webview_flutter_plus/webview_flutter_plus.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+// Import for iOS features.
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class WebViewExpl extends StatefulWidget {
   final Map<String, dynamic> map;
@@ -14,54 +17,97 @@ class WebViewExpl extends StatefulWidget {
 }
 
 class _WebViewExplState extends State<WebViewExpl> {
-  final Completer<WebViewPlusController> _controller =
-      Completer<WebViewPlusController>();
+  late final WebViewController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // #docregion platform_features
+    late final PlatformWebViewControllerCreationParams params;
+    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+      params = WebKitWebViewControllerCreationParams(
+        allowsInlineMediaPlayback: true,
+        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+      );
+    } else {
+      params = const PlatformWebViewControllerCreationParams();
+    }
+
+    final WebViewController controller =
+        WebViewController.fromPlatformCreationParams(params);
+    //Map<String, dynamic>? _mv = widget.map["_mv"];
+    String? _url = widget.map["_url"];
+    String? _html = widget.map["_html"];
+    String? _file = widget.map["_file"];
+    dynamic _scriptMode = widget.map["_scriptMode"] ?? JavaScriptMode.disabled;
+    if (_scriptMode is String) {
+      if (_scriptMode.toLowerCase() == "unrestricted") {
+        _scriptMode = JavaScriptMode.unrestricted;
+      } else {
+        _scriptMode = JavaScriptMode.disabled;
+      }
+    }
+
+    controller
+      ..setJavaScriptMode(_scriptMode)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            debugPrint('WebView is loading (progress : $progress%)');
+          },
+          onPageStarted: (String url) {
+            debugPrint('Page started loading: $url');
+          },
+          onPageFinished: (String url) {
+            debugPrint('Page finished loading: $url');
+          },
+          onWebResourceError: (WebResourceError error) {
+            debugPrint('''
+Page resource error:
+  code: ${error.errorCode}
+  description: ${error.description}
+  errorType: ${error.errorType}
+  isForMainFrame: ${error.isForMainFrame}
+          ''');
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            debugPrint('allowing navigation to ${request.url}');
+            return NavigationDecision.navigate;
+          },
+          onUrlChange: (UrlChange change) {
+            debugPrint('url change to ${change.url}');
+          },
+        ),
+      );
+    if (_url != null) {
+      controller.loadRequest(Uri.parse(_url));
+    } else if (_html != null) {
+      controller.loadHtmlString(_html);
+    } else if (_file != null) {
+      controller.loadFile(_file);
+    }
+
+    // #docregion platform_features
+    if (controller.platform is AndroidWebViewController) {
+      AndroidWebViewController.enableDebugging(true);
+      (controller.platform as AndroidWebViewController)
+          .setMediaPlaybackRequiresUserGesture(false);
+    }
+    // #enddocregion platform_features
+
+    _controller = controller;
+  }
 
   @override
   void dispose() {
-    widget.map["_mv"]["_wvController"] = null;
+    //widget.map["_mv"]["_wvController"] = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic>? _mv = widget.map["_mv"];
-    String? url = widget.map["_url"];
-    dynamic html = widget.map["_html"];
-    dynamic _scriptMode = widget.map["_scriptMode"] ?? JavascriptMode.disabled;
-    if (_scriptMode is String) {
-      if (_scriptMode.toLowerCase() == "unrestricted") {
-        _scriptMode = JavascriptMode.unrestricted;
-      } else {
-        _scriptMode = JavascriptMode.disabled;
-      }
-    }
-
-    return SafeArea(
-        child: WebViewPlus(
-      gestureRecognizers: Set()
-        ..add(
-          Factory<DragGestureRecognizer>(
-            () => VerticalDragGestureRecognizer(),
-          ),
-        ),
-      //initialUrl: widget.map["_url"],
-      //gestureRecognizers: gestureSet,
-      javascriptMode: _scriptMode,
-      onWebViewCreated: (WebViewPlusController controller) {
-        _controller.complete(controller);
-        if (_mv == null) {
-          _mv = {};
-          widget.map["_mv"] = _mv;
-        }
-        _mv!["_wvController"] = controller;
-        if ((url != null) && (url.isNotEmpty)) {
-          controller.loadUrl(url);
-        } else if (html is String) {
-          controller.loadString(html);
-        }
-      },
-    ));
+    return SafeArea(child: WebViewWidget(controller: _controller));
   }
 }
 

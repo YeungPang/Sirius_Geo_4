@@ -105,6 +105,36 @@ class _SliderWidgetState extends State<SliderWidget>
   }
 
   Widget _sliderCard() {
+    Map<String, dynamic> imap = {
+      "_height": 0.05 * model.scaleHeight,
+      "_width": 0.05 * model.scaleHeight,
+      "_alignment": Alignment.center,
+      "_btnBRadius": size10,
+      "_beginColor": colorMap["btnBlue"],
+      "_endColor": colorMap["btnBlueGradEnd"],
+      "_child": Text(
+        '+',
+        style: bannerTxtStyle,
+      )
+    };
+    Widget pb =
+        GestureDetector(onTap: () => _onTap("+"), child: ColorButton(imap));
+
+    imap = {
+      "_height": 0.05 * model.scaleHeight,
+      "_width": 0.05 * model.scaleHeight,
+      "_alignment": Alignment.center,
+      "_btnBRadius": size10,
+      "_beginColor": colorMap["btnBlue"],
+      "_endColor": colorMap["btnBlueGradEnd"],
+      "_child": Text(
+        '-',
+        style: bannerTxtStyle,
+      )
+    };
+    Widget mb =
+        GestureDetector(onTap: () => _onTap("-"), child: ColorButton(imap));
+
     return Container(
       height: height * 0.195,
       width: width * 0.9,
@@ -117,28 +147,58 @@ class _SliderWidgetState extends State<SliderWidget>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.only(left: width * 0.04, top: height * 0.02),
-                child: Text(
-                  _ys,
-                  style: sliderBoldTextStyle,
-                ),
+              Row(
+                children: [
+                  Container(
+                    margin:
+                        EdgeInsets.only(left: width * 0.04, top: height * 0.02),
+                    child: Text(
+                      _ys,
+                      style: sliderBoldTextStyle,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        right: width * 0.04, top: height * 0.02),
+                    child: Text(
+                      model.map["text"]["fineTune"] ?? "Fine Tune Answer",
+                      style: sliderBoldTextStyle,
+                    ),
+                  )
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: width * 0.04,
-                ),
-                child: Text(
-                  _scalet,
-                  style: sliderTextStyle,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: width * 0.04, top: height * 0.01),
-                child: Text(
-                  _text,
-                  style: sliderSmallTextStyle,
-                ),
+              Row(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: width * 0.04,
+                        ),
+                        child: Text(
+                          _scalet,
+                          style: sliderTextStyle,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                            left: width * 0.04, top: height * 0.01),
+                        child: Text(
+                          _text,
+                          style: sliderSmallTextStyle,
+                        ),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(right: width * 0.05),
+                      child:
+                          Row(children: [mb, const SizedBox(width: 20.0), pb])),
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
               Container(
                 margin: EdgeInsets.only(
@@ -167,10 +227,7 @@ class _SliderWidgetState extends State<SliderWidget>
                     }
                     setState(() {
                       _absoluteValue = lowerValue;
-                      _scaleValue = lowerValue * _ratio;
-                      double sv = _scaleValue + _start;
-                      _scalet = numString(sv, dec: dec) + ' ' + _suff;
-                      _mv["_in1"] = sv;
+                      _setValue();
                     });
                   },
                 ),
@@ -195,6 +252,29 @@ class _SliderWidgetState extends State<SliderWidget>
         ),
       ),
     );
+  }
+
+  _setValue() {
+    _scaleValue = _absoluteValue * _ratio;
+    double sv = _scaleValue + _start;
+    _scalet = numString(sv, dec: dec) + ' ' + _suff;
+    _mv["_in1"] = sv;
+  }
+
+  _onTap(String s) {
+    if (_mv["_state"] != "edited") {
+      RxDouble _confirmNoti = resxController.getRx("confirm");
+      _confirmNoti.value = 1.0;
+      _mv["_state"] = "edited";
+    }
+    setState(() {
+      if (s == "+") {
+        _absoluteValue += 1;
+      } else {
+        _absoluteValue -= 1;
+      }
+      _setValue();
+    });
   }
 
   Widget _percentCard() {

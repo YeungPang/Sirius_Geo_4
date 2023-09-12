@@ -9,6 +9,7 @@ import '../resources/basic_resources.dart';
 import '../resources/fonts.dart';
 import '../resources/patterns/hint_bubble.dart';
 import 'dart:async';
+import '../util/ad_manager.dart';
 
 class MvcAgent extends Agent {
   Map<String, dynamic>? currMv;
@@ -51,6 +52,8 @@ class MvcAgent extends Agent {
   bool limit = true;
   //int configLives = model.map["userProfile"]["lives"];
 
+  final adManager = AdManager();
+
   init() {
     limit = userProfile["userType"] == "User";
     if (limit) {
@@ -59,10 +62,11 @@ class MvcAgent extends Agent {
       }
       int lives = userProfile["lives"];
       if (lives < configLives) {
-        int now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+        //int now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+        int now = DateTime.now().millisecondsSinceEpoch;
         int un = userProfile["liveTimestamp"];
         int timediff = now - un;
-        int l = timediff ~/ liveTime;
+        int l = timediff ~/ (liveTime * 1000);
         lives += l;
         if (lives > configLives) {
           lives = configLives;
@@ -75,6 +79,7 @@ class MvcAgent extends Agent {
         timer = Timer.periodic(
             Duration(seconds: liveTime), (timer) => _updateTime());
       }
+      adManager.addAds(true, false, true);
     } else {
       resxController.setRxValue("lives", '∞');
     }
@@ -285,6 +290,20 @@ class MvcAgent extends Agent {
               break;
           }
         }
+        break;
+      case "watchAd":
+        adManager.showRewardedAd().then((rewarded) {
+          if (rewarded) {
+            _addLive();
+            adManager.setRewarded(false);
+            timer?.cancel();
+            timer = null;
+            if (stackNoti != null) {
+              replaceLast(null);
+            }
+            adManager.addAds(false, false, true);
+          }
+        });
         break;
       default:
         break;
@@ -512,6 +531,14 @@ class MvcAgent extends Agent {
     }
   }
 
+  int _addLive() {
+    int lives = userProfile["lives"] + 1;
+    resxController.setRxValue("lives", lives.toString());
+    userProfile["lives"] = lives;
+    model.versionAgent.saveProfile();
+    return lives;
+  }
+
   _updateTime() {
     if (liveTimeOn) {
       timing = timing! - timeDuration;
@@ -519,10 +546,7 @@ class MvcAgent extends Agent {
       timing = 0;
     }
     if (timing! <= 0) {
-      int lives = userProfile["lives"] + 1;
-      resxController.setRxValue("lives", lives.toString());
-      userProfile["lives"] = lives;
-      model.versionAgent.saveProfile();
+      int lives = _addLive();
       if (liveTimeOn) {
         replaceLast(null);
         liveTimeOn = false;
@@ -1248,6 +1272,9 @@ class MvcAgent extends Agent {
     pp = pf(imap);
     slw.add(pp);
     nmap["_gameCompleteList"] = slw;
+    if (userProfile["userType"] == "User") {
+      adManager.showInterstitial();
+    }
     pp = getGameCompletePattern(nmap);
     replaceLast(pp);
   }

@@ -40,7 +40,7 @@ class WebViewMvc extends Mvc {
     }
     imap = {"_url": url, "_mv": mvmap, "_html": html};
     if (map["_scriptEnable"]) {
-      imap["_scriptMode"] = JavascriptMode.unrestricted;
+      imap["_scriptMode"] = JavaScriptMode.unrestricted;
     }
     Function pf = getPrimePattern["WebView"]!;
     ProcessPattern pp = pf(imap);

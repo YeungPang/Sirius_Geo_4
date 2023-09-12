@@ -47,13 +47,13 @@ class VertSlider extends StatelessWidget {
                     SizedBox(
                       width: map["_mv"]["_width"] / 20.0,
                     ),
-                    _buildScaleContainer(scale1, scale2)
+                    _buildScaleContainer(scale1, scale2, top1 - bottom1)
                   ]
                 : [
                     _scaleWidget(scale1, h, true, top1, bottom1),
                     _getSliderView(h),
                     _scaleWidget(scale2, h, false, top2!, bottom2!),
-                    _buildScaleContainer(scale1, scale2)
+                    _buildScaleContainer(scale1, scale2, top2! - bottom2!)
                   ],
           ),
         ),
@@ -133,60 +133,67 @@ class VertSlider extends StatelessWidget {
   }
 
   Widget _sliderWidget(double h, double s, bool res) {
-    double _absoluteSize = s;
+    ValueNotifier<double> vn = map["_mv"]!["_scaleNoti"]!;
+    vn.value = s;
+    //double _absoluteSize = s;
     Map<String, dynamic> _mv = map["_mv"];
-    return Container(
-      margin: res
-          ? EdgeInsets.only(
-              top: size10, left: 15.0 * sizeScale, right: 15.0 * sizeScale)
-          : EdgeInsets.only(top: size10),
-      height: h - lh,
-      child: FlutterSlider(
-        values: [_absoluteSize],
-        axis: Axis.vertical,
-        max: max,
-        min: 0,
-        handlerHeight: res ? 5 * sizeScale : 20 * sizeScale,
-        handlerWidth: res ? 5 * sizeScale : 20 * sizeScale,
-        tooltip: FlutterSliderTooltip(
-          disabled: true,
-        ),
-        handler: FlutterSliderHandler(
-          opacity: res ? 0 : 1,
-          disabled: res,
-          child: res
-              ? Container()
-              : Container(
-                  child: Image.asset('assets/images/slider_circle.png'),
+    return ValueListenableBuilder<double>(
+        valueListenable: vn,
+        builder: (BuildContext context, double value, Widget? child) =>
+            Container(
+              margin: res
+                  ? EdgeInsets.only(
+                      top: size10,
+                      left: 15.0 * sizeScale,
+                      right: 15.0 * sizeScale)
+                  : EdgeInsets.only(top: size10),
+              height: h - lh,
+              child: FlutterSlider(
+                values: [vn.value],
+                axis: Axis.vertical,
+                max: max,
+                min: 0,
+                handlerHeight: res ? 5 * sizeScale : 20 * sizeScale,
+                handlerWidth: res ? 5 * sizeScale : 20 * sizeScale,
+                tooltip: FlutterSliderTooltip(
+                  disabled: true,
                 ),
-        ),
-        hatchMark: FlutterSliderHatchMark(
-          labels: _getMarkerList(),
-          labelsDistanceFromTrackBar: 1.2,
-          linesAlignment: FlutterSliderHatchMarkAlignment.right,
-          density: 0.5,
-        ),
-        trackBar: const FlutterSliderTrackBar(
-          activeTrackBar: BoxDecoration(
-            gradient: blueGradient,
-          ),
-        ),
-        onDragging: (handlerIndex, lowerValue, upperValue) {
-          if (_mv["_state"] != "edited") {
-            RxDouble notifier = resxController.getRx("confirm");
-            notifier.value = 1.0;
-            _mv["_state"] = "edited";
-          }
-          _absoluteSize = lowerValue;
-          //print(lowerValue);
-          //print(upperValue);
-          ValueNotifier<double>? vn = map["_mv"]["_scaleNoti"];
-          if (vn != null) {
-            vn.value = lowerValue;
-          }
-        },
-      ),
-    );
+                handler: FlutterSliderHandler(
+                  opacity: res ? 0 : 1,
+                  disabled: res,
+                  child: res
+                      ? Container()
+                      : Container(
+                          child: Image.asset('assets/images/slider_circle.png'),
+                        ),
+                ),
+                hatchMark: FlutterSliderHatchMark(
+                  labels: _getMarkerList(),
+                  labelsDistanceFromTrackBar: 1.2,
+                  linesAlignment: FlutterSliderHatchMarkAlignment.right,
+                  density: 0.5,
+                ),
+                trackBar: const FlutterSliderTrackBar(
+                  activeTrackBar: BoxDecoration(
+                    gradient: blueGradient,
+                  ),
+                ),
+                onDragging: (handlerIndex, lowerValue, upperValue) {
+                  if (_mv["_state"] != "edited") {
+                    RxDouble notifier = resxController.getRx("confirm");
+                    notifier.value = 1.0;
+                    _mv["_state"] = "edited";
+                  }
+                  //_absoluteSize = lowerValue;
+                  //print(lowerValue);
+                  //print(upperValue);
+                  //ValueNotifier<double>? vn = map["_mv"]["_scaleNoti"];
+                  //if (vn != null) {
+                  vn.value = lowerValue;
+                  //}
+                },
+              ),
+            ));
   }
 
   List<FlutterSliderHatchMarkLabel> _getMarkerList() {
@@ -212,7 +219,7 @@ class VertSlider extends StatelessWidget {
     return l;
   }
 
-  Widget _buildScaleContainer(String scale1, String? scale2) {
+  Widget _buildScaleContainer(String scale1, String? scale2, int scale) {
     Map<String, dynamic> m1 = {
       "_converter": scale1Converter,
       "_notifier": map["_mv"]["_scaleNoti"],
@@ -276,7 +283,95 @@ class VertSlider extends StatelessWidget {
               s2
             ],
     );
+    Map<String, dynamic> imap = {
+      "_height": 0.2364532 * model.scaleHeight,
+      "_width": 0.2933333 * model.scaleWidth,
+      "_alignment": Alignment.center,
+      "_btnBRadius": size10,
+      "_beginColor": colorMap["btnBlue"],
+      "_endColor": colorMap["btnBlueGradEnd"],
+      "_child": col
+    };
+    Widget c = ColorButton(imap);
+
+    imap = {
+      "_height": 0.05 * model.scaleHeight,
+      "_width": 0.05 * model.scaleHeight,
+      "_alignment": Alignment.center,
+      "_btnBRadius": size10,
+      "_beginColor": colorMap["btnBlue"],
+      "_endColor": colorMap["btnBlueGradEnd"],
+      "_child": Text(
+        '+',
+        style: bannerTxtStyle,
+      )
+    };
+    Widget pb = GestureDetector(
+        onTap: () => _onTap("+", scale), child: ColorButton(imap));
+
+    imap = {
+      "_height": 0.05 * model.scaleHeight,
+      "_width": 0.05 * model.scaleHeight,
+      "_alignment": Alignment.center,
+      "_btnBRadius": size10,
+      "_beginColor": colorMap["btnBlue"],
+      "_endColor": colorMap["btnBlueGradEnd"],
+      "_child": Text(
+        '-',
+        style: bannerTxtStyle,
+      )
+    };
+    Widget mb = GestureDetector(
+        onTap: () => _onTap("-", scale), child: ColorButton(imap));
+
+    col = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Text(
+          model.map["text"]["fineTune"] ?? "Fine Tune Answer",
+          style: smallSemiTextStyle,
+        ),
+        Row(
+          children: [mb, pb],
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        )
+      ],
+    );
+
+    Widget sb = SizedBox(
+      height: 0.09 * model.scaleHeight,
+      width: 0.25 * model.scaleWidth,
+      child: col,
+    );
+
+    col = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.max,
+      children: [c, sb],
+    );
     return _buildVSliderScaleContainer(col);
+  }
+
+  _onTap(String s, int scale) {
+    Map<String, dynamic> _mv = map["_mv"];
+    ValueNotifier<double> vn = _mv["_scaleNoti"]!;
+    double inc = max / scale;
+    double v = vn.value;
+    if (s == "+") {
+      v -= inc;
+    } else {
+      v += inc;
+    }
+    vn.value = v;
+    if (_mv["_state"] != "edited") {
+      RxDouble notifier = resxController.getRx("confirm");
+      notifier.value = 1.0;
+      _mv["_state"] = "edited";
+    }
   }
 
   String scale1Converter(double value, Map<String, dynamic> smap) {
@@ -291,7 +386,7 @@ class VertSlider extends StatelessWidget {
   String scale2Converter(double value, Map<String, dynamic> smap) {
     int top = map["_scale2Top"];
     int bottom = map["_scale2Bottom"];
-    int v = (bottom - top) * value ~/ 200.0 + top;
+    int v = (bottom - top) * value ~/ max + top;
     Map<String, dynamic> _mv = map["_mv"];
     _mv["_in2"] = v;
     return numString(v);
@@ -372,18 +467,8 @@ class VertSlider extends StatelessWidget {
     return ColorButton(imap);
   }
 
-  Widget _buildVSliderScaleContainer(Widget col) {
+  Widget _buildVSliderScaleContainer(Widget c) {
     Map<String, dynamic> imap = {
-      "_height": 0.2364532 * model.scaleHeight,
-      "_width": 0.2933333 * model.scaleWidth,
-      "_alignment": Alignment.center,
-      "_btnBRadius": size10,
-      "_beginColor": colorMap["btnBlue"],
-      "_endColor": colorMap["btnBlueGradEnd"],
-      "_child": col
-    };
-    Widget c = ColorButton(imap);
-    imap = {
       "_height": 0.61576354 * model.scaleHeight,
       "_width": 0.32 * model.scaleWidth,
       "_alignment": Alignment.center,
