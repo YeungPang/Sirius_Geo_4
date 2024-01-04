@@ -14,6 +14,7 @@ enum AuthState {
   complete,           // Logged in and authenticated.
   error,              // Error message display.
   guest,              // Logged in as guest only.
+  register,           // Requesting to register as new user.
 }
 class AuthManager {
   static AuthManager? _instance;
@@ -61,13 +62,42 @@ class AuthManager {
     state = AuthState.guest;
   }
 
+  void requestRegistration() {
+    if (state != AuthState.init) {
+      return;
+    }
+    state = AuthState.register;
+  }
+
+  void abortRegistration() {
+    if (state != AuthState.register) {
+      return;
+    }
+    state = AuthState.init;
+  }
+
+  void forgotPassword() {
+    if (state != AuthState.init) {
+      return;
+    }
+    state = AuthState.init;
+  }
+
   GoogleSignIn? _googleSignIn;
   Future<void> loginAsGoogle() async {
     _googleSignIn ??= GoogleSignIn(
       scopes: [ 'email' ],
-      // clientId: '',
+      // clientId: '277989771082-7lk93e46h96n0r1ddo4blps471glohe7.apps.googleusercontent.com',
     );
-    await _googleSignIn?.signIn();
+    try {
+      var googleAccount = await _googleSignIn?.signIn();
+      if (googleAccount == null) {
+        return;
+      }
+
+    } catch (e) {
+
+    }
   }
 
   Future<void> rememberLoginTokens() async {

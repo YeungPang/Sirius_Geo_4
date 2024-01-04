@@ -46,20 +46,26 @@ class MainModel {
     final httpAssetFuture = InstanceManager().assetRequest(mainModelName);
     // NB: We can't use response.body below because it uses response charset (which we don't return) defaulting to latin1.
     return httpAssetFuture
-        .timeout(const Duration(seconds: 5))
-        .then((response) => utf8.decode(response.bodyBytes))
-        .then((String jsonStr) =>
-            InstanceManager().decryptTransparentAsset(jsonStr));
+        .timeout(const Duration(seconds: 30))
+        .then((response) {
+          var jsonStr = utf8.decode(response.bodyBytes);
+          return InstanceManager().decryptTransparentAsset(jsonStr);
+        });
   }
 
   Future<Map<String, dynamic>> getMap(BuildContext context) async {
     String jsonStr = "";
-    try {
-      jsonStr = await getJson(context);
-    } on TimeoutException catch (_) {
-      jsonStr = "";
-    } catch (ex) {
-      rethrow;
+    int it = 0;
+    while (it < 3) {
+      it++;
+      try {
+        jsonStr = await getJson(context);
+        break;
+      } on TimeoutException catch (_) {
+        jsonStr = "";
+      } catch (ex) {
+        rethrow;
+      }
     }
     stateData["map"] = await versionAgent.getMap(jsonStr);
     map = stateData["map"];

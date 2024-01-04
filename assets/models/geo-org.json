@@ -209,7 +209,7 @@
         },
         "types": {
             "dataStart": "G1",
-            "header": "TID;name;ref;G1;G2;G3;G4;G5;G6;G7;G8;G9;G10",
+            "header": "TID;fileName;name;ref;G1;G2;G3;G4;G5;G6;G7;G8;G9;G10",
             "elemList": [
                 "ContiT001;Level 1;items;0;1;2",
                 "ContiT002;Level 2;items;20;21;19",
