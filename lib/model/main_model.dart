@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../agent/version_agent.dart';
+import '../auth_manager.dart';
 import '../builder/pattern.dart';
 import '../instance_manager.dart';
 
@@ -47,10 +49,8 @@ class MainModel {
     // NB: We can't use response.body below because it uses response charset (which we don't return) defaulting to latin1.
     return httpAssetFuture
         .timeout(const Duration(seconds: 30))
-        .then((response) {
-          var jsonStr = utf8.decode(response.bodyBytes);
-          return InstanceManager().decryptTransparentAsset(jsonStr);
-        });
+        .then((response) => utf8.decode(response.bodyBytes))
+        .then((String jsonStr) => InstanceManager().decryptTransparentAsset(jsonStr));
   }
 
   Future<Map<String, dynamic>> getMap(BuildContext context) async {
@@ -59,7 +59,14 @@ class MainModel {
     while (it < 3) {
       it++;
       try {
-        jsonStr = await getJson(context);
+        final profileFuture = InstanceManager().loadProfileData();    // [0]
+        final jsonFuture = getJson(context);                          // [1]
+        final profileAndJson = await Future.wait([ profileFuture, jsonFuture ]);  // Wait for both to complete
+        jsonStr = profileAndJson[1];
+        if (!jsonStr.endsWith('}')) {
+          throw Exception("Unable to dynamically replace profile in model JSON");
+        }
+        jsonStr = jsonStr.substring(0, jsonStr.length - 1) + ',"profile":' + profileAndJson[0] + '}';
         break;
       } on TimeoutException catch (_) {
         jsonStr = "";

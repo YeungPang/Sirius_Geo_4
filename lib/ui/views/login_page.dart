@@ -36,8 +36,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
-  TextEditingController loginName = TextEditingController();
-  TextEditingController loginPassword = TextEditingController();
+  TextEditingController loginName =
+      TextEditingController(); // Also used for registration
+  TextEditingController loginPassword =
+      TextEditingController(); // Also used for registration
+  TextEditingController registerConfirm = TextEditingController();
+  TextEditingController registerDisplayName = TextEditingController();
   bool rememberLogin = true;
 
   late AnimationController _animationController; // Animations for hero icon
@@ -63,51 +67,30 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    /*const txtHero = Text("Sirius Geography",
-        style: TextStyle(
-          fontSize: 18,
-          fontFamily: '',
-          fontWeight: FontWeight.bold,
-          letterSpacing: 3,
-          color: Colors.white,
-        ));
-    final txtHeroFeather = Text("Sirius Geography",
-        style: TextStyle(
-          fontSize: 18,
-          fontFamily: '',
-          fontWeight: FontWeight.bold,
-          letterSpacing: 3,
-          foreground: Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 2
-            ..color = Colors.blueGrey
-        ));
-    final stackHeroText = Stack(
-      children: [txtHeroFeather, txtHero],
-    );*/
-
     const imgTitle = Image(
       image: AssetImage('assets/images/SiriusGeoText.png'),
     );
-
     const imgHero = Image(
       image: AssetImage('assets/images/LogoGlobe-trimmed.png'),
     );
+    const imgBackCircles = Image(
+      image: AssetImage('assets/images/top_background_circles.png'),
+    );
 
     final rowHero = Padding(
-      padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-      child: Row(
-        children: const [
+      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+      child: Stack(children: [
+        Row(children: const [
           Expanded(flex: 5, child: Padding(
             child: imgHero,
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 0)
-          )),
+            padding: EdgeInsets.fromLTRB(0, 16, 0, 0))
+          ),
           Expanded(flex: 7, child: Padding(
-              child: imgTitle,
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 0)
-          )),
-        ],
-      )
+            child: imgTitle,
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0))
+          ),
+        ]),
+      ])
     );
 
     List<Widget> stateWidgets = [];
@@ -116,6 +99,11 @@ class _LoginPageState extends State<LoginPage>
     switch (controller.authState.value) {
       case AuthState.init:
         stateWidgets = _buildLogin(context);
+        break;
+      case AuthState.register:
+        stateWidgets = _buildRegister(context);
+        break;
+      case AuthState.forgot:
         break;
       default:
         debugPrint("Default fallthrough!");
@@ -130,9 +118,7 @@ class _LoginPageState extends State<LoginPage>
           height: 800,
           child: ClipRRect(
             borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(40),
-              topRight: Radius.circular(40)
-            ),
+                topLeft: Radius.circular(40), topRight: Radius.circular(40)),
             child: Container(
               color: Colors.white,
             ),
@@ -231,45 +217,23 @@ class _LoginPageState extends State<LoginPage>
         text: "Forgot Password?",
         recognizer: TapGestureRecognizer()
           ..onTap = () async {
-            // TODO: Implement password recovery
+            AuthManager().forgotPassword();
+            controller.mirrorState(AuthManager().state);
           },
       ),
     );
 
     final chkRememberLogin = CheckboxListTile(
-      title: const Text("Remember login"),
-      controlAffinity: ListTileControlAffinity.leading,
-      contentPadding: const EdgeInsets.only(right: 5),
-      visualDensity: VisualDensity.compact,
-      value: rememberLogin,
-      onChanged: (value) {
-        setState(() {
-          rememberLogin = value ?? false;
+        title: const Text("Remember login"),
+        controlAffinity: ListTileControlAffinity.leading,
+        contentPadding: const EdgeInsets.only(right: 5),
+        visualDensity: VisualDensity.compact,
+        value: rememberLogin,
+        onChanged: (value) {
+          setState(() {
+            rememberLogin = value ?? false;
+          });
         });
-      }
-    );
-
-    /*final btnRunLoginOld = TextButton.icon(
-      icon: Icon(controller.pending.value ? Icons.hourglass_top : Icons.login),
-      label: Container(
-        child: Text(
-          controller.pending.value ? "Loading..." : "LOGIN",
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        width: 100,
-        height: 30,
-        alignment: Alignment.center,
-      ),
-      style: TextButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF1F8ECA),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-      onPressed: () {
-      },
-    );*/
 
     final btnRunLogin = TextButton(
       child: Ink(
@@ -280,7 +244,8 @@ class _LoginPageState extends State<LoginPage>
           borderRadius: BorderRadius.all(Radius.circular(15.0)),
         ),
         child: Container(
-          constraints: const BoxConstraints(minWidth: 110.0, maxWidth: 220.0, minHeight: 54.0),
+          constraints: const BoxConstraints(
+              minWidth: 110.0, maxWidth: 220.0, minHeight: 54.0),
           alignment: Alignment.center,
           child: Text(
             controller.pending.value ? "Loading..." : "LOGIN",
@@ -295,7 +260,9 @@ class _LoginPageState extends State<LoginPage>
         if (controller.pending.value) {
           return;
         }
-        if (loginName.text.isEmpty || loginPassword.text.isEmpty || !loginName.text.isEmail) {
+        if (loginName.text.isEmpty ||
+            loginPassword.text.isEmpty ||
+            !loginName.text.isEmail) {
           return;
         }
         InstanceManager().setupInstance("geo.siriustechnology.net", {});
@@ -308,12 +275,12 @@ class _LoginPageState extends State<LoginPage>
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: ex is NotFoundException ?
-                const Text("Incorrect username or password") :
-                const Text('Error attempting login'),
-                content: ex is NotFoundException ?
-                const Text("Please check your inputs and try again.") :
-                Text(ex.toString()),
+                title: ex is NotFoundException
+                    ? const Text("Incorrect username or password")
+                    : const Text('Error attempting login'),
+                content: ex is NotFoundException
+                    ? const Text("Please check your inputs and try again.")
+                    : Text(ex.toString()),
                 actions: <Widget>[
                   TextButton(
                     child: const Text("OK"),
@@ -336,19 +303,24 @@ class _LoginPageState extends State<LoginPage>
           fontSize: 18,
         ),
         text: "Don't have an account yet? ",
-        children: [ TextSpan(
-          style: const TextStyle(
-            decoration: TextDecoration.underline,
-            color: Color(0xFF00344F),
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-          text: "Sign-Up",
-          recognizer: TapGestureRecognizer()
-            ..onTap = () async {
-              // TODO: Implement sign-up with email
-            },
-        )],
+        children: [
+          TextSpan(
+            style: const TextStyle(
+              decoration: TextDecoration.underline,
+              color: Color(0xFF00344F),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            text: "Sign-Up",
+            recognizer: TapGestureRecognizer()
+              ..onTap = () async {
+                setState(() {
+                  AuthManager().requestRegistration();
+                  controller.mirrorState(AuthManager().state);
+                });
+              },
+          )
+        ],
       ),
     );
 
@@ -363,7 +335,8 @@ class _LoginPageState extends State<LoginPage>
     );
 
     final btnLoginWithGoogle = TextButton.icon(
-      icon: Image.asset("assets/images/google.png", cacheHeight: 40, cacheWidth: 40),
+      icon: Image.asset("assets/images/google.png",
+          cacheHeight: 40, cacheWidth: 40),
       label: Container(
         child: const Text(
           "Sign in with Google",
@@ -376,11 +349,10 @@ class _LoginPageState extends State<LoginPage>
       style: TextButton.styleFrom(
         foregroundColor: const Color(0xFF00344F),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: const BorderSide(
-            color: Colors.grey,
-          )
-        ),
+            borderRadius: BorderRadius.circular(8),
+            side: const BorderSide(
+              color: Colors.grey,
+            )),
       ),
       onPressed: () {
         AuthManager().loginAsGoogle();
@@ -388,7 +360,8 @@ class _LoginPageState extends State<LoginPage>
     );
 
     final btnLoginWithApple = TextButton.icon(
-      icon: Image.asset("assets/images/apple.png", cacheHeight: 40, cacheWidth: 40),
+      icon: Image.asset("assets/images/apple.png",
+          cacheHeight: 40, cacheWidth: 40),
       label: Container(
         child: const Text(
           "Sign in with Apple",
@@ -404,15 +377,14 @@ class _LoginPageState extends State<LoginPage>
             borderRadius: BorderRadius.circular(8),
             side: const BorderSide(
               color: Colors.grey,
-            )
-        ),
+            )),
       ),
-      onPressed: () {
-      },
+      onPressed: () {},
     );
 
     final btnLoginWithFacebook = TextButton.icon(
-      icon: Image.asset("assets/images/facebook.png", cacheHeight: 40, cacheWidth: 40),
+      icon: Image.asset("assets/images/facebook.png",
+          cacheHeight: 40, cacheWidth: 40),
       label: Container(
         child: const Text(
           "Sign in with Facebook",
@@ -428,11 +400,9 @@ class _LoginPageState extends State<LoginPage>
             borderRadius: BorderRadius.circular(8),
             side: const BorderSide(
               color: Colors.grey,
-            )
-        ),
+            )),
       ),
-      onPressed: () {
-      },
+      onPressed: () {},
     );
 
     final btnLoginAsGuest = TextButton.icon(
@@ -452,8 +422,7 @@ class _LoginPageState extends State<LoginPage>
             borderRadius: BorderRadius.circular(8),
             side: const BorderSide(
               color: Colors.grey,
-            )
-        ),
+            )),
       ),
       onPressed: () {
         InstanceManager().setupInstance("geo.siriustechnology.net", {});
@@ -470,10 +439,7 @@ class _LoginPageState extends State<LoginPage>
       const Padding(padding: EdgeInsets.all(5)),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: chkRememberLogin),
-          lnkForgotPassword
-        ],
+        children: [Expanded(child: chkRememberLogin), lnkForgotPassword],
       ),
       const Padding(padding: EdgeInsets.all(5)),
       btnRunLogin,
@@ -483,12 +449,243 @@ class _LoginPageState extends State<LoginPage>
       orSeparator,
       const Padding(padding: EdgeInsets.all(5)),
       btnLoginAsGuest,
-      const Padding(padding: EdgeInsets.all(5)),
+      const Padding(padding: EdgeInsets.all(7)),
       btnLoginWithGoogle,
       const Padding(padding: EdgeInsets.all(1.5)),
       btnLoginWithApple,
       const Padding(padding: EdgeInsets.all(1.5)),
       btnLoginWithFacebook,
+    ];
+  }
+
+  List<Widget> _buildRegister(BuildContext context) {
+    final lblCreateYourAccount = RichText(
+      text: const TextSpan(
+        style: TextStyle(
+          color: Color(0xFF00344F),
+          fontSize: 24,
+        ),
+        text: "Create Your ",
+        children: [
+          TextSpan(
+            style: TextStyle(
+              color: Color(0xFF00344F),
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+            text: "Account",
+          )
+        ],
+      ),
+    );
+
+    final txtRegisterName = TextFormField(
+      controller: loginName,
+      decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.mail_outline, color: Colors.black54),
+        hintText: "Enter your email address",
+        labelText: "Registration email",
+        labelStyle: TextStyle(color: Colors.black54),
+        fillColor: Color(0xFFEAEAEA),
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+      style: const TextStyle(),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (String? value) {
+        return (value != null && value.contains('@'))
+            ? null
+            : "Please enter an email address.";
+      },
+      onChanged: (value) {
+        //setState(() {});
+      },
+    );
+
+    final txtRegisterPassword = TextFormField(
+      controller: loginPassword,
+      obscureText: true,
+      decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.password, color: Colors.black54),
+        hintText: "Enter your password",
+        labelText: 'Password',
+        labelStyle: TextStyle(
+          color: Colors.black54,
+        ),
+        fillColor: Color(0xFFEAEAEA),
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (String? value) {
+        return (value != null && value != "")
+            ? null
+            : "Please enter your password.";
+      },
+      onChanged: (value) {
+        //setState(() {});
+      },
+    );
+
+    final txtRegisterConfirm = TextFormField(
+      controller: registerConfirm,
+      obscureText: true,
+      decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.password, color: Colors.black54),
+        hintText: "Enter your password again",
+        labelText: 'Confirm password',
+        labelStyle: TextStyle(
+          color: Colors.black54,
+        ),
+        fillColor: Color(0xFFEAEAEA),
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (String? value) {
+        return (value != null && value != "")
+            ? null
+            : "Please enter your password.";
+      },
+      onChanged: (value) {
+        //setState(() {});
+      },
+    );
+
+    final txtRegisterDisplayName = TextFormField(
+      controller: registerDisplayName,
+      decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.perm_identity, color: Colors.black54),
+        hintText: "Enter a display name",
+        labelText: "Display name",
+        labelStyle: TextStyle(color: Colors.black54),
+        fillColor: Color(0xFFEAEAEA),
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+      style: const TextStyle(),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (String? value) {
+        return (value != null && value != "")
+            ? null
+            : "Please enter a valid name.";
+      },
+      onChanged: (value) {
+        //setState(() {});
+      },
+    );
+
+    final btnRunRegister = TextButton(
+      child: Ink(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: <Color>[Color(0xFF50C995), Color(0xFF62E0AA)],
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        ),
+        child: Container(
+          constraints: const BoxConstraints(
+              minWidth: 110.0, maxWidth: 220.0, minHeight: 54.0),
+          alignment: Alignment.center,
+          child: Text(
+            controller.pending.value ? "Loading..." : "SIGN-UP",
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
+      ),
+      onPressed: () {
+        if (controller.pending.value) {
+          return;
+        }
+        if (loginName.text.isEmpty ||
+            loginPassword.text.isEmpty ||
+            !loginName.text.isEmail) {
+          return;
+        }
+        InstanceManager().setupInstance("geo.siriustechnology.net", {});
+        AuthManager().runLogin(loginName.text, loginPassword.text).then((_) {
+          if (AuthManager().state == AuthState.complete) {
+            Get.toNamed("/home");
+          }
+        }).catchError((ex) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: ex is NotFoundException
+                    ? const Text("Incorrect username or password")
+                    : const Text('Error attempting login'),
+                content: ex is NotFoundException
+                    ? const Text("Please check your inputs and try again.")
+                    : Text(ex.toString()),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        });
+      },
+    );
+
+    final lnkAlreadyHaveAccount = RichText(
+      text: TextSpan(
+        style: const TextStyle(
+          color: Color(0xFF00344F),
+          fontSize: 18,
+        ),
+        text: "Already have an account? ",
+        children: [
+          TextSpan(
+            style: const TextStyle(
+              decoration: TextDecoration.underline,
+              color: Color(0xFF00344F),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            text: "Login",
+            recognizer: TapGestureRecognizer()
+              ..onTap = () async {
+                setState(() {
+                  AuthManager().abortRegistration();
+                  controller.mirrorState(AuthManager().state);
+                });
+              },
+          )
+        ],
+      ),
+    );
+
+    return [
+      lblCreateYourAccount,
+      const Padding(padding: EdgeInsets.all(5)),
+      txtRegisterName,
+      const Padding(padding: EdgeInsets.all(10)),
+      txtRegisterPassword,
+      const Padding(padding: EdgeInsets.all(3)),
+      txtRegisterConfirm,
+      const Padding(padding: EdgeInsets.all(10)),
+      txtRegisterDisplayName,
+      const Padding(padding: EdgeInsets.all(5)),
+      btnRunRegister,
+      const Padding(padding: EdgeInsets.all(3)),
+      lnkAlreadyHaveAccount,
     ];
   }
 }

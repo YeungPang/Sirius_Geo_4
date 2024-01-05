@@ -14,6 +14,7 @@ class InstanceManager {
   String _instanceHost = "";          // Hostname of our API server.
   bool debugInstance = false;         // Override host for debugging server.
   final Map<String, dynamic> _instanceConfig = {};
+  final List<Map<String, dynamic>> models = [];
 
   // Setup instance manager with configuration details. Called after instance
   // data is retrieved by login/username exchange or keypair checks.
@@ -135,6 +136,33 @@ class InstanceManager {
     return apiSavePromise.then((apiSave) => apiSave.success(APIResponseJSON.map) ? true : false);
   }
 
+  // API endpoint to load profile data (and model freshness). Does not work with guests.
+  // Returns a promise that will return the profile data as a String of JSON.
+  // Model freshness (InstanceManager().models) is automatically hydrated from this data and can be ignored.
+  Future<String> loadProfileData() {
+    if (AuthManager().state == AuthState.guest) {
+      // TODO: Default guest profile?
+      return Future.value('{}');
+    }
+    if (AuthManager().state != AuthState.complete) {
+      throw Exception("Tried to load profile data with an invalid AuthState!");
+    }
+    final apiLoadPromise = InstanceManager().apiRequest("users/${AuthManager().loginUser['id']}/profile", null, 'GET');
+    return apiLoadPromise.then((apiLoad) {
+      if (!apiLoad.success(APIResponseJSON.map)) {
+        throw NotFoundException();
+      }
+      Map<String, dynamic> profileResult = apiLoad.result;
+      // Hydrate the 'models' key is available, then return only the 'profile' part of the data.
+      if (profileResult.containsKey('models') && profileResult['models'] is List) {
+        models.clear();
+        for (var m in profileResult['models'] as List) {
+          models.add(m as Map<String, dynamic>);
+        }
+      }
+      return profileResult['profile'];
+    });
+  }
 }
 
 enum APIResponseJSON {
