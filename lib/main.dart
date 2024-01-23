@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     Get.put(ResxController());
     return GetMaterialApp(
       getPages: [
-        GetPage(name: "/login", page: () => LoginPage()),
+        GetPage(name: "/login", page: () => const LoginPage()),
         GetPage(name: "/home", page: () => HomePage()),
         GetPage(name: "/page", page: () => _getPage(model)),
       ],
@@ -41,8 +41,41 @@ class MyApp extends StatelessWidget {
 
     if (p is ProcessPattern) {
       screen = p.getWidget();
+    } else if (p is Widget) {
+      screen = p;
     } else {
-      screen = p as Widget;
+      screen = FutureBuilder<bool>(
+          future: model.loadJFile(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) debugPrint(snapshot.error.toString());
+
+            return snapshot.hasData
+                ? (snapshot.data!
+                    ? _repeatGetPage(model, a, event)
+                    : model.stateData["mainWidget"])
+                // : const Center(
+                //     child: CircularProgressIndicator(),
+                //   );
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  );
+          });
+    }
+    model.setCurrScreen(screen);
+    return screen;
+  }
+
+  Widget _repeatGetPage(MainModel model, Agent a, ProcessEvent event) {
+    var p = a.process(event);
+    Widget screen;
+    if (p is ProcessPattern) {
+      screen = p.getWidget();
+      model.setCurrScreen(screen);
+    } else if (p is Widget) {
+      screen = p;
+      model.setCurrScreen(screen);
+    } else {
+      screen = model.currentScreen!;
     }
     return screen;
   }

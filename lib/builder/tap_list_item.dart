@@ -53,8 +53,31 @@ class TapListItem extends StatelessWidget {
     if (tevent != null) {
       lmap["_onTap"] = tevent;
     }
-    ProcessPattern p = pf(lmap);
+    dynamic p = pf(lmap);
+    if (p is ProcessPattern) {
+      return returnWidget(p, lmap);
+    }
+    return FutureBuilder<dynamic>(
+        future: repeatGet(pf, lmap),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) debugPrint(snapshot.error.toString());
 
+          return snapshot.hasData
+              ? returnWidget(snapshot.data!, lmap)
+              : const Center(
+                  child: CircularProgressIndicator(),
+                );
+        });
+  }
+
+  Future<dynamic> repeatGet(Function pf, Map<String, dynamic> lmap) async {
+    if (model.jFiles.isNotEmpty) {
+      await model.loadJFile();
+    }
+    return pf(lmap);
+  }
+
+  Widget returnWidget(ProcessPattern p, Map<String, dynamic> lmap) {
     if (lmap["_onTap"] == null) {
       return p.getWidget();
     }
@@ -65,7 +88,7 @@ class TapListItem extends StatelessWidget {
 }
 
 class TapListItemPattern extends ProcessPattern {
-  TapListItemPattern(Map<String, dynamic> map) : super(map);
+  TapListItemPattern(super.map);
   @override
   Widget getWidget({String? name}) {
     map["_widget"] ??= TapListItem(map);

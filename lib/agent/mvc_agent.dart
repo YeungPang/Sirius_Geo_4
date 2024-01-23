@@ -50,6 +50,8 @@ class MvcAgent extends Agent {
   int configLives = model.map["userProfile"]["configLives"];
   int maxconfigLives = model.map["maxConfigLives"];
   bool limit = true;
+  int adInx = 0;
+  int adFreq = model.map["adFreq"] ?? 1;
   //int configLives = model.map["userProfile"]["lives"];
 
   final adManager = AdManager();
@@ -93,7 +95,11 @@ class MvcAgent extends Agent {
         currMv!.addAll(event.map!);
         stackNoti = null;
         confirmNoti ??= resxController.addToResxMap("confirm", 0.5) as RxDouble;
-        return createNew(0);
+        dynamic d = createNew(0);
+        if (d is ProcessPattern) {
+          return d;
+        }
+        return EventProcessPattern(event.name, event.map!);
       case "add":
         if (currMv != null) {
           currMv!.addAll(event.map!);
@@ -330,7 +336,10 @@ class MvcAgent extends Agent {
     List<dynamic> header = (mheader is String) ? mheader.split(";") : mheader;
     if (item is List<dynamic>) {
       List<dynamic> input = [header, item];
-      model.appActions.doFunction("mapPat", input, currMv);
+      bool ok = model.appActions.doFunction("mapPat", input, currMv);
+      if (!ok) {
+        return null;
+      }
     } else if (item is Map<String, dynamic>) {
       for (String s in header) {
         String _s = '_' + s;
@@ -362,7 +371,10 @@ class MvcAgent extends Agent {
       List<dynamic> data =
           configAgent.getElement(mapping, currMv!, header: header);
       List<dynamic> input = [header, data];
-      model.appActions.doFunction("mapPat", input, currMv);
+      bool ok = model.appActions.doFunction("mapPat", input, currMv);
+      if (!ok) {
+        return null;
+      }
 /*       Map<String, dynamic> inMap = facts["mapping"][mapping];
       if (inMap != null) {
         var elemList = inMap["elemList"];
@@ -998,7 +1010,14 @@ class MvcAgent extends Agent {
         //confirmNoti!.value = 0.5;
         checkLives();
       } else {
-        createNew(ilen);
+        dynamic n = createNew(ilen);
+        if ((n == null) && (model.jFiles.isNotEmpty)) {
+          model.loadJFile().then((value) {
+            if (value) {
+              createNew(ilen);
+            }
+          });
+        }
       }
     } else {
       gameComplete();
@@ -1272,8 +1291,12 @@ class MvcAgent extends Agent {
     pp = pf(imap);
     slw.add(pp);
     nmap["_gameCompleteList"] = slw;
-    if (userProfile["userType"] == "User") {
-      adManager.showInterstitial();
+    if ((userProfile["userType"] == "User") && (adFreq > 0)) {
+      adInx++;
+      if (adInx >= adFreq) {
+        adInx = 0;
+        adManager.showInterstitial();
+      }
     }
     pp = getGameCompletePattern(nmap);
     replaceLast(pp);
@@ -1605,5 +1628,33 @@ class MvcAgent extends Agent {
       stackNoti.value = stackList;
  */
     }
+  }
+}
+
+class EventProcessPattern extends ProcessPattern {
+  final String ename;
+
+  EventProcessPattern(this.ename, Map<String, dynamic> map) : super(map);
+  @override
+  Widget getWidget({String? name}) {
+    return FutureBuilder<ProcessPattern>(
+        future: repeatGet(ename, map),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) debugPrint(snapshot.error.toString());
+
+          return snapshot.hasData
+              ? snapshot.data!.getWidget(name: name)
+              : const Center(
+                  child: CircularProgressIndicator(),
+                );
+        });
+  }
+
+  Future<ProcessPattern> repeatGet(
+      String ename, Map<String, dynamic> map) async {
+    if (model.jFiles.isNotEmpty) {
+      await model.loadJFile();
+    }
+    return model.appActions.doFunction("mvc", [ename, map], null);
   }
 }

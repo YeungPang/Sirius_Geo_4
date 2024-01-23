@@ -31,7 +31,7 @@ class NotiElemPattern extends ProcessPattern {
   List<int>? ids;
   bool waiting = false;
 
-  NotiElemPattern(Map<String, dynamic> map) : super(map);
+  NotiElemPattern(super.map);
   @override
   Widget getWidget({String? name}) {
     progId = map["_progId"];
@@ -107,8 +107,8 @@ class NotiElemPattern extends ProcessPattern {
 
       double h = map["_height"] * 0.85;
       double s10 = size10;
-      BorderSide b2 = BorderSide(color: Colors.black, width: 2.0);
-      BorderSide b4 = BorderSide(color: colorMap["correct"]!, width: 4.0);
+      //BorderSide b2 = const BorderSide(color: Colors.black, width: 2.0);
+      //BorderSide b4 = BorderSide(color: colorMap["correct"]!, width: 4.0);
       Border b = Border.all(color: colorMap["correct"]!, width: 2.0);
       Widget pc = Positioned(
           top: h,
@@ -173,8 +173,11 @@ class NotiElemPattern extends ProcessPattern {
       }
     }
     w = Card(
+      elevation: 4.0,
+      shadowColor: Colors.grey,
+      shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(size10)),
       child: Container(
-          child: ic,
           color: map["_color"],
           alignment: map["_alignment"],
           clipBehavior: map["_clipBehavior"] ?? Clip.none,
@@ -188,11 +191,8 @@ class NotiElemPattern extends ProcessPattern {
           height: map["_height"],
           margin: map["_margin"],
           padding: map["_padding"],
-          transform: map["_transform"]),
-      elevation: 4.0,
-      shadowColor: Colors.grey,
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(size10)),
+          transform: map["_transform"],
+          child: ic),
     );
     return w!;
   }
@@ -209,7 +209,7 @@ class GroupProgNotiPattern extends ProcessPattern {
   int inx = 0;
   bool done = false;
 
-  GroupProgNotiPattern(Map<String, dynamic> map) : super(map);
+  GroupProgNotiPattern(super.map);
   @override
   Widget getWidget({String? name}) {
     inx = map["_index"];
@@ -350,6 +350,7 @@ getSvgXML(Map<String, dynamic> map) {
     for (var attr in svg.attributes) {
       if (styleCode.contains(attr.localName)) {
         styleStr += attr.localName + ':' + attr.value + ";";
+        //styleStr += "${attr.localName}:${attr.value};";
       }
     }
     if (styleStr.isNotEmpty) {
@@ -360,7 +361,7 @@ getSvgXML(Map<String, dynamic> map) {
     var styles = svg.findAllElements("style");
     if (styles.isNotEmpty) {
       for (var node in styles) {
-        getStyleCls(node.text, scls, overwrite: false);
+        getStyleCls(node.value!, scls, overwrite: false);
       }
     }
   }
@@ -416,7 +417,7 @@ addShapes(Iterable<XmlElement> pElem, List<Shape> shapes, int i,
           strPath = attr.value;
           break;
         case "class":
-          cls = '.' + attr.value;
+          cls = '.${attr.value}';
           break;
         case "title":
           label = attr.value;

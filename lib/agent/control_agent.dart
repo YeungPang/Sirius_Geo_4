@@ -259,7 +259,7 @@ class AgentActions extends AppActions {
     return controlAgent;
   }
 
-  ProcessPattern getControlPattern(Map<String, dynamic> map) {
+  dynamic getControlPattern(Map<String, dynamic> map) async {
     controlAgent.requestAgent("pattern");
     return controlAgent.process(ProcessEvent(patName, map: map));
   }
@@ -425,6 +425,27 @@ class ControlAgent extends Agent {
     }
     List<dynamic> pl = (l[1] is String) ? l[1].split(';') : l1;
     List<dynamic> patHeader = (l0 is String) ? l0.split(';') : l0;
+    int inx = patHeader.indexOf("JFile");
+    if ((inx >= 0) && (pl.length > inx) && (pl[inx].isNotEmpty)) {
+      String f = pl[inx].trim();
+      bool ok = true;
+      if (f[0] == "[") {
+        f = f.substring(1, f.length - 1);
+        List<String> lf = f.split(",");
+        for (String s in lf) {
+          if (!model.jLoadedFiles.contains(s.trim())) {
+            ok = false;
+            model.addJFile(s.trim());
+          }
+        }
+      } else if (!model.jLoadedFiles.contains(f)) {
+        ok = false;
+        model.addJFile(f);
+      }
+      if (!ok) {
+        return false;
+      }
+    }
     int len = (patHeader.length > pl.length) ? pl.length : patHeader.length;
     for (int i = 0; i < len; i++) {
       var ipat = pl[i];

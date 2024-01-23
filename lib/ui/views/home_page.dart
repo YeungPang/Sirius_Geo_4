@@ -56,7 +56,6 @@ class HomePage extends StatelessWidget {
 
           return snapshot.hasData
               ? _getBodyUi(model, snapshot.data!)
-
               // : const Center(
               //     child: CircularProgressIndicator(),
               //   );
@@ -75,6 +74,7 @@ class HomePage extends StatelessWidget {
     debugPrint("Future call count: " + model.count.toString());
     Widget w = (p is ProcessPattern) ? p.getWidget() : p;
     model.stateData["mainWidget"] = w;
+    model.setCurrScreen(w);
     return w;
   }
 }

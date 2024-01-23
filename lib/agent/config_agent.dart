@@ -97,7 +97,19 @@ class ConfigAgent {
           hl = (h is String) ? h.split(';') : h;
           header.addAll(hl);
         }
-        return (r is List<dynamic>) ? r[si] : r;
+        dynamic re = r;
+        if (r is List<dynamic>) {
+          re = r[si];
+          if ((re is String) && (re.contains(";"))) {
+            re = re.split(';');
+            r[si] = re;
+          }
+        } else {
+          if ((re is String) && (re.contains(";"))) {
+            re = re.split(';');
+          }
+        }
+        return re;
       }
     }
     if (si is! String) {
@@ -424,7 +436,7 @@ List<dynamic>? getDataList(Map<String, dynamic> m, var ielem) {
       for (int i = inx; i < elem.length; i++) {
         var einx = elem[i];
         bool isRef = false;
-        if (einx is String) {
+        if ((einx is String) && (einx.isNotEmpty)) {
           String iinx = einx.trim();
           if (iinx[0] == 'ℛ') {
             iinx = iinx.substring(2, iinx.length - 1);
@@ -434,29 +446,33 @@ List<dynamic>? getDataList(Map<String, dynamic> m, var ielem) {
           einx = ii ?? iinx;
         }
         if (einx is String) {
-          if ((isRef) && (einx.contains(':'))) {
-            List<String> ls = einx.split(':');
-            String ref = ls[0].trim();
-            Map<String, dynamic>? map = facts[ref] ?? model.map[ref];
-            if (map != null) {
-              List<dynamic> r = map["elemList"];
-              var h = map["header"];
-              int? i = int.tryParse(ls[1].trim());
-              if ((i != null) && (i < r.length)) {
-                List<dynamic> header = (h is String) ? h.split(";") : h;
-                List<dynamic> input = [header, r[i]];
-                Map<String, dynamic> m = {};
-                model.appActions.doFunction("mapPat", input, m);
-                dl.add(m);
+          if (einx.isNotEmpty) {
+            if ((isRef) && (einx.contains(':'))) {
+              List<String> ls = einx.split(':');
+              String ref = ls[0].trim();
+              Map<String, dynamic>? map = facts[ref] ?? model.map[ref];
+              if (map != null) {
+                List<dynamic> r = map["elemList"];
+                var h = map["header"];
+                int? i = int.tryParse(ls[1].trim());
+                if ((i != null) && (i < r.length)) {
+                  List<dynamic> header = (h is String) ? h.split(";") : h;
+                  List<dynamic> input = [header, r[i]];
+                  Map<String, dynamic> m = {};
+                  model.appActions.doFunction("mapPat", input, m);
+                  dl.add(m);
+                }
               }
             }
           } else {
             List<int> il = resolveIntList(einx.trim());
-            int ri = getRandom(il.length, excl)!;
-            excl.add(ri);
-            ri = il[ri];
-            var v = el[ri];
-            dl.add(v);
+            if (il.isNotEmpty) {
+              int ri = getRandom(il.length, excl)!;
+              excl.add(ri);
+              ri = il[ri];
+              var v = el[ri];
+              dl.add(v);
+            }
           }
         } else if (einx is int) {
           var v = el[einx];
@@ -471,21 +487,23 @@ List<dynamic>? getDataList(Map<String, dynamic> m, var ielem) {
 
 List<int> resolveIntList(String einx) {
   List<int> il = [];
-  String estr = ((einx[0] == '[') || (einx[0] == '('))
-      ? einx.substring(1, einx.length - 1)
-      : einx;
-  List<String> sl = estr.split(',');
-  for (String s in sl) {
-    if (s.contains('‥')) {
-      List<String> sdl = s.split('‥');
-      int i0 = int.tryParse(sdl[0].trim())!;
-      int i1 = int.tryParse(sdl[1].trim())!;
-      for (int j = i0; j <= i1; j++) {
-        il.add(j);
+  if (einx.isNotEmpty) {
+    String estr = ((einx[0] == '[') || (einx[0] == '('))
+        ? einx.substring(1, einx.length - 1)
+        : einx;
+    List<String> sl = estr.split(',');
+    for (String s in sl) {
+      if (s.contains('‥')) {
+        List<String> sdl = s.split('‥');
+        int i0 = int.tryParse(sdl[0].trim())!;
+        int i1 = int.tryParse(sdl[1].trim())!;
+        for (int j = i0; j <= i1; j++) {
+          il.add(j);
+        }
+      } else {
+        int i0 = int.tryParse(s.trim())!;
+        il.add(i0);
       }
-    } else {
-      int i0 = int.tryParse(s.trim())!;
-      il.add(i0);
     }
   }
   return il;

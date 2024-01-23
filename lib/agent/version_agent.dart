@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:core';
+import 'package:sirius_geo_4/instance_manager.dart';
+
+import '../model/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -125,13 +128,11 @@ class VersionAgent {
   }
 
   saveProfile() async {
-    cachedMap ??= {};
-    cachedMap!["userProfile"] = map["userProfile"];
-    cacheMap();
+    InstanceManager().saveProfileData(map["userProfile"]);
   }
 
   removeCachedMap() async {
-    prefs.remove("cachedMap");
+    model.dba.deleteDB();
   }
 
   Future<String> _testUserSyncUp() async {

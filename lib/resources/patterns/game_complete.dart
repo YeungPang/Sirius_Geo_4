@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+
+//import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -8,6 +10,7 @@ import '../../model/locator.dart';
 import '../basic_resources.dart';
 import '../fonts.dart';
 import 'package:screenshot/screenshot.dart';
+//import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 
 const String _fbUrl = 'fb://profile/';
@@ -191,8 +194,27 @@ _takeScreenshot(Map<String, dynamic> map) async {
   File imageFile = File('$appDocumentsPath/screenshot.png');
   await imageFile.writeAsBytes(_image!);
 
-  Share.shareFiles([imageFile.path], text: map["_sharedScreenText"]);
+  Share.shareXFiles([XFile(imageFile.path)], text: map["_sharedScreenText"]);
 }
+
+/* void _takeScreenshot() async {
+  _screenshotController.capture().then((Uint8List image) async {
+    //Screenshot captured
+    var _imageFile = image;
+
+    //Getting path for directory
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    String appDocumentsPath = appDocumentsDirectory.path;
+    //Saving image to local
+    File imgFile = File('$appDocumentsPath/screenshot.png');
+    await imgFile.writeAsBytes(_imageFile);
+
+    //sharing image over social apps
+    Share.file("GameComplete", 'screenshot.png', _imageFile, 'image/png');
+  }).catchError((onError) {
+    debugPrint(onError);
+  });
+} */
 
 void _launchSocial(String url, String fallbackUrl) async {
   try {
