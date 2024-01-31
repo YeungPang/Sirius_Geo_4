@@ -413,6 +413,34 @@ class ControlAgent extends Agent {
     return false;
   }
 
+  bool _checkLJFile(dynamic jf, bool load) {
+    List<String> lf = (jf is List<dynamic>)
+        ? jf.map((element) => element.toString()).toList()
+        : jf.split(",");
+    bool ok = true;
+    for (String sf in lf) {
+      String s = sf.trim();
+      if (s[0] == "[") {
+        s = s.substring(1);
+      }
+      if (s[s.length - 1] == "]") {
+        s = s.substring(0, s.length - 1);
+      }
+      bool ncheck = (model.jLoadedFiles.contains(s) ||
+          (model.jLoadingSet.contains(s) && load));
+      if (!ncheck) {
+        if (load) {
+          model.addJFile(s);
+          model.loadJFile();
+        } else {
+          model.addJFile(s);
+          ok = false;
+        }
+      }
+    }
+    return ok;
+  }
+
   bool mapPat(List<dynamic> l, Map<String, dynamic> vars) {
     if (l.length != 2) {
       return false;
@@ -425,27 +453,52 @@ class ControlAgent extends Agent {
     }
     List<dynamic> pl = (l[1] is String) ? l[1].split(';') : l1;
     List<dynamic> patHeader = (l0 is String) ? l0.split(';') : l0;
-    int inx = patHeader.indexOf("JFile");
+    int inx = patHeader.indexOf("LFile");
     if ((inx >= 0) && (pl.length > inx) && (pl[inx].isNotEmpty)) {
-      String f = pl[inx].trim();
-      bool ok = true;
-      if (f[0] == "[") {
-        f = f.substring(1, f.length - 1);
-        List<String> lf = f.split(",");
-        for (String s in lf) {
-          if (!model.jLoadedFiles.contains(s.trim())) {
-            ok = false;
-            model.addJFile(s.trim());
-          }
-        }
-      } else if (!model.jLoadedFiles.contains(f)) {
-        ok = false;
-        model.addJFile(f);
-      }
+      dynamic jf = pl[inx];
+      _checkLJFile(jf, true);
+    }
+    inx = patHeader.indexOf("JFile");
+    if ((inx >= 0) && (pl.length > inx) && (pl[inx].isNotEmpty)) {
+      dynamic jf = pl[inx];
+      bool ok = _checkLJFile(jf, false);
       if (!ok) {
         return false;
       }
     }
+/*     bool keepOk = false;
+    if (inx < 0) {
+      inx = patHeader.indexOf("LFile");
+      keepOk = true;
+    }
+    if ((inx >= 0) && (pl.length > inx) && (pl[inx].isNotEmpty)) {
+      dynamic jf = pl[inx];
+      List<String> lf = (jf is List<dynamic>)
+          ? jf.map((element) => element.toString()).toList()
+          : jf.split(",");
+      bool ok = true;
+      for (String sf in lf) {
+        String s = sf.trim();
+        if (s[0] == "[") {
+          s = s.substring(1);
+        }
+        if (s[s.length - 1] == "]") {
+          s = s.substring(0, s.length - 1);
+        }
+        bool ncheck = model.jLoadedFiles.contains(s) ||
+            (keepOk && model.jLoadingSet.contains(s));
+        if (!ncheck) {
+          ok = keepOk;
+          model.addJFile(s);
+          if (keepOk) {
+            model.loadJFile();
+          }
+        }
+      }
+      if (!ok) {
+        return false;
+      }
+    } */
     int len = (patHeader.length > pl.length) ? pl.length : patHeader.length;
     for (int i = 0; i < len; i++) {
       var ipat = pl[i];

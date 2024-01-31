@@ -399,7 +399,11 @@ Map<String, dynamic> splitLines(Map<String, dynamic> map) {
   return rMap;
 }
 
-List<dynamic>? getDataList(Map<String, dynamic> m, var ielem) {
+List<dynamic>? getDataList(dynamic im, var ielem) {
+  if (im is! Map<String, dynamic>) {
+    return null;
+  }
+  Map<String, dynamic> m = im;
   List<dynamic> elem;
   var mheader = m["header"];
   if (ielem is String) {

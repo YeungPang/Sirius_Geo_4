@@ -1,0 +1,12 @@
+{
+	"CountSelection1": {
+		"header": "style;backgroundColor;offsetWidth;offsetHeight;painterHeight;painterWidth;scale;selId;fileName",
+		"elemList": [
+			"⊤(css);white;20.0;20.0;1000.0;1100.0;;;assets/svg_images/world_map.svg",
+			"⊤(tectcss);white;20.0;20.0;500.0;2000.0;1.2;Plates;assets/svg_images/MajorPlatesMap.svg",
+			"⊤(tectcss);white;505.0;150.0;500.0;2000.0;2.0;Plates;https://geo.siriustechnology.net/storage/gamedata/images/TectonicPlates/MajorPlatesMap.svg",
+			"⊤(tectcss);white;0.0;0.0;1500.0;2100.0;;;assets/svg_images/4658.SVGContinents.svg",
+			"⊤(tectcss);white;0.0;0.0;1500.0;2100.0;;;⊤(svgContinents)"
+		]
+	}
+}

@@ -1,16 +1,17 @@
 import 'dart:async';
-import 'dart:core';
 import 'dart:convert';
+import 'dart:core';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import '../agent/config_agent.dart';
 import '../agent/db_agent.dart';
-import 'package:http/http.dart' as http;
 import '../agent/version_agent.dart';
-import '../auth_manager.dart';
 import '../builder/pattern.dart';
 import '../instance_manager.dart';
 
 class MainModel {
-  final String mainModelName = "models/geo.json";
+  final String path = "models/";
+  final String mainModelName = "geo.json";
   final int dbVersion = 1;
   final String dbName = "prototype4.db";
   final String dbTable =
@@ -18,6 +19,8 @@ class MainModel {
   final String dbindex = "CREATE INDEX idx_cache_name ON Cache(name);";
   late DataBaseAgent dbAgent;
   bool skipDB = true;
+  bool isLocal = false;
+  Map<String, dynamic> modelTimestamp = {};
 
   DataBaseAgent get dba => dbAgent;
 
@@ -33,7 +36,7 @@ class MainModel {
   late double size10;
   late double size20;
 
-  final apkVersion = "0.16";
+  final apkVersion = "0.17";
 
   late AppActions appActions;
 
@@ -52,6 +55,7 @@ class MainModel {
   List<String> jFiles = [];
   List<String> get jsonFiles => jFiles;
   List<String> jLoadedFiles = [];
+  Set<String> jLoadingSet = {};
 
   Widget? currScreen;
   Widget? get currentScreen => currScreen;
@@ -64,10 +68,16 @@ class MainModel {
     if (fname[0] == "[") {
       List<String> lf = fname.substring(1, fname.length - 1).split(",");
       for (String f in lf) {
-        jFiles.add(f.trim());
+        String fn = f.trim();
+        if (!jFiles.contains(fn)) {
+          jFiles.add(fn);
+        }
       }
     } else {
-      jFiles.add(fname);
+      String fn = fname.trim();
+      if (!jFiles.contains(fn)) {
+        jFiles.add(fn);
+      }
     }
   }
 
@@ -102,29 +112,63 @@ class MainModel {
     return jsonStr;
   }
 
-  Future<String> getJson(dynamic context) async {
-    String fname = (context is String) ? context : mainModelName;
-    int ix = fname.lastIndexOf("/");
-    String folder = ix >= 0 ? fname.substring(0, ix) : "model";
-    if (ix >= 0) {
-      fname = fname.substring(ix + 1);
+  Future<String> getLocalJson(dynamic context) async {
+    String fname = path + ((context is String) ? context : mainModelName);
+    if (skipDB) {
+      return await rootBundle.loadString(fname);
     }
-    String fullpath = "$folder/$fname";
+    List<Map<String, dynamic>> dbData = await dbAgent.query("Cache", {
+      "where": "name = ?",
+      "list": [fname]
+    });
+    late String model;
+    if (dbData.isEmpty) {
+      // DateTime now = DateTime.now();
+      // final DateTime utcNow = now.toUtc();
+      // final int timestamp = utcNow.millisecondsSinceEpoch;
+      model = await rootBundle.loadString(fname);
+      await dbAgent.insert("Cache", {"name": fname, "model": model});
+    } else {
+      var tsdt = dbData[0]["timestamp"];
+      int ts = tsdt is int
+          ? tsdt
+          : DateTime.parse(tsdt).millisecondsSinceEpoch ~/ 1000;
+      int nts = modelTimestamp[fname] ?? 0;
+      if (ts >= nts) {
+        model = dbData[0]["model"];
+      } else {
+        model = await rootBundle.loadString(fname);
+        var data = {"model": model, "timestamp": nts};
+        var id = dbData[0]["id"];
+        await dbAgent
+            .update("Cache", {"data": data, "where": "id = ?", "id": id});
+      }
+    }
+    //await Future.delayed(const Duration(milliseconds: 500));
+    return model;
+    //return DefaultAssetBundle.of(context).loadString(mainModelName);
+  }
+
+  Future<String> getJson(dynamic context) async {
+    if (isLocal) {
+      return getLocalJson(context);
+    }
+    String fname = path + ((context is String) ? context : mainModelName);
     late String model;
     if (skipDB) {
-      //dbAgent.deleteDB();
-      model = await loadString(fullpath);
+      dbAgent.deleteDB();
+      model = await loadString(fname);
     } else {
       List<Map<String, dynamic>> dbData = await dbAgent.query("Cache", {
         "where": "name = ?",
-        "list": [fullpath]
+        "list": [fname]
       });
       if (dbData.isEmpty) {
         // DateTime now = DateTime.now();
         // final DateTime utcNow = now.toUtc();
         // final int timestamp = utcNow.millisecondsSinceEpoch;
-        model = await loadString(fullpath);
-        await dbAgent.insert("Cache", {"name": fullpath, "model": model});
+        model = await loadString(fname);
+        await dbAgent.insert("Cache", {"name": fname, "model": model});
       } else {
         Map<String, dynamic>? foundModel = InstanceManager().models.firstWhere(
             (m) => fname == m['filename'],
@@ -152,17 +196,20 @@ class MainModel {
 
   Future<Map<String, dynamic>> getMap(BuildContext context) async {
     String jsonStr = "";
-    final profileFuture = InstanceManager().loadProfileData(); // [0]
-    final jsonFuture = getJson(context); // [1]
-    final profileAndJson = await Future.wait(
-        [profileFuture, jsonFuture]); // Wait for both to complete
-    jsonStr = profileAndJson[1];
-    if (!jsonStr.endsWith('}')) {
-      throw Exception("Unable to dynamically replace profile in model JSON");
-    }
-    String profileStr = profileAndJson[0];
-    if (profileStr == '{}') {
-      profileStr = '''{
+    if (isLocal) {
+      jsonStr = await getLocalJson(context);
+    } else {
+      final profileFuture = InstanceManager().loadProfileData(); // [0]
+      final jsonFuture = getJson(context); // [1]
+      final profileAndJson = await Future.wait(
+          [profileFuture, jsonFuture]); // Wait for both to complete
+      jsonStr = profileAndJson[1];
+      if (jsonStr.isNotEmpty && !jsonStr.endsWith('}')) {
+        throw Exception("Unable to dynamically replace profile in model JSON");
+      }
+      String profileStr = profileAndJson[0];
+      if (profileStr.isEmpty || (profileStr == '{}')) {
+        profileStr = '''{
         "appVersion": "",
         "userToken": "",
         "reset": true,
@@ -178,39 +225,75 @@ class MainModel {
         "lastsync": 1627510285,
         "renew": ""
     }''';
-    }
+      }
 
-    jsonStr =
-        '${jsonStr.substring(0, jsonStr.length - 1)}, "userProfile": $profileStr}';
+      jsonStr =
+          '${jsonStr.substring(0, jsonStr.length - 1)}, "userProfile": $profileStr}';
+    }
     map = json.decode(jsonStr);
     stateData["map"] = map;
     Map<String, dynamic> facts = map["patterns"]["facts"];
     facts["apkVersion"] = apkVersion;
+    skipDB = map["noCache"] ?? false;
+    String ljfiles = map["loadJson"] ?? "";
+    if (ljfiles.isNotEmpty) {
+      addJFile(ljfiles);
+    }
+    await loadJFile();
     return map;
+  }
+
+  Future<String> getFileString(String fn) async {
+    if (jLoadingSet.contains(fn)) {
+      while (jLoadingSet.contains(fn)) {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+      return "";
+    }
+    jLoadingSet.add(fn);
+    String jstr = await getJson(fn);
+    jLoadingSet.remove(fn);
+    return jstr;
   }
 
   Future<bool> loadJFile() async {
     if (jFiles.isEmpty) {
-      return false;
+      if (jLoadingSet.isNotEmpty) {
+        while (jLoadingSet.isNotEmpty) {
+          await Future.delayed(const Duration(milliseconds: 100));
+        }
+      }
+      return true;
     }
-    for (String jFile in jFiles) {
-      if (jLoadedFiles.contains(jFile)) {
-        continue;
-      } else {
-        jLoadedFiles.add(jFile);
-        String jsonStr = await getJson(jFile);
-        Map<String, dynamic> nmap = json.decode(jsonStr);
-        map["patterns"]["facts"].addAll(nmap);
+    List<String> jf = jFiles;
+    jFiles = [];
+    for (String jFile in jf) {
+      if (!jLoadedFiles.contains(jFile)) {
+        String jsonStr = await getFileString(jFile);
+        if (jsonStr.isNotEmpty) {
+          Map<String, dynamic> nmap = json.decode(jsonStr);
+          nmap = splitLines(nmap);
+          map["patterns"]["facts"].addAll(nmap);
+          jLoadedFiles.add(jFile);
+        }
       }
     }
-    jFiles = [];
     return true;
   }
 
   init(BuildContext context) {
     dbAgent = DataBaseAgent(
         version: dbVersion, dbName: dbName, dbtable: dbTable, dbindex: dbindex);
-
+    if (isLocal) {
+      DateTime now = DateTime.now();
+      final DateTime utcNow = now.toUtc();
+      final int timestamp = utcNow.millisecondsSinceEpoch ~/ 1000;
+      modelTimestamp = {
+        mainModelName: timestamp,
+        "assets/models/geo1.json": timestamp,
+        "assets/models/geo3.json": timestamp
+      };
+    }
     stateData.addAll({"cache": {}, "logical": {}, "user": {}});
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;

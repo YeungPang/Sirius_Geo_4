@@ -37,7 +37,15 @@ class MyApp extends StatelessWidget {
     Agent a = model.appActions.getAgent("pattern");
 
     ProcessEvent event = ProcessEvent(Get.parameters["screen"]!, map: map);
-    var p = a.process(event);
+
+    var itemRefMap = (event.map != null) ? event.map!["_itemRefMap"] : null;
+    var p = ((model.jFiles.isNotEmpty) || (itemRefMap is String))
+        ? null
+        : a.process(event);
+
+/*     if (itemRefMap is String) {
+      return _repeatGetPage(model, a, event);
+    } */
 
     if (p is ProcessPattern) {
       screen = p.getWidget();
@@ -66,6 +74,17 @@ class MyApp extends StatelessWidget {
   }
 
   Widget _repeatGetPage(MainModel model, Agent a, ProcessEvent event) {
+    var itemRefMap = (event.map != null) ? event.map!["_itemRefMap"] : null;
+    if (itemRefMap is String) {
+      itemRefMap = model.map["patterns"]["facts"][itemRefMap];
+      if (itemRefMap != null) {
+        event.map!["_itemRefMap"] = itemRefMap;
+        var item = event.map!["_item"];
+        var dataRefMap = event.map!["_dataRefMap"];
+        event.map!["_itemRef"] =
+            model.appActions.doFunction("dataList", [dataRefMap, item], null);
+      }
+    }
     var p = a.process(event);
     Widget screen;
     if (p is ProcessPattern) {

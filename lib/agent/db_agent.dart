@@ -57,10 +57,13 @@ class DataBaseAgent {
   }
 
   Future<void> deleteDB() async {
-    db ??= await _getDB();
-    if (db != null) {
-      await db!.close();
-      await deleteDatabase(join(await getDatabasesPath(), dbName));
+    bool exists = await databaseExists(join(await getDatabasesPath(), dbName));
+    if (exists) {
+      db ??= await _getDB();
+      if (db != null) {
+        await db!.close();
+        await deleteDatabase(join(await getDatabasesPath(), dbName));
+      }
     }
   }
 }

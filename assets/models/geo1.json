@@ -1,0 +1,8 @@
+{
+    "questions2": {
+        "header": "QID;Q_Pattern_Name;JFile;ref;Question;Instruction;Q_Image;range;Answer_Text;Answer;Accepted_Answers;AnswerOptions;hints;mapping;mapping_inx;AddOptions;bgHeight",
+        "elemList": [
+            "ContQ0001;MC;;contData;What is this ⊤(single_quote)continent?;;ℛ(_ans,2);5;This continent is #ℛ(_ans,1)#. So we need a lot more information.;ℛ(_ans,1);;ℛ([0‥6],1);ℛ(_ans,7)"
+        ]
+    }
+}

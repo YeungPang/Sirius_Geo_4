@@ -1,0 +1,33 @@
+{
+    "items": {
+        "dataStart": "Q1",
+        "pattern": "mvcScaffold",
+        "header": "GID;name;icon;PassScore;progId;ref;Q1;Q2;Q3;Q4;Q5;Q6;Q7;Q8;Q9;Q10;Q11;Q12;Q13",
+        "elemList": [
+            "ContG0001;Identify Continent;⊤(continents);0.6;63;questions;0;ℛ(questions2:0);ℛ(questions:24);0;25;;;;;;;;;",
+            "ContG0002;Continent Size;⊤(continents);0.75;62;questions;1",
+            "ContG0003;Continent Quiz;⊤(continents);0.75;3;questions;26;2",
+            "CounG0001;Identify Country;⊤(countries);0.75;4;questions;27;6",
+            "CounG0002;Identify Flag;flags;0.75;5;questions;[7‥13,32];[7‥13,32]",
+            "CounG0003;Country Quiz;⊤(countries);0.75;6;questions;20;20;20;34;33;33;33;16;31;30;28;29;22",
+            "WorIG0001;World Intro;atmosphere;0.75;7;questions",
+            "hemiG0001;Hemisphere;climate_zones;0.75;8;questions",
+            "SolaG0001;Solar System;solar_system;0.75;9;questions",
+            "OceaG0001;Oceans;oceans;0.75;10;questions",
+            "RiveG0001;Rivers;rivers;0.75;11;questions",
+            "LakEG0001;Lakes In Europe;lakes;0.75;12;questions",
+            "MouRG0001;Mountain Ranges;glacier;0.75;13;questions",
+            "MounG0001;Mountains;mountains;0.75;14;questions",
+            "VolcG0001;Volcanoes;volcanoes;0.75;15;questions",
+            "IslaG0001;Islands;islands;0.75;16;questions",
+            "CapiG0001;Capitals;capitals;0.75;17;questions",
+            "CitiG0001;Cities;cities;0.75;18;questions",
+            "CounG0004;Select Country Flag;flags;0.75;19;questions;14;14;14",
+            "ContG0005;Select Answers;⊤(continents);0.6;20;questions;15",
+            "ContG0006;Identify Continent;⊤(continents);0.6;21;questions;3;3;3",
+            "ContG0007;Continent;⊤(continents);0.6;22;questions;19;19;18;17;4",
+            "CounG0004;Country Pick;⊤(countries);0.6;23;questions;21;21;21",
+            "ArtiA0001;Article Test;article;;;articleWeb;0"
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "types": {
+        "dataStart": "G1",
+        "header": "TID;name;ref;G1;G2;G3;G4;G5;G6;G7;G8;G9;G10",
+        "elemList": [
+            "ContiT001;Level 1;items;0;1;2",
+            "ContiT002;Level 2;items;20;21;19",
+            "ContiT003;Learn;tutorials;0",
+            "ContiT004;Article;articles;0",
+            "CountT005;Level 1;items;3;4",
+            "CountT006;Level 2;items;23;22;18;5",
+            "CountT007;Learn;tutorials;1",
+            "CountT008;Article;articles;1"
+        ]
+    },
+    "30-8-FlagsCoATypes": {
+        "dataStart": "G1",
+        "header": "ID;name;ref;G1;G2;G3;G4;G5;G6;G7;G8;G9;G10;G11;G12;G13;G14;G15;G16;G17;G18;G19;G20;G21;G22;G23;G24;G25;G26;G27;G28;G29;G30;G31;G32;G33;G34;G35",
+        "elemList": [
+            "TIDFlagsLargest001;5 Largest Countries;40-6-CTRTERR-Area;ℛ(0);ℛ(5);ℛ(10)",
+            "TIDFlagsLargest002;10 Largest Countries;40-6-CTRTERR-Area;ℛ(1);ℛ(6);ℛ(11)",
+            "TIDFlagsLargest003;20 Largest Countries;40-6-CTRTERR-Area;ℛ(2);ℛ(7);ℛ(12)",
+            "TIDFlagsLargest004;30 Largest Countries;40-6-CTRTERR-Area;ℛ(3);ℛ(8);ℛ(13)",
+            "TIDFlagsLargest005;50 Largest Countries;40-6-CTRTERR-Area;ℛ(4);ℛ(9);ℛ(14)"
+        ]
+    }
+}
