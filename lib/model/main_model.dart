@@ -10,7 +10,7 @@ import '../builder/pattern.dart';
 import '../instance_manager.dart';
 
 class MainModel {
-  final String path = "models/";
+  String path = "models/";
   final String mainModelName = "geo.json";
   final int dbVersion = 1;
   final String dbName = "prototype4.db";
@@ -197,6 +197,7 @@ class MainModel {
   Future<Map<String, dynamic>> getMap(BuildContext context) async {
     String jsonStr = "";
     if (isLocal) {
+      path = "assets/models/";
       jsonStr = await getLocalJson(context);
     } else {
       final profileFuture = InstanceManager().loadProfileData(); // [0]
@@ -234,7 +235,7 @@ class MainModel {
     stateData["map"] = map;
     Map<String, dynamic> facts = map["patterns"]["facts"];
     facts["apkVersion"] = apkVersion;
-    skipDB = map["noCache"] ?? false;
+    skipDB = map["caching"] ?? true;
     String ljfiles = map["loadJson"] ?? "";
     if (ljfiles.isNotEmpty) {
       addJFile(ljfiles);
@@ -258,11 +259,6 @@ class MainModel {
 
   Future<bool> loadJFile() async {
     if (jFiles.isEmpty) {
-      if (jLoadingSet.isNotEmpty) {
-        while (jLoadingSet.isNotEmpty) {
-          await Future.delayed(const Duration(milliseconds: 100));
-        }
-      }
       return true;
     }
     List<String> jf = jFiles;
