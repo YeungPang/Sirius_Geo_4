@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage_2/provider.dart';
+//import 'package:flutter_advanced_networkimage_2/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../resources/fonts.dart';
 import './pattern.dart';
@@ -357,7 +357,11 @@ class SVGAssetPattern extends ProcessPattern {
   Widget getWidget({String? name}) {
     String _name = map["_name"];
     if (_name.contains("http")) {
-      return SvgPicture(
+      return SvgPicture.network(
+        _name,
+        height: map["_height"],
+      );
+/*       return SvgPicture(
         AdvancedNetworkSvg(
             _name,
             (theme) => (bytes, colorFilter, key) {
@@ -371,7 +375,7 @@ class SVGAssetPattern extends ProcessPattern {
                 },
             useDiskCache: true),
         height: map["_height"],
-      );
+      ); */
     }
     return SvgPicture.asset(
       map["_name"],

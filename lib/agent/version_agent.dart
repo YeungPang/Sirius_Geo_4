@@ -128,7 +128,7 @@ class VersionAgent {
   }
 
   saveProfile() async {
-    InstanceManager().saveProfileData(map["userProfile"]);
+    //InstanceManager().saveProfileData(map["userProfile"]);
   }
 
   removeCachedMap() async {

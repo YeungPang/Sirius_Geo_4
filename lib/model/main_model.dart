@@ -36,7 +36,7 @@ class MainModel {
   late double size10;
   late double size20;
 
-  final apkVersion = "0.17";
+  final apkVersion = "0.19";
 
   late AppActions appActions;
 
@@ -65,6 +65,10 @@ class MainModel {
   }
 
   addJFile(String fname) {
+    if (fname == "") {
+      debugPrint("Missing fname, ignoring!");
+      return;
+    }
     if (fname[0] == "[") {
       List<String> lf = fname.substring(1, fname.length - 1).split(",");
       for (String f in lf) {

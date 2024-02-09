@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_advanced_networkimage_2/provider.dart';
+//import 'package:flutter_advanced_networkimage_2/provider.dart';
 import '../builder/pattern.dart';
 import '../model/locator.dart';
 import 'package:share_plus/share_plus.dart';
@@ -17,14 +17,14 @@ class Util {
     return imageCache.currentSize;
   }
 
-  static Future<bool> clearSvgCache() async {
+/*   static Future<bool> clearSvgCache() async {
     return await DiskCache().clear();
   }
 
   static Future<int> getSvgCacheSize() async {
     int size = await DiskCache().cacheSize() ?? 0;
     return size;
-  }
+  } */
 }
 
 onShare(Map<String, dynamic> map) {

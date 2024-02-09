@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage_2/provider.dart';
+//import 'package:flutter_advanced_networkimage_2/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../builder/pattern.dart';
 import '../model/locator.dart';
@@ -225,11 +225,11 @@ class IconPattern extends ProcessPattern {
         String img = imgIcons[iname] ?? iname;
         if (img.contains("http")) {
           if (img.contains("svg")) {
-            /*map["_widget"] = SvgPicture.network(
+            map["_widget"] = SvgPicture.network(
               img,
               height: size,
-            );*/
-            map["_widget"] = SvgPicture(
+            );
+            /*            SvgPicture(
               AdvancedNetworkSvg(
                 img,
                 (theme) => (bytes, colorFilter, key) {
@@ -248,7 +248,7 @@ class IconPattern extends ProcessPattern {
                 },
               ),
               height: size,
-            );
+            ); */
           } else {
             map["_widget"] = ImageIcon(
               CachedNetworkImageProvider(img),
