@@ -13,12 +13,12 @@ class MainModel {
   String path = "models/";
   final String mainModelName = "geo.json";
   final int dbVersion = 1;
-  final String dbName = "prototype4.db";
+  final String dbName = "siriusgeo.db";
   final String dbTable =
       "CREATE TABLE Cache(id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, name TEXT NOT NULL, model TEXT NOT NULL);";
   final String dbindex = "CREATE INDEX idx_cache_name ON Cache(name);";
   late DataBaseAgent dbAgent;
-  bool skipDB = true;
+  bool skipDB = false;
   bool isLocal = false;
   Map<String, dynamic> modelTimestamp = {};
 
@@ -36,7 +36,7 @@ class MainModel {
   late double size10;
   late double size20;
 
-  final apkVersion = "0.19";
+  final apkVersion = "0.20";
 
   late AppActions appActions;
 
@@ -131,7 +131,10 @@ class MainModel {
       // final DateTime utcNow = now.toUtc();
       // final int timestamp = utcNow.millisecondsSinceEpoch;
       model = await rootBundle.loadString(fname);
-      await dbAgent.insert("Cache", {"name": fname, "model": model});
+      int ms = model.length;
+      String cmodel = dbAgent.compressText(model);
+      ms = cmodel.length;
+      await dbAgent.insert("Cache", {"name": fname, "model": cmodel});
     } else {
       var tsdt = dbData[0]["timestamp"];
       int ts = tsdt is int
@@ -139,10 +142,12 @@ class MainModel {
           : DateTime.parse(tsdt).millisecondsSinceEpoch ~/ 1000;
       int nts = modelTimestamp[fname] ?? 0;
       if (ts >= nts) {
-        model = dbData[0]["model"];
+        String cmodel = dbData[0]["model"];
+        model = dbAgent.decompressText(cmodel);
       } else {
         model = await rootBundle.loadString(fname);
-        var data = {"model": model, "timestamp": nts};
+        String cmodel = dbAgent.compressText(model);
+        var data = {"model": cmodel, "timestamp": nts};
         var id = dbData[0]["id"];
         await dbAgent
             .update("Cache", {"data": data, "where": "id = ?", "id": id});
@@ -172,7 +177,8 @@ class MainModel {
         // final DateTime utcNow = now.toUtc();
         // final int timestamp = utcNow.millisecondsSinceEpoch;
         model = await loadString(fname);
-        await dbAgent.insert("Cache", {"name": fname, "model": model});
+        String cmodel = dbAgent.compressText(model);
+        await dbAgent.insert("Cache", {"name": fname, "model": cmodel});
       } else {
         Map<String, dynamic>? foundModel = InstanceManager().models.firstWhere(
             (m) => fname == m['filename'],
@@ -183,10 +189,12 @@ class MainModel {
             ? tsdt
             : DateTime.parse(tsdt).millisecondsSinceEpoch ~/ 1000;
         if (ts >= nts) {
-          model = dbData[0]["model"];
+          String cmodel = dbData[0]["model"];
+          model = dbAgent.decompressText(cmodel);
         } else {
           model = await loadString(fname);
-          var data = {"model": model, "timestamp": nts};
+          String cmodel = dbAgent.compressText(model);
+          var data = {"model": cmodel, "timestamp": nts};
           var id = dbData[0]["id"];
           await dbAgent
               .update("Cache", {"data": data, "where": "id = ?", "id": id});
@@ -239,7 +247,7 @@ class MainModel {
     stateData["map"] = map;
     Map<String, dynamic> facts = map["patterns"]["facts"];
     facts["apkVersion"] = apkVersion;
-    skipDB = map["caching"] ?? true;
+    skipDB = map["caching"] ?? skipDB;
     String ljfiles = map["loadJson"] ?? "";
     if (ljfiles.isNotEmpty) {
       addJFile(ljfiles);
@@ -287,7 +295,7 @@ class MainModel {
     if (isLocal) {
       DateTime now = DateTime.now();
       final DateTime utcNow = now.toUtc();
-      final int timestamp = utcNow.millisecondsSinceEpoch ~/ 1000;
+      final int timestamp = utcNow.millisecondsSinceEpoch ~/ 1000 - 3600;
       modelTimestamp = {
         mainModelName: timestamp,
         "assets/models/geo1.json": timestamp,

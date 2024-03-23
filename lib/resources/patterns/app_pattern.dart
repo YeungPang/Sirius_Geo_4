@@ -219,8 +219,8 @@ class GroupProgNotiPattern extends ProcessPattern {
     double clp = map["_compPercent"] ?? 0.0;
     if (!done) {
       List<dynamic> lid = resxController.getCache("groupIds");
-      lid.add(gid);
       List<dynamic> cl = resxController.getCache("compList");
+      lid.add(gid);
       cl.add(clp);
       List<dynamic> ilid = lid[inx - 1];
       for (var sid in ilid) {

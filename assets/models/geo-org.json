@@ -1,6 +1,6 @@
 {
     "title": "Sirius Prototype",
-    "version": "(0.16)",
+    "version": "(0.17)",
     "versionTimestamp": 1636410287,
     "maxConfigLives": 5,
     "liveGenTime": 90,
@@ -410,11 +410,9 @@
             ]
         }
     },
-    "search": {
-        "Articles": "items:23",
-        "Continents": "groups:0",
-        "Country": "groups:1;groups:2",
-        "Identify Continent": "items:0"
+    "fileElem": {
+        "groups": "geo3.json",
+        "search": "search.json"
     },
     "menuList": [
         "home;Home",
@@ -531,23 +529,23 @@
                 "_alignment: decode(alignment, topCenter), _width: ℛ(swratio, Ø, 1.0)}) ⋀ ↲(Φ(Container))"
             ],
             "elemRow": [
-                "_item, _index, _itemRefMap, _sub | τ(_index) ⋀ (_header ≔ _itemRefMap[header]) ⋀ (_textStyle ≔ ℛ(textStyle, SliderTextStyle)) ⋀ ",
+                "_item, _index, _itemRefMap, _sub | (_header ≔ _itemRefMap[header]) ⋀ (_textStyle ≔ ℛ(textStyle, SliderTextStyle)) ⋀ ",
                 "(_ts ≔ ℛ(textStyle, SliderBoldTextStyle)) ⋀ mapPat(_header, _item) ⋀ (_text ≔ _name) ⋀ (((_sub = _ref) ⋀ ",
                 "(_cardColor ≔ ℛ(Color, 'btnBlue')) ⋀ (_textStyle ≔ ℛ(textStyleColor, 'white', _textStyle)) ⋀ ",
                 "(_ts ≔ ℛ(textStyleColor, 'white', _ts))) ⋁ (true)) ⋀ ⋓({_child: Φ(Text), _height: ℛ(hratio, Ø, 0.0468), _width: ℛ(swratio, Ø, 0.96)}) ⋀ ",
                 "⋓({_bm: Φ(SizedBox), _itemRef: dataList(_itemRefMap, _item), _elemItemList: ℛ(getCache, 'elemItemList')}) ⋀ ",
-                "τ('_elemItemList') ⋀ (_children ≔ [_bm, _elemItemList]) ⋀  ⋓({_child: Φ(Column), _elevation: ℛ(hratio, Ø, 0.01), ",
-                "_cardRadius: ℛ(hratio, Ø, 0.015)}) ⋀ ⋓({_child: Φ(Card), _height: ℛ(hratio, Ø, 0.255)}) ⋀ ↲(Φ(Container))"
+                "(_children ≔ [_bm, _elemItemList]) ⋀ ⋓({_child: Φ(Column), _elevation: ℛ(hratio, Ø, 0.01), ",
+                "_cardRadius: ℛ(hratio, Ø, 0.015)}) ⋀ ⋓({_child: Φ(Card), _height: ℛ(hratio, Ø, 0.26)}) ⋀ ↲(Φ(Container))"
             ],
             "elemItemList": [
                 "_itemRef, _index, _ref, _ts | (_ta ≔ _ref['pattern']) ⋀ ⋓({_childPattern: 'catCol', _direction: decode(axis, horizontal), ",
                 "_childMap: ({_itemRefMap: _ref, _tapAction: _ta[0], _ts: _ts})}) ⋀ ",
-                "(_child ≔ Φ(TapListItem)) ⋀ mapPat(patHeader, (0.192, Ø, Ø, Ø, centerLeft, Ø)) ⋀ ↲(Φ(Container))"
+                "(_child ≔ Φ(TapListItem)) ⋀ mapPat(patHeader, (0.2, Ø, Ø, Ø, centerLeft, Ø)) ⋀ ↲(Φ(Container))"
             ],
             "catCol": [
                 "_item, _index, _itemRefMap, _onTap, _progId, _ts | (_header ≔ _itemRefMap[header]) ⋀ mapPat(_header, _item) ⋀ ",
                 "(_children ≔ catView) ⋀ mapPat(rowColHeader, (center, start, Ø, Ø)) ⋀ (_child ≔ Φ(Column)) ⋀ ",
-                "mapPat(patHeader, (0.192, Ø, Ø, Ø, Ø, Ø)) ⋀ (_itemRef ≔ dataList(_itemRefMap, _item)) ⋀ ",
+                "mapPat(patHeader, (0.2, Ø, Ø, Ø, Ø, Ø)) ⋀ (_itemRef ≔ dataList(_itemRefMap, _item)) ⋀ ",
                 "(_onTap ≔ createEvent(route, {_itemRef: _itemRef, _itemRefMap: _ref, _title: _name, _progId: _progId, _dataRefMap: _itemRefMap, _item: _item, _PassScore: _PassScore})) ⋀",
                 "(_width ≔ ℛ(hratio, Ø, 0.172)) ⋀ ↲(Φ(Container))"
             ],
@@ -616,26 +614,26 @@
                 "_width: ℛ(swratio, Ø, 1.0), _topicSelection: ⊤(learning), _subtitle: ⊤(journey), _img: ℛ(lookup, learn)}))"
             ],
             "learnItemList": [
-                "_item, _itemRef, _itemRefMap, _index, _ref, _ts | τ('learnItemList') ⋀ (_grProgId ≔ []) ⋀ (_lmap ≔ {_itemRef: _itemRef, _ref: _ref, ",
+                "_item, _itemRef, _itemRefMap, _index, _ref, _ts | (_grProgId ≔ []) ⋀ (_lmap ≔ {_itemRef: _itemRef, _ref: _ref, ",
                 "_grProgId: _grProgId, _index: _index, _ts: _ts}) ⋀ (_greenEvent ≔ createEvent('greenContainer', _lmap)) ⋀ ",
-                "(_greyEvent ≔ createEvent('greyContainer', _lmap)) ⋀ mapPat(_itemRefMap[header], _item) ⋀ τ(_index) ⋀ (_child ≔ Φ(GroupProgNoti)) ⋀ ",
-                "mapPat(patHeader, (0.175, 1.0, Ø, Ø, center, Ø)) ⋀ ↲(Φ(Container))"
+                "(_greyEvent ≔ createEvent('greyContainer', _lmap)) ⋀ mapPat(_itemRefMap[header], _item) ⋀ (_child ≔ Φ(GroupProgNoti)) ⋀ ",
+                "mapPat(patHeader, (0.19, 1.0, Ø, Ø, center, Ø)) ⋀ ↲(Φ(Container))"
             ],
             "learnCatContainer": [
                 "_itemRef, _index, _ref, _grProgId, _childPattern, _ts | (_ta ≔ _ref['pattern']) ⋀ ⋓({_direction: decode(axis, horizontal), ",
                 "_colWidth: (#(_itemRef) * ℛ(hratio, Ø, 0.2)), _childMap: ({_itemRefMap: _ref, _grProgId: _grProgId, _tapAction: _ta[0], _ts: _ts})}) ⋀ ",
-                "(_child ≔ Φ(TapListItem))⋀ mapPat(patHeader, (0.175, _colWidth, Ø, Ø, center, Ø)) ⋀ ↲(Φ(Container))"
+                "(_child ≔ Φ(TapListItem))⋀ mapPat(patHeader, (0.19, _colWidth, Ø, Ø, center, Ø)) ⋀ ↲(Φ(Container))"
             ],
             "greenContainer": [
                 "_itemRef, _index, _ref, _grProgId, _ts | (_childPattern ≔ 'learnCatCol') ⋀ ",
-                "((_index = 0) ⋀ ↲(learnCatContainer)) ⋁ ((_alignment ≔ decode(align, {horiz: 0.0, vert: -3.8})) ⋀ ",
+                "((_index = 0) ⋀ ↲(learnCatContainer)) ⋁ ((_alignment ≔ decode(align, {horiz: 0.0, vert: -3.5})) ⋀ ",
                 "(_child ≔ ℛ(getCache, greenImg)) ⋀ (_o ≔ Φ(OverflowBox)) ⋀ ",
                 "(_c ≔ Φ(Align, {_child: learnCatContainer, _alignment: decode(align, {horiz: 0.0, vert: 0.0})})) ⋀ ",
                 "(_children  ≔ [_o, _c]) ⋀ ↲(Φ(Stack)))"
             ],
             "greyContainer": [
                 "_itemRef, _index, _ref, _grProgId, _ts | (_childPattern ≔ 'dCatCol') ⋀ ",
-                "(_alignment ≔ decode(align, {horiz: 0.0, vert: -3.8})) ⋀ (_child ≔ ℛ(getCache, greyImg)) ⋀ (_o ≔ Φ(OverflowBox)) ⋀ ",
+                "(_alignment ≔ decode(align, {horiz: 0.0, vert: -3.5})) ⋀ (_child ≔ ℛ(getCache, greyImg)) ⋀ (_o ≔ Φ(OverflowBox)) ⋀ ",
                 "(_c ≔ Φ(Align, {_child: learnCatContainer, _alignment: decode(align, {horiz: 0.0, vert: 0.0})})) ⋀ ",
                 "(_children  ≔ [_o, _c]) ⋀ ↲(Φ(Stack))"
             ],
@@ -843,8 +841,9 @@
                 "⋓({_textStyle: ℛ(textStyle, NormalTextStyle), _text: ('Version: ' + ℛ(model, version)), _d: Φ(Divider, {_color: ℛ(color, 'grey700'), _thickness: 1.5})}) ⋀ ",
                 "(_t1 ≔ Φ(Text)) ⋀ (_text ≔ ('FW Version: ' + fwVersion)) ⋀ (_t2 ≔ Φ(Text)) ⋀ (_text ≔ ('APK Version: ' + apkVersion)) ⋀ (_t3 ≔ Φ(Text)) ⋀ ↲([_t1, _d, _t2, _d, _t3])"
             ],
-            "menufsm": [
-                "_event, _title | (popRoute()) ⋀ (((_event = 'search') ⋀ ↲(onSearch({}))) ⋁ (((_event = 'settings') ⋁ (_event = 'support') ⋁ (_event = 'about')) ⋀ ",
+            "menufsm": "_event, _title | (popRoute()) ⋀ ↲(pmenufsm)",
+            "pmenufsm": [
+                "_event, _title | (((_event = 'search') ⋀ ↲(onSearch({}))) ⋁ (((_event = 'settings') ⋁ (_event = 'support') ⋁ (_event = 'about')) ⋀ ",
                 "changeTheme() ⋀ ↲(buildDialog('titleDialog', {_event: _event, _title: _title}))) ⋁ ((_event = 'home') ⋀ ",
                 "ℛ(setCache, 'elemItemList', 'elemItemList') ⋀ ↲(home())) ⋁ ((_event = 'shop') ⋀ ↲(route('shopScaffold'))))"
             ],
@@ -863,7 +862,7 @@
                 "(_child ≔ catCol) ⋀ (_children ≪ Φ(TapItem))) ⋀ (_child ≔ Φ(Wrap)) ⋀ (_padding ≔ ℛ(appRes, 'boxPadding')) ⋀ τ('searchNavi') ⋀ ↲(Φ(Container))"
             ],
             "actions": [
-                "_event, _vars | ((_event = 'settings') ⋀ ↲({_func: fsmEvent, _map: {_event: 'settings', _title: 'Settings'}, _tapAction: 'menufsm'})) ⋁ ",
+                "_event, _vars | ((_event = 'settings') ⋀ ↲({_func: fsmEvent, _map: {_event: 'settings', _title: 'Settings'}, _tapAction: 'pmenufsm'})) ⋁ ",
                 "((_event = 'shop') ⋀ ↲({_func: route, _tapAction: 'shopScaffold'}))"
             ],
             "testBox": "(_text ≔ testText) ⋀ (_child ≔ Φ(Text)) ⋀ ƒ(mapPat, (patHeader, (Ø, Ø, #FFFFFF, Ø, topCenter, Ø))) ⋀ ↲(Φ(Container))"

@@ -58,7 +58,6 @@ dependencies:
   get:
   shared_preferences:
   cached_network_image:
-  flutter_advanced_networkimage_2:
   flutter_svg_provider:
   share_plus:
   jiffy:
@@ -67,6 +66,7 @@ dependencies:
   google_mobile_ads:
   path:
   sqflite:
+  archive:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

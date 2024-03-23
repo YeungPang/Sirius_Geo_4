@@ -1,0 +1,8 @@
+{
+    "search": {
+        "Articles": "items:23",
+        "Continents": "groups:0",
+        "Country": "groups:1;groups:2",
+        "Identify Continent": "items:0"
+    }
+}

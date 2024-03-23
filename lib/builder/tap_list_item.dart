@@ -7,11 +7,54 @@ import '../model/locator.dart';
 class TapListItem extends StatelessWidget {
   final Map<String, dynamic> map;
 
-  const TapListItem(this.map, {Key? key}) : super(key: key);
+  const TapListItem(this.map, {super.key});
   @override
   Widget build(BuildContext context) {
     debugPrint("Buidling list view");
     List<dynamic> itemRef = map["_itemRef"] as List<dynamic>;
+    return FutureBuilder<List<dynamic>>(
+      future: _getChildren(itemRef),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) debugPrint(snapshot.error.toString());
+        return snapshot.hasData
+            ? _getWidget(context, itemRef, snapshot.data!)
+            : const Center(
+                child: CircularProgressIndicator(),
+              );
+      },
+    );
+  }
+
+  Future<List<dynamic>> _getChildren(List<dynamic> itemRef) async {
+    if (model.jFiles.isNotEmpty) {
+      map["_loading"] = true;
+      await model.loadJFile();
+    }
+    List<dynamic> ppList = [];
+    int index = 0;
+    Function pf = model.appActions.getPattern(map["_childPattern"])!;
+    Map<String, dynamic>? cmap = map["_childMap"];
+    dynamic tevent = map["_onTap"];
+    for (var item in itemRef) {
+      Map<String, dynamic> lmap = {
+        "_item": item,
+        "_index": index,
+      };
+      if (cmap != null) {
+        lmap.addAll(cmap);
+      }
+      if (tevent != null) {
+        lmap["_onTap"] = tevent;
+      }
+      ProcessPattern p = await pf(lmap);
+      ppList.add([p, lmap]);
+      index++;
+    }
+    return ppList;
+  }
+
+  Widget _getWidget(
+      BuildContext context, List<dynamic> itemRef, List<dynamic> ppList) {
     if (map["_crossAxisCount"] == null) {
       return ListView.builder(
         scrollDirection: map["_direction"] ?? Axis.vertical,
@@ -19,7 +62,7 @@ class TapListItem extends StatelessWidget {
         shrinkWrap: map["_shrinkWrap"] ?? true,
         physics: (map["_noPhysics"] == true) ? null : bouncingScrollPhysics,
         itemCount: itemRef.length,
-        itemBuilder: (context, index) => _itemBuilder(itemRef[index], index),
+        itemBuilder: (context, index) => _itemBuilder(ppList[index]),
       );
     }
     SliverGridDelegate gd = SliverGridDelegateWithFixedCrossAxisCount(
@@ -35,44 +78,29 @@ class TapListItem extends StatelessWidget {
       physics: map["_physics"],
       shrinkWrap: true,
       itemCount: itemRef.length,
-      itemBuilder: (context, index) => _itemBuilder(itemRef[index], index),
+      itemBuilder: (context, index) => _itemBuilder(ppList[index]),
     );
   }
 
-  Widget _itemBuilder(dynamic item, int index) {
-    Map<String, dynamic> lmap = {
-      "_item": item,
-      "_index": index,
-    };
-    Function pf = model.appActions.getPattern(map["_childPattern"])!;
-    Map<String, dynamic>? cmap = map["_childMap"];
-    if (cmap != null) {
-      lmap.addAll(cmap);
+  Widget _itemBuilder(List<dynamic> ld) {
+    Map<String, dynamic> lmap = ld[1];
+    ProcessPattern p = ld[0];
+    if (lmap["_onTap"] == null) {
+      return p.getWidget();
     }
-    dynamic tevent = map["_onTap"];
-    if (tevent != null) {
-      lmap["_onTap"] = tevent;
-    }
-    dynamic p = pf(lmap);
-    if (p is ProcessPattern) {
-      return returnWidget(p, lmap);
-    }
-    return FutureBuilder<dynamic>(
-        future: repeatGet(pf, lmap),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) debugPrint(snapshot.error.toString());
-
-          return snapshot.hasData
-              ? returnWidget(snapshot.data!, lmap)
-              : const Center(
-                  child: CircularProgressIndicator(),
-                );
-        });
+    lmap["_child"] = p;
+    return getTapItemPattern(lmap).getWidget();
   }
 
-  Future<dynamic> repeatGet(Function pf, Map<String, dynamic> lmap) async {
+/*   Future<dynamic> repeatGet(Function pf, Map<String, dynamic> lmap) async {
     if (model.jFiles.isNotEmpty) {
+      map["_loading"] = true;
       await model.loadJFile();
+    } else if (model.jLoadingSet.isNotEmpty) {
+      while (model.jLoadingSet.isNotEmpty) {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+      map["_loading"] = false;
     }
     return pf(lmap);
   }
@@ -84,7 +112,7 @@ class TapListItem extends StatelessWidget {
     lmap["_child"] = p;
 
     return getTapItemPattern(lmap).getWidget();
-  }
+  } */
 }
 
 class TapListItemPattern extends ProcessPattern {

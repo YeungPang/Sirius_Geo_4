@@ -1,5 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'dart:convert';
+import 'package:archive/archive.dart';
 
 class DataBaseAgent {
   final int version;
@@ -7,6 +9,8 @@ class DataBaseAgent {
   String? dbtable;
   String? dbindex;
   Database? db;
+  final encoder = const ZLibEncoder();
+  final decoder = const ZLibDecoder();
 
   DataBaseAgent(
       {required this.version,
@@ -65,5 +69,17 @@ class DataBaseAgent {
         await deleteDatabase(join(await getDatabasesPath(), dbName));
       }
     }
+  }
+
+  String compressText(String text) {
+    List<int> bytes = utf8.encode(text);
+    List<int> compressed = encoder.encode(bytes);
+    return base64.encode(compressed);
+  }
+
+  String decompressText(String text) {
+    List<int> compressed = base64.decode(text);
+    List<int> bytes = decoder.decodeBytes(compressed);
+    return utf8.decode(bytes);
   }
 }
